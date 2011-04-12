@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Acquisition Configuration</title>
+  </head>
+
+  <body>
+    <h1>Acquisition Configuration</h1>
+    <p>
+      The Acquisition window allows the user to program a Scan and save data in a user-specific way.
+    </p>
+    <p>
+      <img src="./AcquisitionWindow.jpg" >
+    </p>
+     <p>
+    <TABLE BORDER="1">
+      <CAPTION> <b> Acquisition sequence </b></CAPTION>
+	<TR>
+	  <TD> record </TD>
+	  <TD> This is a unique value given by the user defining the sequence order in the scan. 
+	    The scan will be treated in ascending order </TD>
+	</TR>
+	<TR>
+	  <TD> type </TD>
+	  <TD> The type of sequence. Can take one of the following name:<br>
+	  <li> <b>MOTOR</b>: a motor is called for a movement </li>
+	  <li> <b>DAC</b>: a DAC is called for setting an output value </li>
+	  <li> <b>CAMERA</b>: a camera is called for taking an image </li>
+	  <li> <b>TREATMENT</b>: a calculation on existing sequence data is performed</li></TD>
+	</TR>
+	<TR>
+	  <TD> instrument </TD>
+	  <TD> Here is indicated the instrument instance name from its configuration. Camera are denoted from 0 to n in order 
+	    of appearance in the Instrument menu</TD>
+	</TR>
+	<TR>
+	  <TD> settings </TD>
+	  <TD> Here we put the information on what to do with the instrument, usually in format : [key=value] separated by one space<br>
+	  <li> <b>MOTOR</b>: a motor can have MOVEREL (relative movement), MOVEABS (absolute movement) calls, 
+	      with the value to be reached </li>
+	  <li> <b>DAC</b>:  a DAC output is specified by OUTPUT key with the corresponding value to be set using key VALUE</li>
+	  <li> <b>CAMERA</b>:  Use the SNAPSHOT key to ask an image from the camera </li>
+	  <li> <b>TREATMENT</b>: Use AVG[i[-+/*]j] to perform any type of average between two taken data sequences i and j 
+	      (must be of the same instrument type). For example:<br>
+	  AVG[10] will result on the average value taken from record 10.</li>
+	  <li><b>SLEEP</b>: A sleep in seconds to be added at the end of the sequence </li></TD>
+	</TR>
+	<TR>
+	  <TD> scanplan </TD>
+	  <TD> Here we describe the scan and closely related data saving behavior, 
+	    usually in format : [key=value] separated by one space<br>
+	    <li> <b>LOOP</b>:  a fixed number of loop will begin when this key is present. 
+	      It must be terminated with key <b>LOOP=END</b>. More than one loop can be nested</li>
+	    <li> <b>DATAGROUP</b>: assign a name to a group of data. It may be used in relation with the LOOP key</li>
+	  <li> <b>DATANAME</b>:  assign a name to a data element. The data is attached to the parent group in the scanplan. 
+	      If it is a scalar element, the data will be attached to the parent group as an attribute. 
+	      If it is an averaged data (defined in the settings box), it will be attached to the grand parent group.</li></TD>
+	</TR>
+    </TABLE>
+  </p>
+    <hr>
+    <address><a href="mailto:sentenac@cmpl56.virgo.infn.it">Daniel Sentenac</a></address>
+<!-- Created: Mon Feb  7 16:32:58 CET 2011 -->
+<!-- hhmts start -->
+Last modified: Thu Feb 10 09:41:32 CET 2011
+<!-- hhmts end -->
+  </body>
+</html>

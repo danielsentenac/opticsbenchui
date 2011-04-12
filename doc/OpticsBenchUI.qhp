@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <QtHelpProject version="1.0">
+     <namespace>Help</namespace>
+     <virtualFolder>doc</virtualFolder>
+     <filterSection>
+         <toc>
+             <section title="OpticsBenchUI" ref="index.html"> </section>
+             <section title="DAC" ref="DAC.html"></section>
+             <section title="Motor" ref="Motor.html"></section>
+             <section title="Camera" ref="Camera.html"></section>
+             <section title="Acquisition" ref="Acquisition.html"></section>
+             </toc>
+         <keywords>
+             <keyword name="Optics" ref="./index.html"/>
+             <keyword name="DAC" ref="./DAC.html"/>
+             <keyword name="Motor" ref="./Motor.html"/>
+             <keyword name="Camera" ref="./Camera.html"/>
+             <keyword name="Acquisition" ref="./Acquisition.html"/>
+             </keywords>
+         <files>
+             <file>index.html</file>
+             <file>DAC.html</file>
+             <file>DACWindow.jpg</file>
+             <file>Motor.html</file>
+             <file>MotorWindow.jpg</file>
+             <file>Camera.html</file>
+             <file>CameraWindow.jpg</file>
+             <file>Acquisition.html</file>
+             <file>AcquisitionWindow.jpg</file>
+             </files>
+         </filterSection>
+     </QtHelpProject>
