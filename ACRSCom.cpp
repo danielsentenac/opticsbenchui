@@ -36,11 +36,12 @@ int
 ACRSCom::Open ()
 {
   int status = -1;
-
+  
   sscanf (_settings.c_str (), "%d,%d,%s", &_ispeed, &_readDelay,_flow);
   _hCom = open (_device.c_str (), O_RDWR);
   if (_hCom == -1)
     {
+      QLOG_INFO ( ) << "ACRSCom::Open failed at open" << endl;
       _state = CLOSED;
     }
   else
@@ -50,7 +51,10 @@ ACRSCom::Open ()
 	  status = 0;
 	  _state = OPEN;
 	}
+      else
+	 QLOG_INFO ( ) << "ACRSCom::Open failed at Setup " << endl;
     }
+  QLOG_INFO ( ) << "ACRSCom::Open status : " << status << endl;
   return status;
 }
 // ----------------------------------------------------------------------------

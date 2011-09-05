@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "OpticsBenchUIMain.h"
-
+#include <QDesktopServices>
 
 OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, Qt::WFlags fl)
   : QMainWindow( parent, fl )
@@ -31,14 +31,15 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   //
   // Create Dac manager
   //
-  dac = new Dac(0,appDirPath);
+  QDir qdir;
+  dac = new Dac(0,qdir.currentPath());
   connect(dac,SIGNAL(showWarning(QString)),this,SLOT(showDacWarning(QString)));
   dacwindow = new DacWindow(this,Qt::Window,dac);
   connect(this,SIGNAL(setDbPath(QString)),dacwindow,SLOT(setDbPath(QString)));
   //
   // Create Motor manager
   //
-  motor = new Motor(0,appDirPath);
+  motor = new Motor(0,qdir.currentPath());
   connect(motor,SIGNAL(showWarning(QString)),this,SLOT(showMotorWarning(QString)));
   motorwindow = new MotorWindow(this,Qt::Window,motor);
   connect(this,SIGNAL(setDbPath(QString)),motorwindow,SLOT(setDbPath(QString)));
@@ -56,7 +57,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   }
   analysiswidget = new AnalysisWidget();
   analysiswidget->setObjectName("Analysis");
-  acquisitionwidget = new AcquisitionWidget(appDirPath);
+  acquisitionwidget = new AcquisitionWidget(qdir.currentPath());
   acquisitionwidget->setObjectName("Acquisition");
   connect(this,SIGNAL(setDbPath(QString)),acquisitionwidget,SLOT(setDbPath(QString)));
 
@@ -251,18 +252,24 @@ int main(int argc, char *argv[])
 {
   qInstallMsgHandler(myMessageOutput);
   QApplication app(argc, argv);
+ 
   // init the logging mechanism
   QsLogging::Logger& logger = QsLogging::Logger::instance();
-  const QString sLogPath(QDir(app.applicationDirPath()).filePath("OpticsBenchUI_" + QDateTime::currentDateTime().toString("MMMdd,yy-hh:mm:ss") + ".log"));
+  QDir qdir;
+  const QString sLogPath(qdir.currentPath() +  QDir::separator() +
+                        "OpticsBenchUI_" + 
+                         QDateTime::currentDateTime().toString("MMMdd,yy-hh:mm:ss") +
+                         ".log");
   QsLogging::DestinationPtr fileDestination(QsLogging::DestinationFactory::MakeFileDestination(sLogPath) );
   QsLogging::DestinationPtr debugDestination(QsLogging::DestinationFactory::MakeDebugOutputDestination() );
   logger.addDestination(debugDestination.get());
   logger.addDestination(fileDestination.get());
   logger.setLoggingLevel(QsLogging::InfoLevel);
   
-  QLOG_INFO() << "OpticsBenchUI started";
+  QLOG_INFO() << "OpticsBenchUI started : " + app.applicationDirPath();
   QLOG_INFO() << "Built with Qt" << QT_VERSION_STR << "running on" << qVersion();
- 
+  QLOG_INFO() << " Qt User Data location : " 
+              << QDesktopServices::storageLocation(QDesktopServices::DataLocation); 
   OpticsBenchUIMain* OpticsBenchUI = new OpticsBenchUIMain(app.applicationDirPath(),NULL,NULL);
   OpticsBenchUI->show();
   return app.exec();

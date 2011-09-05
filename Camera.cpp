@@ -16,29 +16,64 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "Camera.h"
+				       
+char *iidc_features[]  = {(char*)"BRIGHTNESS",
+			  (char*)"EXPOSURE",
+			  (char*)"SHARPNESS",
+			  (char*)"WHITE_BALANCE",
+			  (char*)"FEATURE_HUE",
+			  (char*)"SATURATION",
+			  (char*)"GAMMA",
+			  (char*)"SHUTTER",
+			  (char*)"GAIN",
+			  (char*)"IRIS",
+			  (char*)"FOCUS",
+			  (char*)"TEMPERATURE",
+			  (char*)"TRIGGER",
+			  (char*)"TRIGGER_DELAY",
+			  (char*)"WHITE_SHADING",
+			  (char*)"FRAME_RATE",
+			  (char*)"ZOOM",
+			  (char*)"PAN",
+			  (char*)"TILT",
+			  (char*)"OPTICAL_FILTER",
+			  (char*)"CAPTURE_SIZE",
+			  (char*)"CAPTURE_QUALITY"};
 
-static char *iidc_features[]  = {(char*)"BRIGHTNESS",
-				 (char*)"EXPOSURE",
-				 (char*)"SHARPNESS",
-				 (char*)"WHITE_BALANCE",
-				 (char*)"FEATURE_HUE",
-				 (char*)"SATURATION",
-				 (char*)"GAMMA",
-				 (char*)"SHUTTER",
-				 (char*)"GAIN",
-				 (char*)"IRIS",
-				 (char*)"FOCUS",
-				 (char*)"TEMPERATURE",
-				 (char*)"TRIGGER",
-				 (char*)"TRIGGER_DELAY",
-				 (char*)"WHITE_SHADING",
-				 (char*)"FRAME_RATE",
-				 (char*)"ZOOM",
-				 (char*)"PAN",
-				 (char*)"TILT",
-				 (char*)"OPTICAL_FILTER",
-				 (char*)"CAPTURE_SIZE",
-				 (char*)"CAPTURE_QUALITY"};
+char *iidc_video_modes[] = {(char*)"160x120_YUV444",
+			    (char*)"320x240_YUV422",
+			    (char*)"640x480_YUV411",
+			    (char*)"640x480_YUV422",
+			    (char*)"640x480_RGB8",
+			    (char*)"640x480_MONO8",
+			    (char*)"640x480_MONO16",
+			    (char*)"800x600_YUV422",
+			    (char*)"800x600_RGB8",
+			    (char*)"800x600_MONO8",
+			    (char*)"1024x768_YUV422",
+			    (char*)"1024x768_RGB8",
+			    (char*)"1024x768_MONO8",
+			    (char*)"800x600_MONO16",
+			    (char*)"1024x768_MONO16",
+			    (char*)"1280x960_YUV422",
+			    (char*)"1280x960_RGB8",
+			    (char*)"1280x960_MONO8",
+			    (char*)"1600x1200_YUV422",
+			    (char*)"1600x1200_RGB8",
+			    (char*)"1600x1200_MONO8",
+			    (char*)"1280x960_MONO16",
+			    (char*)"1600x1200_MONO16",
+			    (char*)"EXIF",
+			    (char*)"FORMAT7_0",
+			    (char*)"FORMAT7_1",
+			    (char*)"FORMAT7_2",
+			    (char*)"FORMAT7_3",
+			    (char*)"FORMAT7_4",
+			    (char*)"FORMAT7_5",
+			    (char*)"FORMAT7_6",
+			    (char*)"FORMAT7_7"};
+
+int VIDEO_MODES_OFFSET = 64;
 
 Camera::Camera(QObject* parent)
   :QThread(parent)
@@ -47,6 +82,7 @@ Camera::Camera(QObject* parent)
   buffer = NULL;
   d = NULL;
   suspend = true;
+  isconnected = false;
 }
 
 Camera::~Camera()
@@ -71,6 +107,7 @@ Camera::getBuffer() {
 void 
 Camera::stop() {
   suspend = true;
+  isconnected = false;
   wait();
   exit();  
 }
@@ -87,12 +124,11 @@ Camera::run() {
 }
 
 void
-Camera::setFeature(char* feature, int value) {
-  
+Camera::setFeature(int feature, int value) {
   for (int i = 0 ; i < DC1394_FEATURE_NUM ; i++) {
-    if (!strcmp(feature,iidc_features[i])) {
+    if (feature == i) {
       /*Set camera feature*/
-      QLOG_DEBUG() << "SetFeature> Receive change " << feature << " to " << value;
+      QLOG_DEBUG() << "SetFeature> Change " << iidc_features[feature] << " to " << value;
       err = dc1394_feature_set_value(camera,
 				     features.feature[i].id,
 				     value);
@@ -163,6 +199,7 @@ Camera::connectCamera() {
 					      &coding);
       if (coding == DC1394_COLOR_CODING_MONO8) {
 	video_mode = video_modes.modes[i];
+        QLOG_INFO () << " Highest mode selected : " << video_mode;
 	break;
       }
     }
@@ -173,15 +210,15 @@ Camera::connectCamera() {
   }
   
   err = dc1394_get_color_coding_from_video_mode(camera, 
-						       video_mode,
-						       &coding);
+						video_mode,
+						&coding);
   DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),
 		     "Could not get color coding");
   
   // get highest framerate
   err = dc1394_video_get_supported_framerates(camera,
-						     video_mode,
-						     &framerates);
+					      video_mode,
+					      &framerates);
   DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),
 		     "Could not get framerates");
   framerate = framerates.framerates[framerates.num-1];
@@ -267,7 +304,7 @@ Camera::acquireImage() {
     image->loadFromData (buffer,width * height);
     
     // emit acquisition buffer data
-    emit getBufferData(buffer,width,height);
+    emit getBufferData(buffer,width,height,video_mode);
 
     // emit visualisation image
     QImage imagescaled = image->scaled(imageWidth,imageHeight);

@@ -29,7 +29,10 @@ AcquisitionWidget.cpp AcquisitionThread.cpp AcquisitionSequence.cpp AnalysisWidg
 QsLog.cpp QsDebugOutput.cpp QsLogDest.cpp Assistant.cpp 
 
 INCLUDEPATH = /usr/local/include/Advantech \
-/usr/include/libraw1394 /usr/include/dc1394 
+/root/Qt/projects/camera/libraw1394-2.0.5/src \
+/root/Qt/projects/camera/libdc1394-2.1.3/dc1394 \
+/root/Qt/projects/hdf5/install/include
 
 LIBS += -L/usr/lib -ladvdaq  \
--ldc1394 -lraw1394 -lhdf5 -lhdf5_hl
+-L/usr/local/lib -ldc1394 -lraw1394 \
+-L/root/Qt/projects/hdf5/install/lib -lhdf5 -lhdf5_hl

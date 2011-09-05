@@ -40,7 +40,7 @@ class Motor : public QObject
   void  stopMotor();
   void setDbPath(QString _path);
    // parameters
-
+  bool      connectSuccess;
   int       operationcomplete;
   float     position;
   QString   path;
@@ -63,12 +63,13 @@ class Motor : public QObject
 
   ACCom     *actuatorCom;
   Driver    *actuatorDriver;
-  bool      connectSuccess;
   QString   actuatorSettings;
   QString   description;
   QString   com;
   QString   driver;
   QString   actuator;
+
+  bool iscompleting;
  
 };
 #endif

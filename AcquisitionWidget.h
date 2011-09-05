@@ -49,11 +49,13 @@ class AcquisitionWidget : public QWidget
   void getPosition(QString positionQString);
   void getCameraStatus(bool imagesuccess);
   void getDacStatus(bool dacsuccess);
+  void getMotorStatus(bool motorsuccess);
   void getTreatmentStatus(bool treatmentstatus);
   void getAcquiring(int record);
   void getFilenumber(int number);
   void isopenCameraWindow(QVector<bool> isopencamerawindow);
   void setDbPath(QString _path);
+  void showAcquisitionWarning(QString);
 
  private:
   QVector<Camera*> cameraList;

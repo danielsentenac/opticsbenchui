@@ -26,6 +26,7 @@ Motor::Motor(QObject* parent, QString _appDirPath)
   actuatorDriver = NULL;
   position = 0;
   connectSuccess = false;
+  iscompleting = false;
   // Connect motor db
   dbConnexion();
 }
@@ -66,8 +67,8 @@ void Motor::setDbPath(QString _path) {
   connectSuccess = false;
   // Connect motor db
   dbConnexion();
-
 }
+
 void
 Motor::connectMotor(QString _actuator) {  
   
@@ -75,8 +76,6 @@ Motor::connectMotor(QString _actuator) {
   QSqlQuery query(QSqlDatabase::database(path));
   QString type,address,settings;
   
-  position = 0;
-
   actuator = _actuator;
 
   //
@@ -148,18 +147,23 @@ Motor::connectMotor(QString _actuator) {
   //
   // Create actuator data
   //
-  query.prepare("select settings,description,position from motor_actuator where name = ?");
+  query.prepare("select settings,description,position,name from motor_actuator where name = ?");
   query.addBindValue(actuator);
   query.exec();
+  QString newactuator;
   while (query.next()) {
     type = query.value(0).toString();
     actuatorSettings = query.value(0).toString();
     description = query.value(1).toString();
     position = query.value(2).toString().toFloat();
+    newactuator = query.value(3).toString();
   }
-  if (actuatorDriver->InitActuator(actuatorSettings.toStdString(),position)) {
-    emit showWarning("Could not init actuator");
-    return;
+  if (actuator != newactuator || connectSuccess == false) {
+    actuator = newactuator;
+    if (actuatorDriver->InitActuator(actuatorSettings.toStdString(),position)) {
+      emit showWarning("Could not init actuator");
+      return;
+    }
   }
   emit getPosition(position);
   emit getDescription(description);
@@ -193,19 +197,21 @@ Motor::stopMotor() {
 }
 void
 Motor::operationComplete() {
+  
   string stateData;
   DriverDefinition::ADLimitSwitch limitSwitch;
-
-  if (connectSuccess == true) {
-    operationcomplete = actuatorDriver->OperationComplete(stateData,actuatorSettings.toStdString(),
+  int success = 0;
+  operationcomplete = success;
+  if (connectSuccess == true && iscompleting == false) {
+    iscompleting = true;
+    success = actuatorDriver->OperationComplete(stateData,actuatorSettings.toStdString(),
 							  limitSwitch);
-    
     QString positionQString;
     actuatorDriver->GetPos(actuatorSettings.toStdString(),position);
     positionQString.setNum (position, 'f',3);
-    QLOG_DEBUG ( ) << "Operationcomplete " << operationcomplete << " position " << position;
+    QLOG_DEBUG ( ) << "Operationcomplete " << success << " position " << position;
     emit getPosition(position);
-    if (operationcomplete > 0 ) {
+    if (success > 0 ) {
       // Save last position in Db
       QSqlQuery query(QSqlDatabase::database(path));
       query.prepare("update motor_actuator set position = ? "
@@ -213,8 +219,10 @@ Motor::operationComplete() {
       query.addBindValue(positionQString);
       query.addBindValue(actuator);
       query.exec();
+      operationcomplete = success;
       emit stopTimer();
     }
+    iscompleting = false;
   }
 }
 // function : create connexion to the database
@@ -226,7 +234,6 @@ void Motor::dbConnexion() {
   db.setDatabaseName(path);  
   if ( !db.open() ) {
     emit showWarning(db.lastError().text());
-    return;
   }
   // Create motor tables
 

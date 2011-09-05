@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QSlider>
 #include <QGridLayout>
 #include <QLabel>
+#include <QSignalMapper>
 #include "QsLog.h"
 
 class CameraControlWidget : public QWidget
@@ -36,20 +37,16 @@ class CameraControlWidget : public QWidget
  
   
  signals:
-  void setFeature(char* feature,int value);
+  void setFeature(int position, int value);
   
   private slots:
-  void setFeatureBright(int);
-  void setFeatureGamma(int);
-  void setFeatureGain(int);
-  void setFeatureExposure(int);
+  void setFeatureValue(int);
   void updateFeatures();
+
  private:
   Camera *camera;
-
-  QSlider *brightWidget;
-  QSlider *gammaWidget;
-  QSlider *gainWidget;
-  QSlider *exposureWidget;
+  QVector<QSlider*> featureList;
+  QVector<int> featureId;
+  QSignalMapper *signalMapper;
 };
 #endif

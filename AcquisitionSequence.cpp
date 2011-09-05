@@ -37,6 +37,7 @@ AcquisitionSequence::AcquisitionSequence( )
   position = 0;
   inc_group = 0;
   image = NULL;
+  data_2D_INT = NULL;
   refgrp = 0;
   grp = 0;
   tmpgrp = 0;
@@ -53,15 +54,17 @@ AcquisitionSequence::AcquisitionSequence( )
 AcquisitionSequence::~AcquisitionSequence()
 {
   QLOG_DEBUG ( ) <<"Deleting AcquisitionSequence";
+ 
     if (image) { free(image); image = NULL;}
-
+    if (data_2D_INT) { free(data_2D_INT); data_2D_INT = NULL;}
 }
 void 
-AcquisitionSequence::setImage(uchar* buffer, int width, int height) {
+AcquisitionSequence::setImage(uchar* buffer, int width, int height, int videomode) {
   if (image) { free(image); image = NULL;}
   if (buffer != NULL) {
     imageWidth = width;
     imageHeight = height;
+    videoMode = videomode;
     image = (uchar*) malloc (sizeof(uchar) * imageWidth * imageHeight);
     memcpy(image,buffer,sizeof(uchar) * imageWidth * imageHeight);
   }
@@ -168,22 +171,22 @@ AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequen
 	typeAvg = "CAMERA";
 	uchar *imageRight = sequenceRight->getImage();
 	uchar *imageLeft = sequenceLeft->getImage();
-	if (image == NULL) {
+	if (data_2D_INT == NULL) {
 	  imageWidth = sequenceLeft->imageWidth;
 	  imageHeight = sequenceLeft->imageHeight;
-	  image = (uchar*) malloc (sizeof(uchar) * imageWidth * imageHeight) ;
-	  memset(image,0,sizeof(image));
+	  data_2D_INT = (int*) malloc (sizeof(int) * imageWidth * imageHeight);
+	  memset(data_2D_INT,0,sizeof(data_2D_INT));
 	}
 	for (int i = 0 ; i < imageWidth * imageHeight; i++) {
 	  if ( avgOp == "+" ) 
-	    image[i] = image[i] + (imageLeft[i] + imageRight[i]);
+	    data_2D_INT[i] = data_2D_INT[i] + (imageLeft[i] + imageRight[i]);
 	  else if ( avgOp == "-" ) 
-	    image[i] = image[i] + (imageLeft[i] - imageRight[i]);
+	    data_2D_INT[i] = data_2D_INT[i] + (imageLeft[i] - imageRight[i]);
 	  else if ( avgOp == "*" )
-	    image[i] = image[i] + (imageLeft[i] * imageRight[i]);
+	    data_2D_INT[i] = data_2D_INT[i] + (imageLeft[i] * imageRight[i]);
 	  else if ( avgOp == "/") {
 	    if (imageRight[i] != 0)
-	      image[i] = image[i] + (imageLeft[i] / imageRight[i]);
+	      data_2D_INT[i] = data_2D_INT[i] + (imageLeft[i] / imageRight[i]);
 	  }
 	}
 	success = true;

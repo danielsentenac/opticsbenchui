@@ -52,12 +52,14 @@ class AcquisitionThread : public QThread
   void getPosition(QString positionQString);
   void getCameraStatus(bool imagesuccess);
   void getDacStatus(bool dacsuccess);
+  void getMotorStatus(bool motorsuccess);
   void getTreatmentStatus(bool treatmentsuccess); 
   void getAcquiring(int record);
   void getFilenumber(int number);
+  void showWarning(QString message);
 
   private slots:
-  void setImageFromCamera(uchar*, int,int);
+  void setImageFromCamera(uchar*, int, int, int);
 
  protected:
   virtual void run();
@@ -74,6 +76,7 @@ class AcquisitionThread : public QThread
   uchar* imageBuffer;
   int    imageWidth;
   int    imageHeight;
+  int    videoMode;
   
   bool suspend;
 

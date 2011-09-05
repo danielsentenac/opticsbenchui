@@ -23,47 +23,33 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   
   camera = _camera;
 
-  connect(this,SIGNAL(setFeature(char*,int)),camera,SLOT(setFeature(char*,int)));
+  connect(this,SIGNAL(setFeature(int,int)),camera,SLOT(setFeature(int,int)));
   connect(camera,SIGNAL(updateFeatures()),this,SLOT(updateFeatures()));
+
+  signalMapper = new QSignalMapper(this);
 
   QGridLayout *layout = new QGridLayout(this);
   
-  QLabel *brightName = new QLabel("Brightness");
-  brightWidget = new QSlider();
-  brightWidget->setMinimum(camera->features.feature[0].min);
-  brightWidget->setMaximum(camera->features.feature[0].max);
-  
-  connect( brightWidget, SIGNAL(valueChanged(int)), this, SLOT(setFeatureBright(int)));
-  layout->addWidget(brightName,0,0,1,1);
-  layout->addWidget(brightWidget,1,0,1,1);
-  
-  QLabel *gammaName = new QLabel("Gamma");
-  gammaWidget = new QSlider();
-  gammaWidget->setMinimum(camera->features.feature[6].min);
-  gammaWidget->setMaximum(camera->features.feature[6].max);
+  for (int i = 0 ; i < DC1394_FEATURE_NUM; i++) {
+    if (camera->features.feature[i].available == DC1394_TRUE && 
+	camera->features.feature[i].id != DC1394_FEATURE_TRIGGER) {
+      
+      QLabel *featureName = new QLabel(iidc_features[i]);
+      QSlider *featureSlider = new QSlider();
+      featureSlider->setMinimum(camera->features.feature[i].min);
+      featureSlider->setMaximum(camera->features.feature[i].max);
+      featureList.push_back(featureSlider);
+      featureId.push_back(i);
+      connect( featureSlider, SIGNAL(valueChanged(int)), signalMapper, SLOT(map()));
+      signalMapper->setMapping(featureSlider, featureList.size() - 1 );
+      
+      layout->addWidget(featureName,0,i,1,1);
+      layout->addWidget(featureSlider,1,i,1,1);
+      QLOG_DEBUG() << " Feature slider added : " <<  iidc_features[i];
+    }  
+  }
+  connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(setFeatureValue(int)));
 
-  connect( gammaWidget, SIGNAL(valueChanged(int)), this, SLOT(setFeatureGamma(int)));
-  layout->addWidget(gammaName,0,1,1,1);
-  layout->addWidget(gammaWidget,1,1,1,1);
-
-  QLabel *gainName = new QLabel("Gain");
-  gainWidget = new QSlider();
-  gainWidget->setMinimum(camera->features.feature[8].min);
-  gainWidget->setMaximum(camera->features.feature[8].max);
-  
-  connect( gainWidget, SIGNAL(valueChanged(int)), this, SLOT(setFeatureGain(int)));
-  layout->addWidget(gainName,0,2,1,1);
-  layout->addWidget(gainWidget,1,2,1,1);
-
-  QLabel *exposureName = new QLabel("Exposure");
-  exposureWidget = new QSlider();
-  exposureWidget->setMinimum(camera->features.feature[1].min);
-  exposureWidget->setMaximum(camera->features.feature[1].max);
-  
-  connect( exposureWidget, SIGNAL(valueChanged(int)), this, SLOT(setFeatureExposure(int)));
-  layout->addWidget(exposureName,0,3,1,1);
-  layout->addWidget(exposureWidget,1,3,1,1);
-  
   setLayout(layout);
   this->setMinimumHeight(130);
 
@@ -72,30 +58,22 @@ CameraControlWidget::~CameraControlWidget()
 {
 }
 void
-CameraControlWidget::setFeatureBright(int value) {
-  emit setFeature((char*)"BRIGHTNESS",value);
-}
-void
-CameraControlWidget::setFeatureGamma(int value) {
-  emit setFeature((char*)"GAMMA",value);
-}
-void
-CameraControlWidget::setFeatureGain(int value) {
-  emit setFeature((char*)"GAIN",value);
-}
-void
-CameraControlWidget::setFeatureExposure(int value) {
-  emit setFeature((char*)"EXPOSURE",value);
-}
-void CameraControlWidget::updateFeatures() {
-  QLOG_DEBUG ( ) << "CameraControlWidget::update features " 
-		<< camera->features.feature[0].value << " "
-		<< camera->features.feature[6].value << " "
-		<< camera->features.feature[8].value << " "
-		<< camera->features.feature[1].value;
-  brightWidget->setValue(camera->features.feature[0].value);
-  gammaWidget->setValue(camera->features.feature[6].value);
-  gainWidget->setValue(camera->features.feature[8].value);
-  exposureWidget->setValue(camera->features.feature[1].value);
+CameraControlWidget::setFeatureValue(int position) {
   
+  QSlider *featureSlider = featureList.at(position);
+  QLOG_DEBUG() << " Feature emitting !" ;
+  emit setFeature(featureId.at(position),featureSlider->value());
+}
+
+void CameraControlWidget::updateFeatures() {
+ 
+  
+  for (int i = 0 ; i < featureList.size(); i++) {
+    QSlider * featureSlider = featureList.at(i);
+    int id = featureId.at(i);
+    featureSlider->setValue(camera->features.feature[id].value);
+    QLOG_DEBUG ( ) << "CameraControlWidget::update features " 
+		   << iidc_features[id] << " : "
+		   << camera->features.feature[id].value;
+  }
 }

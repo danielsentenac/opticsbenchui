@@ -22,6 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "hdf5.h"
 #include "hdf5_hl.h"
 #include "QsLog.h"
+#include <iostream>
+using namespace std;
 
 class AcquisitionSequence
 {  
@@ -62,9 +64,11 @@ class AcquisitionSequence
   int     dacOutput;
 
   // Camera attributes
+  int   *data_2D_INT;
   uchar *image;
   int   imageWidth;
   int   imageHeight;
+  int   videoMode;
 
   // data group
   QString group;
@@ -74,7 +78,7 @@ class AcquisitionSequence
   hid_t   refgrp,grp,tmpgrp;
   QString grpname;
 
-  void setImage(uchar* buffer, int width, int height);
+  void setImage(uchar* buffer, int width, int height, int videomode);
   void prepare();
   uchar* getImage();
   bool setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequence *sequenceRight);

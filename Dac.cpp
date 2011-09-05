@@ -338,7 +338,7 @@ Dac::setDacValue(int output, float value) {
     query.addBindValue(dacvaluesString);
     query.addBindValue(dac);
     query.exec();
-    QLOG_WARN ( ) << query.lastError().text();
+    
     // Update control widget
     emit getOutputValues(dacvalues);
   }
@@ -351,11 +351,11 @@ Dac::dbConnexion() {
   path.append(QDir::separator()).append("dac.db3");
   path = QDir::toNativeSeparators(path);
   QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
+  QLOG_DEBUG ( ) << " Db path : " << path;
   db.setDatabaseName(path);  
   if ( !db.open() ) {
     QLOG_WARN ( ) << db.lastError().text();
     emit showWarning(db.lastError().text());
-    return;
   }
   // Create dac tables
   QSqlQuery query(db);

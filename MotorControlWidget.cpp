@@ -97,25 +97,25 @@ void
 MotorControlWidget::moveForward() {
     float motion = to_position->text().toFloat();
     motor->moveForward(motion);
-    timer->start(1000);
+    timer->start(100);
 }
 void
 MotorControlWidget::moveBackward() {
     float motion = to_position->text().toFloat();
     motor->moveBackward(motion);
-    timer->start(1000);
+    timer->start(100);
 }
 void
 MotorControlWidget::moveAbsolute() {
   float motion = to_position->text().toFloat();
   motor->moveAbsolute(motion);
-  timer->start(1000);
+  timer->start(100);
  
 }
 void
 MotorControlWidget::stopMotor() {
     motor->stopMotor();
-    timer->start(1000);
+    timer->start(100);
 }
 void 
 MotorControlWidget::getDescription(QString description) {

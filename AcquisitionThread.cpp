@@ -62,18 +62,38 @@ void
 AcquisitionThread::run() {
   if (suspend == true) {
     suspend = false;
+    
+    // Connect cameras
+    for (int i = 0 ; i <   sequenceList.size(); i++) {
+      AcquisitionSequence *sequence = sequenceList.at(i);
+      if ( sequence->instrumentType == "CAMERA" ) {
+	int cameranumber = sequence->instrumentName.toInt();
+	if (cameraList.size() > cameranumber) {
+	  Camera *camera = cameraList.at(cameranumber);
+          if (camera->isconnected == false) {
+	    QLOG_DEBUG() << "CONNECT CAMERA " << cameranumber;
+	    connect(camera, SIGNAL(getBufferData(uchar*, int, int, int)),
+		    this, SLOT(setImageFromCamera(uchar*, int, int, int)));
+	    camera->isconnected = true;
+	  }  
+	}
+      }
+    }
+    
     QString fullname = filename + "_" + QString::number(filenumber) + ".h5";
 
     /* create a new data File */
     file_id = H5Fcreate(fullname.toStdString().c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
     if ( file_id < 0 ) {
       QLOG_WARN () << "Unable to open file - " << fullname << " - Aborting scan";
+      emit showWarning("Unable to open file - " + fullname + " - Aborting scan");
       return;
     }
     record = 0;
     int lastrecord = sequenceList.size();
     QLOG_DEBUG() << "AcquisitionThread::run> Number of sequences " << lastrecord;
     // run acquisition sequence
+    emit getAcquiring(record);
     while ( record < lastrecord ) {
       QLOG_DEBUG() << "AcquisitionThread::run> Start sequence at record " << record;
       AcquisitionSequence *sequence = sequenceList.at(record);
@@ -84,6 +104,7 @@ AcquisitionThread::run() {
       usleep(sequence->sleep);
       if (suspend == true) break;
     }
+    emit getAcquiring(record);
     filenumber++;
     emit getFilenumber(filenumber);
     // close all groups
@@ -95,10 +116,22 @@ AcquisitionThread::run() {
     for (int i = 0 ; i <   cameraList.size(); i++) {
       Camera *camera = cameraList.at(i);
       if (isopencamerawindow.at(i) == false)
-	camera->stop();
+	camera->stop();      
     }
     for (int i = 0 ; i <   sequenceList.size(); i++) {
       AcquisitionSequence *sequence = sequenceList.at(i);
+      if ( sequence->instrumentType == "CAMERA" ) {
+	int cameranumber = sequence->instrumentName.toInt();
+	if (cameraList.size() > cameranumber) {
+	  Camera *camera = cameraList.at(cameranumber);
+	  if (camera->isconnected == true) {
+	    QLOG_DEBUG() << "DISCONNECT CAMERA"  << cameranumber;
+	    disconnect(camera, SIGNAL(getBufferData(uchar*, int, int, int)),
+		     this, SLOT(setImageFromCamera(uchar*, int, int, int)));
+	    camera->isconnected = false;
+	  }
+	}
+      }
       delete sequence;
     }
     sequenceList.clear(); 
@@ -109,8 +142,8 @@ AcquisitionThread::run() {
 void AcquisitionThread::execute(AcquisitionSequence *sequence) {
   
   // New acquisition
-  
-  emit getAcquiring(record);
+
+  //emit getAcquiring(record);
   
   QLOG_DEBUG() << "AcquisitionThread::execute> Execute record " << record << " instrument " 
 	       <<  sequence->instrumentType
@@ -119,30 +152,34 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
 	       << sequence->loopEndAction << ":" << sequence->remainingLoops;
   
   if ( sequence->instrumentType == "MOTOR" ) {
-    // reset operation complete
-    motor->operationcomplete = 0;
-    if ( sequence->motorAction == "MOVEREL" ) {
-      motor->connectMotor(sequence->instrumentName);
-      if ( sequence->motorValue < 0 )
-	motor->moveBackward((-sequence->motorValue));
-      else
-	motor->moveForward(sequence->motorValue);
-    }
-    else if (sequence->motorAction == "MOVEABS" ) 
-      motor->moveAbsolute(sequence->motorValue);
-    
-    while (motor->operationcomplete <= 0 ) {
-      if (suspend == true) motor->stopMotor();
-      sleep(1);
-      motor->operationComplete();
-      QString positionQString;
-      positionQString.setNum (motor->position, 'f',3);
-      // New position
-      emit getPosition(positionQString);
-      sequence->status = true;
-    }
-    // Save motor position data
-    sequence->position = motor->position;    
+   motor->connectMotor(sequence->instrumentName);
+   QLOG_DEBUG() << "connectMotor : " << motor->connectSuccess;
+   if (motor->connectSuccess == true) {
+     if ( sequence->motorAction == "MOVEREL" ) {
+       if ( sequence->motorValue < 0 )
+	 motor->moveBackward((-sequence->motorValue));
+       else
+	 motor->moveForward(sequence->motorValue);
+     }
+     else if (sequence->motorAction == "MOVEABS" ) 
+       motor->moveAbsolute(sequence->motorValue);
+     motor->operationcomplete = 0;
+     // Wait for motor movement to be completed
+     while (motor->operationcomplete <= 0 ) {
+       if (suspend == true) motor->stopMotor();
+       usleep(100);
+       motor->operationComplete();
+     }
+     // New position
+     QString positionQString;
+     positionQString.setNum (motor->position, 'f',3);
+     emit getPosition(positionQString);
+     sequence->status = true;
+     // Save motor position data
+     sequence->position = motor->position;
+   }  
+   else
+     emit getMotorStatus(false);
   }
   else if ( sequence->instrumentType == "DAC" ) {
     QLOG_DEBUG() << "AcquisitionThread::execute> Connecting DAC ...";
@@ -154,25 +191,24 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       dacsuccess = dac->setDacValue(sequence->dacOutput,sequence->dacValue);
     }
     sequence->status = dacsuccess;
-    emit getDacStatus(dacsuccess);
+    //emit getDacStatus(dacsuccess);
   }
   else if ( sequence->instrumentType == "CAMERA" ) {
+    imagesuccess = false;
     int cameranumber = sequence->instrumentName.toInt();
-    imagesuccess = false;	
     if (cameraList.size() > cameranumber) {
       Camera *camera = cameraList.at(cameranumber);
-      camera->start();
-      connect(camera, SIGNAL(getBufferData(uchar*, int,int)),
-	      this,SLOT(setImageFromCamera(uchar*, int,int)));
+      if (camera->suspend == true)  {
+        QLOG_DEBUG() << "OPEN CAMERA START";
+	camera->start();
+      }
       while (imagesuccess == false) {
 	if (suspend == true) break;
 	usleep(100);
-      }
-      disconnect(camera, SIGNAL(getBufferData(uchar*, int,int)),
-		 this, SLOT(setImageFromCamera(uchar*, int,int)));
-      sequence->setImage(imageBuffer,imageWidth, imageHeight);
+      }      
+      sequence->setImage(imageBuffer,imageWidth, imageHeight, videoMode);
     }
-    emit getCameraStatus(imagesuccess);
+    //emit getCameraStatus(imagesuccess);
     sequence->status = imagesuccess;
   }
   else if ( sequence->instrumentType == "TREATMENT" ) {
@@ -199,7 +235,7 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
 	}
       }
       treatmentsuccess = sequence->setAvg(sequenceLeft,sequenceRight);
-      emit getTreatmentStatus(treatmentsuccess);
+      //emit getTreatmentStatus(treatmentsuccess);
       sequence->status = treatmentsuccess;
     }
   }
@@ -373,6 +409,7 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
     dset_dims[0] = sequence->imageWidth;
     dset_dims[1] = sequence->imageHeight;
     /* create and write an double type dataset named "dset" */
+    QString video_mode (iidc_video_modes[sequence->videoMode - VIDEO_MODES_OFFSET]);
     status = H5IMmake_image_8bit(sequence->grp,sequence->dataname.toStdString().c_str(),
 				 sequence->imageWidth,sequence->imageHeight,sequence->image);
     
@@ -389,12 +426,15 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
 	  dset_dims[1] = sequence->imageHeight;
 	  // Average data
 	  for (int i = 0 ; i < sequence->imageWidth * sequence->imageHeight; i++)
-	    sequence->image[i] /= parentSequence->loopNumber;
-	  /* create and write an double type dataset named "dset" */
-	  status = H5IMmake_image_8bit(grandparentSequence->grp,sequence->dataname.toStdString().c_str(),
-				       sequence->imageWidth,sequence->imageHeight,sequence->image);
+	    sequence->data_2D_INT[i] /= parentSequence->loopNumber;
+	  /* create and write an double type dataset named "dset" 
+	     status = H5IMmake_image_8bit(grandparentSequence->grp,sequence->dataname.toStdString().c_str(),
+	  sequence->imageWidth,sequence->imageHeight,sequence->image);*/
+	  hsize_t dims[2]  = {sequence->imageWidth,sequence->imageHeight};
+	  status = H5LTmake_dataset_int(grandparentSequence->grp,sequence->dataname.toStdString().c_str(),
+					2,dims,sequence->data_2D_INT);
 	  // reset image average
-	  sequence->setImage(NULL,0,0);
+	  sequence->setImage(NULL,0,0,0);
 	}
 	else if (sequence->typeAvg == "DAC" && dacsuccess == true) {
 	  QLOG_DEBUG() << "AcquisitionThread::saveData> Save avergage DAC data in groupname " 
@@ -414,10 +454,13 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
     }
   }
 }
-void AcquisitionThread::setImageFromCamera(uchar *buffer, int width, int height) {
+void AcquisitionThread::setImageFromCamera(uchar *buffer, int width, int height, int videomode) {
   if (imagesuccess == false) {
+    QString video_mode (iidc_video_modes[videomode - VIDEO_MODES_OFFSET]);
+    QLOG_DEBUG() << " Video Mode : " << videomode<< " : " << video_mode;
     imageWidth = width;
-    imageHeight= height;
+    imageHeight = height;
+    videoMode = videomode;
     if (imageBuffer) { free (imageBuffer); imageBuffer = NULL;}
     imageBuffer = (uchar*)malloc(sizeof(uchar)*imageWidth*imageHeight);
     memcpy(imageBuffer,buffer,width * height);

@@ -63,14 +63,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  #else
          app += QLatin1String("Assistant.app/Contents/MacOS/Assistant");
  #endif
-
          QStringList args;
          args << QLatin1String("-collectionFile")
-             << appDirPath + QLatin1String("/doc/OpticsBenchUI.qhc")
+             << appDirPath + QLatin1String("/doc/OpticsBenchUIColl.qhc")
              << QLatin1String("-enableRemoteControl");
          proc->start(app, args);
          if (!proc->waitForStarted()) {
-             QMessageBox::critical(0, QObject::tr("Simple Text Viewer"),
+             QMessageBox::critical(0, QObject::tr("OpticsBenchUI"),
                  QObject::tr("Unable to launch Qt Assistant (%1)").arg(app));
              return false;
          }

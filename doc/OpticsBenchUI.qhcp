@@ -3,7 +3,7 @@
      <assistant>
          <title>OpticsBenchUI</title>
          <applicationIcon>images/handbook.png</applicationIcon>
-         <cacheDirectory>Trolltech/SimpleTextViewer</cacheDirectory>
+         <cacheDirectory>OpticsBenchUI</cacheDirectory>
          <startPage>/index.html</startPage>
          <aboutMenuText>
              <text>About OpticsBenchUI</text>
@@ -28,3 +28,4 @@
              </register>
          </docFiles>
      </QHelpCollectionProject>
+

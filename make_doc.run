@@ -1,2 +1,3 @@
 cd doc
-../../../install/bin/qhelpgenerator OpticsBenchUI.qhp -o OpticsBenchUI.qch
+qhelpgenerator OpticsBenchUI.qhp -o OpticsBenchUI.qch
+qcollectiongenerator OpticsBenchUI.qhcp -o OpticsBenchUIColl.qhc

@@ -28,10 +28,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <dc1394/dc1394.h>
 #include "QsLog.h"
 
+extern char *iidc_features[];
+extern char *iidc_video_modes[];
+extern int VIDEO_MODES_OFFSET;
+
 class Camera : public QThread
 {
   Q_OBJECT
     
+
     public:
   Camera(QObject* parent = 0);
   ~Camera();
@@ -44,25 +49,28 @@ class Camera : public QThread
 
   uchar* getBuffer();
 
+  bool isconnected;
+  bool suspend;
   unsigned int           width;
   unsigned int           height;
   uchar                  *buffer;
   dc1394camera_t         **cameralist; /* Available camera list*/
   dc1394camera_t         *camera;      /* current camera*/
   dc1394featureset_t     features;
+  dc1394video_mode_t     video_mode;
   int                    camera_err;
   int                    num;          /* camera total number*/
   int                     id;          /*camera position id in list*/
 
  signals:
-  void  getBufferData(uchar *buffer, int widht, int height);
+  void  getBufferData(uchar *buffer, int width, int height, int videomode);
   void  getImage(const QImage &image);
   void  showWarning(QString message);
-  void updateFeatures();
+  void  updateFeatures();
 
   public slots:
   void setImageSize(const int &_imageWidth, const int &_imageHeight);
-  void setFeature(char* feature, int value);
+  void setFeature(int feature, int value);
   
 
  protected:
@@ -78,12 +86,10 @@ class Camera : public QThread
   dc1394framerates_t     framerates;
   dc1394video_modes_t    video_modes;
   dc1394framerate_t      framerate;
-  dc1394video_mode_t     video_mode;
   dc1394color_coding_t   coding;
   dc1394video_frame_t    *frame;
   static const int frequency = 15; 
   QImage *image;
-  bool suspend;
   int imageWidth;
   int imageHeight; 
 };

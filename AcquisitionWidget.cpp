@@ -90,8 +90,10 @@ AcquisitionWidget::AcquisitionWidget(QString _appDirPath)
   connect(acquisition,SIGNAL(getAcquiring(int)),this,SLOT(getAcquiring(int)));
   connect(acquisition,SIGNAL(getFilenumber(int)),this,SLOT(getFilenumber(int)));
   connect(acquisition,SIGNAL(getDacStatus(bool)),this,SLOT(getDacStatus(bool)));
+  connect(acquisition,SIGNAL(getMotorStatus(bool)),this,SLOT(getMotorStatus(bool)));
   connect(acquisition,SIGNAL(getCameraStatus(bool)),this,SLOT(getCameraStatus(bool)));
   connect(acquisition,SIGNAL(getTreatmentStatus(bool)),this,SLOT(getTreatmentStatus(bool)));
+  connect(acquisition,SIGNAL(showWarning(QString)),this,SLOT(showAcquisitionWarning(QString)));
 
 }
 AcquisitionWidget::~AcquisitionWidget()
@@ -261,6 +263,21 @@ void AcquisitionWidget::getDacStatus(bool dacsuccess){
   query.exec();
   InitConfig();
 }
+void AcquisitionWidget::getMotorStatus(bool motorsuccess){
+  QSqlQuery query(QSqlDatabase::database(path));
+
+  QString statusQString;
+  if (motorsuccess == true)
+    statusQString = "OK";
+  else
+    statusQString = "FAIL";
+  query.prepare("update acquisition_sequence set status = ? where record = ?");
+  query.addBindValue(statusQString);
+  query.addBindValue(cur_record);
+  query.exec();
+  InitConfig();
+}
+
 void AcquisitionWidget::getTreatmentStatus(bool treatmentsuccess){
   QSqlQuery query(QSqlDatabase::database(path));
  
@@ -314,7 +331,6 @@ AcquisitionWidget::dbConnexion() {
   if ( !db.open() ) {
     QLOG_WARN ( ) << db.lastError().text();
     emit showWarning(db.lastError().text());
-    return;
   }
   // Create acquisition tables
   QSqlQuery query(QSqlDatabase::database(path));
@@ -331,3 +347,8 @@ AcquisitionWidget::dbConnexion() {
 
   QLOG_DEBUG ( ) << query.lastError().text();      
 }
+void
+AcquisitionWidget::showAcquisitionWarning(QString message) {
+  emit showWarning(message);
+}
+
