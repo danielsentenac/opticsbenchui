@@ -1,6 +1,6 @@
 /*******************************************************************
 This file is part of OpticsBenchUI.
-
+  
 OpticsBenchUI is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -54,6 +54,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
     camera->setCamera(cameraMgr->cameralist[i],i);
     cameraList.push_back(camera);
     isopencamerawindow.push_back(false);
+    camerawindowList.push_back(NULL);
   }
   analysiswidget = new AnalysisWidget();
   analysiswidget->setObjectName("Analysis");
@@ -174,7 +175,7 @@ void OpticsBenchUIMain::openCameraWindow(int cameraNumber) {
 						  cameraList.at(cameraNumber),cameraNumber);
     camerawindow->show();
     camerawindow->update();
-    camerawindowList.push_back(camerawindow);
+    camerawindowList.replace(cameraNumber,camerawindow);
   }
 } 
 void OpticsBenchUIMain::openMotorWindow() {
@@ -191,12 +192,16 @@ OpticsBenchUIMain::~OpticsBenchUIMain()
   delete assistant;
   delete dacwindow;
   delete motorwindow;
-  for (int i = 0 ; i < cameraList.size(); i++) {
+  for (int i = 0 ; i < cameraList.size() ; i++) {
     if (isopencamerawindow.at(i) == true) {
-      delete camerawindowList.at(i); 
+     QLOG_INFO() << " Exiting Camera Window " << i;
+     delete camerawindowList.at(i);
     }
-    delete cameraList.at(i);
   }
+  for (int i = 0 ; i < cameraList.size() ; i++) {
+    QLOG_INFO() << " Exiting Camera " << i;
+     delete cameraList.at(i);
+   }
   QLOG_INFO() << "OpticsBenchUI ended";
 }
 void OpticsBenchUIMain::setOpenCameraWindow(bool isopen, int cameranumber){

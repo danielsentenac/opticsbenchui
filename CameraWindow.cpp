@@ -67,7 +67,7 @@ CameraWindow::CameraWindow( QMainWindow* parent, Qt::WFlags fl , Camera *_camera
 }
 CameraWindow::~CameraWindow()
 {
-  QLOG_DEBUG ( ) << "Deleting CameraWindow";
+  QLOG_INFO ( ) << "Deleting CameraWindow";
   delete player;
   delete cameraWidget;
 }

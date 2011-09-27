@@ -16,10 +16,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "AcquisitionThread.h"
-
+#include <unistd.h>
+#include <sys/time.h>
+/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------- GetTime */
+/*----------------------------------------------------------------------------*/
+static double GetTime( void ) {
+ struct timeval tp;
+/*--------------------------------------------------------------------------*/
+ gettimeofday( &tp, NULL );
+/*--------------------------------------------------------------------------*/
+ return( tp.tv_sec*1e6 + tp.tv_usec );
+}
 
 AcquisitionThread::AcquisitionThread( QObject* parent)
-:QThread(parent)
+	      :QThread(parent)
 {
   imageBuffer = NULL;
   suspend = true;
@@ -64,22 +75,7 @@ AcquisitionThread::run() {
     suspend = false;
     
     // Connect cameras
-    for (int i = 0 ; i <   sequenceList.size(); i++) {
-      AcquisitionSequence *sequence = sequenceList.at(i);
-      if ( sequence->instrumentType == "CAMERA" ) {
-	int cameranumber = sequence->instrumentName.toInt();
-	if (cameraList.size() > cameranumber) {
-	  Camera *camera = cameraList.at(cameranumber);
-          if (camera->isconnected == false) {
-	    QLOG_DEBUG() << "CONNECT CAMERA " << cameranumber;
-	    connect(camera, SIGNAL(getBufferData(uchar*, int, int, int)),
-		    this, SLOT(setImageFromCamera(uchar*, int, int, int)));
-	    camera->isconnected = true;
-	  }  
-	}
-      }
-    }
-    
+   
     QString fullname = filename + "_" + QString::number(filenumber) + ".h5";
 
     /* create a new data File */
@@ -93,17 +89,26 @@ AcquisitionThread::run() {
     int lastrecord = sequenceList.size();
     QLOG_DEBUG() << "AcquisitionThread::run> Number of sequences " << lastrecord;
     // run acquisition sequence
+    QLOG_INFO() << " Start Acquisition : " << QDateTime::currentDateTime().toString("MMMdd,yy-hh:mm:ss");
     emit getAcquiring(record);
     while ( record < lastrecord ) {
-      QLOG_DEBUG() << "AcquisitionThread::run> Start sequence at record " << record;
       AcquisitionSequence *sequence = sequenceList.at(record);
+      
+      sequence->etime = GetTime();
       int cur_record = record;
       this->execute(sequence);
       this->nextRecord(sequence,cur_record);
+      QLOG_DEBUG() << "AcquisitionThread::run> Start sequence " << sequence->seq_record;
       this->saveData(sequence,cur_record);
       usleep(sequence->sleep);
       if (suspend == true) break;
+      sequence->etime = GetTime() - sequence->etime;
+      if ( H5Fflush(file_id,H5F_SCOPE_GLOBAL) < 0)
+	QLOG_WARN() << " File flushing failed !";
+      H5garbage_collect();
+      QLOG_DEBUG() << "Sequence " << sequence->seq_record << ": etime = " << (int)sequence->etime;
     }
+    QLOG_INFO() << " Stop Acquisition : " << QDateTime::currentDateTime().toString("MMMdd,yy-hh:mm:ss");
     emit getAcquiring(record);
     filenumber++;
     emit getFilenumber(filenumber);
@@ -120,17 +125,10 @@ AcquisitionThread::run() {
     }
     for (int i = 0 ; i <   sequenceList.size(); i++) {
       AcquisitionSequence *sequence = sequenceList.at(i);
-      if ( sequence->instrumentType == "CAMERA" ) {
-	int cameranumber = sequence->instrumentName.toInt();
-	if (cameraList.size() > cameranumber) {
-	  Camera *camera = cameraList.at(cameranumber);
-	  if (camera->isconnected == true) {
-	    QLOG_DEBUG() << "DISCONNECT CAMERA"  << cameranumber;
-	    disconnect(camera, SIGNAL(getBufferData(uchar*, int, int, int)),
-		     this, SLOT(setImageFromCamera(uchar*, int, int, int)));
-	    camera->isconnected = false;
-	  }
-	}
+      if ( sequence->instrumentType == "DAC" ) {
+        QLOG_DEBUG() << "AcquisitionThread::execute> Connecting DAC ...";
+        // Update DB Dac values
+        if (dac != NULL)  dac->updateDBValues(sequence->instrumentName);
       }
       delete sequence;
     }
@@ -152,34 +150,29 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
 	       << sequence->loopEndAction << ":" << sequence->remainingLoops;
   
   if ( sequence->instrumentType == "MOTOR" ) {
-   motor->connectMotor(sequence->instrumentName);
-   QLOG_DEBUG() << "connectMotor : " << motor->connectSuccess;
-   if (motor->connectSuccess == true) {
-     if ( sequence->motorAction == "MOVEREL" ) {
-       if ( sequence->motorValue < 0 )
-	 motor->moveBackward((-sequence->motorValue));
-       else
-	 motor->moveForward(sequence->motorValue);
-     }
-     else if (sequence->motorAction == "MOVEABS" ) 
-       motor->moveAbsolute(sequence->motorValue);
-     motor->operationcomplete = 0;
-     // Wait for motor movement to be completed
-     while (motor->operationcomplete <= 0 ) {
-       if (suspend == true) motor->stopMotor();
-       usleep(100);
-       motor->operationComplete();
-     }
-     // New position
-     QString positionQString;
-     positionQString.setNum (motor->position, 'f',3);
-     emit getPosition(positionQString);
-     sequence->status = true;
-     // Save motor position data
-     sequence->position = motor->position;
-   }  
-   else
-     emit getMotorStatus(false);
+    motor->connectMotor(sequence->instrumentName);
+    
+    if ( sequence->motorAction == "MOVEREL" ) {
+      if ( sequence->motorValue < 0 )
+	motor->moveBackward(sequence->instrumentName,(-sequence->motorValue));
+      else
+	motor->moveForward(sequence->instrumentName,sequence->motorValue);
+    }
+    else if (sequence->motorAction == "MOVEABS" ) 
+      motor->moveAbsolute(sequence->instrumentName,sequence->motorValue);
+    // Wait for motor movement to be completed
+    while (motor->getOperationComplete(sequence->instrumentName) <= 0 ) {
+      if (suspend == true) motor->stopMotor(sequence->instrumentName);
+      usleep(100);
+      motor->operationComplete();
+    }
+    // New position
+    QString positionQString;
+    positionQString.setNum (motor->getPosition(sequence->instrumentName), 'f',3);
+    emit getPosition(positionQString);
+    sequence->status = true;
+    // Save motor position data
+    sequence->position = motor->getPosition(sequence->instrumentName);
   }
   else if ( sequence->instrumentType == "DAC" ) {
     QLOG_DEBUG() << "AcquisitionThread::execute> Connecting DAC ...";
@@ -188,7 +181,9 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
 		 << " connected " << dacsuccess;
 	    
     if (dacsuccess == true) {
-      dacsuccess = dac->setDacValue(sequence->dacOutput,sequence->dacValue);
+      dacsuccess = dac->setDacValue(sequence->instrumentName,
+				    sequence->dacOutput,
+				    sequence->dacValue);
     }
     sequence->status = dacsuccess;
     //emit getDacStatus(dacsuccess);
@@ -201,22 +196,37 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       if (camera->suspend == true)  {
         QLOG_DEBUG() << "OPEN CAMERA START";
 	camera->start();
+        while (camera->has_started == false)
+	  usleep(100);
       }
-      while (imagesuccess == false) {
+      QLOG_DEBUG() << " Wait for Image Acquisition ";
+      camera->mutex->lock();
+      camera->acqstart->wait(camera->mutex);
+      camera->mutex->unlock();
+      camera->mutex->lock();
+      camera->acqend->wait(camera->mutex);
+      camera->mutex->unlock();
+      QLOG_DEBUG() << " Save Image buffer ";
+      setImageFromCamera(camera->buffer,
+			 camera->width,
+			 camera->height,
+			 camera->video_mode);
+      camera->mutex->unlock();
+      /*while (imagesuccess == false) {
 	if (suspend == true) break;
 	usleep(100);
-      }      
+	}*/     
       sequence->setImage(imageBuffer,imageWidth, imageHeight, videoMode);
     }
     //emit getCameraStatus(imagesuccess);
     sequence->status = imagesuccess;
   }
   else if ( sequence->instrumentType == "TREATMENT" ) {
-    if ( sequence->avg != "") {
+    if ( sequence->treatment != "" && sequence->avg != "") {
       // Treat an average on selected records
       AcquisitionSequence *sequenceLeft = (AcquisitionSequence *)NULL;
       AcquisitionSequence *sequenceRight = (AcquisitionSequence *)NULL;
-      if (sequence->avgLeft >=0 ) {
+      if (sequence->avgLeft >= 0 ) {
 	for (int k = 0 ; k < sequenceList.size(); k++) {
 	  AcquisitionSequence *tmpSequence = sequenceList.at(k);
 	  if (tmpSequence->seq_record == sequence->avgLeft) {
@@ -225,7 +235,7 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
 	  }
 	}
       }
-      if (sequence->avgRight >=0 ) {
+      if (sequence->avgRight >= 0 ) {
 	for (int k = 0 ; k < sequenceList.size(); k++) {
 	  AcquisitionSequence *tmpSequence = sequenceList.at(k);
 	  if (tmpSequence->seq_record == sequence->avgRight) {
@@ -234,7 +244,14 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
 	  }
 	}
       }
-      treatmentsuccess = sequence->setAvg(sequenceLeft,sequenceRight);
+      if ( sequence->treatment == "AVG" )
+	treatmentsuccess = sequence->setAvg(sequenceLeft,sequenceRight);
+      else if ( sequence->treatment == "PHASE" )
+	treatmentsuccess = sequence->setPhase(sequenceLeft,sequenceRight);
+      else if ( sequence->treatment == "AMPLITUDE" )
+	treatmentsuccess = sequence->setAmplitude(sequenceLeft,sequenceRight);
+      else if ( sequence->treatment == "IMAGE" )
+	treatmentsuccess = sequence->setImage(sequenceLeft);
       //emit getTreatmentStatus(treatmentsuccess);
       sequence->status = treatmentsuccess;
     }
@@ -311,7 +328,7 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
   AcquisitionSequence *parentSequence = NULL;
   AcquisitionSequence *grandparentSequence = NULL;
   int parent_record = 0;
-    /* Turn off error handling */
+  /* Turn off error handling */
   hid_t error_stack = 0;
   H5Eset_current_stack(error_stack);
   H5Eset_auto(error_stack, NULL, NULL);
@@ -323,18 +340,31 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
   }
   
   //Try to open parent reference group
+  int jumpdatagroup = 0;
   for ( int i = cur_record - 1; i >= 0 ; i-- ) {
     AcquisitionSequence *tmpSequence = sequenceList.at(i);
+     if (tmpSequence->seq_record < 0 )
+      continue;
     // if (tmpSequence->loopAction == "LOOP" && tmpSequence->loopEndAction =="START") {
-    if (tmpSequence->datagroup != "") {
+    if (tmpSequence->loopAction == "LOOP" && tmpSequence->loopEndAction =="END") {
+      jumpdatagroup++;
+      QLOG_DEBUG() << "AcquisitionThread::saveData> must jump to next DATAGROUP" << jumpdatagroup;
+      continue;
+    } 
+    if (tmpSequence->datagroup != "" ) {
+      if ( jumpdatagroup > 0 ) {
+	jumpdatagroup--;
+	QLOG_DEBUG() << "AcquisitionThread::saveData> Found datagroup not null" << jumpdatagroup;
+	continue;
+      }
       QLOG_DEBUG() << "AcquisitionThread::saveData> Found parent reference loop at record " 
-		   << i << " loopAction "
-		   << tmpSequence->loopAction << " loopEndAction " << tmpSequence->loopEndAction
-		   << " loopNumber " << tmpSequence->loopNumber << " instrument " 
-		   << tmpSequence->instrumentType << ":" << tmpSequence->instrumentName
-		   << " group " << tmpSequence->group << " grp " << tmpSequence->grp 
-		   << " refgrp " << tmpSequence->refgrp;
-	   
+		  << i << " loopAction "
+		  << tmpSequence->loopAction << " loopEndAction " << tmpSequence->loopEndAction
+		  << " loopNumber " << tmpSequence->loopNumber << " instrument " 
+		  << tmpSequence->instrumentType << ":" << tmpSequence->instrumentName
+		  << " group " << tmpSequence->group << " grp " << tmpSequence->grp 
+		  << " refgrp " << tmpSequence->refgrp;
+      
       sequence->refgrp = tmpSequence->refgrp;
       sequence->grp = tmpSequence->grp;
       sequence->tmpgrp = tmpSequence->grp;
@@ -349,14 +379,14 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
     for ( int j = parent_record - 1; j >= 0 ; j-- ) {
       AcquisitionSequence *tmpSequence = sequenceList.at(j);
       //if (tmpSequence->loopAction == "LOOP" && tmpSequence->loopEndAction =="START") {
-	if (tmpSequence->datagroup != "") {
-	  QLOG_DEBUG() << "AcquisitionThread::saveData> Found grand parent reference loop at record " 
-		       << j << " loopAction "
-		       << tmpSequence->loopAction << " loopNumber " << tmpSequence->loopNumber
-		       << " instrument " << tmpSequence->instrumentType << ":" 
-		       << tmpSequence->instrumentName
-		       << " group " << tmpSequence->group << " grp " << tmpSequence->grp 
-		       << " refgrp " << tmpSequence->refgrp;
+      if (tmpSequence->datagroup != "") {
+	QLOG_DEBUG() << "AcquisitionThread::saveData> Found grand parent reference loop at record " 
+		     << j << " loopAction "
+		     << tmpSequence->loopAction << " loopNumber " << tmpSequence->loopNumber
+		     << " instrument " << tmpSequence->instrumentType << ":" 
+		     << tmpSequence->instrumentName
+		     << " group " << tmpSequence->group << " grp " << tmpSequence->grp 
+		     << " refgrp " << tmpSequence->refgrp;
 
 	grandparentSequence = tmpSequence;
 	break;
@@ -365,7 +395,8 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
   }
  
   if (sequence->datagroup != "") {
-    QLOG_DEBUG() << "AcquisitionThread::saveData> Open new group in " << sequence->tmpgrp;
+    QLOG_DEBUG() << "AcquisitionThread::saveData> Open new group " << sequence->datagroup << " in " << sequence->grpname << "(" 
+		<< sequence->tmpgrp << ")";
     // Create new sub group
     sequence->grpname = sequence->group;
     sequence->grp = H5Gopen2(sequence->tmpgrp, sequence->grpname.toStdString().c_str(), 
@@ -414,41 +445,67 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
 				 sequence->imageWidth,sequence->imageHeight,sequence->image);
     
   }
+  QLOG_DEBUG() << "AcquisitionThread::saveData> sequence->treatment " << sequence->treatment;
   if (sequence->instrumentType == "TREATMENT") {
-    if (sequence->avg != "" && grandparentSequence != NULL) {
+    if (sequence->treatment != "" && sequence->avg != "" ) {
       // Check parent group and save average in grand parent group
       QLOG_DEBUG() << "AcquisitionThread::saveData> Save avergage data remainingLoops " 
 		   << parentSequence->remainingLoops;
-      if ( parentSequence->remainingLoops == 1 ) {
-	if (sequence->typeAvg == "CAMERA" && imagesuccess == true) {
+      if ( sequence->treatment == "AVG" && parentSequence->remainingLoops == 1 && grandparentSequence != NULL) {
+	if (sequence->instrumentRef == "CAMERA" && treatmentsuccess == true) {
 	  hsize_t dset_dims[2];
-	  dset_dims[0] = sequence->imageWidth;
-	  dset_dims[1] = sequence->imageHeight;
+	  dset_dims[0] = sequence->data_2D_FLOAT_DIM_Y;
+	  dset_dims[1] = sequence->data_2D_FLOAT_DIM_X;
 	  // Average data
-	  for (int i = 0 ; i < sequence->imageWidth * sequence->imageHeight; i++)
-	    sequence->data_2D_INT[i] /= parentSequence->loopNumber;
-	  /* create and write an double type dataset named "dset" 
-	     status = H5IMmake_image_8bit(grandparentSequence->grp,sequence->dataname.toStdString().c_str(),
-	  sequence->imageWidth,sequence->imageHeight,sequence->image);*/
-	  hsize_t dims[2]  = {sequence->imageWidth,sequence->imageHeight};
-	  status = H5LTmake_dataset_int(grandparentSequence->grp,sequence->dataname.toStdString().c_str(),
-					2,dims,sequence->data_2D_INT);
-	  // reset image average
-	  sequence->setImage(NULL,0,0,0);
+	  for (int i = 0 ; i < sequence->data_2D_FLOAT_DIM_X * sequence->data_2D_FLOAT_DIM_Y; i++)
+	    sequence->data_2D_FLOAT[i] /= parentSequence->loopNumber;
+	  status = H5LTmake_dataset_float(grandparentSequence->grp,sequence->dataname.toStdString().c_str(),
+					  2,dset_dims,sequence->data_2D_FLOAT);
+	  // reset sequence data
+	  sequence->reset =true;
 	}
-	else if (sequence->typeAvg == "DAC" && dacsuccess == true) {
+	else if (sequence->instrumentRef == "DAC" && treatmentsuccess == true ) {
 	  QLOG_DEBUG() << "AcquisitionThread::saveData> Save avergage DAC data in groupname " 
 		       << grandparentSequence->grpname
 		       << " refgrp " << grandparentSequence->refgrp;
-	
+	  
 	  // Average data
 	  sequence->dacValue /= parentSequence->loopNumber;
 	  status = H5LTset_attribute_float(grandparentSequence->refgrp, 
 					   grandparentSequence->grpname.toStdString().c_str(), 
-				     sequence->dataname.toStdString().c_str(), 
-				     &(sequence->dacValue),1);
-	  // reset dac value average
-	  sequence->dacValue = 0;
+					   sequence->dataname.toStdString().c_str(), 
+					   &(sequence->dacValue),1);
+	  // reset sequence data
+	  sequence->reset =true;	  
+	}
+      }
+      else if ( sequence->treatment == "PHASE" || sequence->treatment == "AMPLITUDE" ) {
+	QLOG_DEBUG() << "AcquisitionThread::saveData> Save PHASE/AMPLITUDE data in groupname " 
+		    << sequence->grpname
+		    << " refgrp " << sequence->grp;
+	QLOG_DEBUG() << "AcquisitionThread::saveData> instrumentRef " << sequence->instrumentRef;
+	QLOG_DEBUG() << "AcquisitionThread::saveData> treatmentsuccess " << treatmentsuccess;
+	if (sequence->instrumentRef == "CAMERA" && treatmentsuccess == true) {
+	  hsize_t dset_dims[2];
+	  dset_dims[0] = sequence->data_2D_FLOAT_DIM_Y;
+	  dset_dims[1] = sequence->data_2D_FLOAT_DIM_X;
+	  status = H5LTmake_dataset_float(sequence->grp,sequence->dataname.toStdString().c_str(),
+					  2,dset_dims,sequence->data_2D_FLOAT);
+	  // reset data
+	  sequence->reset =true;
+	}
+      }
+      else if (sequence->treatment == "IMAGE" ) {
+	QLOG_DEBUG() << "AcquisitionThread::saveData> Save converted IMAGE data in groupname " 
+		     << sequence->grpname
+		     << " refgrp " << sequence->refgrp;
+	QLOG_DEBUG() << "AcquisitionThread::saveData> instrumentRef " << sequence->instrumentRef;
+	QLOG_DEBUG() << "AcquisitionThread::saveData> treatmentsuccess " << treatmentsuccess;
+	if (sequence->instrumentRef == "CAMERA" && treatmentsuccess == true) {
+	  status = H5IMmake_image_8bit(sequence->grp,sequence->dataname.toStdString().c_str(),
+				       sequence->imageWidth,sequence->imageHeight,sequence->image);
+	  // reset data
+	  sequence->reset =true;
 	}
       }
     }

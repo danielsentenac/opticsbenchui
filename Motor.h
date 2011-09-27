@@ -33,17 +33,18 @@ class Motor : public QObject
   Motor(QObject* parent = 0, QString _appDirPath = 0);
   ~Motor();
 
-  void  connectMotor(QString actuator);
-  void  moveForward(float motion);
-  void  moveBackward(float motion);
-  void  moveAbsolute(float motion);
-  void  stopMotor();
-  void setDbPath(QString _path);
-   // parameters
-  bool      connectSuccess;
-  int       operationcomplete;
-  float     position;
-  QString   path;
+  void  connectMotor(QString newactuator);
+  void  moveForward(QString newactuator,float motion);
+  void  moveBackward(QString newactuator,float motion);
+  void  moveAbsolute(QString newactuator,float motion);
+  void  stopMotor(QString newactuator);
+  void  setDbPath(QString _path);
+  int   getOperationComplete(QString newactuator);
+  float getPosition(QString newactuator);
+  
+  // parameters
+  QVector<int> operationcomplete;
+  QString path;
 
  signals:
   void getPosition(float position);
@@ -61,15 +62,16 @@ class Motor : public QObject
   void dbConnexion();
   
 
-  ACCom     *actuatorCom;
-  Driver    *actuatorDriver;
-  QString   actuatorSettings;
-  QString   description;
-  QString   com;
-  QString   driver;
-  QString   actuator;
-
+  QVector<ACCom*>   actuatorCom;
+  QVector<Driver*>  actuatorDriver;
+  QVector<QString>  actuatorSettings;
+  QVector<QString>  description;
+  QVector<QString>  com;
+  QVector<QString>  driver;
+  QVector<QString>  actuator;
   bool iscompleting;
- 
+  QVector<bool> connectSuccess;
+  QVector<float> position;
+  QString runningActuator;
 };
 #endif

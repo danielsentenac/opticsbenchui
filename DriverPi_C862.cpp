@@ -47,6 +47,7 @@ int DriverPi_C862::Init(string& rstateData) const
   {
     retStatus = -1;
   }
+  QLOG_DEBUG() << "DriverPi_C862::Init status = " << retStatus;
   return retStatus;
 }
 

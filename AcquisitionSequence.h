@@ -31,7 +31,8 @@ class AcquisitionSequence
     
   AcquisitionSequence();
   ~AcquisitionSequence();
-    
+
+  double etime;   
   int record;
   int seq_record;
   bool status;
@@ -46,11 +47,13 @@ class AcquisitionSequence
   int     remainingLoops;
   
   QString avg ;
+  bool    reset;
+  QString treatment;
   QString avgOp;
   int avgSuccess;
   int avgRight;
   int avgLeft;
-  QString typeAvg;
+  QString instrumentRef;
   
   // General attributes
   int sleep;
@@ -64,7 +67,9 @@ class AcquisitionSequence
   int     dacOutput;
 
   // Camera attributes
-  int   *data_2D_INT;
+  float   *data_2D_FLOAT;
+  int data_2D_FLOAT_DIM_X, data_2D_FLOAT_DIM_Y;
+  float data_2D_FLOAT_MIN, data_2D_FLOAT_MAX;
   uchar *image;
   int   imageWidth;
   int   imageHeight;
@@ -79,9 +84,13 @@ class AcquisitionSequence
   QString grpname;
 
   void setImage(uchar* buffer, int width, int height, int videomode);
+  bool setImage(AcquisitionSequence *sequenceLeft);
   void prepare();
   uchar* getImage();
   bool setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequence *sequenceRight);
+  bool setPhase(AcquisitionSequence *sequenceLeft, AcquisitionSequence *sequenceRight);
+  bool setAmplitude(AcquisitionSequence *sequenceLeft, AcquisitionSequence *sequenceRight);
+  
 };
 
 #endif // ACQUISITIONSEQUENCE_H

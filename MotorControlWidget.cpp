@@ -95,27 +95,35 @@ MotorControlWidget::connectMotor() {
 }
 void
 MotorControlWidget::moveForward() {
-    float motion = to_position->text().toFloat();
-    motor->moveForward(motion);
-    timer->start(100);
+  QString actuator;
+  actuator = actuatorCombo->itemText(actuatorCombo->currentIndex());
+  float motion = to_position->text().toFloat();
+  motor->moveForward(actuator, motion);
+  timer->start(100);
 }
 void
 MotorControlWidget::moveBackward() {
-    float motion = to_position->text().toFloat();
-    motor->moveBackward(motion);
-    timer->start(100);
+  QString actuator;
+  actuator = actuatorCombo->itemText(actuatorCombo->currentIndex());
+  float motion = to_position->text().toFloat();
+  motor->moveBackward(actuator, motion);
+  timer->start(100);
 }
 void
 MotorControlWidget::moveAbsolute() {
+  QString actuator;
+  actuator = actuatorCombo->itemText(actuatorCombo->currentIndex());
   float motion = to_position->text().toFloat();
-  motor->moveAbsolute(motion);
+  motor->moveAbsolute(actuator, motion);
   timer->start(100);
  
 }
 void
 MotorControlWidget::stopMotor() {
-    motor->stopMotor();
-    timer->start(100);
+  QString actuator;
+  actuator = actuatorCombo->itemText(actuatorCombo->currentIndex());
+  motor->stopMotor(actuator);
+  timer->start(100);
 }
 void 
 MotorControlWidget::getDescription(QString description) {

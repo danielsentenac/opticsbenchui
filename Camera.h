@@ -23,7 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QImage>
 #include <QByteArray>
 #include <QBuffer>
-
+#include <QMutex>
+#include <QWaitCondition>
 
 #include <dc1394/dc1394.h>
 #include "QsLog.h"
@@ -46,10 +47,13 @@ class Camera : public QThread
   int  findCamera();
   void setCamera(dc1394camera_t* _camera, int _id);
   void getFeatures();
+  void cleanup_and_exit();
 
   uchar* getBuffer();
-
-  bool isconnected;
+  QMutex *mutex;
+  QWaitCondition *acqstart, *acqend;
+  bool has_started;
+  
   bool suspend;
   unsigned int           width;
   unsigned int           height;
@@ -78,8 +82,6 @@ class Camera : public QThread
 
  private:
   
-  void cleanup_and_exit();
-
   dc1394_t               *d;
   dc1394camera_list_t *  list;
   dc1394error_t          err;

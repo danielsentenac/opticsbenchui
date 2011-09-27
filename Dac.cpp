@@ -6,64 +6,137 @@ it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+   
+   You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
-
+				       
 #include "Dac.h"
 
 Dac::Dac(QObject *parent, QString _appDirPath)
-  : QObject(parent)
+  : QObject(parent)				       
 { 
   path = _appDirPath;
-  fd = 0;
-  dac = "";
-  connectSuccess = false;
   // Connect dac db
   dbConnexion();
-  dacvalues = new QVector<float>();
-}
+} 
 Dac::~Dac()
 {
   QLOG_DEBUG ( ) <<"deleting Dac";
-  if (fd)
-    DRV_DeviceClose(&fd);
-  delete dacvalues;
+  for (int i = 0 ; i < fd.size(); i++) {
+    if (fd.at(i) )   {
+      if ( connectSuccess.at(i) == true) DRV_DeviceClose(fd.at(i));
+      free(fd.at(i)); fd.replace(i,NULL);
+    }
+  }
+  fd.clear();
+  for (int i = 0 ; i < config.size(); i++) {
+    if (config.at(i))   {
+      free(config.at(i)); config.replace(i, NULL); 
+    }
+  }
+  config.clear();
+  for (int i = 0 ; i < chOutV.size(); i++) {
+    if (chOutV.at(i))   {
+      free(chOutV.at(i)); chOutV.replace(i, NULL); 
+    }
+  }
+  chOutV.clear();
+  for (int i = 0 ; i < chOutC.size(); i++) {
+    if (chOutC.at(i))   {
+      free(chOutC.at(i)); chOutC.replace(i, NULL); 
+    }
+  }
+  chOutC.clear();
+  for (int i = 0 ; i < ao_chan_range.size(); i++) {
+    if (ao_chan_range.at(i))   {
+      free(ao_chan_range.at(i)); ao_chan_range.replace(i, NULL); 
+    }
+  }
+  ao_chan_range.clear();
+  for (int i = 0 ; i < dacvalues.size(); i++)
+    if (dacvalues.at(i)) delete dacvalues.at(i);
+  dacvalues.clear();
+  dacSettings.clear();
+  dac.clear();
+  mode.clear();
+  min.clear();
+  max.clear();
+  outputs.clear();
+  fname.clear();
+  connectSuccess.clear();
   {
     QSqlDatabase db = QSqlDatabase::database(path);
     db.close();
   }
   QSqlDatabase::removeDatabase(path);
-  
 }
-void Dac::setDbPath(QString _path){
+void 
+Dac::setDbPath(QString _path){
+
+  // Re-Init object
+  for (int i = 0 ; i < fd.size(); i++) {
+    if (fd.at(i))   {
+      if ( connectSuccess.at(i) == true) DRV_DeviceClose(fd.at(i));
+      free(fd.at(i)); fd.replace(i, NULL);
+    }
+  }
+  fd.clear();
+  for (int i = 0 ; i < config.size(); i++) {
+    if (config.at(i))   {
+      free(config.at(i)); config.replace(i, NULL); 
+    }
+  }
+  config.clear();
+  for (int i = 0 ; i < chOutV.size(); i++) {
+    if (chOutV.at(i))   {
+      free(chOutV.at(i)); chOutV.replace(i, NULL); 
+    }
+  }
+  chOutV.clear();
+  for (int i = 0 ; i < chOutC.size(); i++) {
+    if (chOutC.at(i))   {
+      free(chOutC.at(i)); chOutC.replace(i, NULL); 
+    }
+  }
+  chOutC.clear();
+  for (int i = 0 ; i < ao_chan_range.size(); i++) {
+    if (ao_chan_range.at(i))   {
+      free(ao_chan_range.at(i)); ao_chan_range.replace(i, NULL); 
+    }
+  }
+  ao_chan_range.clear();
+ 
+  for (int i = 0 ; i < dacvalues.size(); i++)
+    if (dacvalues.at(i)) delete dacvalues.at(i); 
+  dacvalues.clear();
+  dacSettings.clear();
+  dac.clear();
+  mode.clear();
+  min.clear();
+  max.clear();
+  outputs.clear();
+  fname.clear();
+  connectSuccess.clear();
+
   // Close Db
   {
     QSqlDatabase db = QSqlDatabase::database(path);
     db.close();
   }
   QSqlDatabase::removeDatabase(path);
-  
-  // Re-Init object
   path = _path;
-  if (fd)
-    DRV_DeviceClose(&fd);
-  delete dacvalues;
-  
-  fd = 0;
-  dac = "";
-  connectSuccess = false;
+  // Connect dac db
   dbConnexion();
-  dacvalues = new QVector<float>();
 }
 bool
 Dac::connectDac(QString newdac) {
   
+  int index;
   if (newdac == "") return false;
   
   char err_msg[100];
@@ -72,7 +145,7 @@ Dac::connectDac(QString newdac) {
   int status;
   QString description;
   QString dacvaluesString = "";
-  dacSettings = "";
+  QString dacSettings = "";
   //
   // Configure Dac
   //
@@ -93,103 +166,164 @@ Dac::connectDac(QString newdac) {
   //
   // Check if dac already configured
   //
-  if (dac != newdac || connectSuccess == false) {
-    dac = newdac;
-    QStringList settings;
-    QStringList subsettings;
-    settings = dacSettings.split(" ");
-    subsettings = settings.at(0).split("=");
-    fname = subsettings.at(1);
-    subsettings = settings.at(1).split("=");
-    mode  = subsettings.at(1);
-    subsettings = settings.at(2).split("=");
-    outputs = subsettings.at(1).toInt();
-    subsettings = settings.at(3).split("=");
-    max = subsettings.at(1).toFloat();
-    subsettings = settings.at(4).split("=");
-    min = subsettings.at(1).toFloat();
-    QLOG_DEBUG ( ) << "fname " <<  fname;
-    QLOG_DEBUG ( ) << "mode = "  <<   mode;
-    QLOG_DEBUG ( ) << "Outputs = " << outputs;
-    QLOG_DEBUG ( ) << "Max =  " << max;
-    QLOG_DEBUG ( ) << "Min =  " << min;
-   
-    if (fd) DRV_DeviceClose(&fd);
-    // Open device
-    status = DRV_DeviceOpen((char*)fname.toStdString().c_str(), &fd);
-   
-    if (status) {
-      DRV_GetErrorMessage(status, err_msg);
-      emit showWarning(tr("DRV_DeviceOpen:%1").arg(err_msg));
-      connectSuccess = false;
-      return false;
-    }
-    if (mode == "VOLT") {
-      for (int i = 0; i < outputs; i++) {
-	memset(&config, 0, sizeof(PT_AOConfig));
-	config.chan = i;
-	config.RefSrc = 0;
-	config.MaxValue = max;
-	config.MinValue = min;
-	status = DRV_AOConfig(fd, &config);
-	if (status) {
-	  DRV_GetErrorMessage(status, err_msg);
-	  emit showWarning(tr("DRV_AOConfig:%1").arg(err_msg));
-	  connectSuccess = false;
-	  return false;
+  for (int i = 0 ; i < dac.size(); i++)  {
+    if ( dac.at(i) == newdac ) {
+      QLOG_DEBUG () << newdac << " already connected";
+      if ( connectSuccess.at(i) == true )
+	return true;
+      else  {
+	QLOG_DEBUG () << newdac << " try to reconnect...";
+	//
+	// Free DAC related structures
+	//
+	if (fd.at(i))   {
+	  free(fd.at(i));
+	  fd.remove(i);
 	}
+	if (config.at(i))   {
+	  free(config.at(i));
+	  config.remove(i);
+	}
+	if (chOutV.at(i))   {
+	  free(chOutV.at(i));
+	  chOutV.remove(i);
+	}
+	if (chOutC.at(i))   {
+	  free(chOutC.at(i));
+	  chOutC.remove(i);
+	}
+	if (ao_chan_range.at(i))   {
+	  free(ao_chan_range.at(i));
+	  ao_chan_range.remove(i);
+	}
+	if (dacvalues.at(i)) delete dacvalues.at(i); 
+	dacvalues.remove(i);
+	dacSettings.remove(i);
+	dac.remove(i);
+	mode.remove(i);
+	min.remove(i);
+	max.remove(i);
+	outputs.remove(i);
+	fname.remove(i);
+	connectSuccess.remove(i);
+	break;
       }
     }
-    else if (mode == "CURRENT") {
-      for (int i = 0; i < outputs; i++) {
-	memset(&ao_chan_range, 0, sizeof(ao_chan_range));
-	ao_chan_range.usGainCount = 0;
-	ao_chan_range.usAOSource = 1; /* =0 internal, =1 external */
-	ao_chan_range.usAOType = 1; /* =0 voltage, =1 current */
-	ao_chan_range.usChan = i;
-	ao_chan_range.fAOMax = max;
-	ao_chan_range.fAOMin = min;
-	status = DRV_DeviceSetProperty(fd, CFG_AoChanRange,
-				       &ao_chan_range, sizeof(ao_chan_range));
-	if (status) {
-	  DRV_GetErrorMessage(status, err_msg);
-	  emit showWarning(tr("DRV_DeviceSetProperty:%1").arg(err_msg));
-	  connectSuccess = false;
-	  return false;
-	}
-	INT32U size;
-	status = DRV_DeviceGetProperty(fd, CFG_AoChanRange,&ao_chan_range,&size);
-	if (status) {
-	  DRV_GetErrorMessage(status, err_msg);
-	  emit showWarning(tr("DRV_DeviceGetProperty:%1").arg(err_msg));
-	  connectSuccess = false;
-	  return false;
-	}
-	QLOG_DEBUG ( ) << dac << " Channel " << i << " GainCount: " <<  ao_chan_range.usGainCount;
-	QLOG_DEBUG ( ) << "AOSource: " << ao_chan_range.usAOSource;
-	QLOG_DEBUG ( ) << "AOType: " << ao_chan_range.usAOType;
-	QLOG_DEBUG ( ) << "Chan: " << ao_chan_range.usChan;
-	QLOG_DEBUG ( ) << "AOMax: " << ao_chan_range.fAOMax;
-	QLOG_DEBUG ( ) << "AOMin: " << ao_chan_range.fAOMin;
-	QLOG_DEBUG ( ) << "Configuring " << dac << " Channel " << i << "...Done";
-	
-      }
-    }
-    QLOG_DEBUG ( ) << "Dac configuration success";
-    connectSuccess = true;
   }
+  // First time Dac connection
+  dac.push_back(newdac);
+  // Assign index
+  index = dac.size() - 1;
+  QStringList settings;
+  QStringList subsettings;
+  settings = dacSettings.split(" ");
+  subsettings = settings.at(0).split("=");
+  fname.push_back(subsettings.at(1));
+  subsettings = settings.at(1).split("=");
+  mode.push_back(subsettings.at(1));
+  subsettings = settings.at(2).split("=");
+  outputs.push_back(subsettings.at(1).toInt());
+  subsettings = settings.at(3).split("=");
+  max.push_back(subsettings.at(1).toFloat());
+  subsettings = settings.at(4).split("=");
+  min.push_back(subsettings.at(1).toFloat());
+  connectSuccess.push_back(false);
+  dacvalues.push_back(new QVector<float>);
+  PTR_T* fdPtr = (PTR_T*)malloc(sizeof(PTR_T));
+  fd.push_back(fdPtr);
+  PT_AOConfig* configPtr = (PT_AOConfig*)malloc(sizeof(PT_AOConfig));
+  config.push_back(configPtr);
+  PT_AOVoltageOut* chOutVPtr = (PT_AOVoltageOut*)malloc(sizeof(PT_AOVoltageOut));
+  chOutV.push_back(chOutVPtr);
+  PT_AOCurrentOut* chOutCPtr = (PT_AOCurrentOut*)malloc(sizeof(PT_AOCurrentOut));
+  chOutC.push_back(chOutCPtr);
+  AORANGESET* ao_chan_rangePtr = (AORANGESET*)malloc(sizeof(AORANGESET));
+  ao_chan_range.push_back(ao_chan_rangePtr);
+  
+  QLOG_DEBUG ( ) << "fname " <<  fname.at(index);
+  QLOG_DEBUG ( ) << "mode = "  <<   mode.at(index);
+  QLOG_DEBUG ( ) << "Outputs = " << outputs.at(index);
+  QLOG_DEBUG ( ) << "Max =  " << max.at(index);
+  QLOG_DEBUG ( ) << "Min =  " << min.at(index);
+  
+  // Open device
+  QLOG_INFO() << " Open device " << fname.at(index);
+  status = DRV_DeviceOpen((char*)fname.at(index).toStdString().c_str(), fd.at(index));
+  if (status) {
+    DRV_GetErrorMessage(status, err_msg);
+    emit showWarning(tr("DRV_DeviceOpen:%1").arg(err_msg));
+    connectSuccess.replace(index, false);
+    return false;
+  }
+  if (mode.at(index) == "VOLT") {
+    for (int i = 0; i < outputs.at(index); i++) {
+      memset(config.at(index), 0, sizeof(PT_AOConfig));
+      config.at(index)->chan = i;
+      config.at(index)->RefSrc = 0;
+      config.at(index)->MaxValue = max.at(index);
+      config.at(index)->MinValue = min.at(index);
+      status = DRV_AOConfig(*(fd.at(index)), config.at(index));
+      if (status) {
+	DRV_GetErrorMessage(status, err_msg);
+	emit showWarning(tr("DRV_AOConfig:%1").arg(err_msg));
+	connectSuccess.replace(index, false);
+	return false;
+      }
+    }
+  }
+  else if (mode.at(index) == "CURRENT") {
+    AORANGESET aorange;
+    for (int i = 0; i < outputs.at(index); i++) {
+      memset(ao_chan_range.at(index), 0, sizeof(aorange));
+      ao_chan_range.at(index)->usGainCount = 0;
+      ao_chan_range.at(index)->usAOSource = 1; /* =0 internal, =1 external */
+      ao_chan_range.at(index)->usAOType = 1; /* =0 voltage, =1 current */
+      ao_chan_range.at(index)->usChan = i;
+      ao_chan_range.at(index)->fAOMax = max.at(index);
+      ao_chan_range.at(index)->fAOMin = min.at(index);
+      status = DRV_DeviceSetProperty(*(fd.at(index)), 
+				     CFG_AoChanRange,ao_chan_range.at(index),
+				     sizeof(aorange));
+      if (status) {
+	DRV_GetErrorMessage(status, err_msg);
+	emit showWarning(tr("DRV_DeviceSetProperty:%1").arg(err_msg));
+	connectSuccess.replace(index, false);
+	return false;
+      }
+      INT32U size;
+      status = DRV_DeviceGetProperty(*(fd.at(index)), 
+				     CFG_AoChanRange, 
+				     ao_chan_range.at(index),&size);
+      if (status) {
+	DRV_GetErrorMessage(status, err_msg);
+	emit showWarning(tr("DRV_DeviceGetProperty:%1").arg(err_msg));
+	connectSuccess.replace(index, false);
+	return false;
+      }
+      QLOG_DEBUG ( ) << dac.at(index) << " Channel " << i 
+		     << " GainCount: " <<  ao_chan_range.at(index)->usGainCount;
+      QLOG_DEBUG ( ) << "AOSource: " << ao_chan_range.at(index)->usAOSource;
+      QLOG_DEBUG ( ) << "AOType: " << ao_chan_range.at(index)->usAOType;
+      QLOG_DEBUG ( ) << "Chan: " << ao_chan_range.at(index)->usChan;
+      QLOG_DEBUG ( ) << "AOMax: " << ao_chan_range.at(index)->fAOMax;
+      QLOG_DEBUG ( ) << "AOMin: " << ao_chan_range.at(index)->fAOMin;
+      QLOG_DEBUG ( ) << "Configuring " << dac.at(index) << " Channel " << i << "...Done";
+    }
+  }
+  QLOG_DEBUG ( ) << "Dac configuration success";
+  connectSuccess.replace(index, true);
+  
   // Update control widget
-  emit getOutputs(outputs,mode);
+  emit getOutputs(outputs.at(index),mode.at(index));
   emit getDescription(description);
   // Get registered values from Db
   QStringList dacvaluesStringList;
-  dacvalues->clear();
   dacvaluesStringList = dacvaluesString.split(" ",QString::SkipEmptyParts);
   for (int i = 0 ; i < dacvaluesStringList.size(); i++ )
-    dacvalues->push_back(dacvaluesStringList.at(i).toFloat());
+    dacvalues.at(index)->push_back(dacvaluesStringList.at(i).toFloat());
   
-  emit getOutputValues(dacvalues);
-  return connectSuccess;
+  emit getOutputValues(dacvalues.at(index));
+  return connectSuccess.at(index);
 }
 bool
 Dac::resetDac(QString newdac) {
@@ -197,152 +331,168 @@ Dac::resetDac(QString newdac) {
   QSqlQuery query(db);
   int status;
   char err_msg[100];
-  if (dac == newdac && connectSuccess == true) {  
-    /* Init device channels to 0 */
-    /* enable sync*/
-    status = DRV_EnableSyncAO(fd, 1);
-    if (status) {
-      DRV_GetErrorMessage(status, err_msg);
-      emit showWarning(tr("DRV_EnableSyncAO:%1").arg(err_msg));
-   
-      return false;
-    }
-    dacvalues->clear();
-    float value = 0;
-    for (int i = 0; i < outputs; i++) {
-      if (mode == "VOLT") {
-	memset(&chOutV, 0, sizeof(PT_AOVoltageOut));
-	chOutV.chan = i;
-	chOutV.OutputValue = value;
-      }
-      else if (mode == "CURRENT") {
-	memset(&chOutC, 0, sizeof(PT_AOCurrentOut));
-	chOutC.chan = i;
-	chOutC.OutputValue = value;
-	
-      }
-      if (mode == "VOLT")
-	status = DRV_AOVoltageOut(fd, &chOutV);
-      else if (mode == "CURRENT")
-	status = DRV_AOCurrentOut(fd, &chOutC);
-      
+  for (int index = 0 ; index < dac.size(); index++)  {
+    if ( dac.at(index) == newdac && connectSuccess.at(index) == true) {
+      /* Init device channels to 0 */
+      /* enable sync*/
+      status = DRV_EnableSyncAO(*(fd.at(index)), 1);
       if (status) {
 	DRV_GetErrorMessage(status, err_msg);
-	emit showWarning(tr("DRV_AO/Current/Voltage/Out%1").arg(err_msg));
-
+	emit showWarning(tr("DRV_EnableSyncAO:%1").arg(err_msg));
 	return false;
       }
-      dacvalues->push_back(value);
+      dacvalues.at(index)->clear();
+      float value = 0;
+      for (int i = 0; i < outputs.at(index); i++) {
+	if (mode.at(index) == "VOLT") {
+	  memset(chOutV.at(index), 0, sizeof(PT_AOVoltageOut));
+	  chOutV.at(index)->chan = i;
+	  chOutV.at(index)->OutputValue = value;
+	}
+	else if (mode.at(index) == "CURRENT") {
+	  memset(chOutC.at(index), 0, sizeof(PT_AOCurrentOut));
+	  chOutC.at(index)->chan = i;
+	  chOutC.at(index)->OutputValue = value;
+	  
+	}
+	if (mode.at(index) == "VOLT")
+	  status = DRV_AOVoltageOut(*(fd.at(index)), chOutV.at(index));
+	else if (mode.at(index) == "CURRENT")
+	  status = DRV_AOCurrentOut(*(fd.at(index)), chOutC.at(index));
+	
+	if (status) {
+	  DRV_GetErrorMessage(status, err_msg);
+	  emit showWarning(tr("DRV_AO/Current/Voltage/Out%1").arg(err_msg));
+	  return false;
+	}
+	dacvalues.at(index)->push_back(value);
+      }
+      /* write sync*/
+      status = DRV_WriteSyncAO(*(fd.at(index)));
+      if (status) {
+	DRV_GetErrorMessage(status, err_msg);
+	emit showWarning(tr("DRV_WriteSyncAO:%1").arg(err_msg));
+	return false;
+      } 
+      /* disable sync*/
+      status = DRV_EnableSyncAO(*(fd.at(index)), 0);
+      if (status) {
+	DRV_GetErrorMessage(status, err_msg);
+	emit showWarning(tr("DRV_EnableSyncAO:%1").arg(err_msg));
+	return false;
+      }
+      // Set new values in Db
+      QString dacvaluesString = "";
+      QString valueString;
+      for (int i = 0 ; i < outputs.at(index); i++) {
+	valueString.setNum (dacvalues.at(index)->at(i), 'f',3);
+	dacvaluesString = dacvaluesString + valueString + " ";
+      }
+      query.prepare("update dac_settings set dacvalues = ? where name = ?");
+      query.addBindValue(dacvaluesString);
+      query.addBindValue(dac.at(index));
+      query.exec();
+      // Update control widget
+      emit getOutputValues(dacvalues.at(index));
+      return true;
     }
-    /* write sync*/
-    status = DRV_WriteSyncAO(fd);
-    if (status) {
-      DRV_GetErrorMessage(status, err_msg);
-      emit showWarning(tr("DRV_WriteSyncAO:%1").arg(err_msg));
-   
-      return false;
-    } 
-    /* disable sync*/
-    status = DRV_EnableSyncAO(fd, 0);
-    if (status) {
-      DRV_GetErrorMessage(status, err_msg);
-      emit showWarning(tr("DRV_EnableSyncAO:%1").arg(err_msg));
-      
-      return false;
-    }
-    // Set new values in Db
-    QString dacvaluesString = "";
-    QString valueString;
-    for (int i = 0 ; i < outputs; i++) {
-      valueString.setNum (dacvalues->at(i), 'f',3);
-      dacvaluesString = dacvaluesString + valueString + " ";
-    }
-    query.prepare("update dac_settings set dacvalues = ? where name = ?");
-    query.addBindValue(dacvaluesString);
-    query.addBindValue(dac);
-    query.exec();
-    // Update control widget
-    emit getOutputValues(dacvalues);
-    return true;
   }
   emit showWarning(tr("Check connection to %1").arg(newdac));
-  return false;
+  return false; 
 }
 bool
-Dac::setDacValue(int output, float value) {
+Dac::setDacValue(QString newdac, int output, float value) {
   int status;
   char err_msg[100];
-  QSqlDatabase db = QSqlDatabase::database(path);
-  QSqlQuery query(db);
 
-  if (connectSuccess == true) {
-    QLOG_DEBUG ( ) << "Dac::setDacValue " << output << ":" << value;
-    // Assign Dac value to ouptut
-    // enable sync
-    status = DRV_EnableSyncAO(fd, 1);
-    if (status) {
-      DRV_GetErrorMessage(status, err_msg);
-      emit showWarning(tr("%1").arg(err_msg));
-      return false;
-    }
-    // check value in range
-    if ( value >= min && value <= max ) {
-      if (mode == "VOLT") {
-	memset(&chOutV, 0, sizeof(PT_AOVoltageOut));
-	chOutV.chan = output;
-	chOutV.OutputValue = value;
-      }
-      else if (mode == "CURRENT") {
-	memset(&chOutC, 0, sizeof(PT_AOCurrentOut));
-	chOutC.chan = output;
-	chOutC.OutputValue = value;
-      }
-      QLOG_DEBUG ( ) << "Setting new " << mode << " " << value
-		     << " for " << dac << " at channel " <<  output;
-      if (mode == "VOLT")
-	status = DRV_AOVoltageOut(fd, &chOutV);
-      else if (mode == "CURRENT")
-	status = DRV_AOCurrentOut(fd, &chOutC);
+  for (int index = 0 ; index < dac.size(); index++)  {
+    if ( dac.at(index) == newdac && connectSuccess.at(index) == true) {
+      QLOG_DEBUG ( ) << "Dac::setDacValue " << newdac << ": " << output << ":" << value;
+      // Assign Dac value to ouptut
+      // enable sync
+      status = DRV_EnableSyncAO(*(fd.at(index)), 1);
       if (status) {
 	DRV_GetErrorMessage(status, err_msg);
 	emit showWarning(tr("%1").arg(err_msg));
 	return false;
       }
-      dacvalues->replace(output,value);
+      // check value in range
+      if ( value >= min.at(index) && value <= max.at(index) ) {
+	if (mode.at(index) == "VOLT") {
+	  memset(chOutV.at(index), 0, sizeof(PT_AOVoltageOut));
+	  chOutV.at(index)->chan = output;
+	  chOutV.at(index)->OutputValue = value;
+	}
+	else if (mode.at(index) == "CURRENT") {
+	  memset(chOutC.at(index), 0, sizeof(PT_AOCurrentOut));
+	  chOutC.at(index)->chan = output;
+	  chOutC.at(index)->OutputValue = value;
+	}
+	QLOG_DEBUG ( ) << "Setting new " << mode.at(index) << " " << value
+		       << " for " << dac.at(index) << " at channel " <<  output;
+	if (mode.at(index) == "VOLT")
+	  status = DRV_AOVoltageOut(*(fd.at(index)), chOutV.at(index));
+	else if (mode.at(index) == "CURRENT")
+	  status = DRV_AOCurrentOut(*(fd.at(index)), chOutC.at(index));
+	if (status) {
+	  DRV_GetErrorMessage(status, err_msg);
+	  emit showWarning(tr("%1").arg(err_msg));
+	  return false;
+	}
+	dacvalues.at(index)->replace(output,value);
+      }
+      else 
+	emit showWarning(tr("Dac value %1 out of range !").arg(value));
+      
+      /* write sync*/
+      status = DRV_WriteSyncAO(*(fd.at(index)));
+      if (status) {
+	DRV_GetErrorMessage(status, err_msg);
+	emit showWarning(tr("%1").arg(err_msg));
+	return false;
+      } 
+      /* disable sync*/
+      status = DRV_EnableSyncAO(*(fd.at(index)), 0);
+      if (status) {
+	DRV_GetErrorMessage(status, err_msg);
+	emit showWarning(tr("%1").arg(err_msg));
+	return false;
+      }
+      return true;
     }
-    else 
-      emit showWarning(tr("Dac value %1 out of range !").arg(value));
-    
-    /* write sync*/
-    status = DRV_WriteSyncAO(fd);
-    if (status) {
-      DRV_GetErrorMessage(status, err_msg);
-      emit showWarning(tr("%1").arg(err_msg));
-      return false;
-    } 
-    /* disable sync*/
-    status = DRV_EnableSyncAO(fd, 0);
-    if (status) {
-      DRV_GetErrorMessage(status, err_msg);
-      emit showWarning(tr("%1").arg(err_msg));
-      return false;
-    }
-    // Set new values in Db
-    QString dacvaluesString = "";
-    QString valueString;
-    for (int i = 0 ; i < outputs; i++) {
-      valueString.setNum (dacvalues->at(i), 'f',3);
-      dacvaluesString = dacvaluesString + valueString + " ";
-    }
-    query.prepare("update dac_settings set dacvalues = ? where name = ?");
-    query.addBindValue(dacvaluesString);
-    query.addBindValue(dac);
-    query.exec();
-    
-    // Update control widget
-    emit getOutputValues(dacvalues);
   }
-  return true;
+  emit showWarning(tr("Check connection to %1").arg(newdac));
+  return false; 
+}
+
+// function : update DB with DAC value
+bool
+Dac::updateDBValues(QString newdac) {
+  
+  for (int index = 0 ; index < dac.size(); index++)  {
+    if ( dac.at(index) == newdac ) {
+      QLOG_DEBUG () << " Update DB DAC Values";
+      QSqlDatabase db = QSqlDatabase::database(path);
+      QSqlQuery query(db);
+      // Set new values in Db
+      QString dacvaluesString = "";
+      QString valueString;
+      for (int i = 0 ; i < outputs.at(index); i++) {
+	valueString.setNum (dacvalues.at(index)->at(i), 'f',3);
+	dacvaluesString = dacvaluesString + valueString + " ";
+      }
+      query.prepare("update dac_settings set dacvalues = ? where name = ?");
+      query.addBindValue(dacvaluesString);
+      query.addBindValue(dac.at(index));
+      query.exec();
+      
+      // Update control widget
+      emit getOutputValues(dacvalues.at(index));
+      return  true;
+    }
+  }
+  emit showWarning(tr("Cannot find dac %1").arg(newdac));
+  return false; 
 }
 // function : create connexion to the database
 void 

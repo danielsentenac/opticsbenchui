@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AcquisitionSequence::AcquisitionSequence( )
 {
+  reset = true;
   instrumentName = "";
   instrumentType = "";
   settings = "";
@@ -37,17 +38,20 @@ AcquisitionSequence::AcquisitionSequence( )
   position = 0;
   inc_group = 0;
   image = NULL;
-  data_2D_INT = NULL;
+  data_2D_FLOAT = NULL;
+  data_2D_FLOAT_DIM_X = 0;
+  data_2D_FLOAT_DIM_Y = 0;
   refgrp = 0;
   grp = 0;
   tmpgrp = 0;
   grpname = "";
   avg = "";
+  treatment = "";
   avgOp = "";
   avgSuccess = -1;
   avgLeft = -1;
   avgRight = -1;
-  typeAvg = "";
+  instrumentRef = "";
   sleep = 0;
 }
 
@@ -56,7 +60,7 @@ AcquisitionSequence::~AcquisitionSequence()
   QLOG_DEBUG ( ) <<"Deleting AcquisitionSequence";
  
     if (image) { free(image); image = NULL;}
-    if (data_2D_INT) { free(data_2D_INT); data_2D_INT = NULL;}
+    if (data_2D_FLOAT) { free(data_2D_FLOAT); data_2D_FLOAT = NULL;}
 }
 void 
 AcquisitionSequence::setImage(uchar* buffer, int width, int height, int videomode) {
@@ -87,6 +91,7 @@ AcquisitionSequence::prepare() {
   for (int i = 0 ; i < settingsList.size(); i++ ) {
     subsettingsList = settingsList.at(i).split("=",QString::SkipEmptyParts);
     for (int j = 0 ; j < subsettingsList.size(); j++ ) {
+      QLOG_DEBUG () << "subsettingsList.at(j) = " << subsettingsList.at(j);
       if (subsettingsList.at(j).leftRef(4) == "MOVE" && subsettingsList.size() > j + 1) {
 	motorAction = subsettingsList.at(j);
 	motorValue = subsettingsList.at(j+1).toFloat();
@@ -101,8 +106,9 @@ AcquisitionSequence::prepare() {
 	sleep = (int) (subsettingsList.at(j+1).toFloat()*1e6);
       }
       else if (subsettingsList.at(j) == "AVG" && subsettingsList.size() > j + 1) {
+	treatment = "AVG";
 	avg = subsettingsList.at(j+1);
-	// Treat avgSettings
+	// Treat AVG Settings
 	QString subavg;
 	QString subsubavg;
 	subavg = avg.mid(avg.indexOf("[") + 1, avg.indexOf("]") - 1);
@@ -134,6 +140,51 @@ AcquisitionSequence::prepare() {
 			 <<  avgLeft << " Right " << avgRight;
 	}
       }
+      else if (subsettingsList.at(j) == "PHASE" && subsettingsList.size() > j + 1) {
+	treatment = "PHASE";
+	avg = subsettingsList.at(j+1);
+	// Treat PHASE Settings
+	QString subavg;
+	QString subsubavg;
+	subavg = avg.mid(avg.indexOf("[") + 1, avg.indexOf("]") - 1);
+	
+	avgSuccess = subavg.indexOf(",");
+	if (avgSuccess >= 0 ) avgOp = ",";
+	if (avgSuccess != -1)  {
+	  avgLeft = subavg.left(subavg.indexOf(avgOp)).toInt();
+	  avgRight = subavg.right(subavg.size() - subavg.indexOf(avgOp) - 1).toInt();
+	  QLOG_DEBUG ( ) << "Phase " << avg << " " << subavg << " Op " << avgOp << " Left " 
+			 <<  avgLeft << " Right " << avgRight;
+	}
+      }
+      else if (subsettingsList.at(j) == "AMPLITUDE" && subsettingsList.size() > j + 1) {
+	treatment = "AMPLITUDE";
+	avg = subsettingsList.at(j+1);
+	// Treat AMPLITUDE Settings
+	QString subavg;
+	QString subsubavg;
+	subavg = avg.mid(avg.indexOf("[") + 1, avg.indexOf("]") - 1);
+	
+	avgSuccess = subavg.indexOf(",");
+	if (avgSuccess >= 0 ) avgOp = ",";
+	if (avgSuccess != -1)  {
+	  avgLeft = subavg.left(subavg.indexOf(avgOp)).toInt();
+	  avgRight = subavg.right(subavg.size() - subavg.indexOf(avgOp) - 1).toInt();
+	  QLOG_DEBUG ( ) << "Amplitude " << avg << " " << subavg << " Op " << avgOp << " Left " 
+			 <<  avgLeft << " Right " << avgRight;
+	}
+      }
+      else if (subsettingsList.at(j) == "IMAGE" && subsettingsList.size() > j + 1) {
+	treatment = "IMAGE";
+	avg = subsettingsList.at(j+1);
+	// Treat IMAGE Settings
+	QString subavg;
+	QString subsubavg;
+	subavg = avg.mid(avg.indexOf("[") + 1, avg.indexOf("]") - 1);
+	avgLeft = subavg.toInt();
+	QLOG_DEBUG ( ) << "Image " << avg << " " << subavg << " Op " << avgOp << " Left " 
+		       <<  avgLeft << " Right " << avgRight;
+      }
     }
   }
   
@@ -159,7 +210,6 @@ AcquisitionSequence::prepare() {
     }
   }  
 }
-
 bool
 AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequence *sequenceRight) {
   
@@ -168,32 +218,46 @@ AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequen
     if (sequenceLeft->status == true && sequenceRight->status == true) {
       if (sequenceLeft->instrumentType == "CAMERA" && 
 	  sequenceRight->instrumentType == "CAMERA") {
-	typeAvg = "CAMERA";
+	instrumentRef = "CAMERA";
 	uchar *imageRight = sequenceRight->getImage();
 	uchar *imageLeft = sequenceLeft->getImage();
-	if (data_2D_INT == NULL) {
-	  imageWidth = sequenceLeft->imageWidth;
-	  imageHeight = sequenceLeft->imageHeight;
-	  data_2D_INT = (int*) malloc (sizeof(int) * imageWidth * imageHeight);
-	  memset(data_2D_INT,0,sizeof(data_2D_INT));
+        if (reset == true) {
+	  if (data_2D_FLOAT) {
+	    free(data_2D_FLOAT);
+	    data_2D_FLOAT = NULL;
+	  }
+	  if (sequenceLeft->imageWidth <= sequenceRight->imageWidth)
+	    data_2D_FLOAT_DIM_X = sequenceLeft->imageWidth;
+	  else
+	    data_2D_FLOAT_DIM_X = sequenceRight->imageWidth;
+	  if (sequenceLeft->imageHeight <= sequenceRight->imageHeight)
+	    data_2D_FLOAT_DIM_Y = sequenceLeft->imageHeight;
+	  else
+	    data_2D_FLOAT_DIM_Y = sequenceRight->imageHeight;
+	  data_2D_FLOAT = (float*) malloc (sizeof(float) * data_2D_FLOAT_DIM_X * data_2D_FLOAT_DIM_Y);
+	  memset(data_2D_FLOAT,0,sizeof(data_2D_FLOAT));
+	  reset = false;
 	}
-	for (int i = 0 ; i < imageWidth * imageHeight; i++) {
+	for (int i = 0 ; i < data_2D_FLOAT_DIM_X * data_2D_FLOAT_DIM_Y; i++) {
 	  if ( avgOp == "+" ) 
-	    data_2D_INT[i] = data_2D_INT[i] + (imageLeft[i] + imageRight[i]);
+	    data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft[i] + imageRight[i]);
 	  else if ( avgOp == "-" ) 
-	    data_2D_INT[i] = data_2D_INT[i] + (imageLeft[i] - imageRight[i]);
+	    data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft[i] - imageRight[i]);
 	  else if ( avgOp == "*" )
-	    data_2D_INT[i] = data_2D_INT[i] + (imageLeft[i] * imageRight[i]);
+	    data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft[i] * imageRight[i]);
 	  else if ( avgOp == "/") {
 	    if (imageRight[i] != 0)
-	      data_2D_INT[i] = data_2D_INT[i] + (imageLeft[i] / imageRight[i]);
+	      data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft[i] / imageRight[i]);
 	  }
 	}
 	success = true;
       }
       else if (sequenceLeft->instrumentType == "DAC" && 
 	       sequenceRight->instrumentType == "DAC") {
-	typeAvg = "DAC";
+	instrumentRef = "DAC";
+	if (reset == true) {
+	  dacValue = 0;
+	}
 	if ( avgOp == "+" ) 
 	  dacValue = dacValue + (sequenceLeft->dacValue + sequenceRight->dacValue);
 	else if ( avgOp == "-" ) 
@@ -207,27 +271,147 @@ AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequen
     }
   }
   else if (sequenceLeft != (AcquisitionSequence *)NULL && sequenceRight == (AcquisitionSequence *)NULL ) {
-		QLOG_DEBUG ( ) << "sequenceLeft not NULL && sequenceRight is NULL";
+    QLOG_DEBUG ( ) << "sequenceLeft not NULL && sequenceRight is NULL";
     if (sequenceLeft->status == true) {
-	QLOG_DEBUG ( ) << "sequenceLeft is true";
+      QLOG_DEBUG ( ) << "sequenceLeft is true";
       if ( sequenceLeft->instrumentType == "CAMERA" ) {
-	typeAvg = "CAMERA";
+	instrumentRef = "CAMERA";
 	uchar *imageLeft = sequenceLeft->getImage();
-	if (image == NULL) {
-	  imageWidth = sequenceLeft->imageWidth;
-	  imageHeight = sequenceLeft->imageHeight;
-	  image = (uchar*) malloc (sizeof(uchar) * imageWidth * imageHeight) ;
-	  memcpy(image,imageLeft,sizeof(uchar) * imageWidth * imageHeight);
+	if (reset == true) {
+	  if (data_2D_FLOAT) {
+	    free(data_2D_FLOAT);
+	    data_2D_FLOAT = NULL;
+	  }
+	  data_2D_FLOAT_DIM_X  = sequenceLeft->imageWidth;
+	  data_2D_FLOAT_DIM_Y = sequenceLeft->imageHeight;
+	  data_2D_FLOAT = (float*) malloc (sizeof(float) * data_2D_FLOAT_DIM_X * data_2D_FLOAT_DIM_Y);
+	  memset(data_2D_FLOAT,0,sizeof(data_2D_FLOAT));
+	  reset = false;
 	}
-	else {
-	  for (int i = 0 ; i < imageWidth * imageHeight; i++)
-	    image[i] = image[i] + imageLeft[i];
-	}
+	for (int i = 0 ; i < data_2D_FLOAT_DIM_X * data_2D_FLOAT_DIM_Y; i++)
+	  data_2D_FLOAT[i] = data_2D_FLOAT[i] + imageLeft[i];
 	success = true;
       }
       else if ( sequenceLeft->instrumentType == "DAC" ) {
-	typeAvg = "DAC";
+	instrumentRef = "DAC";
 	dacValue = dacValue + sequenceLeft->dacValue ;
+	success = true;
+      }
+    }
+  }
+  return success;
+}
+bool
+AcquisitionSequence::setAmplitude(AcquisitionSequence *sequenceLeft, AcquisitionSequence *sequenceRight) {
+  
+  bool success = false;
+  if (sequenceLeft != (AcquisitionSequence *)NULL && sequenceRight != (AcquisitionSequence *)NULL ) {
+    if (sequenceLeft->status == true && sequenceRight->status == true && sequenceLeft->data_2D_FLOAT != NULL
+	&& sequenceRight->data_2D_FLOAT != NULL) {
+      if (sequenceLeft->instrumentType == "TREATMENT" && 
+	  sequenceRight->instrumentType == "TREATMENT") {
+	instrumentRef = "CAMERA";
+	if (reset == true) {
+	  if (data_2D_FLOAT) {
+	    free(data_2D_FLOAT);
+	    data_2D_FLOAT = NULL;
+	  }
+	  if (sequenceLeft->data_2D_FLOAT_DIM_X <= sequenceRight->data_2D_FLOAT_DIM_X)
+	    data_2D_FLOAT_DIM_X = sequenceLeft->data_2D_FLOAT_DIM_X;
+	  else
+	    data_2D_FLOAT_DIM_X = sequenceRight->data_2D_FLOAT_DIM_X;
+	  if (sequenceLeft->data_2D_FLOAT_DIM_Y <= sequenceRight->data_2D_FLOAT_DIM_Y)
+	    data_2D_FLOAT_DIM_Y = sequenceLeft->data_2D_FLOAT_DIM_Y;
+	  else
+	    data_2D_FLOAT_DIM_Y = sequenceRight->data_2D_FLOAT_DIM_Y;
+	  data_2D_FLOAT = (float*) malloc (sizeof(float) * data_2D_FLOAT_DIM_X * data_2D_FLOAT_DIM_Y);
+	  memset(data_2D_FLOAT,0,sizeof(data_2D_FLOAT));
+	  reset = false;
+	}
+	// Amplitude calculation
+	for (int i = 0 ; i < data_2D_FLOAT_DIM_X * data_2D_FLOAT_DIM_Y; i++) {
+	  data_2D_FLOAT[i] = sqrt(sequenceLeft->data_2D_FLOAT[i] * sequenceLeft->data_2D_FLOAT[i] +
+				  sequenceRight->data_2D_FLOAT[i] * sequenceRight->data_2D_FLOAT[i]);
+	}
+      }
+      success = true;
+    }
+  }
+  return success;
+}
+bool
+AcquisitionSequence::setPhase(AcquisitionSequence *sequenceLeft, AcquisitionSequence *sequenceRight) {
+  
+  bool success = false;
+  if (sequenceLeft != (AcquisitionSequence *)NULL && sequenceRight != (AcquisitionSequence *)NULL ) {
+    if (sequenceLeft->status == true && sequenceRight->status == true && sequenceLeft->data_2D_FLOAT != NULL
+	&& sequenceRight->data_2D_FLOAT != NULL) {
+      if (sequenceLeft->instrumentType == "TREATMENT" && 
+	  sequenceRight->instrumentType == "TREATMENT") {
+	instrumentRef = "CAMERA";
+	if (reset == true) {
+	  if (data_2D_FLOAT) {
+	    free(data_2D_FLOAT);
+	    data_2D_FLOAT = NULL;
+	  }
+          if (sequenceLeft->data_2D_FLOAT_DIM_X <= sequenceRight->data_2D_FLOAT_DIM_X)
+	    data_2D_FLOAT_DIM_X = sequenceLeft->data_2D_FLOAT_DIM_X;
+	  else
+	    data_2D_FLOAT_DIM_X = sequenceRight->data_2D_FLOAT_DIM_X;
+	  if (sequenceLeft->data_2D_FLOAT_DIM_Y <= sequenceRight->data_2D_FLOAT_DIM_Y)
+	    data_2D_FLOAT_DIM_Y = sequenceLeft->data_2D_FLOAT_DIM_Y;
+	  else
+	    data_2D_FLOAT_DIM_Y = sequenceRight->data_2D_FLOAT_DIM_Y;
+	  data_2D_FLOAT = (float*) malloc (sizeof(float) * data_2D_FLOAT_DIM_X * data_2D_FLOAT_DIM_Y);
+	  memset(data_2D_FLOAT,0,sizeof(data_2D_FLOAT));
+	  reset = false;
+	}
+	// Phase calculation
+	for (int i = 0 ; i < data_2D_FLOAT_DIM_X * data_2D_FLOAT_DIM_Y; i++) {
+	  data_2D_FLOAT[i] = atan2(sequenceLeft->data_2D_FLOAT[i],sequenceRight->data_2D_FLOAT[i]);
+	}
+      }
+      success = true;
+    }
+  }
+  return success;
+}
+bool
+AcquisitionSequence::setImage(AcquisitionSequence *sequenceLeft) {
+  bool success = false;
+  if (sequenceLeft != (AcquisitionSequence *)NULL && sequenceLeft->data_2D_FLOAT != NULL) {
+    if (sequenceLeft->status == true) {
+      if (sequenceLeft->instrumentType == "TREATMENT") {
+	instrumentRef = "CAMERA";
+	if (reset == true) {
+	  if (image) {
+	    setImage(NULL,0,0,0);
+	  }
+	  imageWidth = sequenceLeft->data_2D_FLOAT_DIM_X;
+	  imageHeight = sequenceLeft->data_2D_FLOAT_DIM_Y;
+	  image = (uchar*) malloc (sizeof(uchar) * imageWidth * imageHeight);
+	  memset(image,0,sizeof(image));
+	  reset = false;
+	}
+	// Calculate data_2D_FLOAT_MIN, data_2D_FLOAT_MAX for 2D array
+	float absmax = -1e37;
+	for (int i = 0 ; i < imageWidth * imageHeight; i++) {
+	  if (sequenceLeft->data_2D_FLOAT[i] > absmax)
+	    absmax = sequenceLeft->data_2D_FLOAT[i];
+	}
+	sequenceLeft->data_2D_FLOAT_MAX = absmax;
+	float absmin = 1e37;
+	for (int i = 0 ; i < imageWidth * imageHeight; i++) {
+	  if (sequenceLeft->data_2D_FLOAT[i] < absmin)
+	    absmin = sequenceLeft->data_2D_FLOAT[i];
+	}
+	sequenceLeft->data_2D_FLOAT_MIN = absmin;
+	QLOG_DEBUG() << "MIN = " << absmin << ": MAX = " << absmax;
+	// Convert 2D data array to image 8bits (0 - 255 range)
+	for (int i = 0 ; i < imageWidth * imageHeight; i++) {
+	  image[i] = (uchar) (( 255 * (sequenceLeft->data_2D_FLOAT[i] - sequenceLeft->data_2D_FLOAT_MIN) ) /
+			      (sequenceLeft->data_2D_FLOAT_MAX - sequenceLeft->data_2D_FLOAT_MIN));
+	}
 	success = true;
       }
     }

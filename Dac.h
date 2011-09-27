@@ -35,9 +35,11 @@ class Dac : public QObject
 
   bool connectDac(QString newdac);
   bool resetDac(QString newdac);
-  bool setDacValue(int output, float value);
+  bool setDacValue(QString newdac, int output, float value);
+  bool updateDBValues(QString newdac);
   void setDbPath(QString _path);
-   // parameters
+  
+  // parameters
   QString path;
 
   public slots:
@@ -52,18 +54,18 @@ class Dac : public QObject
 
   void dbConnexion();
 
-  PTR_T                fd;         /**< The device file descriptor*/
-  PT_AOConfig	   config;         /**< Configurator*/
-  PT_AOVoltageOut    chOutV;        /**< The voltage value structure*/
-  PT_AOCurrentOut    chOutC;        /**< The current value structure*/
-  AORANGESET ao_chan_range;        /**< The channel property structure*/
-  QString   dacSettings;
-  QString   dac;
-  QString mode;
-  float min,max;
-  int outputs;
-  QString fname;
-  bool    connectSuccess;
-  QVector<float> *dacvalues;
+  QVector<PTR_T*>  fd;                /**< The device file descriptor*/
+  QVector<PT_AOConfig*> config;       /**< Configurator*/
+  QVector<PT_AOVoltageOut*> chOutV;   /**< The voltage value structure */
+  QVector<PT_AOCurrentOut*> chOutC;   /**< The current value structure */
+  QVector<AORANGESET*> ao_chan_range; /**< The channel property structure*/
+  QVector<QString> dacSettings;
+  QVector<QString> dac;
+  QVector<QString> mode;
+  QVector<float> min,max;
+  QVector<int> outputs;
+  QVector<QString> fname;
+  QVector<bool>  connectSuccess;
+  QVector< QVector<float>* > dacvalues;
 };
 #endif

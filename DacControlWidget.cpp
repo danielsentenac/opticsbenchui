@@ -121,8 +121,10 @@ void DacControlWidget::getOutputValues(QVector<float> *dacvalues) {
 void
 DacControlWidget::setDacValue(int output) {
   // Get value to be set
+  QString newdac;
   float value;
   value = dacvalueList->at(output)->text().toFloat();
-  dac->setDacValue(output, value);
-  
+  newdac = dacCombo->itemText(dacCombo->currentIndex());
+  dac->setDacValue(newdac,output, value);
+  dac->updateDBValues(newdac);
 }

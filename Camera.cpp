@@ -82,14 +82,20 @@ Camera::Camera(QObject* parent)
   buffer = NULL;
   d = NULL;
   suspend = true;
-  isconnected = false;
+  has_started = false;
+  mutex = new QMutex(QMutex::NonRecursive);
+  acqstart = new QWaitCondition();
+  acqend = new QWaitCondition();
 }
 
 Camera::~Camera()
 {
-  QLOG_DEBUG() << "Deleting Camera";
+  QLOG_INFO() << "Deleting Camera";
   stop();
   cleanup_and_exit();
+  delete mutex;
+  delete acqstart;
+  delete acqend;
 }
 void
 Camera::setCamera(dc1394camera_t* _camera, int _id)
@@ -107,7 +113,7 @@ Camera::getBuffer() {
 void 
 Camera::stop() {
   suspend = true;
-  isconnected = false;
+  has_started = false;
   wait();
   exit();  
 }
@@ -117,7 +123,12 @@ Camera::run() {
   if (camera_err == 0 && suspend == true ) {
     suspend = false;
     while (suspend == false) {
+      QLOG_DEBUG () << " Camera " << id << " : start new Acquisition";
+      acqstart->wakeAll();
       acquireImage();
+      QLOG_DEBUG () << " Camera " << id << " : done";
+      acqend->wakeAll();
+      has_started = true;
     }
     QLOG_DEBUG() << "Camera thread exiting";
   }
@@ -165,7 +176,7 @@ Camera::findCamera() {
      QLOG_ERROR() << "No cameras found";
      return -1;
    }
-   // Allcoate camera list
+   // Allocate camera list
    cameralist = (dc1394camera_t**)malloc(sizeof(dc1394camera_t*) * num);
    for (i = 0 ; i < num; i++) {
      cameralist[i] = dc1394_camera_new (d,list->ids[i].guid);
@@ -251,7 +262,7 @@ Camera::connectCamera() {
   QLOG_INFO() << "Camera " << id << ": ISO Channel " << iso_channel;
   dc1394_get_image_size_from_video_mode(camera, video_mode, 
 					&width, &height);
-  QLOG_DEBUG() << "Image width " << width << " height " << height;
+  QLOG_INFO() << "Image width " << width << " height " << height;
   
   buffer = (uchar*)malloc( sizeof(uchar) * width * height);
 
@@ -299,12 +310,12 @@ Camera::acquireImage() {
 		       "acquireImage> Could not capture a frame"); 
         
     /* copy captured image */
-    memcpy(buffer,frame->image,width * height);
   
+    memcpy(buffer,frame->image,width * height);
     image->loadFromData (buffer,width * height);
     
     // emit acquisition buffer data
-    emit getBufferData(buffer,width,height,video_mode);
+    //emit getBufferData(buffer,width,height,video_mode);
 
     // emit visualisation image
     QImage imagescaled = image->scaled(imageWidth,imageHeight);
