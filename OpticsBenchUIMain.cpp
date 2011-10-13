@@ -61,7 +61,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   acquisitionwidget = new AcquisitionWidget(qdir.currentPath());
   acquisitionwidget->setObjectName("Acquisition");
   connect(this,SIGNAL(setDbPath(QString)),acquisitionwidget,SLOT(setDbPath(QString)));
-
+  connect(this,SIGNAL(setAcqFile(QString)),acquisitionwidget,SLOT(setAcqFile(QString)));
   connect(this,SIGNAL(isopenCameraWindow(QVector<bool>)),
 	  acquisitionwidget,SLOT(isopenCameraWindow(QVector<bool>)));
   connect(acquisitionwidget,SIGNAL(showWarning(QString)),this,
@@ -110,7 +110,8 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   menuOperations->addSeparator();
 
  
-  menuFile->addAction("Open Configuration", this, SLOT(open()) );
+  menuFile->addAction("Open Configuration", this, SLOT(openConfiguration()) );
+  menuFile->addAction("Save Acquisition", this, SLOT(saveAcqFile()) );
   menuFile->addAction("Exit", this, SLOT(close()) );
  
   menuHelp->addAction("Documentation",this,SLOT(showDocumentation()));
@@ -142,12 +143,21 @@ void OpticsBenchUIMain::closeTab(int index)
   tab->removeTab(index);
 }
 
-void OpticsBenchUIMain::open() {
+void OpticsBenchUIMain::openConfiguration() {
   QString path = "";
   path = QFileDialog::getExistingDirectory(this, tr("Open Configuration Location"),
 						   QDir::homePath ());
   if (path != "")
     emit setDbPath(path);
+}
+void OpticsBenchUIMain::saveAcqFile() {
+  QString acqfile = "";
+  acqfile = QFileDialog::getSaveFileName(this, tr("Save Acquisition File in HDF5 format"),
+					  QDir::currentPath ()+ 
+					  QDir::separator() + "Scan",
+					  tr("HDF5 (*.hf5)"));
+  if (acqfile != "")
+    emit setAcqFile(acqfile);
 }
 void OpticsBenchUIMain::showDocumentation()
 {
@@ -252,6 +262,10 @@ OpticsBenchUIMain::showCameraWarning(QString message) {
 void 
 OpticsBenchUIMain::showAcquisitionWarning(QString message) {
   QMessageBox::warning(this, "Acquisition Error:", message);
+}
+void 
+OpticsBenchUIMain::showCameraControlWidgetWarning(QString message) {
+  QMessageBox::warning(this, "CameraControlWidget Error:", message);
 }
 int main(int argc, char *argv[])
 {

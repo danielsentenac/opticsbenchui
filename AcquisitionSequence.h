@@ -71,6 +71,8 @@ class AcquisitionSequence
   int data_2D_FLOAT_DIM_X, data_2D_FLOAT_DIM_Y;
   float data_2D_FLOAT_MIN, data_2D_FLOAT_MAX;
   uchar *image;
+  int   imageMin;
+  int   imageMax;
   int   imageWidth;
   int   imageHeight;
   int   videoMode;
@@ -84,6 +86,8 @@ class AcquisitionSequence
   QString grpname;
 
   void setImage(uchar* buffer, int width, int height, int videomode);
+  void setImageMin(int _imageMin);
+  void setImageMax(int _imageMax);
   bool setImage(AcquisitionSequence *sequenceLeft);
   void prepare();
   uchar* getImage();

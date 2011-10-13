@@ -24,7 +24,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGridLayout>
 #include <QLabel>
 #include <QSignalMapper>
+#include <QFileDialog>
+#include <QPushButton>
 #include "QsLog.h"
+#include "hdf5.h"
+#include "hdf5_hl.h"
 
 class CameraControlWidget : public QWidget
 {
@@ -38,15 +42,20 @@ class CameraControlWidget : public QWidget
   
  signals:
   void setFeature(int position, int value);
-  
+  void showWarning(QString message);
+
   private slots:
   void setFeatureValue(int);
   void updateFeatures();
+  void snapShot();
+  void updateMinMax(int min, int max);
 
  private:
   Camera *camera;
   QVector<QSlider*> featureList;
   QVector<int> featureId;
+  QPushButton *snapshotButton;
+  QLabel *minLabel,*maxLabel;
   QSignalMapper *signalMapper;
 };
 #endif

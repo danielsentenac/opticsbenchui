@@ -56,6 +56,7 @@ class OpticsBenchUIMain : public QMainWindow
  signals:
   void isopenCameraWindow(QVector<bool> isopencamerawindow);
   void setDbPath(QString path);
+  void setAcqFile(QString acqfile);
 
  public slots:
   void openacquisition();
@@ -66,9 +67,12 @@ class OpticsBenchUIMain : public QMainWindow
   void showDacWarning(QString);
   void showMotorWarning(QString);
   void showCameraWarning(QString);
-  void showAcquisitionWarning(QString); 
+  void showCameraControlWidgetWarning(QString);
+  void showAcquisitionWarning(QString);
+ 
   void showDocumentation();
-  void open();
+  void openConfiguration();
+  void saveAcqFile();
   void closeTab(int index);
 
  protected:

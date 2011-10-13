@@ -73,16 +73,12 @@ void
 AcquisitionThread::run() {
   if (suspend == true) {
     suspend = false;
-    
-    // Connect cameras
-   
-    QString fullname = filename + "_" + QString::number(filenumber) + ".h5";
 
     /* create a new data File */
-    file_id = H5Fcreate(fullname.toStdString().c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+    file_id = H5Fcreate(filename.toStdString().c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
     if ( file_id < 0 ) {
-      QLOG_WARN () << "Unable to open file - " << fullname << " - Aborting scan";
-      emit showWarning("Unable to open file - " + fullname + " - Aborting scan");
+      QLOG_WARN () << "Unable to open file - " << filename << " - Aborting scan";
+      emit showWarning("Unable to open file - " + filename + " - Aborting scan");
       return;
     }
     record = 0;
@@ -207,17 +203,15 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       camera->acqend->wait(camera->mutex);
       camera->mutex->unlock();
       QLOG_DEBUG() << " Save Image buffer ";
-      setImageFromCamera(camera->buffer,
+      setImageFromCamera(camera->getSnapshot(),
 			 camera->width,
 			 camera->height,
 			 camera->video_mode);
-      camera->mutex->unlock();
-      /*while (imagesuccess == false) {
-	if (suspend == true) break;
-	usleep(100);
-	}*/     
+      sequence->setImageMin(camera->snapShotMin);
+      sequence->setImageMax(camera->snapShotMax);
       sequence->setImage(imageBuffer,imageWidth, imageHeight, videoMode);
     }
+    
     //emit getCameraStatus(imagesuccess);
     sequence->status = imagesuccess;
   }
@@ -443,6 +437,13 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
     QString video_mode (iidc_video_modes[sequence->videoMode - VIDEO_MODES_OFFSET]);
     status = H5IMmake_image_8bit(sequence->grp,sequence->dataname.toStdString().c_str(),
 				 sequence->imageWidth,sequence->imageHeight,sequence->image);
+    status = H5LTset_attribute_int(sequence->grp, sequence->dataname.toStdString().c_str(), 
+				   "min", 
+				   &sequence->imageMin,1);
+    status = H5LTset_attribute_int(sequence->grp, sequence->dataname.toStdString().c_str(), 
+				   "max", 
+				   &sequence->imageMax,1);
+				   
     
   }
   QLOG_DEBUG() << "AcquisitionThread::saveData> sequence->treatment " << sequence->treatment;

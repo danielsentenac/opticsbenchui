@@ -47,17 +47,17 @@ class Camera : public QThread
   int  findCamera();
   void setCamera(dc1394camera_t* _camera, int _id);
   void getFeatures();
+  uchar* getSnapshot();
   void cleanup_and_exit();
 
-  uchar* getBuffer();
-  QMutex *mutex;
+  QMutex *mutex, *snapshotMutex;
   QWaitCondition *acqstart, *acqend;
   bool has_started;
   
   bool suspend;
   unsigned int           width;
   unsigned int           height;
-  uchar                  *buffer;
+  int                    snapShotMin, snapShotMax,min, max;
   dc1394camera_t         **cameralist; /* Available camera list*/
   dc1394camera_t         *camera;      /* current camera*/
   dc1394featureset_t     features;
@@ -67,10 +67,10 @@ class Camera : public QThread
   int                     id;          /*camera position id in list*/
 
  signals:
-  void  getBufferData(uchar *buffer, int width, int height, int videomode);
   void  getImage(const QImage &image);
   void  showWarning(QString message);
   void  updateFeatures();
+  void  updateMinMax(int min, int max);
 
   public slots:
   void setImageSize(const int &_imageWidth, const int &_imageHeight);
@@ -92,8 +92,10 @@ class Camera : public QThread
   dc1394video_frame_t    *frame;
   static const int frequency = 15; 
   QImage *image;
+  uchar *buffer,*snapshot;
   int imageWidth;
   int imageHeight; 
+  
 };
 
 #endif // CAMERA_H

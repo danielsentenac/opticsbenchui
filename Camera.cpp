@@ -84,6 +84,7 @@ Camera::Camera(QObject* parent)
   suspend = true;
   has_started = false;
   mutex = new QMutex(QMutex::NonRecursive);
+  snapshotMutex = new QMutex(QMutex::Recursive);
   acqstart = new QWaitCondition();
   acqend = new QWaitCondition();
 }
@@ -94,6 +95,7 @@ Camera::~Camera()
   stop();
   cleanup_and_exit();
   delete mutex;
+  delete snapshotMutex;
   delete acqstart;
   delete acqend;
 }
@@ -107,8 +109,13 @@ Camera::setCamera(dc1394camera_t* _camera, int _id)
   getFeatures();
 }
 uchar* 
-Camera::getBuffer() {
-  return buffer;
+Camera::getSnapshot() {
+  snapshotMutex->lock();
+  memcpy(snapshot,buffer,width * height);
+  snapShotMin = min;
+  snapShotMax = max;
+  snapshotMutex->unlock();
+  return snapshot;
 }
 void 
 Camera::stop() {
@@ -265,6 +272,7 @@ Camera::connectCamera() {
   QLOG_INFO() << "Image width " << width << " height " << height;
   
   buffer = (uchar*)malloc( sizeof(uchar) * width * height);
+  snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
 
   image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
   QVector<QRgb> table;
@@ -291,6 +299,7 @@ Camera::cleanup_and_exit()
   dc1394_camera_free(camera);
   if (d) dc1394_free (d);
   if (buffer) { free(buffer); buffer = NULL;}
+  if (snapshot) { free(snapshot); snapshot = NULL;}
   if (image) delete image;
   return;
 }
@@ -310,18 +319,28 @@ Camera::acquireImage() {
 		       "acquireImage> Could not capture a frame"); 
         
     /* copy captured image */
-  
+    snapshotMutex->lock();
     memcpy(buffer,frame->image,width * height);
+    // calculate min,max
+    max = 0;
+    for (unsigned int i = 0 ; i < width * height; i++) {
+      if (buffer[i] > max)
+	max = buffer[i];
+    }
+    min = 255;
+    for (unsigned int i = 0 ; i < width * height; i++) {
+      if (buffer[i] < min)
+	min = buffer[i];
+    }
+    snapshotMutex->unlock();
     image->loadFromData (buffer,width * height);
-    
-    // emit acquisition buffer data
-    //emit getBufferData(buffer,width,height,video_mode);
 
     // emit visualisation image
     QImage imagescaled = image->scaled(imageWidth,imageHeight);
     QImage imagergb32 =  imagescaled.convertToFormat(QImage::Format_ARGB32_Premultiplied);
 
     emit getImage(imagergb32);
+    emit updateMinMax(min, max);
   /*-----------------------------------------------------------------------
      * release frame
      *-----------------------------------------------------------------------*/

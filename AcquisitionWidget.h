@@ -55,6 +55,7 @@ class AcquisitionWidget : public QWidget
   void getFilenumber(int number);
   void isopenCameraWindow(QVector<bool> isopencamerawindow);
   void setDbPath(QString _path);
+  void setAcqFile(QString _acqfile);
   void showAcquisitionWarning(QString);
 
  private:
@@ -63,10 +64,8 @@ class AcquisitionWidget : public QWidget
   Dac    *dac;
 
   QString         path;
-  QLabel         *fileLabel;
-  QLabel         *filenumberLabel;
-  QLineEdit      *filename;
-  QLineEdit      *filenumber;
+  QString         acqfile;
+  QString        filenumber;
   QLabel         *statusLabel;
   QLabel         *acquisitiontitle;
   QSqlTableModel *acquisitiontable;

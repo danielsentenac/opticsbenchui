@@ -21,6 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 AcquisitionWidget::AcquisitionWidget(QString _appDirPath)
 {
   path = _appDirPath;
+  acqfile = "Scan";
+  filenumber = "0";
   // Connect database
   dbConnexion();
  
@@ -49,18 +51,6 @@ AcquisitionWidget::AcquisitionWidget(QString _appDirPath)
   QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(remove()));
   gridlayout->addWidget(removeButton,2,1,1,1);
   
-  fileLabel = new QLabel("Save in File Name :");
-  gridlayout->addWidget(fileLabel,3,2,1,1);
-  filename  = new QLineEdit("Scan");
-  filename->setFixedWidth(300);
-  gridlayout->addWidget(filename,4,2,1,1);
-  filenumberLabel = new QLabel("File Number :");
-  gridlayout->addWidget(filenumberLabel,4,3,1,1);
-  filenumber = new QLineEdit("0");
-  filenumber->setFixedWidth(30);
-  gridlayout->addWidget(filenumber,4,4,1,1);
-
-
   runButton = new QPushButton("Run",this);
   runButton->setFixedHeight(30);
   runButton->setFixedWidth(100);
@@ -106,6 +96,11 @@ AcquisitionWidget::~AcquisitionWidget()
   }
   QSqlDatabase::removeDatabase(path);
   QLOG_DEBUG ( ) << "Deleting AcquisitionWidget";
+}
+void AcquisitionWidget::setAcqFile(QString _acqfile) {
+  acqfile = _acqfile;
+  // reset file number
+  filenumber = "0";
 }
 void AcquisitionWidget::setDbPath(QString _path) {
   
@@ -212,7 +207,8 @@ AcquisitionWidget::run(){
     sequence->prepare();
     }
   // Set File name and number from widget
-  acquisition->setFile(filename->text(),filenumber->text().toInt());
+  QString filepath = acqfile + "_" + filenumber + ".h5";
+  acquisition->setFile(filepath,filenumber.toInt());
   acquisition->setCamera(cameraList);
   acquisition->setMotor(motor);
   acquisition->setDac(dac);
@@ -314,7 +310,7 @@ void AcquisitionWidget::getAcquiring(int record) {
   cur_record = seq_record;   
 }
 void AcquisitionWidget::getFilenumber(int number) {
-  filenumber->setText(QString::number(number));
+  filenumber = QString::number(number);
 }
 void 
 AcquisitionWidget::isopenCameraWindow(QVector<bool> isopencamerawindow) {

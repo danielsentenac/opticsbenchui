@@ -73,6 +73,15 @@ AcquisitionSequence::setImage(uchar* buffer, int width, int height, int videomod
     memcpy(image,buffer,sizeof(uchar) * imageWidth * imageHeight);
   }
 }
+void AcquisitionSequence::setImageMin(int _imageMin)
+{
+  imageMin = _imageMin;
+
+}
+void AcquisitionSequence::setImageMax(int _imageMax)
+{
+  imageMax = _imageMax;
+}
 uchar*
 AcquisitionSequence::getImage() {
  return image;
