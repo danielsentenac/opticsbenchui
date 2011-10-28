@@ -155,6 +155,24 @@ Camera::setFeature(int feature, int value) {
   }
 }
 void
+Camera::setMode(int feature, bool value) {
+  for (int i = 0 ; i < DC1394_FEATURE_NUM ; i++) {
+    if (feature == i) {
+      /*Set camera feature mode*/
+      QLOG_DEBUG() << "SetMode> Change feature mode" << iidc_features[feature] << " to " << value;
+      if (value == true )
+	err = dc1394_feature_set_mode(camera,
+				      features.feature[i].id,
+				      DC1394_FEATURE_MODE_MANUAL);
+      else
+	err = dc1394_feature_set_mode(camera,
+				      features.feature[i].id,
+				      DC1394_FEATURE_MODE_AUTO);
+      break;
+    }
+  }
+}
+void
 Camera::getFeatures() {
   /*-----------------------------------------------------------------------
    *  report camera's features
@@ -168,6 +186,7 @@ Camera::getFeatures() {
   }
   emit updateFeatures();
 }
+
 int 
 Camera::findCamera() {
    int i;
@@ -340,7 +359,8 @@ Camera::acquireImage() {
     QImage imagergb32 =  imagescaled.convertToFormat(QImage::Format_ARGB32_Premultiplied);
 
     emit getImage(imagergb32);
-    emit updateMinMax(min, max);
+    emit updateMin(min);
+    emit updateMax(max);
   /*-----------------------------------------------------------------------
      * release frame
      *-----------------------------------------------------------------------*/

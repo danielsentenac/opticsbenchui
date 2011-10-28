@@ -70,12 +70,14 @@ class Camera : public QThread
   void  getImage(const QImage &image);
   void  showWarning(QString message);
   void  updateFeatures();
-  void  updateMinMax(int min, int max);
+  void  updateMin(int min);
+  void  updateMax(int max);
+  
 
   public slots:
   void setImageSize(const int &_imageWidth, const int &_imageHeight);
   void setFeature(int feature, int value);
-  
+  void setMode(int feature, bool value);
 
  protected:
   virtual void run();

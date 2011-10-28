@@ -26,6 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QSignalMapper>
 #include <QFileDialog>
 #include <QPushButton>
+#include <QCheckBox>
+#include <QLCDNumber>
 #include "QsLog.h"
 #include "hdf5.h"
 #include "hdf5_hl.h"
@@ -42,20 +44,24 @@ class CameraControlWidget : public QWidget
   
  signals:
   void setFeature(int position, int value);
+  void setMode(int position, bool value);
   void showWarning(QString message);
 
   private slots:
   void setFeatureValue(int);
+  void setModeValue(int);
+
   void updateFeatures();
   void snapShot();
-  void updateMinMax(int min, int max);
 
  private:
   Camera *camera;
   QVector<QSlider*> featureList;
+  QVector<QLabel*> absvalueList;
+  QVector<QCheckBox*> modeList;
   QVector<int> featureId;
   QPushButton *snapshotButton;
   QLabel *minLabel,*maxLabel;
-  QSignalMapper *signalMapper;
+  QSignalMapper *featureMapper,*modeMapper;
 };
 #endif

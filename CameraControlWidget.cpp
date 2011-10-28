@@ -24,10 +24,11 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   camera = _camera;
 
   connect(this,SIGNAL(setFeature(int,int)),camera,SLOT(setFeature(int,int)));
+  connect(this,SIGNAL(setMode(int,bool)),camera,SLOT(setMode(int,bool)));
   connect(camera,SIGNAL(updateFeatures()),this,SLOT(updateFeatures()));
-  connect(camera,SIGNAL(updateMinMax(int,int)),this,SLOT(updateMinMax(int,int)));
-
-  signalMapper = new QSignalMapper(this);
+ 
+  featureMapper = new QSignalMapper(this);
+  modeMapper = new QSignalMapper(this);
 
   QGridLayout *layout = new QGridLayout(this);
   
@@ -37,29 +38,63 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
       
       QLabel *featureName = new QLabel(iidc_features[i]);
       QSlider *featureSlider = new QSlider();
+      QLCDNumber *slidervalue = new  QLCDNumber();
+      QLabel *absValue = new QLabel("-");
+      slidervalue->setSegmentStyle(QLCDNumber::Flat);
       featureSlider->setMinimum(camera->features.feature[i].min);
       featureSlider->setMaximum(camera->features.feature[i].max);
+      connect( featureSlider, SIGNAL( valueChanged( int ) ), slidervalue, SLOT( display( int ) ) );
       featureList.push_back(featureSlider);
+      absvalueList.push_back(absValue);
       featureId.push_back(i);
-      connect( featureSlider, SIGNAL(valueChanged(int)), signalMapper, SLOT(map()));
-      signalMapper->setMapping(featureSlider, featureList.size() - 1 );
-      
+      QCheckBox *modeCheck = new QCheckBox();
+      modeList.push_back(modeCheck);
+      /* if (camera->features.feature[i].on_off_capable == DC1394_FALSE) {
+	modeCheck->setDisabled(true);
+	}*/
+      connect( featureSlider, SIGNAL(valueChanged(int)), featureMapper, SLOT(map()));
+      connect( modeCheck, SIGNAL(stateChanged(int)), modeMapper, SLOT(map()));
+
+      featureMapper->setMapping(featureSlider, featureList.size() - 1 );
+      modeMapper->setMapping(modeCheck, modeList.size() - 1 );
+
       layout->addWidget(featureName,0,i,1,1);
       layout->addWidget(featureSlider,1,i,1,1);
+      layout->addWidget(slidervalue,2,i,1,1);
+      layout->addWidget(modeCheck,3,i,1,1);
+      layout->addWidget(absValue,4,i,1,1);
+      if (camera->features.feature[i].current_mode == DC1394_FEATURE_MODE_AUTO) {
+	featureSlider->setBackgroundRole(QPalette::Foreground);
+	featureSlider->setDisabled(true);
+	modeCheck->setChecked(false);
+      }
+      else
+	modeCheck->setChecked(true);
       QLOG_DEBUG() << " Feature slider added : " <<  iidc_features[i];
     }  
   }
-  connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(setFeatureValue(int)));
+  connect(featureMapper, SIGNAL(mapped(int)),this, SLOT(setFeatureValue(int)));
+  connect(modeMapper, SIGNAL(mapped(int)),this, SLOT(setModeValue(int)));
 
-  minLabel = new QLabel("min:");
+  QLabel *minLabel = new QLabel("min:");
+  QLCDNumber *minValue = new  QLCDNumber();
+  minValue->setSegmentStyle(QLCDNumber::Flat);
   layout->addWidget(minLabel,0,DC1394_FEATURE_NUM,1,1,Qt::AlignCenter);
-  maxLabel = new QLabel("max:");
+  layout->addWidget(minValue,0,DC1394_FEATURE_NUM+1,1,1,Qt::AlignCenter);
+  connect(camera,SIGNAL(updateMin(int)),minValue,SLOT(display(int)));
+   
+  QLabel *maxLabel = new QLabel("max:");
+  QLCDNumber *maxValue = new  QLCDNumber();
+  maxValue->setSegmentStyle(QLCDNumber::Flat);
   layout->addWidget(maxLabel,1,DC1394_FEATURE_NUM,1,1,Qt::AlignTop | Qt::AlignCenter);
+  layout->addWidget(maxValue,1,DC1394_FEATURE_NUM+1,1,1,Qt::AlignTop | Qt::AlignCenter);
+  connect(camera,SIGNAL(updateMax(int)),maxValue,SLOT(display(int)));
+
   snapshotButton = new QPushButton("Snapshot",this);
   snapshotButton->setFixedHeight(30);
   snapshotButton->setFixedWidth(80);
   QObject::connect(snapshotButton, SIGNAL(clicked()), this, SLOT(snapShot()));
-  layout->addWidget(snapshotButton,1,DC1394_FEATURE_NUM,1,1,Qt::AlignCenter);
+  layout->addWidget(snapshotButton,2,DC1394_FEATURE_NUM,1,2,Qt::AlignJustify);
   setLayout(layout);
   this->setMinimumHeight(130);
 
@@ -72,11 +107,14 @@ void
 CameraControlWidget::snapShot() {
   
   // Open File
+  
   QString filename = QFileDialog::getSaveFileName(this, tr("Save File in HDF5 format"),
 						  QDir::currentPath ()+ 
 						  QDir::separator() + "untitled.h5",
 						  tr("HDF5 (*.h5)"));
-  hid_t file_id = H5Fcreate(filename.toStdString().c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+  if (filename == "") return;
+  hid_t file_id = H5Fcreate(filename.toStdString().c_str(), 
+			    H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
   if ( file_id < 0 ) {
     QLOG_WARN () << "Unable to open file - " << filename ;
     emit showWarning("Unable to open file - " + filename );
@@ -98,8 +136,29 @@ CameraControlWidget::setFeatureValue(int position) {
   QSlider *featureSlider = featureList.at(position);
   QLOG_DEBUG() << " Feature emitting !" ;
   emit setFeature(featureId.at(position),featureSlider->value());
+  camera->getFeatures();
 }
-
+void
+CameraControlWidget::setModeValue(int position) {
+  
+  QCheckBox *modeCheck = modeList.at(position);
+  QSlider *featureSlider = featureList.at(position);
+  if (modeCheck->isEnabled() == true) {
+    if (modeCheck->isChecked() == true) {
+      QLOG_DEBUG() << " Mode change to true emitting !" ;
+      emit setMode(featureId.at(position),modeCheck->isChecked());
+      featureSlider->setDisabled(false);
+      featureSlider->setBackgroundRole(QPalette::Window);
+    }
+    else {
+      QLOG_DEBUG() << " Mode change to false emitting !" ;
+      emit setMode(featureId.at(position),modeCheck->isChecked());
+      featureSlider->setDisabled(true);
+      featureSlider->setBackgroundRole(QPalette::Foreground);
+    }
+  }
+  camera->getFeatures();
+}
 void CameraControlWidget::updateFeatures() {
  
   
@@ -110,10 +169,10 @@ void CameraControlWidget::updateFeatures() {
     QLOG_DEBUG ( ) << "CameraControlWidget::update features " 
 		   << iidc_features[id] << " : "
 		   << camera->features.feature[id].value;
+    QLabel *absValue = absvalueList.at(i);
+    float value;
+    if ( camera->features.feature[id].absolute_capable )
+      absValue->setNum(camera->features.feature[id].abs_value);
   }
 }
-void
-CameraControlWidget::updateMinMax(int min, int max) {
-  minLabel->setText("min:" + QString::number(min));
-  maxLabel->setText("max:" + QString::number(max));
-}
+

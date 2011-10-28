@@ -290,6 +290,7 @@ int main(int argc, char *argv[])
   QLOG_INFO() << " Qt User Data location : " 
               << QDesktopServices::storageLocation(QDesktopServices::DataLocation); 
   OpticsBenchUIMain* OpticsBenchUI = new OpticsBenchUIMain(app.applicationDirPath(),NULL,NULL);
+  OpticsBenchUI->setWindowTitle("Tests & Measurements");
   OpticsBenchUI->show();
   return app.exec();
 }
