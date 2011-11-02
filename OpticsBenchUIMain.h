@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "AnalysisWidget.h"
 #include "Dac.h"
 #include "Motor.h"
-#include "Camera.h"
+#include "CameraIEEE1394.h"
 #include "QsLog.h"
 #include "QsLogDest.h"
 #include "Assistant.h"
@@ -91,7 +91,9 @@ class OpticsBenchUIMain : public QMainWindow
   AnalysisWidget *analysiswidget;
   Dac      *dac;
   Motor    *motor;
-  Camera   *cameraMgr;
+  Camera   *cameraIEEE1394Mgr;
+  Camera   *cameraGiGEMgr;
+  Camera   *cameraCameraLinkMgr;
   QVector<Camera*> cameraList;
   QVector<CameraWindow*> camerawindowList;
 

@@ -1,2 +1,21 @@
-0.8
-Update Camera features display: adding auto/man modes and absolute values
+ver. 0.6 25/09/2011 
+1- improve acquisition speed in DAC/SNAPSHOT sequences 
+   --> look after image transfer between threads
+   --> look after image writing elapsed time
+   --> look after DAC output value DB updates  :  remove DB update during acquisition
+   --> Add mutex and thread condition for image SNAPSHOT key
+2- add TREATMENT for image phase and amplitude calculation and 2D array to image conversion :
+   new keys PHASE, AMPLITUDE and IMAGE
+3- add multiple Dac and multiple Motor management from Acquisition panel
+
+ver. 0.7 30/09/2011 
+1-  Add SNAPSHOT button in CameraControlWidget
+2-  Add Dialog window in OpticsBenchUIMain for File Acquisition management
+3-  Add Image min and max real time view in CameraControlWidget, saved in SNAPSHOT File and Acquisition
+
+ver. 0.8 28/10/2011
+1-  Add AUTO/MAN control & absolute feature value in CameraControlWidget
+
+ver. 0.9 
+1-  Add interface definition Camera.h to new class CameraIEEE1394.h
+

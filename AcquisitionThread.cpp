@@ -32,7 +32,6 @@ static double GetTime( void ) {
 AcquisitionThread::AcquisitionThread( QObject* parent)
 	      :QThread(parent)
 {
-  imageBuffer = NULL;
   suspend = true;
 }
 
@@ -85,7 +84,8 @@ AcquisitionThread::run() {
     int lastrecord = sequenceList.size();
     QLOG_DEBUG() << "AcquisitionThread::run> Number of sequences " << lastrecord;
     // run acquisition sequence
-    QLOG_INFO() << " Start Acquisition : " << QDateTime::currentDateTime().toString("MMMdd,yy-hh:mm:ss");
+    QLOG_INFO() << " Start Acquisition : " 
+		<< QDateTime::currentDateTime().toString("MMMdd,yy-hh:mm:ss");
     emit getAcquiring(record);
     while ( record < lastrecord ) {
       AcquisitionSequence *sequence = sequenceList.at(record);
@@ -102,9 +102,11 @@ AcquisitionThread::run() {
       if ( H5Fflush(file_id,H5F_SCOPE_GLOBAL) < 0)
 	QLOG_WARN() << " File flushing failed !";
       H5garbage_collect();
-      QLOG_DEBUG() << "Sequence " << sequence->seq_record << ": etime = " << (int)sequence->etime;
+      QLOG_DEBUG() << "Sequence " << sequence->seq_record 
+		   << ": etime = " << (int)sequence->etime;
     }
-    QLOG_INFO() << " Stop Acquisition : " << QDateTime::currentDateTime().toString("MMMdd,yy-hh:mm:ss");
+    QLOG_INFO() << " Stop Acquisition : " 
+		<< QDateTime::currentDateTime().toString("MMMdd,yy-hh:mm:ss");
     emit getAcquiring(record);
     filenumber++;
     emit getFilenumber(filenumber);
@@ -190,27 +192,26 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     if (cameraList.size() > cameranumber) {
       Camera *camera = cameraList.at(cameranumber);
       if (camera->suspend == true)  {
-        QLOG_DEBUG() << "OPEN CAMERA START";
+        QLOG_INFO() << "OPEN CAMERA " << cameranumber;
 	camera->start();
         while (camera->has_started == false)
 	  usleep(100);
       }
-      QLOG_DEBUG() << " Wait for Image Acquisition ";
+      QLOG_INFO() << " Wait for Image Acquisition ";
       camera->mutex->lock();
       camera->acqstart->wait(camera->mutex);
       camera->mutex->unlock();
       camera->mutex->lock();
       camera->acqend->wait(camera->mutex);
       camera->mutex->unlock();
-      QLOG_DEBUG() << " Save Image buffer ";
-      setImageFromCamera(camera->getSnapshot(),
-			 camera->width,
-			 camera->height,
-			 camera->video_mode);
+      QLOG_INFO() << " Save Image buffer in sequence";
       sequence->setImageMin(camera->snapShotMin);
       sequence->setImageMax(camera->snapShotMax);
-      sequence->setImage(imageBuffer,imageWidth, imageHeight, videoMode);
+      sequence->setImage(camera->getSnapshot(),camera->width,camera->height,camera->video_mode);
+      imagesuccess = true;
     }
+    else
+      QLOG_WARN() << "CAMERA number not exists..";
     
     //emit getCameraStatus(imagesuccess);
     sequence->status = imagesuccess;
@@ -254,7 +255,8 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
 void AcquisitionThread::nextRecord(AcquisitionSequence *sequence, int cur_record) {
   
   if ( sequence->loopAction == "LOOP" && sequence->loopEndAction == "END" ) {
-    QLOG_DEBUG() << "AcquisitionThread::nextRecord> End of loop at record " << cur_record << " loopAction "
+    QLOG_DEBUG() << "AcquisitionThread::nextRecord> End of loop at record " 
+		 << cur_record << " loopAction "
 		 << sequence->loopAction << " loopNumber " <<  sequence->loopNumber
 		 << " instrument " << sequence->instrumentType << ":" << sequence->instrumentName;
     
@@ -389,8 +391,8 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
   }
  
   if (sequence->datagroup != "") {
-    QLOG_DEBUG() << "AcquisitionThread::saveData> Open new group " << sequence->datagroup << " in " << sequence->grpname << "(" 
-		<< sequence->tmpgrp << ")";
+    QLOG_DEBUG() << "AcquisitionThread::saveData> Open new group " << sequence->datagroup 
+		 << " in " << sequence->grpname << "(" << sequence->tmpgrp << ")";
     // Create new sub group
     sequence->grpname = sequence->group;
     sequence->grp = H5Gopen2(sequence->tmpgrp, sequence->grpname.toStdString().c_str(), 
@@ -434,7 +436,6 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
     dset_dims[0] = sequence->imageWidth;
     dset_dims[1] = sequence->imageHeight;
     /* create and write an double type dataset named "dset" */
-    QString video_mode (iidc_video_modes[sequence->videoMode - VIDEO_MODES_OFFSET]);
     status = H5IMmake_image_8bit(sequence->grp,sequence->dataname.toStdString().c_str(),
 				 sequence->imageWidth,sequence->imageHeight,sequence->image);
     status = H5LTset_attribute_int(sequence->grp, sequence->dataname.toStdString().c_str(), 
@@ -452,7 +453,8 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
       // Check parent group and save average in grand parent group
       QLOG_DEBUG() << "AcquisitionThread::saveData> Save avergage data remainingLoops " 
 		   << parentSequence->remainingLoops;
-      if ( sequence->treatment == "AVG" && parentSequence->remainingLoops == 1 && grandparentSequence != NULL) {
+      if ( sequence->treatment == "AVG" && parentSequence->remainingLoops == 1 
+	   && grandparentSequence != NULL) {
 	if (sequence->instrumentRef == "CAMERA" && treatmentsuccess == true) {
 	  hsize_t dset_dims[2];
 	  dset_dims[0] = sequence->data_2D_FLOAT_DIM_Y;
@@ -460,7 +462,8 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
 	  // Average data
 	  for (int i = 0 ; i < sequence->data_2D_FLOAT_DIM_X * sequence->data_2D_FLOAT_DIM_Y; i++)
 	    sequence->data_2D_FLOAT[i] /= parentSequence->loopNumber;
-	  status = H5LTmake_dataset_float(grandparentSequence->grp,sequence->dataname.toStdString().c_str(),
+	  status = H5LTmake_dataset_float(grandparentSequence->grp,
+					  sequence->dataname.toStdString().c_str(),
 					  2,dset_dims,sequence->data_2D_FLOAT);
 	  // reset sequence data
 	  sequence->reset =true;
@@ -510,19 +513,5 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
 	}
       }
     }
-  }
-}
-void AcquisitionThread::setImageFromCamera(uchar *buffer, int width, int height, int videomode) {
-  if (imagesuccess == false) {
-    QString video_mode (iidc_video_modes[videomode - VIDEO_MODES_OFFSET]);
-    QLOG_DEBUG() << " Video Mode : " << videomode<< " : " << video_mode;
-    imageWidth = width;
-    imageHeight = height;
-    videoMode = videomode;
-    if (imageBuffer) { free (imageBuffer); imageBuffer = NULL;}
-    imageBuffer = (uchar*)malloc(sizeof(uchar)*imageWidth*imageHeight);
-    memcpy(imageBuffer,buffer,width * height);
-    QLOG_DEBUG() << "AcquisitionThread::setImageFromCamera> Caught snapshot image";
-    imagesuccess = true;
   }
 }

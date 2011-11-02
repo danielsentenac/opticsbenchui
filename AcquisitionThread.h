@@ -47,6 +47,7 @@ class AcquisitionThread : public QThread
   void saveData(AcquisitionSequence *sequence, int cur_record);
   void setSequenceList(QVector<AcquisitionSequence*> _sequenceList);
   void stop();
+  
 
  signals:
   void getPosition(QString positionQString);
@@ -58,13 +59,11 @@ class AcquisitionThread : public QThread
   void getFilenumber(int number);
   void showWarning(QString message);
 
-  private slots:
-  void setImageFromCamera(uchar*, int, int, int);
-
  protected:
   virtual void run();
 
  private:
+  void setImageFromCamera(uchar*, int, int, int);
 
   QVector<Camera*> cameraList;
   int    record;
@@ -72,13 +71,8 @@ class AcquisitionThread : public QThread
   Dac    *dac;
   bool   dacsuccess;
   bool   imagesuccess;
-  bool   treatmentsuccess;
-  uchar* imageBuffer;
-  int    imageWidth;
-  int    imageHeight;
-  int    videoMode;
-  
-  bool suspend;
+  bool   treatmentsuccess;  
+  bool   suspend;
 
   // Data File
   hid_t   file_id;

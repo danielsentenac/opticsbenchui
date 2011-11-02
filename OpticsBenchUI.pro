@@ -11,7 +11,7 @@ DEFINES += QT_NO_DEBUG_OUTPUT
 
 # Input
 HEADERS += OpticsBenchUIMain.h \
-Camera.h VideoPlayer.h VideoWidget.h VideoWidgetSurface.h CameraWindow.h CameraControlWidget.h \
+Camera.h CameraIEEE1394.h VideoPlayer.h VideoWidget.h VideoWidgetSurface.h CameraWindow.h CameraControlWidget.h \
 DacWindow.h DacControlWidget.h Dac.h \
 MotorWindow.h MotorControlWidget.h Motor.h \
 DriverDefinition.h Driver.h DriverNewFocus_8750_Cl.h DriverNewFocus_8750_Ol.h DriverNewPort_NSC200.h \
@@ -20,8 +20,8 @@ AcquisitionWidget.h AcquisitionThread.h AcquisitionSequence.h AnalysisWidget.h \
 QsLog.h QsDebugOutput.h QsLogDest.h Assistant.h 
 
 SOURCES += OpticsBenchUIMain.cpp \
-Camera.cpp VideoPlayer.cpp VideoWidget.cpp VideoWidgetSurface.cpp CameraWindow.cpp CameraControlWidget.cpp \
-DacWindow.cpp DacControlWidget.cpp Dac.cpp \
+CameraIEEE1394.cpp VideoPlayer.cpp VideoWidget.cpp VideoWidgetSurface.cpp CameraWindow.cpp \
+CameraControlWidget.cpp DacWindow.cpp DacControlWidget.cpp Dac.cpp \
 MotorWindow.cpp MotorControlWidget.cpp  Motor.cpp \
 Driver.cpp DriverNewFocus_8750_Cl.cpp DriverNewFocus_8750_Ol.cpp DriverNewPort_NSC200.cpp \
 DriverPi_C509.cpp DriverMicos_Pollux.cpp DriverPi_C862.cpp ACCom.cpp ACEthCom.cpp ACRSCom.cpp \

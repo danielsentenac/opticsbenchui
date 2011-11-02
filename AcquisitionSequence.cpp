@@ -63,12 +63,12 @@ AcquisitionSequence::~AcquisitionSequence()
     if (data_2D_FLOAT) { free(data_2D_FLOAT); data_2D_FLOAT = NULL;}
 }
 void 
-AcquisitionSequence::setImage(uchar* buffer, int width, int height, int videomode) {
+AcquisitionSequence::setImage(uchar* buffer, int width, int height, int video_mode) {
   if (image) { free(image); image = NULL;}
   if (buffer != NULL) {
     imageWidth = width;
     imageHeight = height;
-    videoMode = videomode;
+    videoMode = video_mode;
     image = (uchar*) malloc (sizeof(uchar) * imageWidth * imageHeight);
     memcpy(image,buffer,sizeof(uchar) * imageWidth * imageHeight);
   }

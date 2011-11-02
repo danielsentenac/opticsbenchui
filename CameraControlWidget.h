@@ -56,10 +56,9 @@ class CameraControlWidget : public QWidget
 
  private:
   Camera *camera;
-  QVector<QSlider*> featureList;
-  QVector<QLabel*> absvalueList;
-  QVector<QCheckBox*> modeList;
-  QVector<int> featureId;
+  QVector<QSlider*> featureSliderList;
+  QVector<QLabel*> absValueLabelList; 
+  QVector<QCheckBox*> modeCheckBoxList;
   QPushButton *snapshotButton;
   QLabel *minLabel,*maxLabel;
   QSignalMapper *featureMapper,*modeMapper;

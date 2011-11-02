@@ -85,7 +85,7 @@ class AcquisitionSequence
   hid_t   refgrp,grp,tmpgrp;
   QString grpname;
 
-  void setImage(uchar* buffer, int width, int height, int videomode);
+  void setImage(uchar* buffer, int width, int height, int video_mode);
   void setImageMin(int _imageMin);
   void setImageMax(int _imageMax);
   bool setImage(AcquisitionSequence *sequenceLeft);

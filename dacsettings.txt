@@ -1,1 +1,0 @@
-DAC0 address=/dev/advdaq0 mode=CURRENT outputs=32 max=20 min=0 Advantech Dac board DAC0

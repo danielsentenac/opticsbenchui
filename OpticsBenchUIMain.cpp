@@ -43,18 +43,21 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   connect(motor,SIGNAL(showWarning(QString)),this,SLOT(showMotorWarning(QString)));
   motorwindow = new MotorWindow(this,Qt::Window,motor);
   connect(this,SIGNAL(setDbPath(QString)),motorwindow,SLOT(setDbPath(QString)));
+  
   //
-  // Create Camera manager
+  // Create IEEE1394 Camera manager
   //
- 
-  cameraMgr = new Camera();
-  cameraMgr->findCamera();
-  for (int i = 0 ; i < cameraMgr->num; i++) {
-    Camera *camera = new Camera();
-    camera->setCamera(cameraMgr->cameralist[i],i);
+  cameraIEEE1394Mgr = new CameraIEEE1394();
+  cameraIEEE1394Mgr->findCamera();
+  QLOG_INFO() << "Found " <<  cameraIEEE1394Mgr->num << " IEEE1394 camera";
+  
+  for (int i = 0 ; i < cameraIEEE1394Mgr->num; i++) {
+    Camera *camera = new CameraIEEE1394();
+    camera->setCamera(cameraIEEE1394Mgr->cameralist.at(i),i);
     cameraList.push_back(camera);
     isopencamerawindow.push_back(false);
     camerawindowList.push_back(NULL);
+  
   }
   analysiswidget = new AnalysisWidget();
   analysiswidget->setObjectName("Analysis");
@@ -118,10 +121,10 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
 
   menuOperations->addAction("Acquisition", this, SLOT(openacquisition()));
   menuOperations->addAction("Analysis", this, SLOT(openanalysis()) );
-
-  for (int i = 0 ; i < cameraMgr->num; i++) {
-    QString selectedCamera = QString(cameraMgr->cameralist[i]->vendor) + " / " + 
-      QString(cameraMgr->cameralist[i]->model);
+ 
+  for (int i = 0 ; i < cameraIEEE1394Mgr->num; i++) {
+    QString selectedCamera = QString(cameraIEEE1394Mgr->vendorlist.at(i)) + " / " + 
+      QString(cameraIEEE1394Mgr->modelist.at(i));
     QAction *action = new QAction(selectedCamera, this);
     menuInstruments->addAction(action);
     connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));

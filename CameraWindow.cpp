@@ -33,7 +33,8 @@ CameraWindow::CameraWindow( QMainWindow* parent, Qt::WFlags fl , Camera *_camera
   this->set480x320();
  
   if (camera->camera_err == 0) { 
-    connect(this,SIGNAL(setVideoPlayerResolution(int,int)),player,SLOT(setVideoPlayerResolution(int,int)));
+    connect(this,SIGNAL(setVideoPlayerResolution(int,int)),player,
+	    SLOT(setVideoPlayerResolution(int,int)));
     
     //this->setCentralWidget(player);
     
@@ -59,8 +60,8 @@ CameraWindow::CameraWindow( QMainWindow* parent, Qt::WFlags fl , Camera *_camera
     dockWidget->setWidget(cameraWidget);
     this->addDockWidget(Qt::BottomDockWidgetArea, dockWidget);
     
-    this->setWindowTitle(QString(player->camera->camera->vendor) + " / " + 
-			 QString(player->camera->camera->model));
+    this->setWindowTitle(QString(player->camera->vendor) + " / " + 
+			 QString(player->camera->model));
   }
   else
     this->setWindowTitle(tr("No Camera found"));
