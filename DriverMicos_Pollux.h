@@ -75,7 +75,7 @@ class DriverMicos_Pollux : public Driver
                      string  actuatorSetting,
                      DriverDefinition::ADLimitSwitch& rlimitSwitch) const;
     virtual int GetActuatorFeature(
-       DriverDefinition::ADActuatorFeature& ractuatorFeature) const;
+       DriverDefinition::DriverFeature& ractuatorFeature) const;
     virtual int ConvertUnit(int unit, 
                             float valueToConvert, 
                             float& rconvertedValue,
@@ -86,7 +86,7 @@ class DriverMicos_Pollux : public Driver
     static const int MAX_DEVICES; 
     static const int NB_ITEM_INIT_SETTING;
     static const int NB_ITEM_DRV_SETTING;
-    static const DriverDefinition::ADActuatorFeature MICOS_POLLUX_FEATURE; 
+    static const DriverDefinition::DriverFeature MICOS_POLLUX_FEATURE; 
                                               // Micos_Pollux features
 
     int SendAddressCode() const;

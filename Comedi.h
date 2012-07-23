@@ -14,50 +14,41 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
-#ifndef DACCONTROLWIDGET_H
-#define DACCONTROLWIDGET_H
 
-#include "Dac.h"
+#ifndef COMEDI_H
+#define COMEDI_H
 
 #include <QtSql>
 #include <QtGui>
 #include "QsLog.h"
 
-
-typedef QVector<float> floatVector;
-
-class DacControlWidget : public QWidget
+class Comedi : public QObject
 {
   Q_OBJECT
     
     public:
-  DacControlWidget(QVector<QString>  *_dacList = 0);
-  ~DacControlWidget();
-    
-  void setDac(Dac *_dac);
-  void setDacList(QVector<QString>  *_dacList);
 
-  private slots:
-  void connectDac();
-  void resetDac();
-  void setDacValue(int output);
+  virtual bool connectComedi(QString newcomedi) = 0;
+  virtual bool resetComedi(QString newcomedi) = 0;
+  virtual bool setComediValue(QString newcomedi, int output, void *value) = 0;
+  virtual bool getComediValue(QString newcomedi, int output, float &value) = 0;
+  virtual bool updateDBValues(QString newcomedi) = 0;
+  virtual void setDbPath(QString _path) = 0;
+  
+  // parameters
+  QString path;
+  QString comeditype;
+
+  public slots:
+
+ signals:
   void getDescription(QString description);
-  void getOutputs(int outputs, QString mode);
-  void getOutputValues(QVector<float> *dacvalues);
+  void showWarning(QString message);
+  void getOutputs(int outputs,QString);
+  void getOutputValues(void *comedivalues);
 
- private:
-  QPushButton *connectButton; 
-  QPushButton *resetButton; 
-  QLabel      *dacvalueLabel;
-  QLabel      *outputLabel;
-  QLabel      *descriptionLabel; 
-  QComboBox   *dacCombo;
-  QVector<QLabel*>  *outputsList;
-  QVector<QPushButton*> *setButtonList;
-  QVector<QLineEdit*>   *dacvalueList;
-  QVector<QString> *dacList;
-  Dac  *dac;
-  QGridLayout *layout;
-  QSignalMapper *signalMapper;
+ protected:
+   virtual void dbConnexion() = 0;
+
 };
 #endif

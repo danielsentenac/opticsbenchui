@@ -39,7 +39,7 @@
 	  <li> <b>MOTOR</b>: a motor can have MOVEREL (relative movement), MOVEABS (absolute movement) calls, 
 	      with the value to be reached </li>
 	  <li> <b>DAC</b>:  The DAC output is specified by OUTPUT key with the corresponding value to be set using key VALUE</li>
-	  <li> <b>CAMERA</b>:  The SNAPSHOT key is used to ask an image from the camera </li>
+	  <li> <b>CAMERA</b>:  The SNAPSHOT key is used to grab an image from the camera to the format Mono 8-bit. The key SNAPSHOT32 is used to grab an image from the camera to the format Mono 12-bit Mono 12-bit packed and Mono 16-bit</li>
 	  <li> <b>TREATMENT</b>: The AVG=[i[-+/*]j] key is used to perform any type of average between two taken data sequences i and j 
 	      (must be of the same instrument type). For example: AVG[10] will result on the average value taken from record 10.
 	      <br> The PHASE=[i,j] key is used to compute the phase from imaginary i and real j parts.
@@ -61,7 +61,7 @@
     </TABLE>
   </p>
     <hr>
-    <address><a href="mailto:dsentenac@interfree.it">Daniel Sentenac</a></address>
+    <address><a href="mailto:postmaster@opticsbenchui.com">OpticsBenchUI</a></address>
 <!-- Created: Mon Feb  7 16:32:58 CET 2011 -->
 <!-- hhmts start -->
 Last modified: Thu Feb 10 09:41:32 CET 2011

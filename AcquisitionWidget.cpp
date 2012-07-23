@@ -20,36 +20,45 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AcquisitionWidget::AcquisitionWidget(QString _appDirPath)
 {
-  path = _appDirPath;
+  QLOG_DEBUG() << " AcquisitionWidget::AcquisitionWidget";
+  appDirPath = _appDirPath;
   acqfile = "Scan";
   filenumber = "0";
-  // Connect database
+  splashLabel = new QLabel();	
+  
+  // Connect acquisition database
   dbConnexion();
- 
+
   gridlayout = new QGridLayout();
   this->setLayout(gridlayout);
 
   // 'acquisition_settings' table model
   acquisitiontitle = new QLabel("Acquisition sequence");
-  gridlayout->addWidget(acquisitiontitle,0,0,1,1);
+  gridlayout->addWidget(acquisitiontitle,0,0,1,10);
   acquisitiontable = new QSqlTableModel(this,QSqlDatabase::database(path));
   acquisitionview = new QTableView;
   acquisitionview->setModel(acquisitiontable);
   acquisitionview->verticalHeader()->hide();
 
-  gridlayout->addWidget(acquisitionview,1,0,1,5);
+  gridlayout->addWidget(acquisitionview,1,0,1,10);
   
+  reloadButton = new QPushButton("Reload",this);
+  reloadButton->setFixedHeight(30);
+  reloadButton->setFixedWidth(100);
+  QObject::connect(reloadButton, SIGNAL(clicked()), this, SLOT(reload()));
+  gridlayout->addWidget(reloadButton,2,0,1,1);
+
   updateButton = new QPushButton("Update",this);
   updateButton->setFixedHeight(30);
   updateButton->setFixedWidth(100);
   QObject::connect(updateButton, SIGNAL(clicked()), this, SLOT(update()));
-  gridlayout->addWidget(updateButton,2,0,1,1);
+  gridlayout->addWidget(updateButton,2,1,1,1);
   
   removeButton = new QPushButton("Delete",this);
   removeButton->setFixedHeight(30);
   removeButton->setFixedWidth(100);
   QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(remove()));
-  gridlayout->addWidget(removeButton,2,1,1,1);
+  gridlayout->addWidget(removeButton,2,2,1,1);
   
   runButton = new QPushButton("Run",this);
   runButton->setFixedHeight(30);
@@ -84,10 +93,11 @@ AcquisitionWidget::AcquisitionWidget(QString _appDirPath)
   connect(acquisition,SIGNAL(getCameraStatus(bool)),this,SLOT(getCameraStatus(bool)));
   connect(acquisition,SIGNAL(getTreatmentStatus(bool)),this,SLOT(getTreatmentStatus(bool)));
   connect(acquisition,SIGNAL(showWarning(QString)),this,SLOT(showAcquisitionWarning(QString)));
-
+  connect(acquisition,SIGNAL(splashScreen(QString,int,int)),this,SLOT( splashScreen(QString,int,int)));
 }
 AcquisitionWidget::~AcquisitionWidget()
 {
+  if (splashLabel) delete splashLabel;
   if (acquisition) delete acquisition;
   {
   QSqlDatabase db = QSqlDatabase::database(path);  
@@ -115,7 +125,7 @@ void AcquisitionWidget::setDbPath(QString _path) {
   //if (acquisition) delete acquisition;
   
   // Re_Init object
-  path = _path;
+  appDirPath = _path;
   // Connect database
   dbConnexion();
   acquisitiontable = new QSqlTableModel(this,QSqlDatabase::database(path));
@@ -145,6 +155,67 @@ void
 AcquisitionWidget::setDac(Dac* _dac){
   dac = _dac;
 }
+void
+AcquisitionWidget::setComedi(Comedi* _comedi){
+  comedi = _comedi;
+}
+void
+AcquisitionWidget::setDelegates(){
+  // Populate types
+  QStringList *typeList = new QStringList();
+  typeList->append("");
+  typeList->append("MOTOR");
+  typeList->append("DAC");
+  typeList->append("COUNTER");
+  typeList->append("CAMERA");
+  typeList->append("SLM");
+  typeList->append("FILE");
+  typeList->append("TREATMENT");
+  ComboBoxDelegate *typeCombo = new ComboBoxDelegate(this, typeList);
+
+  // Populate instrument list from motor database
+  QString motordb;
+  motordb = appDirPath;
+  motordb.append(QDir::separator()).append("motor.db3");
+  motordb = QDir::toNativeSeparators(motordb);
+  QSqlQuery querymotor(QSqlDatabase::database(motordb));
+  QStringList *instrumentList = new QStringList();
+  instrumentList->append("");
+  querymotor.exec("select * from motor_actuator");
+  while (querymotor.next())
+    instrumentList->append(querymotor.value(0).toString());
+  
+  // Populate instrument list from dac database
+  QString dacdb;
+  dacdb = appDirPath;
+  dacdb.append(QDir::separator()).append("dac.db3");
+  dacdb = QDir::toNativeSeparators(dacdb);
+  QSqlQuery querydac(QSqlDatabase::database(dacdb));
+  querydac.exec("select name from dac_settings");
+  while (querydac.next())
+    instrumentList->append(querydac.value(0).toString());
+
+  // Populate instrument list from comedi database
+  QString comedidb;
+  comedidb = appDirPath;
+  comedidb.append(QDir::separator()).append("comedi.db3");
+  comedidb = QDir::toNativeSeparators(comedidb);
+  QSqlQuery querycomedi(QSqlDatabase::database(comedidb));
+  querycomedi.exec("select name from comedi_settings");
+  while (querycomedi.next())
+    instrumentList->append(querycomedi.value(0).toString());
+
+  // Populate instrument list from cameraList 
+  for (int i = 0 ; i < cameraList.size(); i++) {
+   Camera * camera = cameraList.at(i);
+   instrumentList->append(camera->model);
+  }
+  ComboBoxDelegate *instrumentCombo = new ComboBoxDelegate(this, instrumentList);
+  
+  acquisitionview->setItemDelegateForColumn(1, typeCombo);
+  acquisitionview->setItemDelegateForColumn(2, instrumentCombo);
+
+}
 
 void AcquisitionWidget::InitConfig() {
    // Set where clause
@@ -162,6 +233,10 @@ void AcquisitionWidget::InitConfig() {
 void 
 AcquisitionWidget::update(){
   acquisitiontable->submitAll();
+  InitConfig();
+}
+void
+AcquisitionWidget::reload(){
   InitConfig();
 }
 
@@ -212,6 +287,7 @@ AcquisitionWidget::run(){
   acquisition->setCamera(cameraList);
   acquisition->setMotor(motor);
   acquisition->setDac(dac);
+  acquisition->setComedi(comedi);
   acquisition->setSequenceList(sequenceList);
   acquisition->start();
   QLOG_DEBUG ( ) << "AcquisitionWidget:: run started";
@@ -219,6 +295,17 @@ AcquisitionWidget::run(){
 void 
 AcquisitionWidget::stop(){
   acquisition->stop();
+}
+void 
+AcquisitionWidget::splashScreen(QString imagepath, int screen_x, int screen_y) {
+     QPixmap  pixmap(imagepath);
+     splashLabel->setPixmap(pixmap);
+     splashLabel->setWindowState(Qt::WindowFullScreen);
+     splashLabel->move(screen_x,screen_y);
+     splashLabel->show();
+     QLOG_INFO() << "AcquisitionWidget::splashScreen> Show splash screen " 
+                 << imagepath << " done";
+     acquisition->splashScreenOk->wakeAll();
 }
 void
 AcquisitionWidget::getPosition(QString positionQString) {
@@ -320,6 +407,8 @@ AcquisitionWidget::isopenCameraWindow(QVector<bool> isopencamerawindow) {
 void 
 AcquisitionWidget::dbConnexion() {
 
+  QLOG_DEBUG() << "AcquisitionWidget::dbConnexion";
+  path = appDirPath;
   path.append(QDir::separator()).append("acquisition.db3");
   path = QDir::toNativeSeparators(path);
   QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
@@ -340,7 +429,7 @@ AcquisitionWidget::dbConnexion() {
 	     "acquiring varchar(64))");
   query.exec("update acquisition_sequence set status = ''");
   query.exec("update acquisition_sequence set acquiring = ''");
-
+ 
   QLOG_DEBUG ( ) << query.lastError().text();      
 }
 void

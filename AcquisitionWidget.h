@@ -24,25 +24,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "QsLog.h"
 #include "AcquisitionThread.h"
-
+#include "ComboBoxDelegate.h"
 
 class AcquisitionWidget : public QWidget
 {
   Q_OBJECT
-    
-    public:
+  
+  public:
   AcquisitionWidget(QString _appDirPath = 0);
   ~AcquisitionWidget();
  
   void setCamera(QVector<Camera*> _cameraList);
   void setMotor(Motor* _motor);
   void setDac(Dac* _dac);
-  
+  void setComedi(Comedi* _comedi);
+  void setDelegates();
+
  signals:
   void showWarning(QString message);
   
   public slots:
   void update();
+  void reload();
   void remove();
   void run();
   void stop();
@@ -57,13 +60,16 @@ class AcquisitionWidget : public QWidget
   void setDbPath(QString _path);
   void setAcqFile(QString _acqfile);
   void showAcquisitionWarning(QString);
-
+  void splashScreen(QString imagepath, int screen_x, int screen_y);
+ 
  private:
   QVector<Camera*> cameraList;
   Motor  *motor;
   Dac    *dac;
+  Comedi *comedi;
+  QLabel *splashLabel;
 
-  QString         path;
+  QString   appDirPath, path;
   QString         acqfile;
   QString        filenumber;
   QLabel         *statusLabel;
@@ -71,6 +77,7 @@ class AcquisitionWidget : public QWidget
   QSqlTableModel *acquisitiontable;
   QTableView     *acquisitionview;
   int             acquisitionrow;
+  QPushButton    *reloadButton;
   QPushButton    *updateButton;
   QPushButton    *removeButton;
   QPushButton    *runButton;
@@ -83,8 +90,8 @@ class AcquisitionWidget : public QWidget
   void dbConnexion();
 
   AcquisitionThread *acquisition;
-
   QVector<AcquisitionSequence*> sequenceList;
   int cur_record;
+
 };
 #endif

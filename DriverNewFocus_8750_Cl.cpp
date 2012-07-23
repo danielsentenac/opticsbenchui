@@ -26,7 +26,7 @@ using namespace DriverDefinition;
 const int DriverNewFocus_8750_Cl::NB_ITEM_SETTING = 1;
 const int DriverNewFocus_8750_Cl::WRITE_ERROR     = -1;
 const int DriverNewFocus_8750_Cl::READ_ERROR      = -2;
-const ADActuatorFeature DriverNewFocus_8750_Cl::NEWFOCUS_8750_CL_FEATURE 
+const DriverFeature DriverNewFocus_8750_Cl::NEWFOCUS_8750_CL_FEATURE 
 = { "pulses","pulses",3.0e6,3.0e6,CLOSED_LOOP ,NULL};
 
 static const string DELIMITER = "=";
@@ -99,7 +99,7 @@ int DriverNewFocus_8750_Cl::InitActuator(string actuatorSetting,
   if (sscanf(actuatorSetting.c_str(),"motor=%d type=%*d frequency=%f",
 	     &motor,&frequency) != NB_ITEM_INIT_SETTING)
   {
-    throw("Bad Actuator setting\n");
+    QLOG_ERROR () << "Bad Actuator setting";
   }
   setFrequencyCommandstream << "VEL A" << _setting  
 			    <<   " "   << motor << "=" << frequency << "\n";
@@ -362,7 +362,7 @@ int DriverNewFocus_8750_Cl::OperationComplete(string& rstateData,
 /// @param ractuatorFeature
 ///    actuator setting
 // -----------------------------------------------------------------------------
-int DriverNewFocus_8750_Cl::GetActuatorFeature(ADActuatorFeature& ractuatorFeature) const
+int DriverNewFocus_8750_Cl::GetActuatorFeature(DriverFeature& ractuatorFeature) const
 {
   QLOG_DEBUG() << "DriverNewFocus_8750_Cl::GetActuatorFeature";
 

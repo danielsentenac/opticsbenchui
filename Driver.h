@@ -20,6 +20,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <string>
 #include <vector>
+#include <iostream>
+#include <math.h>
+#include <sstream>
+
 #include "ACCom.h"
 #include "DriverDefinition.h"
 
@@ -40,11 +44,11 @@ class Driver
     // 
     // Constant declaration: 
     //
-    /// Identifier for the Piezo driver
+    /// Identifier for the PIezo driver
     static const string PI_C862;
-    /// Identifier for the Ethernet-Picomotor driver
+    /// Identifier for the Ethernet-PIcomotor driver
     static const string NEWFOCUS_8750_OL;
-    /// Identifier for the Ethernet-Closed-Loop-Picomotor driver
+    /// Identifier for the Ethernet-Closed-Loop-PIcomotor driver
     static const string NEWFOCUS_8750_CL;
     /// Identifier for the Translation Stage driver
     static const string PI_C509;
@@ -52,8 +56,14 @@ class Driver
     static const string MICOS_POLLUX;
     /// Identifier for the NSA driver
     static const string NEWPORT_NSC200;
+    /// Identifier for the NSA driver
+    static const string STANDA_USMC;
     /// Identifier for the NULL driver
     static const string NULL_DRV_ID;
+    /// Identifier for the PI_E725 driver
+    static const string PI_E725;
+    /// Identifier for the NEWPORT_AGUC2
+    static const string NEWPORT_AGUC2;
 
     /// Constructor
     Driver()
@@ -178,7 +188,7 @@ class Driver
     /// @param ractuatorFeature
     ///    steered actuator feature
     virtual int GetActuatorFeature(
-       DriverDefinition::ADActuatorFeature& ractuatorFeature) const = 0;
+       DriverDefinition::DriverFeature& ractuatorFeature) const = 0;
 
     /// @converts a default unit value into a custom one
     virtual int ConvertUnit(int unit, 
@@ -192,8 +202,6 @@ class Driver
     mutable DriverDefinition::ADErrorCode _lastError; // code of the last error
     string              _setting;         // Driver setting
     ACCom*             _pcommChannel;    // Actuators Communication channel 
-    
- private:
     
     void Tokenize(const string& str,
 		  vector<string>& tokens,

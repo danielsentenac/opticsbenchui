@@ -48,7 +48,7 @@ private:
 FileDestination::FileDestination(const QString& filePath)
 {
    mFile.setFileName(filePath);
-   mFile.open(QFile::WriteOnly | QFile::Text); //fixme: should throw on failure
+   mFile.open(QFile::WriteOnly | QFile::Text); //fixme: should QLOG_ERROR () << on failure
    mOutputStream.setDevice(&mFile);
 }
 

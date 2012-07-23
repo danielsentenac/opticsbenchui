@@ -18,24 +18,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "OpticsBenchUIMain.h"
 #include <QDesktopServices>
 
+#define DEBUG_LEVEL QsLogging::InfoLevel
+
 OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, Qt::WFlags fl)
   : QMainWindow( parent, fl )
 {
   appDirPath = _appDirPath;
   assistant = new Assistant(appDirPath);
-
+  dacwindow = NULL;
+  motorwindow = NULL;
   isopencamerawindow.clear();
   isopenanalysiswidget = false; 
   isopenacquisitionwidget = false;
-  
+  QDir qdir;
+   
+#ifdef ADVANTECHDAC
   //
   // Create Dac manager
   //
-  QDir qdir;
-  dac = new Dac(0,qdir.currentPath());
+  dac = new DacAdvantech(qdir.currentPath());
   connect(dac,SIGNAL(showWarning(QString)),this,SLOT(showDacWarning(QString)));
   dacwindow = new DacWindow(this,Qt::Window,dac);
   connect(this,SIGNAL(setDbPath(QString)),dacwindow,SLOT(setDbPath(QString)));
+#endif
+
+#ifdef COMEDICOUNTER
+  //
+  // Create Counter manager
+  //
+  comedi = new ComediCounter(qdir.currentPath());
+  connect(comedi,SIGNAL(showWarning(QString)),this,SLOT(showComediWarning(QString)));
+  comediwindow = new ComediWindow(this,Qt::Window,comedi);
+  connect(this,SIGNAL(setDbPath(QString)),comediwindow,SLOT(setDbPath(QString)));
+#endif
+
   //
   // Create Motor manager
   //
@@ -47,6 +63,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   //
   // Create IEEE1394 Camera manager
   //
+#ifdef IEEE1394CAMERA
   cameraIEEE1394Mgr = new CameraIEEE1394();
   cameraIEEE1394Mgr->findCamera();
   QLOG_INFO() << "Found " <<  cameraIEEE1394Mgr->num << " IEEE1394 camera";
@@ -57,8 +74,39 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
     cameraList.push_back(camera);
     isopencamerawindow.push_back(false);
     camerawindowList.push_back(NULL);
-  
   }
+#endif
+  //
+  // Create GiGEVision Camera manager
+  //
+#ifdef GIGECAMERA
+  cameraGiGEMgr = new CameraGiGE();
+  cameraGiGEMgr->findCamera();
+  QLOG_INFO() << "Found " <<  cameraGiGEMgr->num << " GIGE camera";
+  for (int i = 0 ; i < cameraGiGEMgr->num; i++) {
+    Camera *camera = new CameraGiGE();
+    camera->setCamera(cameraGiGEMgr->cameralist.at(i),i);
+    cameraList.push_back(camera);
+    isopencamerawindow.push_back(false);
+    camerawindowList.push_back(NULL);
+  }
+#endif
+  //
+  // Create Neo Andor Camera manager
+  //
+#ifdef NEOCAMERA
+  cameraNeoMgr = new CameraNeo();
+  cameraNeoMgr->findCamera();
+  QLOG_INFO() << "Found " <<  cameraNeoMgr->num << " NEO Andor camera";
+  for (int i = 0 ; i < cameraNeoMgr->num; i++) {
+    Camera *camera = new CameraNeo();
+    camera->setCamera(cameraNeoMgr->cameralist.at(i),i);
+    cameraList.push_back(camera);
+    isopencamerawindow.push_back(false);
+    camerawindowList.push_back(NULL);
+  }
+#endif
+
   analysiswidget = new AnalysisWidget();
   analysiswidget->setObjectName("Analysis");
   acquisitionwidget = new AcquisitionWidget(qdir.currentPath());
@@ -70,9 +118,17 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   connect(acquisitionwidget,SIGNAL(showWarning(QString)),this,
 	  SLOT(showAcquisitionWarning(QString)));
   
+#ifdef ADVANTECHDAC
   acquisitionwidget->setDac(dac);
+#endif
+
+#ifdef COMEDICOUNTER
+  acquisitionwidget->setComedi(comedi);
+#endif
+
   acquisitionwidget->setMotor(motor);
   acquisitionwidget->setCamera(cameraList);
+  acquisitionwidget->setDelegates();
   
   setDockNestingEnabled(false);
   tab = new QTabWidget();
@@ -121,18 +177,49 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
 
   menuOperations->addAction("Acquisition", this, SLOT(openacquisition()));
   menuOperations->addAction("Analysis", this, SLOT(openanalysis()) );
- 
+  int cameranumber = 0;
+ #ifdef IEEE1394CAMERA
   for (int i = 0 ; i < cameraIEEE1394Mgr->num; i++) {
     QString selectedCamera = QString(cameraIEEE1394Mgr->vendorlist.at(i)) + " / " + 
       QString(cameraIEEE1394Mgr->modelist.at(i));
     QAction *action = new QAction(selectedCamera, this);
     menuInstruments->addAction(action);
     connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(action, i);
+    signalMapper->setMapping(action, cameranumber++);
   }
+#endif
+#ifdef GIGECAMERA
+  for (int i = 0 ; i < cameraGiGEMgr->num; i++) {
+    QString selectedCamera = QString(cameraGiGEMgr->vendorlist.at(i)) + " / " +
+      QString(cameraGiGEMgr->modelist.at(i));
+    QAction *action = new QAction(selectedCamera, this);
+    menuInstruments->addAction(action);
+    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(action, cameranumber++);
+  }
+#endif
+#ifdef NEOCAMERA
+  for (int i = 0 ; i < cameraNeoMgr->num; i++) {
+    QString selectedCamera = QString(cameraNeoMgr->vendorlist.at(i)) + " / " +
+      QString(cameraNeoMgr->modelist.at(i));
+    QAction *action = new QAction(selectedCamera, this);
+    menuInstruments->addAction(action);
+    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(action, cameranumber++);
+  }
+#endif
+
   connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(openCameraWindow(int)));
   menuInstruments->addAction("Motor", this, SLOT(openMotorWindow()) );
+
+#ifdef ADVANTECHDAC
   menuInstruments->addAction("Dac", this, SLOT(openDacWindow()) );
+#endif
+
+#ifdef COMEDICOUNTER
+  menuInstruments->addAction("Counter", this, SLOT(openComediWindow()) );
+#endif
+
   // Then set the menu bar to the main window
   setMenuBar(menuBar);
 }
@@ -199,12 +286,16 @@ void OpticsBenchUIMain::openDacWindow() {
   if (dacwindow->isHidden())
     dacwindow->show();
 }
+void OpticsBenchUIMain::openComediWindow() {
+  if (comediwindow->isHidden())
+    comediwindow->show();
+}
 OpticsBenchUIMain::~OpticsBenchUIMain()
 {
   delete acquisitionwidget;
   delete assistant;
-  delete dacwindow;
-  delete motorwindow;
+  if (dacwindow) delete dacwindow;
+  if (motorwindow) delete motorwindow;
   for (int i = 0 ; i < cameraList.size() ; i++) {
     if (isopencamerawindow.at(i) == true) {
      QLOG_INFO() << " Exiting Camera Window " << i;
@@ -250,9 +341,14 @@ void myMessageOutput(QtMsgType type, const char *msg) {
     abort();
   }
 }
+
 void 
 OpticsBenchUIMain::showDacWarning(QString message) {
   QMessageBox::warning(this, "Dac Error:", message);
+}
+void
+OpticsBenchUIMain::showComediWarning(QString message) {
+  QMessageBox::warning(this, "Comedi Error:", message);
 }
 void 
 OpticsBenchUIMain::showMotorWarning(QString message) {
@@ -272,9 +368,12 @@ OpticsBenchUIMain::showCameraControlWidgetWarning(QString message) {
 }
 int main(int argc, char *argv[])
 {
+#ifdef GIGECAMERA
+  g_type_init ();
+#endif
   qInstallMsgHandler(myMessageOutput);
-  QApplication app(argc, argv);
- 
+  QApplication app(argc, argv); 
+  app.addLibraryPath("/usr/local/bin");
   // init the logging mechanism
   QsLogging::Logger& logger = QsLogging::Logger::instance();
   QDir qdir;
@@ -286,14 +385,23 @@ int main(int argc, char *argv[])
   QsLogging::DestinationPtr debugDestination(QsLogging::DestinationFactory::MakeDebugOutputDestination() );
   logger.addDestination(debugDestination.get());
   logger.addDestination(fileDestination.get());
-  logger.setLoggingLevel(QsLogging::InfoLevel);
+  logger.setLoggingLevel(DEBUG_LEVEL);
   
-  QLOG_INFO() << "OpticsBenchUI started : " + app.applicationDirPath();
+  QLOG_INFO() << "OpticsBenchUI version " << OPTICSBENCHUIVERSION
+	      << " started : " <<  app.applicationDirPath();
   QLOG_INFO() << "Built with Qt" << QT_VERSION_STR << "running on" << qVersion();
-  QLOG_INFO() << " Qt User Data location : " 
+  QLOG_INFO() << "Qt User Data location : " 
               << QDesktopServices::storageLocation(QDesktopServices::DataLocation); 
   OpticsBenchUIMain* OpticsBenchUI = new OpticsBenchUIMain(app.applicationDirPath(),NULL,NULL);
-  OpticsBenchUI->setWindowTitle("Tests & Measurements");
+  OpticsBenchUI->setWindowTitle("OpticsBenchUI");
   OpticsBenchUI->show();
+  foreach (const QString &path, app.libraryPaths())
+  QLOG_DEBUG() << path;
+  QDesktopWidget *desktop = QApplication::desktop();
+  QLOG_INFO() << " Screen number " << desktop->screenCount();
+  QLOG_INFO() << " Virtual Desktop " << desktop->isVirtualDesktop();
+  QLOG_INFO() << " X,Y " << desktop->screenGeometry(0).width() << " " << 
+                 desktop->screenGeometry(0).height();
+ 
   return app.exec();
 }

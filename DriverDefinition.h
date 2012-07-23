@@ -47,7 +47,7 @@ namespace DriverDefinition
     float  customRange; // range of motion
     int    closedLoop;
     pConvertUnitType convertUnit;  // conversion operation
-  } ADActuatorFeature; // Set of features of a kind of actuator steered 
+  } DriverFeature; // Set of features of a kind of actuator steered 
                        // by a given type of driver.
 
   // Available error code 

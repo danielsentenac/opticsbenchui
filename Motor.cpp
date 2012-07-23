@@ -28,10 +28,12 @@ Motor::Motor(QObject* parent, QString _appDirPath)
 Motor::~Motor()
 {
   QLOG_DEBUG ( ) << "Deleting Motor";
-  for (int i = 0 ; i < actuatorCom.size(); i++)
+  QLOG_DEBUG () << " actuatorCom.size " << actuatorCom.size();
+  QLOG_DEBUG () << " actuatorDriver.size " << actuatorDriver.size();
+
+  for (int i = actuatorCom.size() - 1 ; i >= 0; i--)
     if (actuatorCom.at(i)) actuatorCom.at(i)->Close();
-  for (int i = 0 ; i < actuatorDriver.size(); i++)
-    if (actuatorDriver.at(i)) delete actuatorDriver.at(i);
+
   actuatorCom.clear();
   actuatorDriver.clear();
   actuatorSettings.clear();
@@ -55,8 +57,7 @@ void Motor::setDbPath(QString _path) {
   // Re_Init object
   for (int i = 0 ; i < actuatorCom.size(); i++)
     if (actuatorCom.at(i)) actuatorCom.at(i)->Close();
-  for (int i = 0 ; i < actuatorDriver.size(); i++)
-    if (actuatorDriver.at(i)) delete actuatorDriver.at(i);
+ 
   actuatorCom.clear();
   actuatorDriver.clear();
   actuatorSettings.clear();
@@ -151,7 +152,7 @@ Motor::connectMotor(QString newactuator) {
   }
   for (int i = 0 ; i < driver.size(); i++)  {
     if ( driver.at(i) == newdriver ) {
-      QLOG_INFO () << " assign previously created driver " << driver.at(i) 
+      QLOG_INFO () << " Assign previously created driver " << driver.at(i) 
 		   << "to actuator " << newactuator;
       driver.push_back(driver.at(i));
       actuatorDriver.push_back(actuatorDriver.at(i));
@@ -177,7 +178,7 @@ Motor::connectMotor(QString newactuator) {
     }
     for (int j = 0 ; j < com.size(); j++)  {
       if (com.at(j) == newcom ) {
-	QLOG_INFO () << " assign previously created communication " << com.at(j) 
+	QLOG_INFO () << " Assign previously created communication " << com.at(j) 
 		     << "to driver ";
 	com.push_back(com.at(j));
 	actuatorCom.push_back(actuatorCom.at(j));
@@ -200,6 +201,7 @@ Motor::connectMotor(QString newactuator) {
       }
       else if (accom->Open()) {
 	emit showWarning("Could not open communication with device");
+        delete accom;
 	return;
       }
       com.push_back(newcom);
@@ -212,17 +214,20 @@ Motor::connectMotor(QString newactuator) {
     Driver *drv = Driver::Create(drvtype.toStdString(),
 				 drvsettings.toStdString(),
 				 actuatorCom.at(actuatorCom.size() -1 ));
-    actuatorDriver.push_back(drv);
-    driver.push_back(newdriver);
     if (!drv) {
       emit showWarning("Could not create Driver");
+      return;
     }
     else {
       string driverState;
       if (drv->Init(driverState)) {
 	emit showWarning("Could not init driver");
+        delete drv;
+        return;
       }
     }
+    actuatorDriver.push_back(drv);
+    driver.push_back(newdriver);
   }
   //
   // Create new actuator
@@ -329,17 +334,19 @@ Motor::operationComplete() {
 	actuatorDriver.at(i)->GetPos(actuatorSettings.at(i).toStdString(),curpos);
 	position.replace(i, curpos);
 	positionQString.setNum (position.at(i), 'f',3);
-	QLOG_DEBUG ( ) << "Operationcomplete " << success << " position " << position.at(i);
+	QLOG_DEBUG ( ) << "OperationComplete " << success << " position " << position.at(i);
 	emit getPosition(position.at(i));
 	if (success > 0 ) {
 	  // Save last position in Db
 	  QSqlQuery query(QSqlDatabase::database(path));
+
 	  query.prepare("update motor_actuator set position = ? "
 			"where name = ?");
 	  query.addBindValue(positionQString);
 	  query.addBindValue(actuator.at(i));
 	  query.exec();
 	  operationcomplete.replace(i, success);
+          QLOG_DEBUG ( ) << "OperationComplete " << success << " position " << position.at(i);
 	  emit stopTimer();
 	}
 	iscompleting = false;

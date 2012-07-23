@@ -15,38 +15,32 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
-#ifndef DAC_H
-#define DAC_H
+#ifndef COMBOITEMDELEGATE_H
+#define COMBOITEMDELEGATE_H
 
 #include <QtSql>
 #include <QtGui>
+
 #include "QsLog.h"
 
-class Dac : public QObject
+class ComboBoxDelegate : public QItemDelegate
 {
-  Q_OBJECT
-    
-    public:
+   Q_OBJECT
 
-  virtual bool connectDac(QString newdac) = 0;
-  virtual bool resetDac(QString newdac) = 0;
-  virtual bool setDacValue(QString newdac, int output, float value) = 0;
-  virtual bool updateDBValues(QString newdac) = 0;
-  virtual void setDbPath(QString _path) = 0;
-  
-  // parameters
-  QString path;
+   public:
+   ComboBoxDelegate(QObject *parent = 0, QStringList *_itemlist = 0);
+   ~ComboBoxDelegate();
+   QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
+                         const QModelIndex &index) const;
 
-  public slots:
+   void setEditorData(QWidget *editor, const QModelIndex &index) const;
+   void setModelData(QWidget *editor, QAbstractItemModel *model,
+                     const QModelIndex &index) const;
 
- signals:
-  void getDescription(QString description);
-  void showWarning(QString message);
-  void getOutputs(int outputs,QString);
-  void getOutputValues(QVector<float> *dacvalues);
+   void updateEditorGeometry(QWidget *editor,
+       const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
- protected:
-   virtual void dbConnexion() = 0;
-
+   private:
+    QStringList *itemlist;
 };
 #endif

@@ -18,6 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "CameraWindow.h"
 #include "OpticsBenchUIMain.h"
 
+#define OFFSET_X 210
+#define OFFSET_Y 160
+
 CameraWindow::CameraWindow( QMainWindow* parent, Qt::WFlags fl , Camera *_camera, int _cameraNumber)
   : QMainWindow( parent, fl )
 {
@@ -27,16 +30,11 @@ CameraWindow::CameraWindow( QMainWindow* parent, Qt::WFlags fl , Camera *_camera
   OpticsBenchUIMain *OpticsBenchui = (OpticsBenchUIMain*) parentWindow;
   OpticsBenchui->setOpenCameraWindow(true,cameraNumber);
   player = new VideoPlayer(this,camera);
-  
-  this->setCentralWidget(player);
-  
-  this->set480x320();
+  cameraPropWidget = NULL;
  
   if (camera->camera_err == 0) { 
     connect(this,SIGNAL(setVideoPlayerResolution(int,int)),player,
 	    SLOT(setVideoPlayerResolution(int,int)));
-    
-    //this->setCentralWidget(player);
     
     // Creation of menuBar
     QMenuBar* menuBar = new QMenuBar(this);
@@ -55,13 +53,28 @@ CameraWindow::CameraWindow( QMainWindow* parent, Qt::WFlags fl , Camera *_camera
     menuResolution->addAction("1280x960", this, SLOT(set1280x960()) );
     
     cameraWidget = new CameraControlWidget(player->camera);
-    QDockWidget *dockWidget = new QDockWidget(tr("Settings"), this);
+    QDockWidget *dockWidget = new QDockWidget(tr("Controls"), this);
     dockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
-    dockWidget->setWidget(cameraWidget);
+    QScrollArea *controlArea = new QScrollArea(this);
+    controlArea->setWidget(cameraWidget);
+    controlArea->setWidgetResizable(true);
+    dockWidget->setWidget(controlArea);
     this->addDockWidget(Qt::BottomDockWidgetArea, dockWidget);
     
+    if ( player->camera->propList.size() > 0 ) {  
+      cameraPropWidget = new CameraPropWidget(player->camera);
+      QDockWidget *dockWidget = new QDockWidget(tr("Properties"), this);
+      dockWidget->setAllowedAreas(Qt::RightDockWidgetArea);
+      QScrollArea *propArea = new QScrollArea(this);
+      propArea->setWidget(cameraPropWidget);
+      propArea->setWidgetResizable(true);
+      dockWidget->setWidget(propArea);
+      this->addDockWidget(Qt::RightDockWidgetArea, dockWidget);
+    }
     this->setWindowTitle(QString(player->camera->vendor) + " / " + 
 			 QString(player->camera->model));
+    this->setCentralWidget(player);
+    this->set480x320();
   }
   else
     this->setWindowTitle(tr("No Camera found"));
@@ -82,25 +95,40 @@ void CameraWindow::closeEvent(QCloseEvent* event)
 }
 void CameraWindow::set480x320() {
   emit setVideoPlayerResolution(480,320);
-
-  this->setMaximumSize(QSize(480,320 + 150));
-  this->setMinimumSize(QSize(480,320 + 150));  
+  if (cameraPropWidget != NULL) {
+    this->setMaximumSize(QSize(480 + OFFSET_X, 320 + OFFSET_Y));
+    this->setMinimumSize(QSize(480 + OFFSET_X, 320 + OFFSET_Y));  
+  }
+  else {
+    this->setMaximumSize(QSize(480, 320 + OFFSET_Y));
+    this->setMinimumSize(QSize(480, 320 + OFFSET_Y));
+  }
   this->adjustSize();
 }
 void CameraWindow::set640x480() {
   emit setVideoPlayerResolution(640,480); 
- 
-  this->setMaximumSize(QSize(640,480 + 150));
-  this->setMinimumSize(QSize(640,480 + 150));
+  if (cameraPropWidget != NULL) {
+    this->setMaximumSize(QSize(640 + OFFSET_X, 480 + OFFSET_Y));
+    this->setMinimumSize(QSize(640 + OFFSET_X, 480 + OFFSET_Y));
+  }
+  else {
+    this->setMaximumSize(QSize(640, 480 + OFFSET_Y));
+    this->setMinimumSize(QSize(640, 480 + OFFSET_Y));
+  }
   this->adjustSize();
 }
 void CameraWindow::set1280x960() {
   emit setVideoPlayerResolution(1280,960);
-
-  this->setMaximumSize(QSize(1280,960 + 150));
-  this->setMinimumSize(QSize(1280,960 + 150));
+  if (cameraPropWidget != NULL) {
+    this->setMaximumSize(QSize(1280 + OFFSET_X, 960 + OFFSET_Y));
+    this->setMinimumSize(QSize(1280 + OFFSET_X, 960 + OFFSET_Y));
+  }
+  else {
+    this->setMaximumSize(QSize(1280, 960 + OFFSET_Y));
+    this->setMinimumSize(QSize(1280, 960 + OFFSET_Y));
+  }
   this->adjustSize();
- 
+
 }
 void CameraWindow::update() {
   camera->getFeatures();

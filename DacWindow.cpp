@@ -22,7 +22,7 @@ DacWindow::DacWindow( QMainWindow* parent, Qt::WFlags fl , Dac *_dac)
 {
   dac = _dac;
   dbPath = dac->path;
-
+  QLOG_INFO() << "DacWindow::DacWindow> get Db path " << dbPath;
   QWidget *centralWidget = new QWidget(this);
  
   setCentralWidget(centralWidget);

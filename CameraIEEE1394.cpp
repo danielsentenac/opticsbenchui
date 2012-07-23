@@ -14,9 +14,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
-
+#ifdef IEEE1394CAMERA
 #include "CameraIEEE1394.h"
-				       
+ 
+#define VIDEO_MODES_OFFSET  64
+#define FRAMERATES_OFFSET 32
+#define IIDC_FRAME_NUMBER 15
+ 
+char *pixel_encodings_str[] = {(char*)"MONO8",
+			       (char*)"MONO10",
+                               (char*)"MONO12",
+                               (char*)"MONO12P",
+                               (char*)"MONO16",
+         	               (char*)"UNKNOWN"};
+
 char *iidc_features[]  = {(char*)"BRIGHTNESS",
 			  (char*)"EXPOSURE",
 			  (char*)"SHARPNESS",
@@ -40,6 +51,21 @@ char *iidc_features[]  = {(char*)"BRIGHTNESS",
 			  (char*)"CAPTURE_SIZE",
 			  (char*)"CAPTURE_QUALITY"};
 
+char *iidc_props[] = {(char*)"Frame Rate",
+                      (char*)"PC Rate",
+ 		      (char*)"Image Size",
+                      (char*)"Pixel Encoding",
+                      (char*)"Video Mode"};
+
+char *iidc_framerates[] {(char*)"1.875",
+			(char*)"3.75",
+			(char*)"7.5",
+			(char*)"15",
+			(char*)"30",
+			(char*)"60",
+			(char*)"120",
+			(char*)"240",
+                        (char*)"---"};
 
 char *iidc_video_modes[] = {(char*)"160x120_YUV444",
 			    (char*)"320x240_YUV422",
@@ -74,20 +100,35 @@ char *iidc_video_modes[] = {(char*)"160x120_YUV444",
 			    (char*)"FORMAT7_6",
 			    (char*)"FORMAT7_7"};
 
-int VIDEO_MODES_OFFSET = 64;
+#include <sys/time.h>
+/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------- GetTime */
+/*----------------------------------------------------------------------------*/
+static double GetTime( void ) {
+ struct timeval tp;
+/*--------------------------------------------------------------------------*/
+ gettimeofday( &tp, NULL );
+/*--------------------------------------------------------------------------*/
+ return( tp.tv_sec*1e6 + tp.tv_usec );
+}
 
 CameraIEEE1394::CameraIEEE1394()
   :Camera()
 {
   image = NULL;
   buffer = NULL;
+  snapshot = NULL;
+  buffer32 = NULL;
+  snapshot32 = NULL;
   d = NULL;
   suspend = true;
   has_started = false;
   mutex = new QMutex(QMutex::NonRecursive);
   snapshotMutex = new QMutex(QMutex::Recursive);
+  acquireMutex = new QMutex(QMutex::Recursive);
   acqstart = new QWaitCondition();
   acqend = new QWaitCondition();
+  modeCheckEnabled = true;
 }
 
 CameraIEEE1394::~CameraIEEE1394()
@@ -97,6 +138,7 @@ CameraIEEE1394::~CameraIEEE1394()
   cleanup_and_exit();
   delete mutex;
   delete snapshotMutex;
+  delete acquireMutex;
   delete acqstart;
   delete acqend;
 }
@@ -108,6 +150,10 @@ CameraIEEE1394::setCamera(void* _camera, int _id)
   vendor = camera->vendor;
   model = camera->model;
 
+   /* Init camera*/
+  err = dc1394_reset_bus (camera);
+  /*DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),"reset bus reported error");
+*/
   err = dc1394_feature_get_all(camera,&features);
   if (err != DC1394_SUCCESS) {
     showWarning("Could not get feature set");
@@ -134,23 +180,173 @@ CameraIEEE1394::setCamera(void* _camera, int _id)
       QLOG_INFO() << "CameraIEEE1394::setCamera Found feature " << 
 	featureNameList.at(featureCnt++);
     }
-    
   }
+  // Video mode feature
+  featureNameList.push_back("VIDEO MODE");
+  featureIdList.push_back(DC1394_FEATURE_NUM + 1);
+  video_mode_feature = featureCnt++;
+  // get video modes:
+  err = dc1394_video_get_supported_modes(camera,&video_modes);
+  if (err != DC1394_SUCCESS) {
+    showWarning("Can't get video modes");
+    return;
+  }
+  featureMinList.push_back(0);
+  featureMaxList.push_back(video_modes.num - 1);
+  featureValueList.push_back(0);
+  featureAbsCapableList.push_back(false);
+  featureAbsValueList.push_back(0);
+  featureModeAutoList.push_back(false);
+
+  /* select highest video mode*/
+  unsigned int tmpwidth = 0, tmpheight = 0;
+  dc1394video_mode_t tmpvideo_mode;
+  dc1394color_coding_t tmpencoding_num;
+  for ( int i = 0 ; i < video_modes.num ; i++) {
+    tmpvideo_mode = video_modes.modes[i];
+    dc1394_get_image_size_from_video_mode(camera, tmpvideo_mode,
+                                        &tmpwidth, &tmpheight);
+    dc1394_get_color_coding_from_video_mode(camera,
+                                      tmpvideo_mode,
+                                      &tmpencoding_num);
+    // check for highest resolution
+    QLOG_INFO () << "CameraIEEE1394::setCamera> Available IIDC video mode "
+                 << tmpvideo_mode
+                 << " color coding " << tmpencoding_num
+                 << " width " << tmpwidth << " height " << tmpheight;
+    if ( width * height < tmpwidth * tmpheight ) {
+        width = tmpwidth;
+        height = tmpheight;
+        encoding_num = tmpencoding_num;
+        video_mode = tmpvideo_mode;
+        featureValueList.replace(video_mode_feature,i);
+    }
+  }
+  QLOG_INFO() << "CameraIEEE1394::setCamera> Found feature " 
+              << featureNameList.at(video_mode_feature) << " set to " 
+              << video_modes.modes[(int)featureValueList.at(video_mode_feature)];
+  uint32_t data_depth;
+  dc1394_get_color_coding_data_depth(encoding_num,&data_depth);
+  QLOG_INFO() << "CameraIEEE1394::setCamera> Pixel data depth " << data_depth;
+   /* select highest framerate */
+   if ( !dc1394_is_video_mode_scalable(video_mode) ) {
+   err = dc1394_get_color_coding_from_video_mode(camera,
+                                                   video_mode,
+                                                   &encoding_num);
+   dc1394framerates_t framerates;
+   err = dc1394_video_get_supported_framerates(camera,
+                                              video_mode,
+                                              &framerates);
+   framerate = (dc1394framerate_t)0;
+   for (int i = 0 ; i < DC1394_FRAMERATE_NUM; i++) {
+    QLOG_INFO () << "CameraIEEE1394::setCamera>> supported framerate "
+              << framerates.framerates[i];
+    if (framerate < framerates.framerates[i] && framerates.framerates[i] < DC1394_FRAMERATE_MAX) {
+     QLOG_INFO () << "CameraIEEE1394::setCamera>> selected highest framerate "
+              << framerate;
+     framerate = framerates.framerates[i];
+     }
+    }
+    QLOG_INFO () << "CameraIEEE1394::setCamera>> selected highest framerate "
+              << framerate;
+    err = dc1394_video_set_framerate(camera, framerate);
+    }
+   else {
+     framerate = (dc1394framerate_t)40;
+     dc1394_format7_get_color_coding(camera, video_mode, &encoding_num);
+    }
+  dc1394_get_color_coding_data_depth(encoding_num,&data_depth);
+  QLOG_INFO() << "CameraIEEE1394::setCamera> Pixel data depth " << data_depth;
+
+  switch (encoding_num) {
+      case DC1394_COLOR_CODING_MONO8:
+      pixel_encoding = B8;
+      break;
+      case DC1394_COLOR_CODING_MONO16:
+      pixel_encoding = B16;
+      break;
+      default:
+      QLOG_INFO() << "ENCODING NUMBER " << encoding_num;
+      pixel_encoding = UNKNOWN;
+      break;
+    }
+
+  // Color Coding feature
+  featureNameList.push_back("COLOR CODING");
+  featureIdList.push_back(DC1394_FEATURE_NUM + 2);
+  color_coding_feature = featureCnt++;
+  
+  featureMinList.push_back(0);
+  featureMaxList.push_back(1);
+  
+  switch (encoding_num) {
+      case DC1394_COLOR_CODING_MONO8:
+      featureValueList.push_back(0);
+      break;
+      case DC1394_COLOR_CODING_MONO16:
+      featureValueList.push_back(1);
+      break;
+      default:
+      featureValueList.push_back(0);
+      break;
+    }
+  featureAbsCapableList.push_back(false);
+  featureAbsValueList.push_back(0);
+  featureModeAutoList.push_back(false);
+
+  // Properties
+  int propCnt = 0;
+
+  // Frame Rate prop
+  QString frateStr = iidc_props[propCnt];
+  QLOG_INFO () << "CameraIEEE1394::setCamera> Frame Rate property added ";
+  propList.push_back(frateStr);
+
+  // PC Rate prop
+  QString pcrateStr = iidc_props[++propCnt];
+  QLOG_INFO () << "CameraIEEE1394::setCamera> PC Rate property added ";
+  propList.push_back(pcrateStr);
+
+  // Image Size prop
+  QString imgsizeStr = iidc_props[++propCnt];
+  QLOG_INFO () << "CameraIEEE1394::setCamera> Image Size property added ";
+  propList.push_back(imgsizeStr);
+
+  // Pixel Encoding prop
+  QString encodingStr = iidc_props[++propCnt];
+  QLOG_INFO () << "CameraIEEE1394::setCamera> Pixel Encoding property added ";
+  propList.push_back(encodingStr);
+
+  // Video Mode prop
+  QString videomodeStr = iidc_props[++propCnt];
+  QLOG_INFO () << "CameraIEEE1394::setCamera> Video Mode property added ";
+  propList.push_back(videomodeStr);
+  
   id = _id;
+
   camera_err = connectCamera();
+
   QLOG_INFO() << "CameraIEEE1394::setCamera " << vendor << " model : " 
 	      << model << " - Err : " << camera_err;
-  getFeatures();
-  QLOG_DEBUG() << "CameraIEEE1394::setCamera> camera pointer " <<  camera;
 }
 uchar* 
 CameraIEEE1394::getSnapshot() {
   snapshotMutex->lock();
-  memcpy(snapshot,buffer,width * height);
+  memcpy(snapshot,buffer,width * height * sizeof(uchar));
   snapShotMin = min;
   snapShotMax = max;
   snapshotMutex->unlock();
   return snapshot;
+}
+
+int*
+CameraIEEE1394::getSnapshot32() {
+  snapshotMutex->lock();
+  memcpy(snapshot32,buffer32, width * height * sizeof(int));
+  snapShotMin = min;
+  snapShotMax = max;
+  snapshotMutex->unlock();
+  return snapshot32;
 }
 void 
 CameraIEEE1394::stop() {
@@ -162,34 +358,203 @@ CameraIEEE1394::stop() {
 
 void 
 CameraIEEE1394::run() {
+  int acq_err = 0;
+  int acq_cnt = 0;
   if (camera_err == 0 && suspend == true ) {
     suspend = false;
+    eTimeTotal = 0;
     while (suspend == false) {
-      QLOG_DEBUG () << " CameraIEEE1394 " << id << " : start new Acquisition";
+      QLOG_DEBUG () << "CameraIEEE1394::run> " << id << " : start new Acquisition";
+      double eTime = GetTime();
       acqstart->wakeAll();
-      acquireImage();
-      QLOG_DEBUG () << " CameraIEEE1394 " << id << " : done";
+      acq_err = acquireImage();
+      QLOG_DEBUG () << "CameraIEEE1394::run> " << id << " : done";
       acqend->wakeAll();
-      has_started = true;
+      if (acq_err == 1)
+       eTimeTotal+= (GetTime() - eTime);
+      acq_cnt++;
+      if (acq_cnt == FREQUENCY_AVERAGE_COUNT) {
+       eTimeTotal/=1e6;
+       eTimeTotal/=FREQUENCY_AVERAGE_COUNT;
+       if ( eTimeTotal > 0 )
+        frequency = 1.0 / eTimeTotal;
+       else
+        frequency = 0;
+       QLOG_DEBUG() << "CameraIEEE1394::run> Acquisition "
+                   << "freq " << (int) frequency << " Hz";
+       eTimeTotal = 0;
+       acq_cnt = 0;
+       // Update props
+       getProps();
+      }
+     has_started = true;
     }
-    QLOG_DEBUG() << "CameraIEEE1394 thread exiting";
+    QLOG_DEBUG() << "CameraNeo thread exiting";
   }
 }
 
 void
-CameraIEEE1394::setFeature(int feature, int value) {
+CameraIEEE1394::setFeature(int feature, double value) {
+
   for (int i = 0 ; i < DC1394_FEATURE_NUM ; i++) {
-    if (feature == i) {
-      /*Set camera feature*/
-      QLOG_DEBUG() << "SetFeature> Change " << iidc_features[feature] << " to " << value;
+    if ( feature == i ) {
+      /*Set IIDC camera feature*/
+      QLOG_DEBUG() << "setFeature> Change " << iidc_features[feature] << " to " << QString::number(value);
       err = dc1394_feature_set_value(camera,
 				     features.feature[i].id,
 				     value);
       break;
     }
   }
+  if ( feature == DC1394_FEATURE_NUM + 1 ) {
+    /*Set IIDC Video Mode*/
+    QLOG_DEBUG() << "setFeature> Stop Acquisition";
+    stop();
+    dc1394_video_set_transmission(camera, DC1394_OFF);
+    dc1394_capture_stop(camera);
+    video_mode = video_modes.modes[(int)value];
+    QLOG_INFO() << "setFeature> Change Video Mode to " << video_mode;
+    err = dc1394_video_set_mode(camera, video_mode);
+    if (err != DC1394_SUCCESS)
+      QLOG_WARN() << "setFeature> Could not set video mode set to " << video_mode;
+    err = dc1394_video_get_mode(camera, &video_mode); 
+    QLOG_INFO() << "setFeature> New Video Mode " << video_mode;
+    dc1394_feature_get_all(camera, &features);
+    if ( !dc1394_is_video_mode_scalable(video_mode) ) {
+      err = dc1394_get_color_coding_from_video_mode(camera,
+                                                   video_mode,
+                                                   &encoding_num);
+      /* select highest framerate */
+      dc1394framerates_t framerates;
+      err = dc1394_video_get_supported_framerates(camera,
+                                              video_mode,
+                                              &framerates);
+      framerate = (dc1394framerate_t)0;
+      for (int i = 0 ; i < DC1394_FRAMERATE_NUM; i++) {
+        QLOG_INFO () << "CameraIEEE1394::setFeature>> supported framerate "
+                << framerates.framerates[i];
+        if (framerate < framerates.framerates[i] && framerates.framerates[i] < DC1394_FRAMERATE_MAX) {
+         framerate = framerates.framerates[i];
+         QLOG_INFO () << "CameraIEEE1394::setFeature>> selected highest framerate "
+                << framerate;
+       }
+      }
+      QLOG_INFO () << "CameraIEEE1394::setFeature>> selected highest framerate "
+                << framerate;
+      err = dc1394_video_set_framerate(camera, framerate);
+    }
+    else {
+      framerate = (dc1394framerate_t)40;
+      dc1394_format7_get_color_coding(camera, video_mode, &encoding_num);
+    } 
+    QLOG_INFO() << "setFeature> New Color Encoding " << encoding_num;
+    uint32_t data_depth;
+    dc1394_get_color_coding_data_depth(encoding_num,&data_depth);
+    QLOG_INFO() << "CameraIEEE1394::setCamera> Pixel data depth " << data_depth;
+
+    switch (encoding_num) {
+      case DC1394_COLOR_CODING_MONO8:
+      pixel_encoding = B8;
+      break;
+      case DC1394_COLOR_CODING_MONO16:
+      pixel_encoding = B16;
+      break;
+      default:
+      QLOG_INFO() << "ENCODING NUMBER " << encoding_num;
+      pixel_encoding = UNKNOWN;
+      break;
+    }
+    dc1394_get_image_size_from_video_mode(camera, video_mode,
+                                        &width, &height);
+    QLOG_INFO () << "CameraNeo::setFeature> Reallocating the image buffer "
+                 << " width " << width << " height " << height;
+    if (buffer) { free(buffer); buffer = NULL;}
+    if (snapshot) { free(snapshot); snapshot = NULL;}
+    if (buffer32) { free(buffer32); buffer32 = NULL;}
+    if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+    buffer = (uchar*)malloc( sizeof(uchar) * width * height);
+    snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
+    buffer32 = (int*)malloc( sizeof(int) * width * height);
+    snapshot32 = (int*)malloc( sizeof(int) * width * height);
+    delete image;
+    image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
+    QVector<QRgb> table;
+    for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
+    image->setColorTable(table);
+    sleep(1);
+    err = dc1394_video_set_iso_channel(camera,id);
+    err = dc1394_video_set_iso_speed(camera,DC1394_ISO_SPEED_400);
+    err = dc1394_capture_setup(camera, IIDC_FRAME_NUMBER, 0);
+    err = dc1394_video_set_transmission(camera, DC1394_ON);
+    start();
+    QLOG_INFO() << "setFeature> Release the mutex";
+  }
+  if ( feature == DC1394_FEATURE_NUM + 2 ) {
+    if ( dc1394_is_video_mode_scalable(video_mode) ) {
+    /*Set IIDC Video Mode*/
+    QLOG_DEBUG() << "setFeature> Stop Acquisition";
+    stop();
+    dc1394_video_set_transmission(camera, DC1394_OFF);
+    dc1394_capture_stop(camera);
+    QLOG_INFO() << "setFeature> Change Color Coding to " << QString::number(value);
+     switch ((int)value) {
+      case 0:
+      dc1394_format7_set_color_coding(camera, video_mode, DC1394_COLOR_CODING_MONO8);
+      break;
+      case 1:
+      dc1394_format7_set_color_coding(camera, video_mode, DC1394_COLOR_CODING_MONO16);
+      break;
+      default:
+      dc1394_format7_set_color_coding(camera, video_mode, DC1394_COLOR_CODING_MONO8);
+      break;
+     }
+    framerate = (dc1394framerate_t)40;
+    dc1394_format7_get_color_coding(camera, video_mode, &encoding_num);
+    QLOG_INFO() << "setFeature> New Color Encoding " << encoding_num;
+    uint32_t data_depth;
+    dc1394_get_color_coding_data_depth(encoding_num,&data_depth);
+    QLOG_INFO() << "CameraIEEE1394::setCamera> Pixel data depth " << data_depth;
+
+    switch (encoding_num) {
+      case DC1394_COLOR_CODING_MONO8:
+      pixel_encoding = B8;
+      break;
+      case DC1394_COLOR_CODING_MONO16:
+      pixel_encoding = B16;
+      break;
+      default:
+      QLOG_INFO() << "ENCODING NUMBER " << encoding_num;
+      pixel_encoding = UNKNOWN;
+      break;
+     }
+    }
+    dc1394_get_image_size_from_video_mode(camera, video_mode,
+                                        &width, &height);
+    QLOG_INFO () << "CameraNeo::setFeature> Reallocating the image buffer "
+                 << " width " << width << " height " << height;
+    if (buffer) { free(buffer); buffer = NULL;}
+    if (snapshot) { free(snapshot); snapshot = NULL;}
+    if (buffer32) { free(buffer32); buffer32 = NULL;}
+    if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+    buffer = (uchar*)malloc( sizeof(uchar) * width * height);
+    snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
+    buffer32 = (int*)malloc( sizeof(int) * width * height);
+    snapshot32 = (int*)malloc( sizeof(int) * width * height);
+    delete image;
+    image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
+    QVector<QRgb> table;
+    for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
+    image->setColorTable(table);
+    sleep(1);
+    err = dc1394_video_set_iso_channel(camera,id);
+    err = dc1394_video_set_iso_speed(camera,DC1394_ISO_SPEED_400);
+    err = dc1394_capture_setup(camera, IIDC_FRAME_NUMBER, 0);
+    err = dc1394_video_set_transmission(camera, DC1394_ON);
+    start();
+    QLOG_INFO() << "setFeature> Restart Acquisition";
+  }
 }
-void
+void  
 CameraIEEE1394::setMode(int feature, bool value) {
   for (int i = 0 ; i < DC1394_FEATURE_NUM ; i++) {
     if (feature == i) {
@@ -236,9 +601,90 @@ CameraIEEE1394::getFeatures() {
       }
     }
   }
+  // get Video Mode feature
+  err = dc1394_video_get_mode(camera, &video_mode);
+  for ( int i = 0 ; i < video_modes.num ; i++) {
+    if (video_modes.modes[i] == video_mode) {
+      featureValueList.replace(video_mode_feature, i);
+      err = dc1394_get_color_coding_from_video_mode(camera,
+                                                    video_mode,
+                                                    &encoding_num);
+      // Set Pixel encoding
+      switch (encoding_num) {
+      case DC1394_COLOR_CODING_MONO8:
+      pixel_encoding = B8;
+      break;
+      case DC1394_COLOR_CODING_MONO16:
+      pixel_encoding = B16;
+      break;
+      default:
+      QLOG_INFO() << "ENCODING NUMBER " << encoding_num;
+      pixel_encoding = UNKNOWN;
+      break;
+      }
+      dc1394_get_image_size_from_video_mode(camera, video_mode,
+                                        &width, &height);
+      break;
+    }
+  }
+  // Color Coding feature
+  switch (encoding_num) {
+      case DC1394_COLOR_CODING_MONO8:
+      featureValueList.replace(color_coding_feature, 0);
+      break;
+      case DC1394_COLOR_CODING_MONO16:
+      featureValueList.replace(color_coding_feature,1);
+      break;
+      default:
+      featureValueList.replace(color_coding_feature,0);
+      break;
+    }
+
   emit updateFeatures();
 }
+void 
+CameraIEEE1394::getProps()  {
 
+  int propCnt = 0;
+
+  // Frame Rate prop
+  QString frateStr = iidc_props[propCnt];
+  //err = dc1394_video_get_framerate(camera, &framerate);
+  QLOG_DEBUG () << "CameraIEEE1394::getProps> Frame Rate updated " 
+               << iidc_framerates[framerate - FRAMERATES_OFFSET];
+  frateStr.append(" : " + QString(iidc_framerates[framerate - FRAMERATES_OFFSET]) + " Hz");
+  propList.replace(propCnt,frateStr);
+
+  // PC Rate prop
+  QString pcrateStr = iidc_props[++propCnt];
+  QLOG_DEBUG () << "CameraIEEE1394::getProps> PC Rate updated "
+               << frequency;
+  pcrateStr.append(" : " + QString::number((int)frequency) + " Hz");
+  propList.replace(propCnt,pcrateStr);
+
+  // Image Size prop
+  QString imgsizeStr = iidc_props[++propCnt];
+  QLOG_DEBUG () << "CameraIEEE1394::getProps> Image Size updated "
+               << width * height;
+  imgsizeStr.append(" : " + QString::number(width) + "x" + QString::number(height));
+  propList.replace(propCnt,imgsizeStr);
+
+  // Encoding prop
+  QString encodingStr = iidc_props[++propCnt];
+  QLOG_DEBUG () << "CameraIEEE1394::getProps> Encoding updated "
+               << pixel_encodings_str[pixel_encoding];
+  encodingStr.append(" : " + QString(pixel_encodings_str[pixel_encoding]));
+  propList.replace(propCnt,encodingStr);
+
+  // Video Mode prop
+  QString videomodeStr = iidc_props[++propCnt];
+  QLOG_DEBUG() << "CameraIEEE1394::getProps> Video Mode updated "
+               << iidc_video_modes[video_mode - VIDEO_MODES_OFFSET];
+  videomodeStr.append(" : " + QString(iidc_video_modes[video_mode - VIDEO_MODES_OFFSET]));
+  propList.replace(propCnt,videomodeStr);
+  
+  emit updateProps();
+}
 int 
 CameraIEEE1394::findCamera() {
    int i;
@@ -251,15 +697,15 @@ CameraIEEE1394::findCamera() {
    
    num = list->num;
    if (num == 0) {
-     QLOG_ERROR() << "No cameras found";
+     QLOG_DEBUG() << "CameraIEEE1394::findCamera> No cameras found";
      return -1;
    }
    // Allocate camera list
    for (i = 0 ; i < num; i++) {
      dc1394camera_t *camera = dc1394_camera_new (d,list->ids[i].guid);
-     
      if (!camera) {
-       QLOG_ERROR() << "Failed to initialize camera with guid " << list->ids[i].guid;
+       QLOG_ERROR() << "CameraIEEE1394::findCamera> Failed to initialize camera with guid " 
+                    << list->ids[i].guid;
        return -1;
      }
      cameralist.push_back((dc1394camera_t *)camera);
@@ -272,49 +718,15 @@ CameraIEEE1394::findCamera() {
 int 
 CameraIEEE1394::connectCamera() {
 
-  int i;
   camera_err = -1;
-   /* Init camera*/
-  err = dc1394_reset_bus (camera);
-  DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),"reset bus reported error");
-  
-  // get video modes:
-  err = dc1394_video_get_supported_modes(camera,&video_modes);
-  DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),
-		     "Can't get video modes");
-  
-  /* select highest res mode*/
-  for ( i = video_modes.num - 1 ; i >= 0 ; i--) {
-    if (!dc1394_is_video_mode_scalable(video_modes.modes[i])) {
-      dc1394_get_color_coding_from_video_mode(camera,
-					      video_modes.modes[i], 
-					      &coding);
-      if (coding == DC1394_COLOR_CODING_MONO8) {
-	video_mode = video_modes.modes[i];
-        QLOG_DEBUG () << " Highest mode selected : " << video_mode;
-	break;
-      }
-    }
-  }
-  if (i < 0) {
-    QLOG_ERROR() << "Could not get a valid MONO8 mode";
-    cleanup_and_exit();
-  }
-  
-  err = dc1394_get_color_coding_from_video_mode(camera, 
-						video_mode,
-						&coding);
-  DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),
-		     "Could not get color coding");
-  
-  // get highest framerate
-  err = dc1394_video_get_supported_framerates(camera,
-					      video_mode,
-					      &framerates);
-  DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),
-		     "Could not get framerates");
-  framerate = framerates.framerates[framerates.num-1];
-  
+
+  err = dc1394_video_set_mode(camera, video_mode);
+
+  // Refresh properties
+  getProps();
+  // Refresh features
+  getFeatures();
+
   /*-----------------------------------------------------------------------
    *  setup capture
    *-----------------------------------------------------------------------*/
@@ -324,16 +736,7 @@ CameraIEEE1394::connectCamera() {
   err = dc1394_video_set_iso_speed(camera,DC1394_ISO_SPEED_400);
   DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),
 		     "Could not set iso speed");
-  
-  err=dc1394_video_set_mode(camera, video_mode);
-  DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),
-		     "Could not set video mode");
-  
-  err = dc1394_video_set_framerate(camera, framerate);
-  DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),
-		     "Could not set framerate");
- 
-  err = dc1394_capture_setup(camera,frequency,0);
+  err = dc1394_capture_setup(camera, IIDC_FRAME_NUMBER, 0);
   DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),
 		     "\nCould not setup camera\n"
 		     "make sure that the video mode and framerate are\n"
@@ -344,10 +747,14 @@ CameraIEEE1394::connectCamera() {
   
   dc1394_get_image_size_from_video_mode(camera, video_mode, 
 					&width, &height);
-  QLOG_INFO() << "Image width " << width << " height " << height;
-  QLOG_DEBUG() << "allocating buffer for camera pointer " <<  camera;
+  QLOG_INFO() << "CameraIEEE1394::connectCamera> image resolution used width " 
+              << width << " height " << height;
+  QLOG_DEBUG() << "CameraIEEE1394::connectCamera> Allocating buffer for camera pointer " <<  camera;
+  
   buffer = (uchar*)malloc( sizeof(uchar) * width * height);
   snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
+  buffer32 = (int*)malloc( sizeof(int) * width * height);
+  snapshot32 = (int*)malloc( sizeof(int) * width * height);
 
   image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
   QVector<QRgb> table;
@@ -360,7 +767,8 @@ CameraIEEE1394::connectCamera() {
    *-----------------------------------------------------------------------*/
   err = dc1394_video_set_transmission(camera, DC1394_ON);
   DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),
-		     "acquireImage> Could not start camera iso transmission");
+		     "connectCamera> Could not start camera iso transmission");
+
   return 0;
 
 }
@@ -371,9 +779,12 @@ CameraIEEE1394::cleanup_and_exit()
   dc1394_video_set_transmission(camera, DC1394_OFF);
   dc1394_capture_stop(camera);
   dc1394_camera_free(camera);
+  camera = NULL;
   if (d) dc1394_free (d);
   if (buffer) { free(buffer); buffer = NULL;}
   if (snapshot) { free(snapshot); snapshot = NULL;}
+  if (buffer32) { free(buffer32); buffer32 = NULL;}
+  if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
   if (image) delete image;
   return;
 }
@@ -381,9 +792,9 @@ CameraIEEE1394::cleanup_and_exit()
 int 
 CameraIEEE1394::acquireImage() {
    
+     acquireMutex->lock();
      /*Init frame to NULL*/
-    frame = NULL;
-    
+     frame = NULL;
     /*-----------------------------------------------------------------------
      *  capture one frame
      *-----------------------------------------------------------------------*/
@@ -391,24 +802,53 @@ CameraIEEE1394::acquireImage() {
 					&frame);
     DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),
 		       "acquireImage> Could not capture a frame"); 
-        
+    QLOG_DEBUG() << "CameraIEEE1394::acquireImage> Frame image size " << frame->image_bytes;
     /* copy captured image */
     snapshotMutex->lock();
-    memcpy(buffer,frame->image,width * height);
+    ushort *tmpBuf;
     // calculate min,max
     max = 0;
-    for (unsigned int i = 0 ; i < width * height; i++) {
-      if (buffer[i] > max)
-	max = buffer[i];
+    min = 65535;
+    if ( pixel_encoding == B8 ) {
+      for (unsigned int i = 0 ; i < width * height; i++) {
+        if (frame->image[i] > max)
+          max = frame->image[i];
+        if (frame->image[i] < min)
+          min = frame->image[i];
+      }
     }
-    min = 255;
-    for (unsigned int i = 0 ; i < width * height; i++) {
-      if (buffer[i] < min)
-	min = buffer[i];
+    if ( pixel_encoding == B16 ) {
+      tmpBuf = reinterpret_cast<ushort*>(frame->image); 
+      for (unsigned int i = 0 ; i < width * height; i++) {
+        ushort ui_current = *(tmpBuf++);
+        if (ui_current > max)
+          max = ui_current;
+        if (ui_current < min)
+          min = ui_current;
+      }
+    }
+    // copy image to buffer (8-bit : 0 - 255 range) and to buffer32 (32-bit)
+    // Reset buffer (8-bit) and buffer32 (32-bit)
+    memset(buffer,0,height * width * sizeof(uchar));
+    memset(buffer32,0,height * width * sizeof(int));  
+    if ( pixel_encoding == B8 ) {
+      memcpy(buffer,frame->image,width * height * sizeof(uchar));
+      for (unsigned int i = 0 ; i < width * height; i++)
+        buffer32[i] = buffer[i];
+    }
+    if ( pixel_encoding == B16 ) {
+      tmpBuf = reinterpret_cast<ushort*>(frame->image);
+      for (unsigned int i = 0 ; i < width * height; i++) {
+        ushort ui_current = *(tmpBuf++);
+        buffer32[i] = ui_current;
+        if ( (max - min) != 0 )
+          buffer[i] = (uchar) (( 255 * (ui_current - min) ) / (max - min));
+        else
+          buffer[i] = 255;
+      }
     }
     snapshotMutex->unlock();
     image->loadFromData (buffer,width * height);
-
     // emit visualisation image
     QImage imagescaled = image->scaled(imageWidth,imageHeight);
     QImage imagergb32 =  imagescaled.convertToFormat(QImage::Format_ARGB32_Premultiplied);
@@ -416,15 +856,14 @@ CameraIEEE1394::acquireImage() {
     emit getImage(imagergb32);
     emit updateMin(min);
     emit updateMax(max);
-  /*-----------------------------------------------------------------------
+    /*-----------------------------------------------------------------------
      * release frame
      *-----------------------------------------------------------------------*/
     err = dc1394_capture_enqueue(camera, frame);
     DC1394_ERR_CLN_RTN(err,cleanup_and_exit(),
 		       "acquireImage> Could not enqueue a frame");
-    
- 
-  return (1);
+    acquireMutex->unlock();
+    return (1);
 }
 
 void CameraIEEE1394::setImageSize(const int &_imageWidth, const int &_imageHeight){
@@ -433,3 +872,5 @@ void CameraIEEE1394::setImageSize(const int &_imageWidth, const int &_imageHeigh
   imageHeight = _imageHeight;
   QLOG_DEBUG ( ) <<  "emit new image with size " << imageWidth  << "x" << imageHeight;
 }
+
+#endif

@@ -15,48 +15,53 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
-#ifndef CAMERAWINDOW_H
-#define CAMERAWINDOW_H
+#ifndef COMEDIWINDOW_H
+#define COMEDIWINDOW_H
 
+#include "ComediCounterControlWidget.h"
 
-#include "VideoPlayer.h"
-#include "Camera.h"
-#include "CameraControlWidget.h"
-#include "CameraPropWidget.h"
+#include <QtSql>
+#include <QtGui>
 
-#include "QsLog.h"
-
-class CameraWindow : public QMainWindow
+class ComediWindow : public QMainWindow 
 {
   
   Q_OBJECT
     
     public:
   
-  CameraWindow( QMainWindow* parent = 0, Qt::WFlags fl = Qt::Window, Camera *_camera = 0, 
-		int cameraNumber = 0);
-  virtual ~CameraWindow();
-  
-  void update();
+  ComediWindow( QMainWindow* parent = 0, Qt::WFlags fl = Qt::Window , Comedi *_comedi = 0);
+  virtual ~ComediWindow();
+
+  ComediCounterControlWidget *comediWidget;
 
  public slots:
-  void set480x320();
-  void set640x480();
-  void set1280x960();
+   void update();
+   void remove();
+   void load();
+   void setDbPath(QString _path);
 
- signals:
-  void setVideoPlayerResolution(int,int);
-  
  protected:
   void closeEvent(QCloseEvent *event);
     
  private:
 
   QMainWindow *parentWindow;
-  CameraControlWidget *cameraWidget;
-  CameraPropWidget *cameraPropWidget;
-  Camera *camera;
-  int cameraNumber;
-  VideoPlayer *player;
+  QString dbPath;
+  QLabel      *comedititle;
+  QSqlTableModel *comeditable;
+  QTableView *comediview;
+  int comedirow;
+  QVBoxLayout*                vboxlayout;
+   
+  QPushButton*                updateButton;
+  QPushButton*                removeButton;
+  QPushButton*                loadButton;
+  
+  void InitConfig();
+  void InitRun();
+  QVector<QString>      *comediList;
+  QDockWidget *dockWidget;
+  Comedi *comedi;
 };
-#endif // CAMERAWINDOW_H
+#endif // COMEDIWINDOW_H

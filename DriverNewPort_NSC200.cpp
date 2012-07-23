@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
-
+  
 #include <iostream>
 #include <stdio.h>
 #include <sstream>
@@ -27,10 +27,10 @@ const int   DriverNewPort_NSC200::BUFFER_SIZE          = 32;  // buffer size for
 const int   DriverNewPort_NSC200::MAX_DEVICES          = 16;  // maximum number of NewPort_NSC200 controllers
 const float DriverNewPort_NSC200::MAX_VEL              = 100000; // maximum vel of NewPort_NSC200 controllers
 const int   DriverNewPort_NSC200::NB_ITEM_INIT_SETTING =  2;  // number of items at the actuator (#channel, velocity)
-const int   DriverNewPort_NSC200::NB_ITEM_DRV_SETTING  =  1;  // number of items at the driver (axisnumber)
+const int   DriverNewPort_NSC200::NB_ITEM_DRV_SETTING  =  2;  // number of items at the driver (axisnumber, delay)
 const int   DriverNewPort_NSC200::MAX_TRIES            = 10;  // Number of read tries
 
-const ADActuatorFeature DriverNewPort_NSC200::NEWPORT_NSC200_FEATURE = 
+const DriverFeature DriverNewPort_NSC200::NEWPORT_NSC200_FEATURE = 
   { "steps","mm",110866,11.,CLOSED_LOOP,NULL };
 
 // 
@@ -48,9 +48,9 @@ int DriverNewPort_NSC200::Init(string& rstateData) const
   // Driver initialization
   // 
   // parse driverSetting string for axis number
-  if (sscanf(_setting.c_str(),"axisNumber=%d",
-	     &_axisNumber) != NB_ITEM_DRV_SETTING) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> driverSetting string incorrect";
+  if (sscanf(_setting.c_str(),"axisNumber=%d delay=%d",
+	     &_axisNumber, &_delay) != NB_ITEM_DRV_SETTING) {
+    QLOG_DEBUG() << "DriverNewPort_NSC200> driverSetting string incorrect";
     retStatus = -1;
     return retStatus;
   }
@@ -60,7 +60,7 @@ int DriverNewPort_NSC200::Init(string& rstateData) const
   QLOG_DEBUG() << "axis number = " << _axisNumber;
   
   if ((_axisNumber < 1) || (_axisNumber > MAX_DEVICES)) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> axis number out of range";
+    QLOG_DEBUG() << "DriverNewPort_NSC200> axis number out of range";
     retStatus = -1;
     return retStatus;
   }  
@@ -69,30 +69,30 @@ int DriverNewPort_NSC200::Init(string& rstateData) const
   // Check error of the controller
   ////////////////////////////////////////////////////////////////////////////////////
   while (answerTE == "") {
-    usleep(10000);
+    usleep(_delay);
     memset(buffer,0,BUFFER_SIZE);
     sprintf(buffer, "%dTE?\r", _axisNumber);
-    QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> INIT : send message : " << QString(buffer); 
+    QLOG_DEBUG() <<"DriverNewPort_NSC200> INIT : send message : " << QString(buffer); 
     // send command
     command = buffer;
     if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
+      QLOG_INFO() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
     }
-    usleep(10000);
+    usleep(_delay);
     // read reply
     if (!_pcommChannel->Read(answerTE,NULL)) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to read from port";
-      QLOG_DEBUG() << "ADActuatorNewPort_NSC200> Error code reply expected, but got reply " 
+      QLOG_INFO() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to read from port";
+      QLOG_INFO() << "DriverNewPort_NSC200> Error code reply expected, but got reply " 
 		   <<  QString(answerTE.c_str());
     }
-    //usleep(10000);
+    usleep(_delay);
     QLOG_DEBUG() << "Error code = " << QString(answerTE.c_str());
     if (answerTE == "") {
 	QLOG_DEBUG() << "Trying again...";
 	 }	
     tries++;
     if (tries == MAX_TRIES) {
-      QLOG_DEBUG() << "Giving Up !";
+      QLOG_INFO() << "Giving Up !";
       retStatus = -1;
       return retStatus;
     }
@@ -121,11 +121,11 @@ int DriverNewPort_NSC200::InitActuator(string actuatorSetting,
   // Select switch box channel NOT NECESSARY IN PRINCIPLE !
   ////////////////////////////////////////////////////////////////////////////////////
   if (!SelectedSwitchBoxChannel(actuatorSetting)) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> No motor connected !";
+    QLOG_DEBUG() << "DriverNewPort_NSC200> No motor connected !";
     return (-1);
   }
   if ((_vel < 1 ) || (_vel > MAX_VEL)) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> vel setting out of range";
+    QLOG_DEBUG() << "DriverNewPort_NSC200> vel setting out of range";
     retStatus = -1;
     return retStatus;
   }
@@ -137,78 +137,20 @@ int DriverNewPort_NSC200::InitActuator(string actuatorSetting,
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> Unable to write to port, command = " << QString(command.c_str());
+    QLOG_DEBUG() << "DriverNewPort_NSC200> Unable to write to port, command = " << QString(command.c_str());
     retStatus = -1;
   }
-  usleep(10000);
-  /* Save non volatile memory*/
+  usleep(_delay);
+  /* Save non volatile memory
   memset(buffer,0,BUFFER_SIZE);
   sprintf(buffer, "%dSM\r", _axisNumber);
-  // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> Unable to write to port, command = " << QString(command.c_str());
+    QLOG_DEBUG() << "DriverNewPort_NSC200> Unable to write to port, command = " << QString(command.c_str());
     retStatus = -1;
   }
   sleep(3);
-  ////////////////////////////////////////////////////////////////////////////////////
-  // Check led of the controller
-  ////////////////////////////////////////////////////////////////////////////////////
-  memset(buffer,0,BUFFER_SIZE);
-  sprintf(buffer, "%dPH?\r", _axisNumber);
-  // send command
-  command = buffer;
-  if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-    QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
-    retStatus = -1;
-  }
-  usleep(10000);
-  // read reply
-  if (!_pcommChannel->Read(answer,NULL)) {
-    QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to read from port";
-    retStatus = -1;
-    QLOG_DEBUG() <<
-      "ADActuatorNewPort_NSC200> #Channel reply expected, but got reply = " << QString(answer.c_str());
-    return retStatus;
-  }
-  //usleep(10000);
-  QLOG_DEBUG() << "ADActuatorNewPort_NSC200> answer = " << QString(answer.c_str());
-  // evaluate HW status
-  if (answer.length() > 5) 
-    sub = answer.substr(5);
-  realAnswer = sub.c_str();
-  QLOG_DEBUG() << "Reply to PH? = " << QString(realAnswer);
-  sscanf (realAnswer, "%d",&hwStatusReply);
-  QLOG_DEBUG() << "ADActuatorNewPort_NSC200> #HW status reply = " << hwStatusReply;
-  hwStatusReply = hwStatusReply & 1;
-  if ( hwStatusReply == 0 ) {
-    // Led is red !
-    QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << " has red led status !";
-    retStatus = -1;
-  }
-  ////////////////////////////////////////////////////////////////////////////////////
-  // Check error of the controller
-  ////////////////////////////////////////////////////////////////////////////////////
-  memset(buffer,0,BUFFER_SIZE);
-  sprintf(buffer, "%dTE?\r", _axisNumber);
-  
-  QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> send message : " << QString(buffer); 
-  // send command
-  command = buffer;
-  if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-    QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
-    retStatus = -1;
-  }
-  usleep(10000);
-  // read reply
-  if (!_pcommChannel->Read(answerTE,NULL)) {
-    QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to read from port";
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> Error code reply expected, but got reply = " 
-		 << QString(answerTE.c_str());
-    retStatus = -1;
-  }
-  //usleep(10000);
-  QLOG_DEBUG() << "Error code = "  << QString(answerTE.c_str());
+  */
   return retStatus;
 }
 
@@ -231,34 +173,26 @@ int DriverNewPort_NSC200::GetPos(string  actuatorSetting,
   // init position to zero
   position = 0;
   
-  ////////////////////////////////////////////////////////////////////////////////////
-  // Select switch box channel NOT NECESSARY IN PRINCIPLE !
-  ////////////////////////////////////////////////////////////////////////////////////
-  if (!SelectedSwitchBoxChannel(actuatorSetting)) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> No motor connected !";
-    return (-1);
-  }
   // create buffer with command xxTPnn
   memset(buffer,0,BUFFER_SIZE);
   if (_channel > 0 )
     sprintf(buffer, "%dTP%d?\r", _axisNumber,_channel);
   else
     sprintf(buffer, "%dTP?\r", _axisNumber);
-  QLOG_DEBUG() << "ADActuatorNewPort_NSC200> GetPos> send command buffer = " << QString(buffer);
+  QLOG_DEBUG() << "DriverNewPort_NSC200> GetPos> send command buffer = " << QString(buffer);
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
+    QLOG_DEBUG() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
     return (-1);
   }
-  usleep(10000);
+  usleep(_delay);
   // read reply
   if (!_pcommChannel->Read(answer,NULL)) {
-    QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to read from port";
+    QLOG_DEBUG() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to read from port";
     return (-1);
   }
-  //usleep(10000);
-  QLOG_DEBUG() << "ADActuatorNewPort_NSC200> Getting answer = " << QString(answer.c_str());
+  QLOG_DEBUG() << "DriverNewPort_NSC200> Getting answer = " << QString(answer.c_str());
   // parse and extract position
   string sub ="";
   if (answer.length() > 5) {
@@ -270,7 +204,7 @@ int DriverNewPort_NSC200::GetPos(string  actuatorSetting,
     QLOG_DEBUG() << "Reply to TP? = " << QString(realAnswer);
     sscanf (realAnswer, "%f",&position);
   }  
-  QLOG_DEBUG() << "ADActuatorNewPort_NSC200> GetPos gives position = " <<  position;
+  QLOG_DEBUG() << "DriverNewPort_NSC200> GetPos gives position = " <<  position;
   return retStatus;
 }
 
@@ -296,7 +230,7 @@ int DriverNewPort_NSC200::Move(string actuatorSetting,
   // Select switch box channel
   ////////////////////////////////////////////////////////////////////////////////////
   if (!SelectedSwitchBoxChannel(actuatorSetting)) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> No motor connected !";
+    QLOG_DEBUG() << "DriverNewPort_NSC200> No motor connected !";
     return (-1);
   }
   if ( ConvertUnit(unit,nbSteps,motion,range) || (fabs(motion) > range)) {
@@ -311,14 +245,14 @@ int DriverNewPort_NSC200::Move(string actuatorSetting,
   // create buffer with command xxPAnn
   memset(buffer,0,BUFFER_SIZE);
   sprintf(buffer, "%dPR%d\r", _axisNumber,(int)motion);
-  QLOG_DEBUG() << "ADActuatorNewPort_NSC200> Send MoveAbs Command " <<  QString(buffer);
+  QLOG_DEBUG() << "DriverNewPort_NSC200> Send MoveAbs Command " <<  QString(buffer);
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-     QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
+     QLOG_DEBUG() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
     return (-1);
   }
-  usleep(10000);
+  usleep(_delay);
   return retStatus;
 }
 
@@ -344,7 +278,7 @@ int DriverNewPort_NSC200::MoveAbs(string actuatorSetting,
   // Select switch box channel
   ////////////////////////////////////////////////////////////////////////////////////
   if (!SelectedSwitchBoxChannel(actuatorSetting)) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> No motor connected !";
+    QLOG_DEBUG() << "DriverNewPort_NSC200> No motor connected !";
     return (-1);
   }
   if (!ConvertUnit(unit,absPos,convertedAbsPos,range)) {
@@ -355,15 +289,15 @@ int DriverNewPort_NSC200::MoveAbs(string actuatorSetting,
     // create buffer with command xxPAnn
     memset(buffer,0,BUFFER_SIZE);
     sprintf(buffer, "%dPA%d\r", _axisNumber,(int)convertedAbsPos);
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> Send MoveAbs Command " << QString( buffer);
+    QLOG_DEBUG() << "DriverNewPort_NSC200> Send MoveAbs Command " << QString( buffer);
     // send command
     command = buffer;
     if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-       QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
+       QLOG_DEBUG() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
       return (-1);
     }
-    usleep(10000);
   }
+  usleep(_delay);
   return retStatus;
 }
 
@@ -386,19 +320,19 @@ int DriverNewPort_NSC200::Stop(string actuatorSetting) const
   // Select switch box channel
   ////////////////////////////////////////////////////////////////////////////////////
   if (!SelectedSwitchBoxChannel(actuatorSetting)) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> No motor connected !";
+    QLOG_DEBUG() << "DriverNewPort_NSC200> No motor connected !";
     return (-1);
   }
   memset(buffer,0,BUFFER_SIZE);
   sprintf(buffer, "%dST\r", _axisNumber);
-  QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Stop>send message : " << QString(buffer); 
+  QLOG_DEBUG() <<"DriverNewPort_NSC200> Stop>send message : " << QString(buffer); 
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-     QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
+     QLOG_DEBUG() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
     retStatus = -1;
   }
-  usleep(10000);
+  usleep(_delay);
   return retStatus;
 }
 
@@ -447,9 +381,9 @@ int DriverNewPort_NSC200::OperationComplete(string& rstateData,
   const char*  realAnswerTE;
   const char*  realAnswerTS;
   // parse driverSetting string for axis number
-  if (sscanf(_setting.c_str(),"axisNumber=%d",
-	     &_axisNumber) != NB_ITEM_DRV_SETTING) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> driverSetting string incorrect";
+   if (sscanf(_setting.c_str(),"axisNumber=%d delay=%d",
+             &_axisNumber, &_delay) != NB_ITEM_DRV_SETTING) {
+    QLOG_DEBUG() << "DriverNewPort_NSC200> driverSetting string incorrect";
     retStatus = -1;
     return retStatus;
   }
@@ -464,25 +398,24 @@ int DriverNewPort_NSC200::OperationComplete(string& rstateData,
   ////////////////////////////////////////////////////////////////////////////////////////
   memset(buffer,0,BUFFER_SIZE);
   sprintf(buffer, "%dTS?\r", _axisNumber);
-  QLOG_DEBUG() << "ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << " channel " << _channel
+  QLOG_DEBUG() << "DriverNewPort_NSC200> axisNumber " << _axisNumber << " channel " << _channel
 	       << " buffer = " << QString(buffer);
   
-  QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> send message : " <<  QString(buffer); 
+  QLOG_DEBUG() <<"DriverNewPort_NSC200> send message : " <<  QString(buffer); 
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-    QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
+    QLOG_DEBUG() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
     return  (-1);
   }
-  usleep(10000);
+  usleep(_delay);
   // read reply
   if (!_pcommChannel->Read(answerTS,NULL)) {
-    QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to read from port";
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> Status reply expected, but got reply = " << 
+    QLOG_DEBUG() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to read from port";
+    QLOG_DEBUG() << "DriverNewPort_NSC200> Status reply expected, but got reply = " << 
       QString(answerTS.c_str());
     return  (-1);
   }
-  //usleep(10000);
   QLOG_DEBUG() << "Status reply = " <<  QString(answerTS.c_str());
   
   // Evaluate status of motion
@@ -499,116 +432,24 @@ int DriverNewPort_NSC200::OperationComplete(string& rstateData,
   QLOG_DEBUG() << "axisNumber " << _axisNumber << " channel " << _channel << " has status "
 	       << status;
   if ( status == MOTOR_ON_STOP_STATE ) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> axisNumber " <<  QString(axisStr.str().c_str())
+    QLOG_DEBUG() << "DriverNewPort_NSC200> axisNumber " <<  QString(axisStr.str().c_str())
 		 << ": Motor On, Motion not in progress";
     retStatus = 1;
     rstateData = "axisNumber=" + axisStr.str() + ": Motor On, Motion not in progress";
   }
   else if ( status == MOTOR_ON_RUNNING_STATE ) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> axisNumber " <<  QString(axisStr.str().c_str())
+    QLOG_DEBUG() << "DriverNewPort_NSC200> axisNumber " <<  QString(axisStr.str().c_str())
 		 << ": Motor On, Motion in progress";
     rstateData = "axisNumber=" + axisStr.str() + ": Motor On, Motion in progress";
     retStatus = 0;
   }
   else if ( status == MOTOR_OFF_STOP_STATE ) {
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> axisNumber " <<  QString(axisStr.str().c_str())
+    QLOG_DEBUG() << "DriverNewPort_NSC200> axisNumber " <<  QString(axisStr.str().c_str())
 		 << ": Motor Off, Motion not in progress";
     
     rstateData = "axisNumber=" + axisStr.str() + ": Motor Off, Motion not in progress";
     retStatus = 1;
   }
-  usleep(10000);
-  
-  ///////////////////////////////////////////////////////////////////////////////
-    // create buffer with command xxTE? for Motor  Error Code query from controller
-    ///////////////////////////////////////////////////////////////////////////////
-    
-    memset(buffer,0,BUFFER_SIZE);
-    sprintf(buffer, "%dTE?\r", _axisNumber);
-  
-    QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> send message : "  <<  QString(buffer); 
-    // send command
-    command = buffer;
-    if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
-      return  (-1);
-    }
-    usleep(10000);
-    // read reply
-    if (!_pcommChannel->Read(answerTE,NULL)) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to read from port";
-      QLOG_DEBUG() << "ADActuatorNewPort_NSC200> Error code reply expected, but got reply = " 
-		   << QString(answerTE.c_str());
-      return  (-1);
-    }
-    //usleep(10000);
-    QLOG_DEBUG() << "Error code = " << QString( answerTE.c_str());
-    // Evaluate controller Error code
-    if (answerTE.length() > 5) {
-      subTE = answerTE.substr(5);
-      realAnswerTE = subTE.c_str();
-      QLOG_DEBUG() << "Reply to TE? = " << QString(realAnswerTE);
-      sscanf (realAnswerTE, "%d",&error);
-    }
-    else
-      error = -1;
-    QLOG_DEBUG() << "axisNumber " << _axisNumber << " channel " << _channel << " has error code " << error;
-    //
-    // Motor Error Code checking
-    //
-    if ( error == MOTOR_NOT_ENABLE_STATE ) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Motor not enabled !";
-    }
-    //else if ( error == PARAMETER_CHANGE_STATE ) {
-    //  QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Change parameter not allowed during motion !");
-    // }
-    else if ( error == COMMAND_PARAMETER_MISSING_STATE ) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Command parameter missing !";
-    }
-    else if ( error == NO_MOTOR_CONNECTED_STATE ) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Motor not connected !";
-      rstateData = "Motor not connected !\n";
-      retStatus = -1;
-    }
-    else if ( error == PARAMETER_OUT_OF_RANGE_STATE ) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Parameter out of range";
-    }
-    else if ( error == INVALID_COMMAND_STATE ) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Invalid Command !";
-    }
-    else if ( error == DRIVER_FAULT_OPEN_LOAD_STATE ) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Driver Error : Open Load !";
-      rstateData = "Driver Error : Open Load !";
-      retStatus = -1;
-    }
-    else if ( error == DRIVER_FAULT_THERMAL_STATE ) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Driver Error : Thermal shut down !";
-      rstateData = "Driver Error : Thermal shut down !";
-      retStatus = -1;
-    }
-    else if ( error == DRIVER_FAULT_SHORT_STATE ) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Driver Error : Short !";
-      rstateData = "Driver Error : Short !";
-      retStatus = -1;
-    }
-    else if ( error == NO_ERRORS_STATE) {
-      QLOG_DEBUG() << "ADActuatorNewPort_NSC200> No Errors !";
-    }
-    else if ( error ==  PARAMETER_OUT_OF_RANGE) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Parameter out of range !";
-    }
-    // Switch limit reached checking
-    if (error == UPPER_LIMIT_STATE) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Hardware Upper Limit reached !";
-      rlimitSwitch = UPPER_LIMIT;
-    }
-    else if (error == LOWER_LIMIT_STATE) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Hardware Lower Limit reached !";
-      rlimitSwitch = LOWER_LIMIT;
-    }
-    else {
-      rlimitSwitch = IN_BETWEEN;
-    }
     return retStatus;
 }
 
@@ -617,7 +458,7 @@ int DriverNewPort_NSC200::OperationComplete(string& rstateData,
 //
 //    Gives the translation stages features
 //
-int DriverNewPort_NSC200::GetActuatorFeature(ADActuatorFeature& ractuatorFeature) const
+int DriverNewPort_NSC200::GetActuatorFeature(DriverFeature& ractuatorFeature) const
 {
   QLOG_DEBUG() << "DriverNewPort_NSC200::GetActuatorFeature";
   
@@ -692,9 +533,9 @@ int DriverNewPort_NSC200::SelectedSwitchBoxChannel(string actuatorSetting) const
   /* init lastError*/
   _lastError = NO_ERROR;
   // parse driverSetting string for axis number
-  if (sscanf(_setting.c_str(),"axisNumber=%d",
-	     &_axisNumber) != NB_ITEM_DRV_SETTING) {
-    QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> driverSetting string incorrect";
+  if (sscanf(_setting.c_str(),"axisNumber=%d delay=%d",
+             &_axisNumber, &_delay) != NB_ITEM_DRV_SETTING) {
+    QLOG_DEBUG() <<"DriverNewPort_NSC200> driverSetting string incorrect";
     retStatus = -1;
     return retStatus;
   }
@@ -704,7 +545,7 @@ int DriverNewPort_NSC200::SelectedSwitchBoxChannel(string actuatorSetting) const
   if (sscanf(actuatorSetting.c_str(),
 	     "channel=%d vel=%f",
 	     &_channel,&_vel) != NB_ITEM_INIT_SETTING) {
-    QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> Actuator setting string format incorrect";
+    QLOG_DEBUG() <<"DriverNewPort_NSC200> Actuator setting string format incorrect";
     retStatus = -1;
     return retStatus;
   }
@@ -714,43 +555,41 @@ int DriverNewPort_NSC200::SelectedSwitchBoxChannel(string actuatorSetting) const
     // send command
     command = buffer;
     if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-       QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
+       QLOG_DEBUG() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
       retStatus = 0;
     }
-    usleep(10000);
+    usleep(_delay);
     ////////////////////////////////////////////////////////////////////////////////////
     // Check that selected switch box channel is correct
     ////////////////////////////////////////////////////////////////////////////////////
     memset(buffer,0,BUFFER_SIZE);
     sprintf(buffer, "%dMX?\r", _axisNumber);
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << " buffer " << QString(buffer);
+    QLOG_DEBUG() << "DriverNewPort_NSC200> axisNumber " << _axisNumber << " buffer " << QString(buffer);
     // send command
     command = buffer;
-    if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-       QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
+    if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
+       QLOG_DEBUG() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
       retStatus = 0;
     }
-    usleep(10000);
+    usleep(_delay);
     // read reply
     if (!_pcommChannel->Read(answer,NULL)) {
-      QLOG_DEBUG() <<"ADActuatorNewPort_NSC200> axisNumber " << _axisNumber << ": unable to read from port";
+      QLOG_DEBUG() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to read from port";
       retStatus = 0;
-      QLOG_DEBUG() << "ADActuatorNewPort_NSC200> #Channel reply expected, but got reply = " 
-		   << QString(answer.c_str());
+      QLOG_DEBUG() << "DriverNewPort_NSC200> #Channel reply expected, but got reply = "
+                   << QString(answer.c_str());
       return retStatus;
     }
-//usleep(10000);
-QLOG_DEBUG() << "ADActuatorNewPort_NSC200> answer = " << QString(answer.c_str());
+    QLOG_DEBUG() << "DriverNewPort_NSC200> answer = " << QString(answer.c_str());
     // Evaluate controller #Channel
-    if (answer.length() > 5) 
+    if (answer.length() > 5)
       sub = answer.substr(5);
     realAnswer = sub.c_str();
     QLOG_DEBUG() << "Reply to MX? = " << QString(realAnswer);
     sscanf (realAnswer, "%d",&channelReply);
-    QLOG_DEBUG() << "ADActuatorNewPort_NSC200> #Channel reply = " << channelReply;
+    QLOG_DEBUG() << "DriverNewPort_NSC200> #Channel reply = " << channelReply;
     if (channelReply != _channel)
       retStatus = 0;
   }
-
   return (retStatus); 
 }

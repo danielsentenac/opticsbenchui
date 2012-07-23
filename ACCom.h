@@ -47,6 +47,8 @@ public:
   static const string ETH_COM;
   /** The modbus protocol code name */
   static const string MB_COM;
+  /** The usb protocol code name */
+  static const string USB_COM;
   /** The canbus protocol code name */
   static const string CAN_COM;
 

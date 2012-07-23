@@ -70,7 +70,7 @@ class DriverNewFocus_8750_Cl : public Driver
                     string  actuatorSetting,
                     DriverDefinition::ADLimitSwitch& rlimitSwitch) const;
     virtual int GetActuatorFeature(
-       DriverDefinition::ADActuatorFeature& ractuatorFeature) const;
+       DriverDefinition::DriverFeature& ractuatorFeature) const;
  
     virtual int ConvertUnit(int unit, 
                             float valueToConvert, 
@@ -81,7 +81,7 @@ class DriverNewFocus_8750_Cl : public Driver
     static const int NB_ITEM_SETTING;   
     static const int WRITE_ERROR;
     static const int READ_ERROR;
-    static const DriverDefinition::ADActuatorFeature 
+    static const DriverDefinition::DriverFeature 
                     NEWFOCUS_8750_CL_FEATURE; // closed loop Picomotor features
 
     int SendCommand(string  command,

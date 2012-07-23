@@ -14,16 +14,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
-
+#ifdef IEEE1394CAMERA
 #ifndef CAMERAIEEE1394_H
 #define CAMERAIEEE1394_H
-
 #include <dc1394/dc1394.h>
 #include "Camera.h"
-
-extern char *iidc_features[];
-extern char *iidc_video_modes[];
-extern int VIDEO_MODES_OFFSET;
 
 class CameraIEEE1394 : public Camera
 {
@@ -38,8 +33,8 @@ class CameraIEEE1394 : public Camera
   void setCamera(void *_camera, int _id);
   void getFeatures();
   uchar* getSnapshot();
-  
-  
+  int* getSnapshot32();
+
  signals:
   void  getImage(const QImage &image);
   void  showWarning(QString message);
@@ -50,15 +45,15 @@ class CameraIEEE1394 : public Camera
   
   public slots:
   void setImageSize(const int &_imageWidth, const int &_imageHeight);
-  void setFeature(int feature, int value);
+  void setFeature(int feature, double value);
   void setMode(int feature, bool value);
-  
+  void getProps();
+
  private:
   void run();
   int  connectCamera();
   int  acquireImage();
   void cleanup_and_exit();
-
   dc1394camera_t         *camera;
   dc1394_t               *d;
   dc1394camera_list_t *  list;
@@ -66,16 +61,15 @@ class CameraIEEE1394 : public Camera
   dc1394framerates_t     framerates;
   dc1394video_modes_t    video_modes;
   dc1394framerate_t      framerate;
-  dc1394color_coding_t   coding;
+  dc1394color_coding_t   encoding_num;
   dc1394video_frame_t    *frame;
   dc1394featureset_t     features;
   dc1394video_mode_t     video_mode;
-  static const int frequency = 15;
+  int                    video_mode_feature, color_coding_feature;
   QImage *image;
-  uchar *buffer,*snapshot;
   int imageWidth;
   int imageHeight;
 };
 
 #endif // CAMERAIEEE1394_H
-
+#endif

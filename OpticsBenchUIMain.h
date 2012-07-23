@@ -15,8 +15,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
-#ifndef OPTICSBENCHUIMAINUIMAIN_H
-#define OPTICSBENCHUIMAINUIMAIN_H
+#ifndef OPTICSBENCHUIMAIN_H
+#define OPTICSBENCHUIMAIN_H
 
 
 #include <QApplication>
@@ -25,16 +25,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "CameraWindow.h"
 #include "MotorWindow.h"
-#include "DacWindow.h"
 #include "AcquisitionWidget.h"
 #include "AnalysisWidget.h"
+#include "DacWindow.h"
 #include "Dac.h"
+#include "ComediWindow.h"
+#include "Comedi.h"
+#ifdef COMEDICOUNTER
+#include "ComediCounter.h"
+#endif
+#ifdef ADVANTECHDAC
+#include "DacAdvantech.h"
+#endif
 #include "Motor.h"
+#ifdef IEEE1394CAMERA
 #include "CameraIEEE1394.h"
+#endif
+#ifdef GIGECAMERA
+#include "CameraGiGE.h"
+#endif
+#ifdef NEOCAMERA
+#include "CameraNeo.h"
+#endif
 #include "QsLog.h"
 #include "QsLogDest.h"
 #include "Assistant.h"
-
 
 class OpticsBenchUIMain : public QMainWindow
 {
@@ -64,12 +79,13 @@ class OpticsBenchUIMain : public QMainWindow
   void openCameraWindow(int cameraNumber);
   void openMotorWindow();
   void openDacWindow();
+  void openComediWindow();
   void showDacWarning(QString);
+  void showComediWarning(QString);
   void showMotorWarning(QString);
   void showCameraWarning(QString);
   void showCameraControlWidgetWarning(QString);
   void showAcquisitionWarning(QString);
- 
   void showDocumentation();
   void openConfiguration();
   void saveAcqFile();
@@ -86,18 +102,20 @@ class OpticsBenchUIMain : public QMainWindow
   QSignalMapper *signalMapper;
   MotorWindow  *motorwindow;
   DacWindow    *dacwindow;
+  ComediWindow *comediwindow;
   QTabWidget   *tab;
   AcquisitionWidget *acquisitionwidget;
   AnalysisWidget *analysiswidget;
   Dac      *dac;
+  Comedi   *comedi;
   Motor    *motor;
   Camera   *cameraIEEE1394Mgr;
   Camera   *cameraGiGEMgr;
-  Camera   *cameraCameraLinkMgr;
+  Camera   *cameraNeoMgr;
   QVector<Camera*> cameraList;
   QVector<CameraWindow*> camerawindowList;
-
+  
 };
 
 
-#endif // OPTICSBENCHUIMAINUIMAIN_H
+#endif // OPTICSBENCHUIMAIN_H

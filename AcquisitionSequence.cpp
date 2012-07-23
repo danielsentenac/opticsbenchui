@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "AcquisitionSequence.h"
 
-
 AcquisitionSequence::AcquisitionSequence( )
 {
   reset = true;
@@ -28,16 +27,21 @@ AcquisitionSequence::AcquisitionSequence( )
   motorValue = 0;
   dacValue = 0;
   dacOutput = 0;
+  comediValue = 0;
+  comediData = 0;
+  comediOutput = 0;
   scanplan = "";
-  loopAction = "";
-  loopEndAction = "";
+  loop = -1;
+  loopends = -1;
+  loopNumber = -1;
+  remainingLoops = -1;
   datagroup = "";
   dataname = "";
   group = "";
-  remainingLoops = 0;
   position = 0;
   inc_group = 0;
   image = NULL;
+  image32 = NULL;
   data_2D_FLOAT = NULL;
   data_2D_FLOAT_DIM_X = 0;
   data_2D_FLOAT_DIM_Y = 0;
@@ -46,6 +50,18 @@ AcquisitionSequence::AcquisitionSequence( )
   tmpgrp = 0;
   grpname = "";
   avg = "";
+  slmimage = NULL;
+  fullpath="";
+  imagepath = "";
+  imagetype = "";
+  imgnum = 0;
+  keepzero = "";
+  startnum = 0;
+  stepnum = 0;
+  slmwidth = 0;
+  slmheight = 0;
+  screen_x = 0;
+  screen_y = 0;
   treatment = "";
   avgOp = "";
   avgSuccess = -1;
@@ -53,6 +69,7 @@ AcquisitionSequence::AcquisitionSequence( )
   avgRight = -1;
   instrumentRef = "";
   sleep = 0;
+  fileParser  = new FileParser();
 }
 
 AcquisitionSequence::~AcquisitionSequence()
@@ -60,19 +77,38 @@ AcquisitionSequence::~AcquisitionSequence()
   QLOG_DEBUG ( ) <<"Deleting AcquisitionSequence";
  
     if (image) { free(image); image = NULL;}
+    if (image32) { free(image32); image32 = NULL;}
     if (data_2D_FLOAT) { free(data_2D_FLOAT); data_2D_FLOAT = NULL;}
+    if (slmimage)  { free(slmimage);slmimage  = NULL;}
+    delete fileParser;
 }
 void 
-AcquisitionSequence::setImage(uchar* buffer, int width, int height, int video_mode) {
+AcquisitionSequence::setImage(uchar* buffer, int width, int height) {
   if (image) { free(image); image = NULL;}
+  if (image32) { free(image32); image32 = NULL;}
   if (buffer != NULL) {
     imageWidth = width;
     imageHeight = height;
-    videoMode = video_mode;
     image = (uchar*) malloc (sizeof(uchar) * imageWidth * imageHeight);
     memcpy(image,buffer,sizeof(uchar) * imageWidth * imageHeight);
   }
+  else
+   QLOG_WARN () << "AcquisitionSequence::setImage> Input buffer is NULL..";
 }
+void
+AcquisitionSequence::setImage32(int* buffer32, int width, int height) {
+  if (image32) { free(image32); image32 = NULL;}
+  if (image) { free(image); image = NULL;}
+  if (buffer32 != NULL) {
+    imageWidth = width;
+    imageHeight = height;
+    image32 = (int*) malloc (sizeof(int) * imageWidth * imageHeight);
+    memcpy(image32,buffer32,sizeof(int) * imageWidth * imageHeight);
+  }
+  else
+   QLOG_WARN () << "AcquisitionSequence::setImage32> Input buffer32 is NULL..";
+}
+
 void AcquisitionSequence::setImageMin(int _imageMin)
 {
   imageMin = _imageMin;
@@ -86,41 +122,136 @@ uchar*
 AcquisitionSequence::getImage() {
  return image;
 }
+uchar*
+AcquisitionSequence::getImageFromFile() {
+  slmimage = new QImage(fullpath);
+  imageWidth = slmimage->width();
+  imageHeight = slmimage->height();
+  return slmimage->bits();
+}
+int*
+AcquisitionSequence::getImage32() {
+ return image32;
+}
 
+bool 
+AcquisitionSequence::getFileData() {
+  fileParser->getFileData();
+}
 void 
 AcquisitionSequence::prepare() {
-  loopAction = "";
   datagroup = "";
-  remainingLoops = 0;
   QLOG_DEBUG ( ) <<"Sequence " << settings << ":" << scanplan;
   // Treat settingsList
   QStringList settingsList;
   QStringList subsettingsList;
   settingsList = settings.split(" ",QString::SkipEmptyParts);
+  foreach (const QString &itemlist, settingsList)
+    QLOG_DEBUG () << "AcquisitionSequence::prepare> settingsList : " << itemlist;
   for (int i = 0 ; i < settingsList.size(); i++ ) {
     subsettingsList = settingsList.at(i).split("=",QString::SkipEmptyParts);
+    foreach (const QString &subitemlist, subsettingsList)
+      QLOG_DEBUG () << "AcquisitionSequence::prepare> subsettingsList : " << subitemlist;
     for (int j = 0 ; j < subsettingsList.size(); j++ ) {
       QLOG_DEBUG () << "subsettingsList.at(j) = " << subsettingsList.at(j);
-      if (subsettingsList.at(j).leftRef(4) == "MOVE" && subsettingsList.size() > j + 1) {
+      // File section
+      if (subsettingsList.at(j) == "DIR" && subsettingsList.size() > j + 1) {
+        fileParser->setDir(subsettingsList.at(j+1));
+      }
+      else if (subsettingsList.at(j) == "PREFIX" && subsettingsList.size() > j + 1) {
+        fileParser->setPrefix(subsettingsList.at(j+1));
+      }
+      else if (subsettingsList.at(j) == "SUFFIX" && subsettingsList.size() > j + 1) {
+        fileParser->setSuffix(subsettingsList.at(j+1));
+      }
+      else if (subsettingsList.at(j) == "DEL" && subsettingsList.size() > j + 1) {
+        fileParser->setDel(subsettingsList.at(j+1));
+      }
+      else if (subsettingsList.at(j) == "SEP" && subsettingsList.size() > j + 1) {
+        fileParser->setSep(subsettingsList.at(j+1));
+      }
+      else if (subsettingsList.at(j) == "FORMAT" && subsettingsList.size() > j + 1) {
+        fileParser->setFormat(subsettingsList.at(j+1));
+      }
+      else if (subsettingsList.at(j) == "TYPE" && subsettingsList.size() > j + 1) {
+         fileParser->setType(subsettingsList.at(j+1));
+      }
+      else if (subsettingsList.at(j) == "DELAY" && subsettingsList.size() > j + 1) {
+        fileParser->setDelay(subsettingsList.at(j+1));
+      }
+      else if (subsettingsList.at(j) == "ORDER" && subsettingsList.size() > j + 1) {
+        fileParser->setOrder(subsettingsList.at(j+1));
+      }
+      // Motor section
+      else if (subsettingsList.at(j).leftRef(4) == "MOVE" && subsettingsList.size() > j + 1) {
 	motorAction = subsettingsList.at(j);
 	motorValue = subsettingsList.at(j+1).toFloat();
       }
+     // Dac and Comedi section
       else if (subsettingsList.at(j) == "OUTPUT" && subsettingsList.size() > j + 1) {
 	dacOutput = subsettingsList.at(j+1).toInt();
+        comediOutput = subsettingsList.at(j+1).toInt();
       }
       else if (subsettingsList.at(j) == "VALUE" && subsettingsList.size() > j + 1) {
 	dacValue = subsettingsList.at(j+1).toFloat();
+        comediValue = subsettingsList.at(j+1).toInt();
       }
+      // Comedi section
+      else if (subsettingsList.at(j) == "ITIME" && subsettingsList.size() > j + 1) {
+        comediValue = subsettingsList.at(j+1).toInt();
+      }
+     // Acquisition section
       else if (subsettingsList.at(j) == "SLEEP" && subsettingsList.size() > j + 1) {
 	sleep = (int) (subsettingsList.at(j+1).toFloat()*1e6);
       }
+     // SLM section
+      else if (subsettingsList.at(j) == "IMAGEPATH" && subsettingsList.size() > j + 1) {
+        treatment = "IMAGEPATH";
+        imagepath = subsettingsList.at(j+1);
+      }
+      else if (subsettingsList.at(j) == "IMAGETYPE" && subsettingsList.size() > j + 1) {
+        treatment = "IMAGETYPE";
+        imagetype = subsettingsList.at(j+1);
+      }
+      else if (subsettingsList.at(j) == "START" && subsettingsList.size() > j + 1) {
+        treatment = "START";
+        startnum = subsettingsList.at(j+1).toInt();
+        for ( int k = 0 ; k < subsettingsList.at(j+1).size(); k++) {
+          if (subsettingsList.at(j+1).at(k) == '0') { 
+            keepzero = keepzero + "0";
+          }
+          else
+           break;
+        } 
+      }
+      else if (subsettingsList.at(j) == "STEP" && subsettingsList.size() > j + 1) {
+        treatment = "STEP";
+        stepnum = subsettingsList.at(j+1).toInt();
+      }
+      else if (subsettingsList.at(j) == "SLMWIDTH" && subsettingsList.size() > j + 1) {
+        treatment = "SLMWIDTH";
+        slmwidth = subsettingsList.at(j+1).toInt();
+      }
+      else if (subsettingsList.at(j) == "SLMHEIGHT" && subsettingsList.size() > j + 1) {
+        treatment = "SLMHEIGHT";
+        slmheight = subsettingsList.at(j+1).toInt();
+      }
+      else if (subsettingsList.at(j) == "SCREEN_X" && subsettingsList.size() > j + 1) {
+        treatment = "SCREEN_X";
+        screen_x = subsettingsList.at(j+1).toInt();
+      }
+      else if (subsettingsList.at(j) == "SCREEN_Y" && subsettingsList.size() > j + 1) {
+        treatment = "SCREEN_Y";
+        screen_y = subsettingsList.at(j+1).toInt();
+      }
+     // Treatment section
       else if (subsettingsList.at(j) == "AVG" && subsettingsList.size() > j + 1) {
 	treatment = "AVG";
 	avg = subsettingsList.at(j+1);
 	// Treat AVG Settings
 	QString subavg;
 	QString subsubavg;
-	subavg = avg.mid(avg.indexOf("[") + 1, avg.indexOf("]") - 1);
+	subavg = avg.mid(avg.indexOf("[") + 1, avg.indexOf("]") - avg.indexOf("[") - 1);
 
 	avgSuccess = subavg.indexOf("+");
 	if (avgSuccess >= 0 ) avgOp = "+";
@@ -155,7 +286,7 @@ AcquisitionSequence::prepare() {
 	// Treat PHASE Settings
 	QString subavg;
 	QString subsubavg;
-	subavg = avg.mid(avg.indexOf("[") + 1, avg.indexOf("]") - 1);
+	subavg = avg.mid(avg.indexOf("[") + 1, avg.indexOf("]") - avg.indexOf("[") - 1);
 	
 	avgSuccess = subavg.indexOf(",");
 	if (avgSuccess >= 0 ) avgOp = ",";
@@ -172,7 +303,7 @@ AcquisitionSequence::prepare() {
 	// Treat AMPLITUDE Settings
 	QString subavg;
 	QString subsubavg;
-	subavg = avg.mid(avg.indexOf("[") + 1, avg.indexOf("]") - 1);
+	subavg = avg.mid(avg.indexOf("[") + 1, avg.indexOf("]") - avg.indexOf("[") - 1);
 	
 	avgSuccess = subavg.indexOf(",");
 	if (avgSuccess >= 0 ) avgOp = ",";
@@ -189,14 +320,18 @@ AcquisitionSequence::prepare() {
 	// Treat IMAGE Settings
 	QString subavg;
 	QString subsubavg;
-	subavg = avg.mid(avg.indexOf("[") + 1, avg.indexOf("]") - 1);
+	subavg = avg.mid(avg.indexOf("[") + 1, avg.indexOf("]") - avg.indexOf("[") - 1);
 	avgLeft = subavg.toInt();
 	QLOG_DEBUG ( ) << "Image " << avg << " " << subavg << " Op " << avgOp << " Left " 
 		       <<  avgLeft << " Right " << avgRight;
       }
     }
   }
-  
+
+  // Preparation configuration
+  // For SLM
+  imgnum = startnum - stepnum;
+
   // Treat scanplanList
   QStringList scanplanList;
   QStringList subscanplanList;
@@ -209,11 +344,11 @@ AcquisitionSequence::prepare() {
       else if (subscanplanList.at(j) == "DATANAME" && subscanplanList.size() > j + 1)
 	dataname = subscanplanList.at(j+1);
       else if (subscanplanList.at(j) == "LOOP" && subscanplanList.size() > j + 1) {
-	loopAction = subscanplanList.at(j);
+	loop = IS_LOOP;
 	loopNumber = subscanplanList.at(j+1).toInt();
-	loopEndAction = "START";
+	loopends = LOOP_START;
 	if (loopNumber == 0)
-	  loopEndAction = subscanplanList.at(j+1);
+	  loopends = LOOP_END;
 	remainingLoops = loopNumber;		  
       }
     }
@@ -222,14 +357,24 @@ AcquisitionSequence::prepare() {
 bool
 AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequence *sequenceRight) {
   
+  uchar *imageRight = NULL;
+  uchar *imageLeft = NULL;
+  int  *imageRight32 = NULL;
+  int  *imageLeft32 = NULL;
   bool success = false;
   if (sequenceLeft != (AcquisitionSequence *)NULL && sequenceRight != (AcquisitionSequence *)NULL ) {
     if (sequenceLeft->status == true && sequenceRight->status == true) {
       if (sequenceLeft->instrumentType == "CAMERA" && 
 	  sequenceRight->instrumentType == "CAMERA") {
 	instrumentRef = "CAMERA";
-	uchar *imageRight = sequenceRight->getImage();
-	uchar *imageLeft = sequenceLeft->getImage();
+        if ( sequenceRight->getImage() )
+          imageRight = sequenceRight->getImage();
+        else if ( sequenceRight->getImage32() )
+          imageRight32 = sequenceRight->getImage32();
+        if ( sequenceLeft->getImage() )
+          imageLeft = sequenceLeft->getImage();
+        else if ( sequenceLeft->getImage32() )
+          imageLeft32 = sequenceLeft->getImage32();
         if (reset == true) {
 	  if (data_2D_FLOAT) {
 	    free(data_2D_FLOAT);
@@ -248,15 +393,29 @@ AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequen
 	  reset = false;
 	}
 	for (int i = 0 ; i < data_2D_FLOAT_DIM_X * data_2D_FLOAT_DIM_Y; i++) {
-	  if ( avgOp == "+" ) 
-	    data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft[i] + imageRight[i]);
-	  else if ( avgOp == "-" ) 
-	    data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft[i] - imageRight[i]);
-	  else if ( avgOp == "*" )
-	    data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft[i] * imageRight[i]);
-	  else if ( avgOp == "/") {
-	    if (imageRight[i] != 0)
-	      data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft[i] / imageRight[i]);
+          if ( imageLeft &&  imageRight ) {
+	    if ( avgOp == "+" ) 
+	      data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft[i] + imageRight[i]);
+	    else if ( avgOp == "-" ) 
+	      data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft[i] - imageRight[i]);
+	    else if ( avgOp == "*" )
+	      data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft[i] * imageRight[i]);
+	    else if ( avgOp == "/") {
+	      if (imageRight[i] != 0)
+	        data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft[i] / imageRight[i]);
+            }
+          }
+          else if ( imageLeft32 && imageRight32 ) {
+            if ( avgOp == "+" )
+              data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft32[i] + imageRight32[i]);
+            else if ( avgOp == "-" )
+              data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft32[i] - imageRight32[i]);
+            else if ( avgOp == "*" )
+              data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft32[i] * imageRight32[i]);
+            else if ( avgOp == "/") {
+              if (imageRight[i] != 0)
+                data_2D_FLOAT[i] = data_2D_FLOAT[i] + (imageLeft32[i] / imageRight32[i]);
+            }
 	  }
 	}
 	success = true;
@@ -277,6 +436,22 @@ AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequen
 	  dacValue = dacValue + (sequenceLeft->dacValue / sequenceRight->dacValue);
 	success = true;
       }
+      else if (sequenceLeft->instrumentType == "COUNTER" &&
+               sequenceRight->instrumentType == "COUNTER") {
+        instrumentRef = "COUNTER";
+        if (reset == true) {
+          comediData = 0;
+        }
+        if ( avgOp == "+" )
+          comediData = comediData + (sequenceLeft->comediData + sequenceRight->comediData);
+        else if ( avgOp == "-" )
+          comediData = comediData + (sequenceLeft->comediData - sequenceRight->comediData);
+        else if ( avgOp == "*" )
+          comediData = comediData + (sequenceLeft->comediData * sequenceRight->comediData);
+        else if ( avgOp == "/" )
+          comediData = comediData + (sequenceLeft->comediData / sequenceRight->comediData);
+        success = true;
+      }
     }
   }
   else if (sequenceLeft != (AcquisitionSequence *)NULL && sequenceRight == (AcquisitionSequence *)NULL ) {
@@ -285,7 +460,10 @@ AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequen
       QLOG_DEBUG ( ) << "sequenceLeft is true";
       if ( sequenceLeft->instrumentType == "CAMERA" ) {
 	instrumentRef = "CAMERA";
-	uchar *imageLeft = sequenceLeft->getImage();
+        if ( sequenceLeft->getImage() )
+          imageLeft = sequenceLeft->getImage();
+        else if ( sequenceLeft->getImage32() )
+          imageLeft32 = sequenceLeft->getImage32();
 	if (reset == true) {
 	  if (data_2D_FLOAT) {
 	    free(data_2D_FLOAT);
@@ -297,14 +475,23 @@ AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequen
 	  memset(data_2D_FLOAT,0,sizeof(data_2D_FLOAT));
 	  reset = false;
 	}
-	for (int i = 0 ; i < data_2D_FLOAT_DIM_X * data_2D_FLOAT_DIM_Y; i++)
-	  data_2D_FLOAT[i] = data_2D_FLOAT[i] + imageLeft[i];
+	for (int i = 0 ; i < data_2D_FLOAT_DIM_X * data_2D_FLOAT_DIM_Y; i++) {
+          if ( imageLeft ) 
+	    data_2D_FLOAT[i] = data_2D_FLOAT[i] + imageLeft[i];
+          else if ( imageLeft32 )
+            data_2D_FLOAT[i] = data_2D_FLOAT[i] + imageLeft32[i];
+        }
 	success = true;
       }
       else if ( sequenceLeft->instrumentType == "DAC" ) {
 	instrumentRef = "DAC";
 	dacValue = dacValue + sequenceLeft->dacValue ;
 	success = true;
+      }
+      else if ( sequenceLeft->instrumentType == "COUNTER" ) {
+        instrumentRef = "COUNTER";
+        comediData = comediData + sequenceLeft->dacValue ;
+        success = true;
       }
     }
   }
@@ -394,7 +581,7 @@ AcquisitionSequence::setImage(AcquisitionSequence *sequenceLeft) {
 	instrumentRef = "CAMERA";
 	if (reset == true) {
 	  if (image) {
-	    setImage(NULL,0,0,0);
+	    setImage(NULL,0,0);
 	  }
 	  imageWidth = sequenceLeft->data_2D_FLOAT_DIM_X;
 	  imageHeight = sequenceLeft->data_2D_FLOAT_DIM_Y;

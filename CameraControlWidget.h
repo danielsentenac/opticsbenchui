@@ -21,12 +21,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Camera.h"
 
 #include <QSlider>
+#include <QSpinBox>
 #include <QGridLayout>
 #include <QLabel>
 #include <QSignalMapper>
 #include <QFileDialog>
 #include <QPushButton>
 #include <QCheckBox>
+#include <QLineEdit>
 #include <QLCDNumber>
 #include "QsLog.h"
 #include "hdf5.h"
@@ -43,24 +45,24 @@ class CameraControlWidget : public QWidget
  
   
  signals:
-  void setFeature(int position, int value);
+  void setFeature(int position, double value);
   void setMode(int position, bool value);
   void showWarning(QString message);
 
   private slots:
   void setFeatureValue(int);
+  void setSliderValue(int);
   void setModeValue(int);
-
   void updateFeatures();
   void snapShot();
 
  private:
   Camera *camera;
   QVector<QSlider*> featureSliderList;
-  QVector<QLabel*> absValueLabelList; 
+  QVector<QLabel*> valueMaxList, valueMinList;
+  QVector<QLineEdit*> sliderValueList; 
   QVector<QCheckBox*> modeCheckBoxList;
   QPushButton *snapshotButton;
-  QLabel *minLabel,*maxLabel;
-  QSignalMapper *featureMapper,*modeMapper;
+  QSignalMapper *featureMapper, *sliderValueMapper, *modeMapper;
 };
 #endif

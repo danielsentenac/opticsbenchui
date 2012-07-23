@@ -75,7 +75,7 @@ class DriverNewFocus_8750_Ol : public Driver
                     string actuatorSetting,
                     DriverDefinition::ADLimitSwitch& rlimitSwitch) const;
     virtual int GetActuatorFeature(
-       DriverDefinition::ADActuatorFeature& ractuatorFeature) const;
+       DriverDefinition::DriverFeature& ractuatorFeature) const;
 
     virtual int ConvertUnit(int unit, 
                             float valueToConvert, 
@@ -86,7 +86,7 @@ class DriverNewFocus_8750_Ol : public Driver
     static const int NB_ITEM_SETTING;
     static const int WRITE_ERROR;
     static const int READ_ERROR;
-    static const DriverDefinition::ADActuatorFeature NEWFOCUS_8750_OL_FEATURE; 
+    static const DriverDefinition::DriverFeature NEWFOCUS_8750_OL_FEATURE; 
                                              // open loop Picomotor features
     
     mutable int _lastNumberOfPulses;   // used to emulate absolute position readout

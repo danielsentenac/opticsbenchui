@@ -21,14 +21,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtGui>
 #include "hdf5.h"
 #include "hdf5_hl.h"
+#include "FileParser.h"
 #include "QsLog.h"
-#include <iostream>
-using namespace std;
+
+
 
 class AcquisitionSequence
 {  
  public:
-    
+ 
+  enum {
+   IS_LOOP = 0,
+   LOOP_START = 1,
+   LOOP_END = 2
+  };
+   
   AcquisitionSequence();
   ~AcquisitionSequence();
 
@@ -41,11 +48,15 @@ class AcquisitionSequence
   QString instrumentType;
   QString settings;
   QString scanplan;
-  QString loopAction;
-  QString loopEndAction;
-  int     loopNumber;
-  int     remainingLoops;
+  int loop;
+  int loopends;
+  int loopNumber;
+  int remainingLoops;
   
+  // File attributes
+  FileParser *fileParser;
+
+  // Treatment attributes
   QString avg ;
   bool    reset;
   QString treatment;
@@ -55,29 +66,50 @@ class AcquisitionSequence
   int avgLeft;
   QString instrumentRef;
   
-  // General attributes
+  // Acquisition attributes
   int sleep;
 
   // Motor attributes
   QString motorAction;
   float   motorValue; 
   float   position;
+
   // Dac attributes
   float   dacValue;
   int     dacOutput;
+
+  // Counter Comedi attributes
+  int    comediValue;
+  float  comediData;
+  int    comediOutput;
+
+  // SLM attributes
+  QString fullpath;
+  QString imagepath;
+  QString imagetype;
+  QString keepzero;
+  QImage *slmimage;
+  int imgnum;
+  int startnum;
+  int stepnum;
+  int slmwidth;
+  int slmheight;
+  int screen_x;
+  int screen_y;
+  QLabel *slmLabel;
 
   // Camera attributes
   float   *data_2D_FLOAT;
   int data_2D_FLOAT_DIM_X, data_2D_FLOAT_DIM_Y;
   float data_2D_FLOAT_MIN, data_2D_FLOAT_MAX;
   uchar *image;
+  int   *image32;
   int   imageMin;
   int   imageMax;
   int   imageWidth;
   int   imageHeight;
-  int   videoMode;
 
-  // data group
+  // HDF5 attributes
   QString group;
   QString datagroup;
   QString dataname;
@@ -85,12 +117,16 @@ class AcquisitionSequence
   hid_t   refgrp,grp,tmpgrp;
   QString grpname;
 
-  void setImage(uchar* buffer, int width, int height, int video_mode);
+  void setImage(uchar* buffer, int width, int height);
+  void setImage32(int* buffer32, int width, int height);
+  bool setImage(AcquisitionSequence *sequenceLeft);
   void setImageMin(int _imageMin);
   void setImageMax(int _imageMax);
-  bool setImage(AcquisitionSequence *sequenceLeft);
   void prepare();
+  bool getFileData();
   uchar* getImage();
+  int* getImage32();
+  uchar* getImageFromFile();
   bool setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequence *sequenceRight);
   bool setPhase(AcquisitionSequence *sequenceLeft, AcquisitionSequence *sequenceRight);
   bool setAmplitude(AcquisitionSequence *sequenceLeft, AcquisitionSequence *sequenceRight);

@@ -164,7 +164,7 @@ int
 ACRSCom::Setup ()
 {
   int status = 0;
-  speed_t speed;
+  speed_t speed = B9600;
 
   switch (_ispeed)
     {
@@ -190,7 +190,7 @@ ACRSCom::Setup ()
       speed = B115200;
       break;
     default:
-      throw "Bad speed!";
+      QLOG_ERROR () << "Bad speed!";
     }
   tcgetattr (_hCom, &_commOldSetup);	/* save current port settings */
   _commSetup = _commOldSetup;
@@ -216,25 +216,24 @@ ACRSCom::Setup ()
       _commSetup.c_iflag &= ~ICRNL;	/* don't translate \r to \n */
       _commSetup.c_iflag &= ~INLCR;	/* don't translate \n to \r */
       if (!strcmp(_flow,"XONXOFF")) {
-	QLOG_DEBUG ( ) << "RS232 uses XONXOFF flow control";
+	QLOG_DEBUG ( ) << "RS232 uses software flow control (XONXOFF)";
 	_commSetup.c_iflag |= ~IXOFF;	/* enable */
 	_commSetup.c_iflag |= ~IXON;	/* enable */
       }
       else {
-	QLOG_DEBUG ( ) << "RS232 uses defaut (NONE) flow control";
 	_commSetup.c_iflag &= ~IXOFF;	/* disable */
 	_commSetup.c_iflag &= ~IXON;	/* disable */
       }
-      _commSetup.c_iflag &= ~IXANY;	/* disable */
       _commSetup.c_iflag &= ~IMAXBEL;	/* disable */
 
       /* output modes */
-
+      QLOG_DEBUG ( ) << "RS232 disabled output processing";
       _commSetup.c_oflag &= ~OPOST;	/* don't process output characters */
 
       /* control modes */
 
       _commSetup.c_cflag &= ~HUPCL;	/* don't generate a modem disconnect */
+      QLOG_DEBUG ( ) << "RS232 enabled receiver and set to local mode";
       _commSetup.c_cflag |= CLOCAL;	/* ignore modem status lines */
       _commSetup.c_cflag |= CREAD;	/* input can be read from the terminal */
       QLOG_DEBUG ( ) << "RS232 uses 8 data bits";
@@ -243,9 +242,17 @@ ACRSCom::Setup ()
       _commSetup.c_cflag &= ~CSTOPB;	/* use only one stop bit */
       QLOG_DEBUG ( ) << "RS232 uses no parity";
       _commSetup.c_cflag &= ~PARENB;	/* disable parity bit */
-      _commSetup.c_cflag &= ~PARODD;	/* use even parity */
-      /* local modes */
+      _commSetup.c_cflag &= ~CSIZE;     /* disable bit mask for data bits */
 
+      if (!strcmp(_flow,"RTSCTS")) {
+        QLOG_DEBUG ( ) << "RS232 uses hardware flow control (RTS/CTS)";
+        _commSetup.c_cflag |= CRTSCTS;  /* enable RTS/CTS */
+      }
+      else 
+        _commSetup.c_cflag &= ~CRTSCTS; /* disable RTS/CTS */
+
+      /* local modes */
+      QLOG_DEBUG ( ) << "RS232 select raw input mode";
       _commSetup.c_lflag &= ~ICANON;	/* disable canonical input process. mode */
       _commSetup.c_lflag &= ~ECHO;	/* disable echoing of input characters */
       _commSetup.c_lflag &= ~ECHOE;	/* don't echo erase */

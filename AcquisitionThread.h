@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Camera.h"
 #include "Motor.h"
 #include "Dac.h"
-
+#include "Comedi.h"
 #include "QsLog.h"
 
 
@@ -37,9 +37,12 @@ class AcquisitionThread : public QThread
   void setCamera(QVector<Camera*> _cameraList);
   void setMotor(Motor* _motor);
   void setDac(Dac* _dac);
+  void setComedi(Comedi* _comedi);
   void setFile(QString _filename, int _filenumber);
 
   QVector<bool> isopencamerawindow;
+  QMutex *mutex;
+  QWaitCondition *splashScreenOk;
 
   QVector<AcquisitionSequence*> sequenceList;
   void execute(AcquisitionSequence *sequence);
@@ -58,6 +61,7 @@ class AcquisitionThread : public QThread
   void getAcquiring(int record);
   void getFilenumber(int number);
   void showWarning(QString message);
+  void splashScreen(QString imagepath, int screen_x, int screen_y);	
 
  protected:
   virtual void run();
@@ -69,8 +73,12 @@ class AcquisitionThread : public QThread
   int    record;
   Motor  *motor;
   Dac    *dac;
+  Comedi *comedi;
   bool   dacsuccess;
+  bool   comedisuccess;
+  bool   slmsuccess;
   bool   imagesuccess;
+  bool   filesuccess;
   bool   treatmentsuccess;  
   bool   suspend;
 

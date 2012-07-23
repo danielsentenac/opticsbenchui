@@ -14,10 +14,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
-#ifndef DACCONTROLWIDGET_H
-#define DACCONTROLWIDGET_H
+#ifndef COMEDICONTROLWIDGET_H
+#define COMEDICONTROLWIDGET_H
 
-#include "Dac.h"
+#include "Comedi.h"
 
 #include <QtSql>
 #include <QtGui>
@@ -26,37 +26,39 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 typedef QVector<float> floatVector;
 
-class DacControlWidget : public QWidget
+class ComediCounterControlWidget : public QWidget
 {
   Q_OBJECT
     
     public:
-  DacControlWidget(QVector<QString>  *_dacList = 0);
-  ~DacControlWidget();
+  ComediCounterControlWidget(QVector<QString>  *_comediList = 0);
+  ~ComediCounterControlWidget();
     
-  void setDac(Dac *_dac);
-  void setDacList(QVector<QString>  *_dacList);
+  void setComedi(Comedi *_comedi);
+  void setComediList(QVector<QString>  *_comediList);
 
   private slots:
-  void connectDac();
-  void resetDac();
-  void setDacValue(int output);
+  void connectComedi();
+  void resetComedi();
+  void setComediValue(int output);
   void getDescription(QString description);
   void getOutputs(int outputs, QString mode);
-  void getOutputValues(QVector<float> *dacvalues);
+  void getOutputValues(void *comedivalues);
 
  private:
   QPushButton *connectButton; 
   QPushButton *resetButton; 
-  QLabel      *dacvalueLabel;
+  QLabel      *comedivalueLabel;
   QLabel      *outputLabel;
   QLabel      *descriptionLabel; 
-  QComboBox   *dacCombo;
+  QComboBox   *comediCombo;
   QVector<QLabel*>  *outputsList;
+  QVector<QLabel*>  *unitsList;
   QVector<QPushButton*> *setButtonList;
-  QVector<QLineEdit*>   *dacvalueList;
-  QVector<QString> *dacList;
-  Dac  *dac;
+  QVector<QLineEdit*>   *comedivalueList;
+  QVector<QLineEdit*>   *comeditimerList;
+  QVector<QString> *comediList;
+  Comedi  *comedi;
   QGridLayout *layout;
   QSignalMapper *signalMapper;
 };

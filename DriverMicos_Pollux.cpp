@@ -30,7 +30,7 @@ const int DriverMicos_Pollux::NB_ITEM_INIT_SETTING =  1; // number of items at t
 const int DriverMicos_Pollux::NB_ITEM_DRV_SETTING  =  1; // number of items at the driver
 //setting string
 
-const ADActuatorFeature DriverMicos_Pollux::MICOS_POLLUX_FEATURE = 
+const DriverFeature DriverMicos_Pollux::MICOS_POLLUX_FEATURE = 
   { "deg","deg",1000.,1000.,CLOSED_LOOP,NULL };
 
 // 
@@ -341,7 +341,7 @@ int DriverMicos_Pollux::OperationComplete(string& rstateData,
 //
 //    Gives the translation stages features
 //
-int DriverMicos_Pollux::GetActuatorFeature(ADActuatorFeature& ractuatorFeature) const
+int DriverMicos_Pollux::GetActuatorFeature(DriverFeature& ractuatorFeature) const
 {
   QLOG_DEBUG ( ) << "DriverMicos_Pollux::GetActuatorFeature";
 

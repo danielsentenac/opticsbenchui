@@ -16,19 +16,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "Driver.h"
-#include "DriverPi_C862.h"
+#include "DriverPI_C862.h"
 #include "DriverNewFocus_8750_Ol.h"
 #include "DriverNewFocus_8750_Cl.h"
-#include "DriverPi_C509.h"
+#include "DriverPI_C509.h"
 #include "DriverMicos_Pollux.h"
 #include "DriverNewPort_NSC200.h"
+#include "DriverStanda_uSMC.h"
+#include "DriverNewPort_AGUC2.h"
+#include "DriverPI_E725.h"
 
-const string Driver::PI_C862              = "Pi_C862";
+
+const string Driver::PI_C862              = "PI_C862";
 const string Driver::NEWFOCUS_8750_OL     = "NewFocus_8750_Ol";
 const string Driver::NEWFOCUS_8750_CL     = "NewFocus_8750_Cl";
-const string Driver::PI_C509              = "Pi_C509";
+const string Driver::PI_C509              = "PI_C509";
 const string Driver::MICOS_POLLUX         = "Micos_Pollux";
 const string Driver::NEWPORT_NSC200       = "NewPort_NSC200";
+const string Driver::STANDA_USMC          = "Standa_uSMC";
+const string Driver::PI_E725              = "PI_E725";
+const string Driver::NEWPORT_AGUC2        = "NewPort_AGUC2";
+
 
 using namespace DriverDefinition;
 
@@ -54,7 +62,7 @@ Driver* Driver::Create(string driverType,
 
   if (driverType == PI_C509)
   {
-    pactuatorDrv = new DriverPi_C509(channel);
+    pactuatorDrv = new DriverPI_C509(channel);
   }
   else if (driverType == NEWFOCUS_8750_OL)
   {
@@ -66,7 +74,7 @@ Driver* Driver::Create(string driverType,
   }
   else if (driverType == PI_C862)
   {
-    pactuatorDrv = new DriverPi_C862(channel);
+    pactuatorDrv = new DriverPI_C862(channel);
   }
   else if (driverType == MICOS_POLLUX)
   {
@@ -76,6 +84,19 @@ Driver* Driver::Create(string driverType,
   {
     pactuatorDrv = new DriverNewPort_NSC200(channel);
   }
+  else if (driverType == STANDA_USMC)
+  {
+    pactuatorDrv = new DriverStanda_uSMC(channel);
+  }
+  else if (driverType == NEWPORT_AGUC2)
+  {
+    pactuatorDrv = new DriverNewPort_AGUC2(channel);
+  }
+  else if (driverType == PI_E725)
+  {
+    pactuatorDrv = new DriverPI_E725(channel);
+  }
+
   if (pactuatorDrv)
   { 
     pactuatorDrv->_setting    = setting;
@@ -101,10 +122,10 @@ Driver* Driver::Create(const Driver* prefActuatorDrv,
 
   Driver *pactuatorDrv = NULL;
 
-  if (const DriverPi_C509* prefPi_C509Drv = 
-      dynamic_cast<const DriverPi_C509*> (prefActuatorDrv))
+  if (const DriverPI_C509* prefPI_C509Drv = 
+      dynamic_cast<const DriverPI_C509*> (prefActuatorDrv))
   {
-    pactuatorDrv = new DriverPi_C509(*prefPi_C509Drv,prefChannel);
+    pactuatorDrv = new DriverPI_C509(*prefPI_C509Drv,prefChannel);
   }
   else if (const DriverNewFocus_8750_Ol* prefNewFocus_8750_OlDrv = 
 	   dynamic_cast<const DriverNewFocus_8750_Ol*> (prefActuatorDrv))
@@ -116,10 +137,10 @@ Driver* Driver::Create(const Driver* prefActuatorDrv,
   {
     pactuatorDrv = new DriverNewFocus_8750_Cl(*prefNewFocus_8750_Cl,prefChannel);
   }
-  else if (const DriverPi_C862* prefPi_C862Drv = 
-	   dynamic_cast<const DriverPi_C862*> (prefActuatorDrv))
+  else if (const DriverPI_C862* prefPI_C862Drv = 
+	   dynamic_cast<const DriverPI_C862*> (prefActuatorDrv))
   {
-    pactuatorDrv = new DriverPi_C862(*prefPi_C862Drv,prefChannel);
+    pactuatorDrv = new DriverPI_C862(*prefPI_C862Drv,prefChannel);
   }
   else if (const DriverMicos_Pollux* prefMicos_PolluxDrv = 
 	   dynamic_cast<const DriverMicos_Pollux*> (prefActuatorDrv))
@@ -131,6 +152,22 @@ Driver* Driver::Create(const Driver* prefActuatorDrv,
     {
       pactuatorDrv = new DriverNewPort_NSC200(*prefNewPort_NSC200Drv,prefChannel);
     }
+  else if (const DriverStanda_uSMC* prefStanda_uSMCDrv =
+           dynamic_cast<const DriverStanda_uSMC*> (prefActuatorDrv))
+    {
+      pactuatorDrv = new DriverStanda_uSMC(*prefStanda_uSMCDrv,prefChannel);
+    }
+  else if (const DriverNewPort_AGUC2* prefNewPort_AGUC2Drv =
+           dynamic_cast<const DriverNewPort_AGUC2*> (prefActuatorDrv))
+    {
+      pactuatorDrv = new DriverNewPort_AGUC2(*prefNewPort_AGUC2Drv,prefChannel);
+    }
+  else if (const DriverPI_E725* prefPI_E725Drv =
+           dynamic_cast<const DriverPI_E725*> (prefActuatorDrv))
+    {
+      pactuatorDrv = new DriverPI_E725(*prefPI_E725Drv,prefChannel);
+    }
+
   return pactuatorDrv;
 }
 
