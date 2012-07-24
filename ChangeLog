@@ -17,5 +17,23 @@ ver. 0.8 28/10/2011
 1-  Add AUTO/MAN control & absolute feature value in CameraControlWidget
 
 ver. 0.9 
-1-  Add interface definition Camera.h to new class CameraIEEE1394.h
+1-  Add new interface definition Camera.h and new derived class CameraIEEE1394.cpp
 
+ver. 0.10
+1-  Add DriverStanda_uSMC.cpp class for STANDA (via USB) support 
+    (needs external libusmc and usmcdrv module)
+    Add DriverPI_E725.cpp class for E-725 PI controller (via RS232) support
+2-  Add general Usb support from libusb-1.0 with new ACUsbCom.cpp 
+3-  Add GiGeVision support from aravis-0.2  (ver 0.1.11)
+    Add CameraGiGE.cpp subclass
+4-  Add Andor Neo Camera support (Andor SDK v 3.1.30014)
+    Add CameraNeo.cpp subclass
+5-  Add ComboBoxDelegate.cpp class to build tableview combobox cell feature
+    Applied in AcquisitionWidget.cpp
+6-  Add FILE key support to grab data in external files (applied to Phasics).
+7-  Add SLM key support to display images for spatial light modulators
+8-  Add comedi project support:
+    Add Comedi.h interface
+    Add ComediCounter.cpp subclass
+    Add ComediCounterControlWidget.cpp class
+    Add ComediWindow.cpp class
