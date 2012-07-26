@@ -25,19 +25,15 @@ DEFINES 	+= 	IEEE1394CAMERA
 DEFINES 	+= 	GIGECAMERA
 
 # Andor Neo camera support
-DEFINES         +=      NEOCAMERA
+#DEFINES         +=      NEOCAMERA
 
 # Advantech DAC support
-#DEFINES         +=     ADVANTECHDAC
+DEFINES         +=      ADVANTECHDAC
 
-# Comedi Counters support
-DEFINES         +=     COMEDICOUNTER
-
-QMAKE_CXXFLAGS 	+= 	-g `pkg-config --cflags glib-2.0`
+QMAKE_CXXFLAGS 	+= 	`pkg-config --cflags glib-2.0`
 
 # External packages
 HDF5_LIB_PATH 	 =  	/usr/local/hdf5/lib
-COMEDI_LIB_PATH  =      /usr/lib
 ADVDAQ_LIB_PATH  =	/usr/lib
 DC1394_LIB_PATH  =      /usr/local/lib
 RAW1394_LIB_PATH =	/usr/local/lib
@@ -48,7 +44,6 @@ GLIB_LIB_PATH	 =      /usr/lib
 NEO_LIB_PATH     =	/usr/local/lib
 
 HDF5_INC_PATH 	 =  	/usr/local/hdf5/include
-COMEDI_INC_PATH  =      /usr/include
 ADVDAQ_INC_PATH  =	/usr/local/include/Advantech
 DC1394_INC_PATH  =      /usr/local/include/dc1394
 RAW1394_INC_PATH =	/usr/local/include/libraw1394/src
@@ -69,14 +64,10 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			VideoPlayer.h \
 			VideoWidget.h \
 			VideoWidgetSurface.h \
-                        Comedi.h \
-                        ComediCounter.h \
-                        ComediCounterControlWidget.h \
-                        ComediWindow.h \
 			DacWindow.h \
 			DacControlWidget.h \
 			Dac.h \
-#			DacAdvantech.h \
+			DacAdvantech.h \
 			MotorWindow.h \
 			MotorControlWidget.h \
 			Motor.h \
@@ -99,8 +90,8 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
                         ComboBoxDelegate.h \
 			AcquisitionThread.h \
 			AcquisitionSequence.h \
-			FileParser.h \
 			AnalysisWidget.h \
+			FileParser.h \
 			QsLog.h \
 			QsDebugOutput.h \
 			QsLogDest.h \
@@ -116,12 +107,9 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			VideoPlayer.cpp \
 			VideoWidget.cpp \
 			VideoWidgetSurface.cpp \
-			ComediCounter.cpp \
- 			ComediCounterControlWidget.cpp \
-			ComediWindow.cpp \
 			DacWindow.cpp \
 			DacControlWidget.cpp \
-#			DacAdvantech.cpp \
+			DacAdvantech.cpp \
 			MotorWindow.cpp \
 			MotorControlWidget.cpp \
 			Motor.cpp \
@@ -143,16 +131,15 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			ComboBoxDelegate.cpp \
 			AcquisitionThread.cpp \
 			AcquisitionSequence.cpp \
- 			FileParser.cpp \
 			AnalysisWidget.cpp \
+			FileParser.cpp \
 			QsLog.cpp \
 			QsDebugOutput.cpp \
 			QsLogDest.cpp \
 			Assistant.cpp 
 
 INCLUDEPATH 	+=	\
-			$$COMEDI_INC_PATH \
-#			$$ADVDAQ_INC_PATH \
+			$$ADVDAQ_INC_PATH \
 			$$STANDA_INC_PATH \
 			$$RAW1394_INC_PATH \
 			$$DC1394_INC_PATH \
@@ -162,8 +149,7 @@ INCLUDEPATH 	+=	\
 			$$NEO_INC_PATH
 
 LIBS 		+= 	 \
-			-L$$COMEDI_LIB_PATH -lcomedi \
-#			-L$$ADVDAQ_LIB_PATH -ladvdaq \
+			-L$$ADVDAQ_LIB_PATH -ladvdaq \
 			-L$$USB_LIB_PATH -lusb-1.0 \
 			-L$$GLIB_LIB_PATH -lgobject-2.0 \
 			-L$$DC1394_LIB_PATH -ldc1394 \

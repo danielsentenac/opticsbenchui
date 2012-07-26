@@ -557,6 +557,8 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
          dset_dims[1] = fparser->getArrayWidth();
          status = H5LTmake_dataset_double(sequence->grp,sequence->dataname.toStdString().c_str(),
                                  2,dset_dims,fparser->getArray());
+         status = H5LTset_attribute_string(sequence->grp, sequence->dataname.toStdString().c_str(),
+                                   "File name",fparser->getParsedFileName().toStdString().c_str());
       }
       if ( fparser->getType() == "LIST" ) {
          QLOG_INFO () << "AcquisitionThread::saveData> treating LIST type";

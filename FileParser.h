@@ -52,6 +52,7 @@ class FileParser
    QString getFormat();
    QString getSep();
    QString getDelay();
+   QString getParsedFileName();
    QVector<QString> getNameList();
 
    bool getFileData();

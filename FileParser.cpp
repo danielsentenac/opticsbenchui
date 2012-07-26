@@ -27,6 +27,7 @@ FileParser::FileParser(QObject *parent)
  format = "";
  type = "";
  order = "";
+ parsedFileName = "";
  array = NULL;
 }
 
@@ -153,7 +154,11 @@ FileParser::getDelay()
 {
   return delay;
 }
-
+QString
+FileParser::getParsedFileName()
+{
+  return parsedFileName;
+}
 QVector<QString>
 FileParser::getNameList()
 {
@@ -197,6 +202,7 @@ FileParser::getFileData()
   QFileInfoList freshFileInfoList = freshdir.entryInfoList(QDir::NoFilter, QDir::Time | QDir::Reversed);
   QFile file ("");
   uint filetime = 0;
+  parsedFileName = "";
   foreach (const QFileInfo &fileinfo, freshFileInfoList) {
      QString filename = fileinfo.fileName();
      QLOG_DEBUG() << "FileParser::getFileData> treating file" << filename;
