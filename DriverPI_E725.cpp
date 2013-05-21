@@ -45,8 +45,7 @@ int DriverPI_E725::Init(string& rstateData) const
     retStatus = -1;
     return retStatus;
   }
-
-  commandLine = "*IDN?\n";
+  commandLine = "\n*IDN?\n";
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
     QLOG_WARN() << "Unable to write to port";
@@ -89,7 +88,7 @@ int DriverPI_E725::InitActuator(string actuatorSetting,
     QLOG_ERROR () << "Bad Actuator setting";
   }
   usleep(_delay);
-  commandLine = "SVO " + string(axisNumber) + " 1\n";
+  commandLine = "\nSVO " + string(axisNumber) + " 1\n";
 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
@@ -127,14 +126,15 @@ int DriverPI_E725::GetPos(string  actuatorSetting,
     QLOG_ERROR () << "Bad Actuator setting";
   }
   usleep(_delay);
-  commandLine = "POS? " + string(axisNumber)  + "\n";
+  commandLine = "\nPOS? " + string(axisNumber)  + "\n";
 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
     QLOG_DEBUG() << "Unable to write to port";
     retStatus = -1;
   }
-  else if (!_pcommChannel->Read(answer,NULL))
+  usleep(_delay);
+  if (!_pcommChannel->Read(answer,NULL))
   {
     QLOG_DEBUG() << "Unable to read from port";
     retStatus = -1;
@@ -144,7 +144,7 @@ int DriverPI_E725::GetPos(string  actuatorSetting,
    QLOG_DEBUG() << "Position reply " << answer.c_str();
    vector<string>  tokens;
    Tokenize(answer,tokens,"=");
-   if (tokens.at(0) != axisNumber) {
+   if (tokens.size() > 0 && tokens.at(0) != axisNumber) {
     QLOG_DEBUG() << "Position reply expected, but got reply = " << answer.c_str();
     retStatus = -1;
     return retStatus;
@@ -187,7 +187,7 @@ int DriverPI_E725::Move(string actuatorSetting,
     QLOG_ERROR () << "Bad Actuator setting";
   }
   usleep(_delay);
-  oss << "MVR " << string(axisNumber) << " " << nbSteps; 
+  oss << "\nMVR " << string(axisNumber) << " " << nbSteps; 
   commandLine = oss.str() + "\n";
   QLOG_DEBUG () << "commandLine " << commandLine.c_str(); 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
@@ -228,7 +228,7 @@ int DriverPI_E725::MoveAbs(string actuatorSetting,
     QLOG_ERROR () << "Bad Actuator setting";
   }
   usleep(_delay);
-  oss << "MOV " << string(axisNumber) << " " << absPos;
+  oss << "\nMOV " << string(axisNumber) << " " << absPos;
   commandLine = oss.str() + "\n";
   QLOG_DEBUG () << "commandLine " << commandLine.c_str();
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
@@ -260,7 +260,7 @@ int DriverPI_E725::Stop(string actuatorSetting) const
     QLOG_ERROR () << "Bad Actuator setting";
   }
   usleep(_delay);
-  commandLine = "STP\n";
+  commandLine = "\nSTP\n";
 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
@@ -300,7 +300,7 @@ int DriverPI_E725::OperationComplete(string& rstateData,
     QLOG_ERROR () << "Bad Actuator setting";
   }
   usleep(_delay);
-  commandLine = "#5\n";
+  commandLine = "\n#5\n";
 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
