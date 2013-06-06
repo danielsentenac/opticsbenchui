@@ -339,7 +339,7 @@ int DriverNewPort_NSC200::Stop(string actuatorSetting) const
 //
 // OperationComplete implementation
 //
-// 1. send "xxTS?" to retrieve the status of the controller
+// 1. send "xxTS?" and "xxTE?nn" to retrieve the status and error code of the controller
 // 2. get the reply
 // 3. parse the reply
 // 4. compare the bits
@@ -376,6 +376,7 @@ int DriverNewPort_NSC200::OperationComplete(string& rstateData,
   int          status;
   int          error;
   stringstream axisStr;
+  stringstream channelStr;
   string       subTS = "";
   string       subTE = "";
   const char*  realAnswerTE;
@@ -393,6 +394,74 @@ int DriverNewPort_NSC200::OperationComplete(string& rstateData,
 	     &_channel,&_vel) != NB_ITEM_INIT_SETTING) {
     _channel = -1 ;/*init case*/
   }
+  ////////////////////////////////////////////////////////////////////////////////////////
+  // create buffer with command xxTEnn? for controller Error Code query
+  ////////////////////////////////////////////////////////////////////////////////////////
+  memset(buffer,0,BUFFER_SIZE);
+  sprintf(buffer, "%dTE%d?\r", _axisNumber,_channel);
+  QLOG_DEBUG() << "DriverNewPort_NSC200> axisNumber " << _axisNumber << " channel " << _channel
+               << " buffer = " << QString(buffer);
+
+  QLOG_DEBUG() <<"DriverNewPort_NSC200> send message : " <<  QString(buffer);
+  // send command
+  command = buffer;
+  if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
+    QLOG_DEBUG() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to write to port";
+    return  (-1);
+  }
+  usleep(_delay);
+  // read reply
+  if (!_pcommChannel->Read(answerTE,NULL)) {
+    QLOG_DEBUG() <<"DriverNewPort_NSC200> axisNumber " << _axisNumber << ": unable to read from port";
+    QLOG_DEBUG() << "DriverNewPort_NSC200> Status reply expected, but got reply = " <<
+      QString(answerTE.c_str());
+    return  (-1);
+  }
+  QLOG_DEBUG() << "Status reply = " <<  QString(answerTE.c_str());
+
+  // Evaluate error code
+
+  axisStr << _axisNumber;
+  channelStr << _channel;
+  if (answerTE.length() > 5) {
+    subTE = answerTE.substr(5);
+    realAnswerTE = subTE.c_str();
+    QLOG_DEBUG() << "Reply to TE? = "  << QString(realAnswerTE);
+    sscanf (realAnswerTE, "%d",&error);
+  }
+  else
+    error = -1;
+  QLOG_DEBUG() << "axisNumber " << _axisNumber << " channel " << _channel << " has error code "
+               << error;
+
+  if ( error == PARAMETER_OUT_OF_RANGE ) {
+    QLOG_DEBUG() << "DriverNewPort_NSC200> axisNumber " <<  QString(axisStr.str().c_str())
+                 << " channel " << QString(channelStr.str().c_str())
+                 << ": Parameter out of range!";
+
+    rstateData = "axisNumber=" + axisStr.str() + " channel=" + channelStr.str() +
+                 ": Parameter out of range";
+    retStatus = 1;
+  }
+  else if ( error == UPPER_LIMIT_STATE ) {
+    QLOG_DEBUG() << "DriverNewPort_NSC200> axisNumber " <<  QString(axisStr.str().c_str())
+                 << " channel " << QString(channelStr.str().c_str())
+                 << ": Upper limit reached!";
+
+    rstateData = "axisNumber=" + axisStr.str() + " channel=" + channelStr.str() +
+                 ": Upper limit reached!";
+    retStatus = 1;
+  }
+  else if ( status == LOWER_LIMIT_STATE ) {
+    QLOG_DEBUG() << "DriverNewPort_NSC200> axisNumber " <<  QString(axisStr.str().c_str())
+                 << " channel " << QString(channelStr.str().c_str())
+                 << ": Lower limit reached!";
+
+    rstateData = "axisNumber=" + axisStr.str() + " channel=" + channelStr.str() +
+                 ": Lower limit reached!";
+    retStatus = 1;
+  }
+
   ////////////////////////////////////////////////////////////////////////////////////////
   // create buffer with command xxTS? for controller Status query
   ////////////////////////////////////////////////////////////////////////////////////////

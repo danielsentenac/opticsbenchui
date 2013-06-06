@@ -373,7 +373,10 @@ void AcquisitionThread::nextRecord(AcquisitionSequence *sequence, int cur_record
 	    record = tmpSequence->record;
 	    tmpSequence->remainingLoops--;
 	    // Set new group name
-	    sequence->group = sequence->datagroup + "_" + QString::number(sequence->inc_group);
+            if (sequence->inc_group >= 10)
+	      sequence->group = sequence->datagroup + "_" + QString::number(sequence->inc_group);
+            else
+              sequence->group = sequence->datagroup + "_0" + QString::number(sequence->inc_group);
 	    sequence->inc_group++;
 	    return;
 	  }
@@ -397,7 +400,10 @@ void AcquisitionThread::nextRecord(AcquisitionSequence *sequence, int cur_record
     // go to next record
     record++;
     // Set new group name
-    sequence->group = sequence->datagroup + "_" + QString::number(sequence->inc_group);
+    if (sequence->inc_group >= 10)
+       sequence->group = sequence->datagroup + "_" + QString::number(sequence->inc_group);
+    else
+       sequence->group = sequence->datagroup + "_0" + QString::number(sequence->inc_group);
     sequence->inc_group++;
   }
 }

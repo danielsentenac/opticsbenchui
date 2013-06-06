@@ -85,8 +85,8 @@ ACEthCom::Open ()
 	  /* Setup the socket option to reuse */
 	  error = setsockopt( _sock, SOL_SOCKET, SO_REUSEADDR, &on,sizeof(on));
 	  if ( error == -1 ) 
-	    QLOG_DEBUG ( ) << "ACEthCom::Open> %s" << QString(strerror (errno));
-	  QLOG_DEBUG ( ) << "Connecting to " << QString(inet_ntoa (*addr)) << " on port "
+           QLOG_DEBUG ( ) << "ACEthCom::Open> %s" << QString(strerror (errno));
+           QLOG_DEBUG ( ) << "Connecting to " << QString(inet_ntoa (*addr)) << " on port "
 			 <<  port;
 	  error = connect (_sock, (struct sockaddr *) &address, sizeof (address));
 	  if ( error ) {
@@ -277,12 +277,14 @@ ACEthCom::Read (string & message, ...)
 	{
 	  memset (readBuffer, 0, sizeof (readBuffer));
 	  bytesRead = read (_sock, readBuffer, STRLENGTH);
+          QLOG_DEBUG() << " readBuffer = " << readBuffer
+                       << " bytesRead = " << bytesRead;
 	  if (bytesRead > 0)
 	    {
 	      totalBytesRead += bytesRead;
 	      message += readBuffer;
 	    }
-	}
+       }
       readFds = _master;
     }
 

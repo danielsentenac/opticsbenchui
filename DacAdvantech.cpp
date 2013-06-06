@@ -258,6 +258,9 @@ DacAdvantech::connectDac(QString newdac) {
   }
   if (mode.at(index) == "VOLT") {
     for (int i = 0; i < outputs.at(index); i++) {
+      QLOG_DEBUG ( ) << "Configuring output " << i 
+                     << " with  min=" << min.at(index)
+                     << " with  max=" << max.at(index);
       memset(config.at(index), 0, sizeof(PT_AOConfig));
       config.at(index)->chan = i;
       config.at(index)->RefSrc = 0;

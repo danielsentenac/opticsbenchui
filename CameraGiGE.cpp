@@ -341,13 +341,19 @@ CameraGiGE::setFeature(int feature, double value) {
    QLOG_INFO() << "CameraGiGE::setFeature> Updating feature " 
 	       << featureNameList.at(feature)
                << " New Value " << QString::number(value);
-   if ( node == NULL ) return;
+   if ( node == NULL ) {
+       QLOG_ERROR() << "CameraGiGE::setFeature> node NULL ";
+       return;
+   }
    if ( ARV_IS_GC_FLOAT (node) ) {
+     QLOG_INFO() << "CameraGiGE::setFeature> feature has FLOAT type ";
      QString feature_string_value = QString::number( value );
-     arv_gc_node_set_value_from_string (node, feature_string_value.toStdString().c_str());
      QLOG_INFO() << "CameraGiGE::setFeature> set feature "
-                 << featureNameList.at(feature) 
-                 << " New value " << feature_string_value;
+               << featureNameList.at(feature)
+               << " New value " << feature_string_value;
+     QLOG_INFO() << "CameraGiGE::setFeature> feature " << featureNameList.at(feature)
+                 << "has INT type ";
+     arv_gc_node_set_value_from_string (node, feature_string_value.toStdString().c_str());
    }
    else if ( ARV_IS_GC_INTEGER (node) ) {
      QString feature_string_value = QString::number((int)value);
@@ -362,6 +368,8 @@ CameraGiGE::setFeature(int feature, double value) {
        // Set & Update new Size
        arv_gc_node_set_value_from_string (node, feature_string_value.toStdString().c_str());
        arv_camera_get_region (camera, &x, &y, &gwidth, &gheight);
+       QLOG_INFO() << "arv_camera_get_region " << x << " " << y 
+                   << " " << gwidth << " " << gheight;
        width = gwidth;
        height = gheight;
        if (buffer) { free(buffer); buffer = NULL;}
