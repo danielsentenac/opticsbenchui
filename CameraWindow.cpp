@@ -103,7 +103,6 @@ void CameraWindow::set480x320() {
     this->setMaximumSize(QSize(480, 320 + OFFSET_Y));
     this->setMinimumSize(QSize(480, 320 + OFFSET_Y));
   }
-  this->adjustSize();
 }
 void CameraWindow::set640x480() {
   emit setVideoPlayerResolution(640,480); 
@@ -115,7 +114,6 @@ void CameraWindow::set640x480() {
     this->setMaximumSize(QSize(640, 480 + OFFSET_Y));
     this->setMinimumSize(QSize(640, 480 + OFFSET_Y));
   }
-  this->adjustSize();
 }
 void CameraWindow::set1280x960() {
   emit setVideoPlayerResolution(1280,960);
@@ -127,8 +125,6 @@ void CameraWindow::set1280x960() {
     this->setMaximumSize(QSize(1280, 960 + OFFSET_Y));
     this->setMinimumSize(QSize(1280, 960 + OFFSET_Y));
   }
-  this->adjustSize();
-
 }
 void CameraWindow::update() {
   camera->getFeatures();
