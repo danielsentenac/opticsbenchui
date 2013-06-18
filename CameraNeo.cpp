@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ENCODING_NUMBER 3
 #define AOI_NUMBER 8
 #define READOUTRATE_NUMBER 4
-#define TIMEOUT_MS 2000
+#define TIMEOUT_MS 2100
 
 #define EXTRACTLOWPACKED(SourcePtr) ( (SourcePtr[0] << 4) + (SourcePtr[1] & 0xF) )
 #define EXTRACTHIGHPACKED(SourcePtr) ( (SourcePtr[2] << 4) + (SourcePtr[1] >> 4) )
@@ -173,10 +173,11 @@ CameraNeo::setCamera(void* _camera, int _id)
  double exp_min, exp_max;
  featureIdList.push_back(++featureCnt);
  featureNameList.push_back(neo_features[featureCnt]);
- //i_err = AT_SetFloat(*camera, L"ExposureTime", exposure);
- //errorOk(i_err, "AT_SetFloat 'ExposureTime'");
+ i_err = AT_SetFloat(*camera, L"ExposureTime", exposure);
+ errorOk(i_err, "AT_SetFloat 'ExposureTime'");
  i_err = AT_GetFloatMin(*camera, L"ExposureTime", &exp_min);
  i_err = AT_GetFloatMax(*camera, L"ExposureTime", &exp_max);
+ exp_max = 2;
  featureMinList.push_back(exp_min);
  featureMaxList.push_back(exp_max);
  i_err = AT_GetFloat(*camera, L"ActualExposureTime", &exposure);
@@ -622,6 +623,7 @@ CameraNeo::setFeature(int feature, double value) {
    errorOk(i_err, "AT_Command 'AcquisitionStart'");
    QLOG_INFO () << "CameraNeo::setFeature> AcquisitionStart";
    acquireMutex->unlock();
+
 }
 void
 CameraNeo::setMode(int feature, bool value) {
@@ -722,6 +724,14 @@ CameraNeo::getFeatures() {
   errorOk(i_err, "AT_GetFloat 'ActualExposureTime'");
   featureValueList.replace(featureCnt, exposure );
   featureAbsValueList.replace(featureCnt,exposure);
+  double exp_min, exp_max;
+  i_err = AT_GetFloatMin(*camera, L"ExposureTime", &exp_min);
+  i_err = AT_GetFloatMax(*camera, L"ExposureTime", &exp_max);
+  exp_max = 2.;
+  featureMinList.replace(featureCnt, exp_min );
+  featureMaxList.replace(featureCnt, exp_max );
+  QLOG_INFO() << "CameraNeo::getFeatures> exp_min=" << QString::number(exp_min) 
+              << " exp_max=" << QString::number(exp_max);
 
   // AOI feature
   featureCnt++;
@@ -1169,7 +1179,8 @@ CameraNeo::acquireImage() {
   else {
    acq_err = 0;
    // Reinit Acquisition
-   QLOG_WARN() << "CameraNeo::acquireImage> Reinit Acquisition";
+   QLOG_WARN() << "CameraNeo::acquireImage>  BufSize=" << BufSize << " BufferSize=" << BufferSize
+	       << "...Reinit Acquisition!";
    QLOG_INFO () << "CameraNeo::acquireImage> AcquisitionStop...";
    i_err = AT_Command(*camera, L"AcquisitionStop");
    errorOk(i_err, "AT_Command 'AcquisitionStop'");

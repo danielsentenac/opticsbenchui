@@ -27,7 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 CameraControlWidget::CameraControlWidget(Camera *_camera)
  
 {
-  
+  QLOG_INFO() << "CameraControlWidget::CameraControlWidget> SLIDER_FACTOR " << QString::number(SLIDER_FACTOR);
+  QLOG_INFO() << "CameraControlWidget::CameraControlWidget> NUM_DIGITS " << NUM_DIGITS;
   camera = _camera;
   
   connect(this,SIGNAL(setFeature(int,double)),camera,SLOT(setFeature(int,double)));
@@ -47,8 +48,6 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
     QLineEdit *sliderValue = new  QLineEdit();
     sliderValue->setFixedSize(QSize(60, 20));
     featureSlider->setTickPosition(QSlider::TicksLeft);
-    QLOG_INFO() << "CameraControlWidget::CameraControlWidget> SLIDER_FACTOR " << QString::number(SLIDER_FACTOR);
-    QLOG_INFO() << "CameraControlWidget::CameraControlWidget> NUM_DIGITS " << NUM_DIGITS;
     if ( camera->featureAbsCapableList.at(i) ) {
       featureSlider->setMinimum((int) (camera->featureMinList.at(i) * SLIDER_FACTOR ));
       featureSlider->setMaximum((int)(camera->featureMaxList.at(i) * SLIDER_FACTOR ));
@@ -184,8 +183,6 @@ void
 CameraControlWidget::setFeatureValue(int position) {
   
   QSlider *featureSlider = featureSliderList.at(position);
-  QLOG_INFO() << "CameraControlWidget::setFeatureValue> SLIDER_FACTOR " << QString::number(SLIDER_FACTOR);
-  QLOG_INFO() << "CameraControlWidget::setFeatureValue> NUM_DIGITS " << NUM_DIGITS;
   QLOG_INFO() << "CameraControlWidget::setFeatureValue> Request "
               << camera->featureNameList.at(position) << " value "
               << featureSlider->value();
@@ -243,11 +240,19 @@ void CameraControlWidget::updateFeatures() {
       featureSlider->setMinimum((int) (camera->featureMinList.at(i) * SLIDER_FACTOR ));
       featureSlider->setMaximum((int)(camera->featureMaxList.at(i) * SLIDER_FACTOR ));
       featureSlider->setValue((int)(camera->featureValueList.at(i) * SLIDER_FACTOR ));
+      QLOG_INFO() <<  "CameraControlWidget::updateFeatures> SLIDER " << camera->featureNameList.at(i)
+		<< " value=" << camera->featureValueList.at(i) * SLIDER_FACTOR
+                << " min=" << camera->featureMinList.at(i) * SLIDER_FACTOR
+		<< " max=" << camera->featureMaxList.at(i) * SLIDER_FACTOR;
     }
     else {
       featureSlider->setMinimum((int) (camera->featureMinList.at(i) ));
       featureSlider->setMaximum((int)(camera->featureMaxList.at(i) ));
       featureSlider->setValue((int)(camera->featureValueList.at(i) ));
+      QLOG_INFO() <<  "CameraControlWidget::updateFeatures> SLIDER " << camera->featureNameList.at(i)
+		<< " value=" << camera->featureValueList.at(i)
+                << " min=" << camera->featureMinList.at(i)
+		<< " max=" << camera->featureMaxList.at(i);
     }
     valueMinList.at(i)->setText(QString::number(camera->featureMinList.at(i)));
     valueMaxList.at(i)->setText(QString::number(camera->featureMaxList.at(i)));
