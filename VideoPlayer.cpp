@@ -95,6 +95,6 @@ bool VideoPlayer::presentImage(const QImage &image)
 }
 void VideoPlayer::setVideoPlayerResolution(int width,int height) {
   emit setImageSize(width,height);
-  this->setMaximumSize(QSize(width,height));
-  this->setMinimumSize(QSize(width,height));
+  this->setMaximumSize(QSize(width+20,height+20));
+  this->setMinimumSize(QSize(width+20,height+20));
 }
