@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef NEOCAMERA
 #include "CameraNeo.h"
 
-#define NUMBER_OF_BUFFERS 10
+#define NUMBER_OF_BUFFERS 1
 #define GAIN_NUMBER 8
 #define TRIGGER_NUMBER 7
 #define ENCODING_NUMBER 3
@@ -131,7 +131,7 @@ CameraNeo::CameraNeo()
   acqstart = new QWaitCondition();
   acqend = new QWaitCondition();
   id = 0;
-  exposure = 0.1;
+  exposure = 0.6;
   frequency = 0.;
   modeCheckEnabled = false;
 }
@@ -261,11 +261,11 @@ CameraNeo::setCamera(void* _camera, int _id)
  AT_IsImplemented(*camera, L"FrameRate", &i_available);
  if (i_available) {
   i_err = AT_GetFloatMin(*camera, L"FrameRate", &frate_min);
-  if (errorOk(i_err, "AT_GetFloat 'FrameRate'")) {
+  if (errorOk(i_err, "AT_GetFloatMin 'FrameRate'")) {
          QLOG_INFO() << "CameraNeo::setCamera> FrameRateMin = " << frate_min;
   }
   i_err = AT_GetFloatMax(*camera, L"FrameRate", &frate_max);
-  if (errorOk(i_err, "AT_GetFloat 'FrameRate'")) {
+  if (errorOk(i_err, "AT_GetFloatMax 'FrameRate'")) {
          QLOG_INFO() << "CameraNeo::setCamera> FrameRateMax = " << frate_max;
   }
  }
@@ -502,7 +502,8 @@ void
 CameraNeo::setFeature(int feature, double value) {
  
   // Stop Acquisition
-  acquireMutex->lock();
+  this->stop();
+  //acquireMutex->lock();
   QLOG_INFO () << "CameraNeo::setFeature> AcquisitionStop...";
   i_err = AT_Command(*camera, L"AcquisitionStop");
   errorOk(i_err, "AT_Command 'AcquisitionStop'");
@@ -622,7 +623,8 @@ CameraNeo::setFeature(int feature, double value) {
    i_err = AT_Command(*camera, L"AcquisitionStart");
    errorOk(i_err, "AT_Command 'AcquisitionStart'");
    QLOG_INFO () << "CameraNeo::setFeature> AcquisitionStart";
-   acquireMutex->unlock();
+   //acquireMutex->unlock();
+   this->start();
 
 }
 void
@@ -766,9 +768,11 @@ CameraNeo::getFeatures() {
   i_err = AT_GetFloat(*camera, L"FrameRate", &frate);
   errorOk(i_err, "AT_GetFloat 'FrameRate'");
   i_err = AT_GetFloatMin(*camera, L"FrameRate", &frate_min);
-  errorOk(i_err, "AT_GetFloatMin 'FrameRate'");
+  if (errorOk(i_err, "AT_GetFloatMin 'FrameRate'"))
+    QLOG_INFO() << "CameraNeo::setCamera> FrameRateMin = " << frate_min;
   i_err = AT_GetFloatMax(*camera, L"FrameRate", &frate_max);
-  errorOk(i_err, "AT_GetFloatMax 'FrameRate'");
+  if (errorOk(i_err, "AT_GetFloatMax 'FrameRate'")) 
+    QLOG_INFO() << "CameraNeo::setCamera> FrameRateMax = " << frate_max;
   featureMinList.replace(featureCnt, frate_min );
   featureMaxList.replace(featureCnt, frate_max );
   featureValueList.replace(featureCnt, frate );
