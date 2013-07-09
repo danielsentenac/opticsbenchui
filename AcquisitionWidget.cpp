@@ -156,8 +156,12 @@ AcquisitionWidget::setDac(Dac* _dac){
   dac = _dac;
 }
 void
-AcquisitionWidget::setComedi(Comedi* _comedi){
-  comedi = _comedi;
+AcquisitionWidget::setComediCounter(Comedi* _comedi){
+  comedicounter = _comedi;
+}
+void
+AcquisitionWidget::setComediDac(Comedi* _comedi){
+  comedidac = _comedi;
 }
 void
 AcquisitionWidget::setDelegates(){
@@ -195,15 +199,25 @@ AcquisitionWidget::setDelegates(){
   while (querydac.next())
     instrumentList->append(querydac.value(0).toString());
 
-  // Populate instrument list from comedi database
-  QString comedidb;
-  comedidb = appDirPath;
-  comedidb.append(QDir::separator()).append("comedi.db3");
-  comedidb = QDir::toNativeSeparators(comedidb);
-  QSqlQuery querycomedi(QSqlDatabase::database(comedidb));
-  querycomedi.exec("select name from comedi_settings");
-  while (querycomedi.next())
-    instrumentList->append(querycomedi.value(0).toString());
+  // Populate instrument list from comedi counter database
+  QString comedicounterdb;
+  comedicounterdb = appDirPath;
+  comedicounterdb.append(QDir::separator()).append("comedicounter.db3");
+  comedicounterdb = QDir::toNativeSeparators(comedicounterdb);
+  QSqlQuery querycomedicounter(QSqlDatabase::database(comedicounterdb));
+  querycomedicounter.exec("select name from comedi_settings");
+  while (querycomedicounter.next())
+    instrumentList->append(querycomedicounter.value(0).toString());
+
+  // Populate instrument list from comedi dac database
+  QString comedidacdb;
+  comedidacdb = appDirPath;
+  comedidacdb.append(QDir::separator()).append("comedidac.db3");
+  comedidacdb = QDir::toNativeSeparators(comedidacdb);
+  QSqlQuery querycomedidac(QSqlDatabase::database(comedidacdb));
+  querycomedidac.exec("select name from comedi_settings");
+  while (querycomedidac.next())
+    instrumentList->append(querycomedidac.value(0).toString());
 
   // Populate instrument list from cameraList 
   for (int i = 0 ; i < cameraList.size(); i++) {
@@ -287,7 +301,8 @@ AcquisitionWidget::run(){
   acquisition->setCamera(cameraList);
   acquisition->setMotor(motor);
   acquisition->setDac(dac);
-  acquisition->setComedi(comedi);
+  acquisition->setComediCounter(comedicounter);
+  acquisition->setComediDac(comedidac);
   acquisition->setSequenceList(sequenceList);
   acquisition->start();
   QLOG_DEBUG ( ) << "AcquisitionWidget:: run started";

@@ -21,7 +21,7 @@ ComediCounter::ComediCounter(QString _appDirPath)
   : Comedi()				       
 { 
   path = _appDirPath;
-  comeditype = "COUNTER";
+  comeditype = "COMEDICOUNTER";
   
   // Connect comedi db
   dbConnexion();
@@ -151,12 +151,13 @@ ComediCounter::connectComedi(QString newcomedi) {
   subsettings = settings.at(4).split("=");
   max.push_back(subsettings.at(1).toFloat());
   connectSuccess.push_back(false);
-  comedivalues.push_back(new QVector<float>);
+  comedivalues.push_back(new QVector<double>());
   
   QLOG_INFO() << "ComediCounter::connectComedi> mode : " << mode.at(index);
   QLOG_INFO() << "ComediCounter::connectComedi> outputs : " << outputs.at(index);
   QLOG_INFO() << "ComediCounter::connectComedi> max : " << max.at(index);
   QLOG_INFO() << "ComediCounter::connectComedi> min : " << min.at(index);
+  QLOG_INFO() << "ComediCounter::connectComedi> values : " << comedivaluesString;
   // Open device
   QLOG_INFO() << "ComediCounter::connectComedi> open device " 
               << fname.at(index) << "(index = " << index << ")";
@@ -181,7 +182,7 @@ ComediCounter::connectComedi(QString newcomedi) {
   QStringList comedivaluesStringList;
   comedivaluesStringList = comedivaluesString.split(" ",QString::SkipEmptyParts);
   for (int i = 0 ; i < comedivaluesStringList.size(); i++ )
-    comedivalues.at(index)->push_back(comedivaluesStringList.at(i).toFloat());
+    comedivalues.at(index)->push_back(comedivaluesStringList.at(i).toDouble());
   
   emit getOutputValues((void*)comedivalues.at(index));
 
@@ -202,7 +203,7 @@ ComediCounter::resetComedi(QString newcomedi) {
                   << min.at(index) << "," << max.at(index) 
                   << "]";
       comedivalues.at(index)->clear();
-      float value = 0;
+      double value = 0;
       for (int i = 0; i < outputs.at(index); i++) {
 	comedivalues.at(index)->push_back(value);
       }
@@ -251,7 +252,7 @@ ComediCounter::resetComedi(QString newcomedi) {
         // set initial counter value by writing to channel 0
         ret = comedi_data_write(device.at(index), subdev, 0, 0, 0 ,0);
         if(ret < 0) return false;
-        float resetValue = 0.0;
+        double resetValue = 0.0;
         comedivalues.at(index)->replace(subdev - min.at(index), resetValue);
       }
       // set new values in Db
@@ -305,14 +306,17 @@ ComediCounter::setComediValue(QString newcomedi, int output, void *value) {
       QString dbgStr;
       dbgStr.setNum(formattedData, 'lf', 6);
       QLOG_INFO() << "ComediCounter::setComediValue> formatted data " << dbgStr; 
-      comedivalues.at(index)->replace(output, (float) formattedData);
+      QLOG_INFO() << "ComediCounter::setComediValue> replace at " << output
+                    << " old value " << QString::number(comedivalues.at(index)->at(output))
+                    << " new value " << QString::number(formattedData);
+      comedivalues.at(index)->replace(output, formattedData);
       return true;
     }
   }
   return false; 
 }
 bool 
-ComediCounter::getComediValue(QString newcomedi, int output, float &value) {
+ComediCounter::getComediValue(QString newcomedi, int output, double &value) {
  for (int index = 0 ; index < comedi.size(); index++)  {
     if ( comedi.at(index) == newcomedi ) {
        value =  comedivalues.at(index)->at(output);
@@ -327,7 +331,7 @@ ComediCounter::updateDBValues(QString newcomedi) {
   
   for (int index = 0 ; index < comedi.size(); index++)  {
     if ( comedi.at(index) == newcomedi ) {
-      QLOG_DEBUG () << " Update DB counter values";
+      QLOG_INFO () << " Update DB COUNTER values";
       QSqlDatabase db = QSqlDatabase::database(path);
       QSqlQuery query(db);
       // Set new values in Db
@@ -544,7 +548,7 @@ ComediCounter::getTime(comedi_t *device)
 void 
 ComediCounter::dbConnexion() {
 
-  path.append(QDir::separator()).append("comedi.db3");
+  path.append(QDir::separator()).append("comedicounter.db3");
   path = QDir::toNativeSeparators(path);
   QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
   QLOG_INFO ( ) << "ComediCounter::dbConnexion> Db path : " << path;

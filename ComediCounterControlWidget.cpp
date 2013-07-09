@@ -119,8 +119,8 @@ ComediCounterControlWidget::resetComedi() {
 
 void ComediCounterControlWidget::getOutputValues(void *comedivalues) {
   // Cast in expected type
-  QVector<float>* vfcomedivalues;
-  vfcomedivalues = (QVector<float>*) comedivalues;
+  QVector<double>* vfcomedivalues;
+  vfcomedivalues = (QVector<double>*) comedivalues;
 
   QLOG_DEBUG ( ) << "ComediCounterControlWidget::getOutputValues";
   for (int i = 0 ; i < comedivalueList->size(); i++) {

@@ -80,7 +80,7 @@ class AcquisitionSequence
 
   // Counter Comedi attributes
   int    comediValue;
-  float  comediData;
+  double comediData;
   int    comediOutput;
 
   // SLM attributes

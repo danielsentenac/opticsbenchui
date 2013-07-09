@@ -34,6 +34,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef COMEDICOUNTER
 #include "ComediCounter.h"
 #endif
+#ifdef COMEDIDAC
+#include "ComediDac.h"
+#endif
 #ifdef ADVANTECHDAC
 #include "DacAdvantech.h"
 #endif
@@ -79,7 +82,8 @@ class OpticsBenchUIMain : public QMainWindow
   void openCameraWindow(int cameraNumber);
   void openMotorWindow();
   void openDacWindow();
-  void openComediWindow();
+  void openComediCounterWindow();
+  void openComediDacWindow();
   void showDacWarning(QString);
   void showComediWarning(QString);
   void showMotorWarning(QString);
@@ -102,12 +106,12 @@ class OpticsBenchUIMain : public QMainWindow
   QSignalMapper *signalMapper;
   MotorWindow  *motorwindow;
   DacWindow    *dacwindow;
-  ComediWindow *comediwindow;
+  ComediWindow *comedicounterwindow, *comedidacwindow;
   QTabWidget   *tab;
   AcquisitionWidget *acquisitionwidget;
   AnalysisWidget *analysiswidget;
   Dac      *dac;
-  Comedi   *comedi;
+  Comedi   *comedicounter, *comedidac;
   Motor    *motor;
   Camera   *cameraIEEE1394Mgr;
   Camera   *cameraGiGEMgr;

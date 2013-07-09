@@ -31,13 +31,24 @@ ComediWindow::ComediWindow( QMainWindow* parent, Qt::WFlags fl , Comedi *_comedi
   centralWidget->setLayout(vboxlayout);
 
   comediList = new QVector<QString> ();
-  if ( comedi->comeditype == "COUNTER" ) {
+  if ( comedi->comeditype == "COMEDICOUNTER" ) {
      comediWidget = new ComediCounterControlWidget(comediList);
      comediWidget->setComedi(comedi);
      dockWidget = new QDockWidget(tr("Comedi Control"), this);
      dockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
      QScrollArea *scrollableWidget = new  QScrollArea();
      scrollableWidget->setWidget(comediWidget);
+     scrollableWidget->setWidgetResizable(true);
+     dockWidget->setWidget(scrollableWidget);
+     this->addDockWidget(Qt::BottomDockWidgetArea, dockWidget);
+  }
+  else if ( comedi->comeditype == "COMEDIDAC" ) {
+     daccomediWidget = new ComediDacControlWidget(comediList);
+     daccomediWidget->setComedi(comedi);
+     dockWidget = new QDockWidget(tr("Comedi Control"), this);
+     dockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
+     QScrollArea *scrollableWidget = new  QScrollArea();
+     scrollableWidget->setWidget(daccomediWidget);
      scrollableWidget->setWidgetResizable(true);
      dockWidget->setWidget(scrollableWidget);
      this->addDockWidget(Qt::BottomDockWidgetArea, dockWidget);
@@ -150,5 +161,8 @@ ComediWindow::InitRun(){
     QString name = query.value(0).toString();
     comediList->append(name);
   }
-  comediWidget->setComediList(comediList);
+  if ( comedi->comeditype == "COMEDICOUNTER" )
+    comediWidget->setComediList(comediList);
+  else if ( comedi->comeditype == "COMEDIDAC" )
+    daccomediWidget->setComediList(comediList);
 }

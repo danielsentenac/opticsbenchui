@@ -37,7 +37,8 @@ class AcquisitionWidget : public QWidget
   void setCamera(QVector<Camera*> _cameraList);
   void setMotor(Motor* _motor);
   void setDac(Dac* _dac);
-  void setComedi(Comedi* _comedi);
+  void setComediCounter(Comedi* _comedi);
+  void setComediDac(Comedi* _comedi);
   void setDelegates();
 
  signals:
@@ -66,7 +67,7 @@ class AcquisitionWidget : public QWidget
   QVector<Camera*> cameraList;
   Motor  *motor;
   Dac    *dac;
-  Comedi *comedi;
+  Comedi *comedicounter, *comedidac;
   QLabel *splashLabel;
 
   QString   appDirPath, path;

@@ -32,7 +32,7 @@ class ComediCounter : public Comedi
   bool connectComedi(QString newcomedi);
   bool resetComedi(QString newcomedi);
   bool setComediValue(QString newcomedi, int output, void *value);
-  bool getComediValue(QString newcomedi, int output, float &value);
+  bool getComediValue(QString newcomedi, int output, double &value);
   bool updateDBValues(QString newcomedi);
   void setDbPath(QString _path);
   
@@ -65,7 +65,7 @@ class ComediCounter : public Comedi
   QVector<int> outputs;
   QVector<QString> fname;
   QVector<bool>  connectSuccess;
-  QVector< QVector<float>* > comedivalues;
+  QVector< QVector<double>* > comedivalues;
 };
 #endif
 #endif

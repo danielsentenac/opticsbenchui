@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define COMEDIWINDOW_H
 
 #include "ComediCounterControlWidget.h"
+#include "ComediDacControlWidget.h"
 
 #include <QtSql>
 #include <QtGui>
@@ -34,6 +35,7 @@ class ComediWindow : public QMainWindow
   virtual ~ComediWindow();
 
   ComediCounterControlWidget *comediWidget;
+  ComediDacControlWidget *daccomediWidget;
 
  public slots:
    void update();

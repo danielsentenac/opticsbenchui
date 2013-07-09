@@ -436,9 +436,9 @@ AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequen
 	  dacValue = dacValue + (sequenceLeft->dacValue / sequenceRight->dacValue);
 	success = true;
       }
-      else if (sequenceLeft->instrumentType == "COUNTER" &&
-               sequenceRight->instrumentType == "COUNTER") {
-        instrumentRef = "COUNTER";
+      else if (sequenceLeft->instrumentType == "COMEDICOUNTER" &&
+               sequenceRight->instrumentType == "COMEDICOUNTER") {
+        instrumentRef = "COMEDICOUNTER";
         if (reset == true) {
           comediData = 0;
         }
@@ -488,8 +488,8 @@ AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequen
 	dacValue = dacValue + sequenceLeft->dacValue ;
 	success = true;
       }
-      else if ( sequenceLeft->instrumentType == "COUNTER" ) {
-        instrumentRef = "COUNTER";
+      else if ( sequenceLeft->instrumentType == "COMEDICOUNTER" ) {
+        instrumentRef = "COMEDICOUNTER";
         comediData = comediData + sequenceLeft->dacValue ;
         success = true;
       }

@@ -33,6 +33,9 @@ DEFINES         +=      NEOCAMERA
 # Comedi Counters support
 DEFINES         +=     COMEDICOUNTER
 
+# Comedi Dac support
+DEFINES         +=     COMEDIDAC
+
 QMAKE_CXXFLAGS 	+= 	-g `pkg-config --cflags glib-2.0`
 
 # External packages
@@ -73,6 +76,8 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
                         ComediCounter.h \
                         ComediCounterControlWidget.h \
                         ComediWindow.h \
+                        ComediDac.h \
+                        ComediDacControlWidget.h \
 			DacWindow.h \
 			DacControlWidget.h \
 			Dac.h \
@@ -116,6 +121,8 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			VideoPlayer.cpp \
 			VideoWidget.cpp \
 			VideoWidgetSurface.cpp \
+                        ComediDac.cpp \
+                        ComediDacControlWidget.cpp \
 			ComediCounter.cpp \
  			ComediCounterControlWidget.cpp \
 			ComediWindow.cpp \

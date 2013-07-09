@@ -37,7 +37,8 @@ class AcquisitionThread : public QThread
   void setCamera(QVector<Camera*> _cameraList);
   void setMotor(Motor* _motor);
   void setDac(Dac* _dac);
-  void setComedi(Comedi* _comedi);
+  void setComediCounter(Comedi* _comedi);
+  void setComediDac(Comedi* _comedi);
   void setFile(QString _filename, int _filenumber);
 
   QVector<bool> isopencamerawindow;
@@ -73,9 +74,9 @@ class AcquisitionThread : public QThread
   int    record;
   Motor  *motor;
   Dac    *dac;
-  Comedi *comedi;
+  Comedi *comedicounter, *comedidac;
   bool   dacsuccess;
-  bool   comedisuccess;
+  bool   comedicountersuccess, comedidacsuccess;
   bool   slmsuccess;
   bool   imagesuccess;
   bool   filesuccess;

@@ -46,10 +46,20 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   //
   // Create Counter manager
   //
-  comedi = new ComediCounter(qdir.currentPath());
-  connect(comedi,SIGNAL(showWarning(QString)),this,SLOT(showComediWarning(QString)));
-  comediwindow = new ComediWindow(this,Qt::Window,comedi);
-  connect(this,SIGNAL(setDbPath(QString)),comediwindow,SLOT(setDbPath(QString)));
+  comedicounter = new ComediCounter(qdir.currentPath());
+  connect(comedicounter,SIGNAL(showWarning(QString)),this,SLOT(showComediWarning(QString)));
+  comedicounterwindow = new ComediWindow(this,Qt::Window,comedicounter);
+  connect(this,SIGNAL(setDbPath(QString)),comedicounterwindow,SLOT(setDbPath(QString)));
+#endif
+
+#ifdef COMEDIDAC
+  //
+  // Create Dac comedi manager
+  //
+  comedidac = new ComediDac(qdir.currentPath());
+  connect(comedidac,SIGNAL(showWarning(QString)),this,SLOT(showComediWarning(QString)));
+  comedidacwindow = new ComediWindow(this,Qt::Window,comedidac);
+  connect(this,SIGNAL(setDbPath(QString)),comedidacwindow,SLOT(setDbPath(QString)));
 #endif
 
   //
@@ -122,8 +132,12 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   acquisitionwidget->setDac(dac);
 #endif
 
-#ifdef COMEDICOUNTER
-  acquisitionwidget->setComedi(comedi);
+#ifdef COMEDIR
+  acquisitionwidget->setComediCounter(comedicounter);
+#endif
+
+#ifdef COMEDIDAC
+  acquisitionwidget->setComediDac(comedidac);
 #endif
 
   acquisitionwidget->setMotor(motor);
@@ -217,7 +231,11 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
 #endif
 
 #ifdef COMEDICOUNTER
-  menuInstruments->addAction("Counter", this, SLOT(openComediWindow()) );
+  menuInstruments->addAction("Counter", this, SLOT(openComediCounterWindow()) );
+#endif
+
+#ifdef COMEDIDAC
+  menuInstruments->addAction("Dac", this, SLOT(openComediDacWindow()) );
 #endif
 
   // Then set the menu bar to the main window
@@ -286,9 +304,13 @@ void OpticsBenchUIMain::openDacWindow() {
   if (dacwindow->isHidden())
     dacwindow->show();
 }
-void OpticsBenchUIMain::openComediWindow() {
-  if (comediwindow->isHidden())
-    comediwindow->show();
+void OpticsBenchUIMain::openComediCounterWindow() {
+  if (comedicounterwindow->isHidden())
+    comedicounterwindow->show();
+}
+void OpticsBenchUIMain::openComediDacWindow() {
+  if (comedidacwindow->isHidden())
+    comedidacwindow->show();
 }
 OpticsBenchUIMain::~OpticsBenchUIMain()
 {
