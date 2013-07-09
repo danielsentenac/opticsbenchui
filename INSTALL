@@ -12,25 +12,28 @@ http://damien.douxchamps.net/ieee1394/libdc1394/
 3) Advantech boards are controlled via the advdaq library
 http://support.advantech.com.tw/support/
 
-4) HDF5 data library to manage data collection
+4) Comedi boards controlled using the comedi library
+http://www.comedi.org
+
+5) HDF5 data library to manage data collection
 http://www.hdfgroup.org/HDF5/
 
 OpticsBenchUI is compiled within the Qt framework, using a requirement file called
 OpticsBenchUI.pro. First you need to update OpticsBenchUI.pro according to 
-libdc1394,advdaq,hdf5 libraries and include path installations (INCLUDEPATH, LIBS tags)
+libdc1394,advdaq,comedi,hdf5 libraries and include path installations (INCLUDEPATH, LIBS tags)
 
 OpticsBenchUI installation steps:
 
-In the source directory (where is present the OpticsBenchUI.pro file) do:
+In the source directory (where is present the OpticsBenchUI.pro file):
 
-1) qmake OpticsBenchUI.pro
+1) qmake
 
 2) make
 
 This will create an OpticsBenchUI executable
 
 3) Set/Update the LD_LIBRARY_PATH environment variable with the library paths of 
-libdc1394,advdaq,hdf5 libraries 
+libdc1394,advdaq,comedi,hdf5 libraries 
 
 4) Launch OpticsBenchUI ! There is a documentation accessible from the GUI which 
 will help you to configure the devices.
