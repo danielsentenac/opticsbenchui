@@ -121,7 +121,7 @@ ComediDacControlWidget::getOutputValues(void *comedivalues) {
   QLOG_DEBUG ( ) << "ComediCounterControlWidget::getOutputValues";
   for (int i = 0 ; i < comedivalueList->size(); i++) {
     QString valueString;
-    valueString.setNum (vfcomedivalues->at(i), 'f',3);
+    valueString.setNum (vfcomedivalues->at(i), 'f',4);
     QLineEdit *comedivalue = comedivalueList->at(i);
     comedivalue->setText(valueString);
   }

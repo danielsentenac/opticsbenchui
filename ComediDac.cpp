@@ -283,7 +283,7 @@ ComediDac::updateDBValues(QString newcomedi) {
       QString comedivaluesString = "";
       QString valueString;
       for (int i = 0 ; i < outputs.at(index); i++) {
-	valueString.setNum (comedivalues.at(index)->at(i), 'f',3);
+	valueString.setNum (comedivalues.at(index)->at(i),'f',4);
 	comedivaluesString = comedivaluesString + valueString + " ";
       }
       query.prepare("update comedi_settings set comedivalues = ? where name = ?");
