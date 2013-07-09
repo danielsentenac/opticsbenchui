@@ -170,7 +170,7 @@ AcquisitionThread::run() {
 void AcquisitionThread::execute(AcquisitionSequence *sequence) {
   
   // New acquisition
-
+  QLOG_INFO() << "AcquisitionThread::execute> instrument type " << sequence->instrumentType;
   //emit getAcquiring(record);
   
   QLOG_DEBUG() << "AcquisitionThread::execute> Execute record " << record << " instrument " 
@@ -221,37 +221,38 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     //emit getDacStatus(dacsuccess);
   }
   else if ( sequence->instrumentType == "COMEDICOUNTER" ) {
-    QLOG_DEBUG() << "AcquisitionThread::execute> connecting COMEDI COUNTER ..." << sequence->instrumentName;
+    QLOG_INFO() << "AcquisitionThread::execute> connecting COMEDI COUNTER ..." << sequence->instrumentName
+                << " ComediCounter pointer " << comedicounter;
     comedicountersuccess = comedicounter->connectComedi(sequence->instrumentName);
-    QLOG_DEBUG() << "AcquisitionThread::execute> COMEDI COUNTER " << sequence->instrumentName
+    QLOG_INFO() << "AcquisitionThread::execute> COMEDI COUNTER " << sequence->instrumentName
                  << " connected " << comedicountersuccess;
 
     if (comedicountersuccess == true) {
      comedicountersuccess = comedicounter->setComediValue(sequence->instrumentName,
                                              sequence->comediOutput,
                                              (void*)&sequence->comediValue);
+     QLOG_INFO() << "AcquisitionThread::execute> COMEDI COUNTER " << sequence->instrumentName
+                 << " setComediValue " << comedicountersuccess;
      // Copy comedi data in sequence for saving later
      comedicountersuccess = comedicounter->getComediValue(sequence->instrumentName,
                                             sequence->comediOutput,
                                             sequence->comediData);
+     QLOG_INFO() << "AcquisitionThread::execute> COMEDI COUNTER " << sequence->instrumentName
+                 << " getComediValue " << comedicountersuccess;
     }
     sequence->status = comedicountersuccess;
     //emit getComediStatus(comedicountersuccess);
   }
   else if ( sequence->instrumentType == "COMEDIDAC" ) {
-    QLOG_DEBUG() << "AcquisitionThread::execute> connecting COMEDI DAC ..." << sequence->instrumentName;
+    QLOG_INFO() << "AcquisitionThread::execute> connecting COMEDI DAC ..." << sequence->instrumentName;
     comedidacsuccess = comedidac->connectComedi(sequence->instrumentName);
-    QLOG_DEBUG() << "AcquisitionThread::execute> COMEDI DAC " << sequence->instrumentName
+    QLOG_INFO() << "AcquisitionThread::execute> COMEDI DAC " << sequence->instrumentName
                  << " connected " << comedidacsuccess;
 
     if (comedidacsuccess == true) {
      comedidacsuccess = comedidac->setComediValue(sequence->instrumentName,
                                              sequence->comediOutput,
-                                             (void*)&sequence->comediValue);
-     // Copy comedi data in sequence for saving later
-     comedidacsuccess = comedidac->getComediValue(sequence->instrumentName,
-                                            sequence->comediOutput,
-                                            sequence->comediData);
+                                             (void*)&sequence->dacValue);
     }
     sequence->status = comedidacsuccess;
     //emit getComediStatus(comedidacsuccess);
@@ -541,7 +542,7 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
 				     &(sequence->position),1);
   // Save DAC data in the group
   else if (sequence->instrumentType == "DAC" && dacsuccess == true) {
-    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(), 
+    status = H5LTset_attribute_double(sequence->refgrp, sequence->grpname.toStdString().c_str(), 
 				     sequence->dataname.toStdString().c_str(), 
 				     &(sequence->dacValue),1);
   }
@@ -644,34 +645,20 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
 	  
 	  // Average data
 	  sequence->dacValue /= parentSequence->loopNumber;
-	  status = H5LTset_attribute_float(grandparentSequence->refgrp, 
+	  status = H5LTset_attribute_double(grandparentSequence->refgrp, 
 					   grandparentSequence->grpname.toStdString().c_str(), 
 					   sequence->dataname.toStdString().c_str(), 
 					   &(sequence->dacValue),1);
 	  // reset sequence data
 	  sequence->reset =true;	  
 	}
-        else if ( sequence->instrumentRef == "COMEDICOUNTER" && treatmentsuccess == true ) {
+        else if ( sequence->instrumentRef == "COUNTER" && treatmentsuccess == true ) {
           QLOG_DEBUG() << "AcquisitionThread::saveData> Save average COMEDI COUNTER data in groupname " 
                        << grandparentSequence->grpname
                        << " refgrp " << grandparentSequence->refgrp;
 
           // Average data
-          sequence->comediData /= parentSequence->loopNumber;
-          status = H5LTset_attribute_double(grandparentSequence->refgrp,
-                                           grandparentSequence->grpname.toStdString().c_str(),
-                                           sequence->dataname.toStdString().c_str(),
-                                           &(sequence->comediData),1);
-          // reset sequence data
-          sequence->reset =true;
-        }
-        else if ( sequence->instrumentType == "COMEDIDAC" && treatmentsuccess == true ) {
-          QLOG_DEBUG() << "AcquisitionThread::saveData> Save average COMEDI DAC data in groupname "
-                       << grandparentSequence->grpname
-                       << " refgrp " << grandparentSequence->refgrp;
-
-          // Average data
-          sequence->comediData /= parentSequence->loopNumber;
+          sequence->comediData /=  parentSequence->loopNumber;
           status = H5LTset_attribute_double(grandparentSequence->refgrp,
                                            grandparentSequence->grpname.toStdString().c_str(),
                                            sequence->dataname.toStdString().c_str(),

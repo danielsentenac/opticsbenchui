@@ -405,7 +405,7 @@ DacAdvantech::resetDac(QString newdac) {
   return false; 
 }
 bool
-DacAdvantech::setDacValue(QString newdac, int output, float value) {
+DacAdvantech::setDacValue(QString newdac, int output, double value) {
   int status;
   char err_msg[100];
 

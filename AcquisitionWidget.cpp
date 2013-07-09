@@ -170,7 +170,8 @@ AcquisitionWidget::setDelegates(){
   typeList->append("");
   typeList->append("MOTOR");
   typeList->append("DAC");
-  typeList->append("COUNTER");
+  typeList->append("COMEDIDAC");
+  typeList->append("COMEDICOUNTER");
   typeList->append("CAMERA");
   typeList->append("SLM");
   typeList->append("FILE");

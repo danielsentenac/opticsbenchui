@@ -132,7 +132,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   acquisitionwidget->setDac(dac);
 #endif
 
-#ifdef COMEDIR
+#ifdef COMEDICOUNTER
   acquisitionwidget->setComediCounter(comedicounter);
 #endif
 

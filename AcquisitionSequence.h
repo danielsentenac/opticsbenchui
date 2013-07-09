@@ -75,7 +75,7 @@ class AcquisitionSequence
   float   position;
 
   // Dac attributes
-  float   dacValue;
+  double   dacValue;
   int     dacOutput;
 
   // Counter Comedi attributes

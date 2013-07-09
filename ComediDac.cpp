@@ -84,7 +84,7 @@ ComediDac::connectComedi(QString newcomedi) {
   int index;
   if (newcomedi == "") return false;
 
-  QLOG_INFO() << "ComediCounter::connectComedi> connecting COUNTER " << newcomedi;
+  QLOG_INFO() << "ComediCounter::connectComedi> connecting DAC " << newcomedi;
   QSqlDatabase db = QSqlDatabase::database(path);
   QSqlQuery query(db);
   QString description;

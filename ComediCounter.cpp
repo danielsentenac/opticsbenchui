@@ -82,6 +82,7 @@ ComediCounter::setDbPath(QString _path){
 bool
 ComediCounter::connectComedi(QString newcomedi) {
   
+  QLOG_INFO() << "ComediCounter::connectComedi> ";
   int index;
   if (newcomedi == "") return false;
   

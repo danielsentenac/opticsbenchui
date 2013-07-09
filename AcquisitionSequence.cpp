@@ -193,10 +193,9 @@ AcquisitionSequence::prepare() {
         comediOutput = subsettingsList.at(j+1).toInt();
       }
       else if (subsettingsList.at(j) == "VALUE" && subsettingsList.size() > j + 1) {
-	dacValue = subsettingsList.at(j+1).toFloat();
-        comediValue = subsettingsList.at(j+1).toInt();
+	dacValue = subsettingsList.at(j+1).toDouble();
       }
-      // Comedi section
+      // ComediCounter section
       else if (subsettingsList.at(j) == "ITIME" && subsettingsList.size() > j + 1) {
         comediValue = subsettingsList.at(j+1).toInt();
       }
@@ -420,8 +419,8 @@ AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequen
 	}
 	success = true;
       }
-      else if (sequenceLeft->instrumentType == "DAC" && 
-	       sequenceRight->instrumentType == "DAC") {
+      else if (sequenceLeft->instrumentType.contains("DAC") && 
+	       sequenceRight->instrumentType.contains("DAC")) {
 	instrumentRef = "DAC";
 	if (reset == true) {
 	  dacValue = 0;
@@ -438,7 +437,7 @@ AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequen
       }
       else if (sequenceLeft->instrumentType == "COMEDICOUNTER" &&
                sequenceRight->instrumentType == "COMEDICOUNTER") {
-        instrumentRef = "COMEDICOUNTER";
+        instrumentRef = "COUNTER";
         if (reset == true) {
           comediData = 0;
         }
@@ -489,8 +488,13 @@ AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequen
 	success = true;
       }
       else if ( sequenceLeft->instrumentType == "COMEDICOUNTER" ) {
-        instrumentRef = "COMEDICOUNTER";
-        comediData = comediData + sequenceLeft->dacValue ;
+        instrumentRef = "COUNTER";
+        comediData = comediData + sequenceLeft->comediData ;
+        success = true;
+      }
+      else if ( sequenceLeft->instrumentType == "COMEDIDAC" ) {
+        instrumentRef = "DAC";
+        dacValue = dacValue + sequenceLeft->dacValue ;
         success = true;
       }
     }
