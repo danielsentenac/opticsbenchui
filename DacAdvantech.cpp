@@ -258,7 +258,7 @@ DacAdvantech::connectDac(QString newdac) {
   }
   if (mode.at(index) == "VOLT") {
     for (int i = 0; i < outputs.at(index); i++) {
-      QLOG_DEBUG ( ) << "Configuring output " << i 
+      QLOG_INFO ( ) << "Configuring output " << i 
                      << " with  min=" << min.at(index)
                      << " with  max=" << max.at(index);
       memset(config.at(index), 0, sizeof(PT_AOConfig));
@@ -275,13 +275,17 @@ DacAdvantech::connectDac(QString newdac) {
       }
     }
   }
-  else if (mode.at(index) == "CURRENT") {
-    AORANGESET aorange;
-    for (int i = 0; i < outputs.at(index); i++) {
+  int cur_volt;
+  if (mode.at(index) == "CURRENT") 
+     cur_volt = 1;
+  else
+     cur_volt = 0;
+  AORANGESET aorange;
+  for (int i = 0; i < outputs.at(index); i++) {
       memset(ao_chan_range.at(index), 0, sizeof(aorange));
-      ao_chan_range.at(index)->usGainCount = 0;
-      ao_chan_range.at(index)->usAOSource = 1; /* =0 internal, =1 external */
-      ao_chan_range.at(index)->usAOType = 1; /* =0 voltage, =1 current */
+      ao_chan_range.at(index)->usGainCount = 6;
+      ao_chan_range.at(index)->usAOSource = 0; /* =0 internal, =1 external */
+      ao_chan_range.at(index)->usAOType = cur_volt; /* =0 voltage, =1 current */
       ao_chan_range.at(index)->usChan = i;
       ao_chan_range.at(index)->fAOMax = max.at(index);
       ao_chan_range.at(index)->fAOMin = min.at(index);
@@ -304,15 +308,14 @@ DacAdvantech::connectDac(QString newdac) {
 	connectSuccess.replace(index, false);
 	return false;
       }
-      QLOG_DEBUG ( ) << dac.at(index) << " Channel " << i 
+      QLOG_INFO ( ) << dac.at(index) << " Channel " << i 
 		     << " GainCount: " <<  ao_chan_range.at(index)->usGainCount;
-      QLOG_DEBUG ( ) << "AOSource: " << ao_chan_range.at(index)->usAOSource;
-      QLOG_DEBUG ( ) << "AOType: " << ao_chan_range.at(index)->usAOType;
-      QLOG_DEBUG ( ) << "Chan: " << ao_chan_range.at(index)->usChan;
-      QLOG_DEBUG ( ) << "AOMax: " << ao_chan_range.at(index)->fAOMax;
-      QLOG_DEBUG ( ) << "AOMin: " << ao_chan_range.at(index)->fAOMin;
-      QLOG_DEBUG ( ) << "Configuring " << dac.at(index) << " Channel " << i << "...Done";
-    }
+      QLOG_INFO ( ) << "AOSource: " << ao_chan_range.at(index)->usAOSource;
+      QLOG_INFO ( ) << "AOType: " << ao_chan_range.at(index)->usAOType;
+      QLOG_INFO ( ) << "Chan: " << ao_chan_range.at(index)->usChan;
+      QLOG_INFO ( ) << "AOMax: " << ao_chan_range.at(index)->fAOMax;
+      QLOG_INFO ( ) << "AOMin: " << ao_chan_range.at(index)->fAOMin;
+      QLOG_INFO ( ) << "Configuring " << dac.at(index) << " Channel " << i << "...Done";
   }
   QLOG_DEBUG ( ) << "DacAdvantech configuration success";
   connectSuccess.replace(index, true);
