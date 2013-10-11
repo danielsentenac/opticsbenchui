@@ -139,7 +139,7 @@ CameraControlWidget::snapShot() {
             camera->pixel_encoding == B12P||
 	    camera->pixel_encoding == B16 ) 
      img32 = camera->getSnapshot32();
-  // Open File
+  // Save File
   QString filename = QFileDialog::getSaveFileName(this, tr("Take snapshot in HDF5 format"),
 						  QDir::currentPath ()+ 
 						  QDir::separator() + "untitled.h5",

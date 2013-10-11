@@ -42,9 +42,12 @@ DacControlWidget::DacControlWidget(QVector<QString>  *_dacList)
   
   setLayout(layout);
   signalMapper = NULL;
+  shiftsignalMapper = NULL;
   outputsList = new QVector<QLabel*>();
   setButtonList = new QVector<QPushButton*>();
   dacvalueList = new QVector<QLineEdit*>();
+  shiftButtonList = new QVector<QPushButton*>();
+  dacrvalueList = new QVector<QLineEdit*>();
 }
 DacControlWidget::~DacControlWidget()
 {
@@ -69,8 +72,13 @@ DacControlWidget::getOutputs(int outputs, QString mode) {
   outputsList->clear();
   dacvalueList->clear();
   setButtonList->clear();
+  dacrvalueList->clear();
+  shiftButtonList->clear();
+
   // Create a signal mapper for buttons
   if (signalMapper != NULL) delete signalMapper;
+  if (shiftsignalMapper != NULL) delete shiftsignalMapper;
+  shiftsignalMapper = new QSignalMapper(this);
   signalMapper = new QSignalMapper(this);
   for (int i = 0 ; i < outputs; i++) {
     QLabel *outputLabel = new QLabel(tr("Output %1").arg(i));
@@ -79,17 +87,28 @@ DacControlWidget::getOutputs(int outputs, QString mode) {
     QLineEdit *dacvalue = new QLineEdit("");
     dacvalue->setFixedWidth(100);
     dacvalueList->push_back(dacvalue);
+    QLineEdit *dacrvalue = new QLineEdit("");
+    dacrvalue->setFixedWidth(100);
+    dacrvalueList->push_back(dacrvalue);
     QPushButton *button = new QPushButton(tr("SET %1").arg(mode));
     button->setFixedWidth(150);
     connect( button, SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(button, i);
     setButtonList->push_back(button);
+    QPushButton *shiftbutton = new QPushButton(tr("SHIFT %1").arg(mode));
+    shiftbutton->setFixedWidth(150);
+    connect( shiftbutton, SIGNAL(clicked()), shiftsignalMapper, SLOT(map()));
+    shiftsignalMapper->setMapping(shiftbutton, i);
+    shiftButtonList->push_back(shiftbutton);
     
     layout->addWidget(outputLabel,i + 2,0,1,1);
     layout->addWidget(dacvalue,i + 2,1,1,1);
     layout->addWidget(button,i + 2,2,1,1);
+    layout->addWidget(dacrvalue,i + 2,3,1,1);
+    layout->addWidget(shiftbutton,i + 2,4,1,1);
   }
    connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(setDacValue(int)));
+   connect(shiftsignalMapper, SIGNAL(mapped(int)),this, SLOT(setDacRValue(int)));
 }
 void 
 DacControlWidget::getDescription(QString description){
@@ -127,3 +146,14 @@ DacControlWidget::setDacValue(int output) {
   dac->setDacValue(newdac,output, value);
   dac->updateDBValues(newdac);
 }
+void
+DacControlWidget::setDacRValue(int output) {
+  // Get value to be set
+  QString newdac;
+  float value;
+  value = dacvalueList->at(output)->text().toFloat() + dacrvalueList->at(output)->text().toFloat();
+  newdac = dacCombo->itemText(dacCombo->currentIndex());
+  dac->setDacValue(newdac,output, value);
+  dac->updateDBValues(newdac);
+}
+

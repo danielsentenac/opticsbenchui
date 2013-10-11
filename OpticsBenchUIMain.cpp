@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "OpticsBenchUIMain.h"
 #include <QDesktopServices>
 
-#define DEBUG_LEVEL QsLogging::InfoLevel
+#define DEBUG_LEVEL QsLogging::DebugLevel
 
 OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, Qt::WFlags fl)
   : QMainWindow( parent, fl )

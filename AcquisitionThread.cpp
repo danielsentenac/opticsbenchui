@@ -213,9 +213,16 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
 		 << " connected " << dacsuccess;
 	    
     if (dacsuccess == true) {
-      dacsuccess = dac->setDacValue(sequence->instrumentName,
-				    sequence->dacOutput,
-				    sequence->dacValue);
+      if ( sequence->dacRValue != 0 ) {
+        dacsuccess = dac->setDacRValue(sequence->instrumentName,
+                                       sequence->dacOutput,
+                                       sequence->dacRValue);
+        sequence->dacValue=dac->getDacValue(sequence->instrumentName,sequence->dacOutput);
+      }
+      else
+        dacsuccess = dac->setDacValue(sequence->instrumentName,
+	      			      sequence->dacOutput,
+				      sequence->dacValue);
     }
     sequence->status = dacsuccess;
     //emit getDacStatus(dacsuccess);

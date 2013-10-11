@@ -408,6 +408,72 @@ DacAdvantech::resetDac(QString newdac) {
   return false; 
 }
 bool
+DacAdvantech::setDacRValue(QString newdac, int output, double rvalue) {
+  int status;
+  char err_msg[100];
+
+  for (int index = 0 ; index < dac.size(); index++)  {
+    if ( dac.at(index) == newdac && connectSuccess.at(index) == true) {
+      float value = dacvalues.at(index)->at(output) + rvalue;
+      QLOG_DEBUG ( ) << "DacAdvantech::setDacRValue " << newdac << ": At " << output 
+                     << ": shift to " << value;
+      // Assign DacAdvantech computed value at ouptut
+      // enable sync
+      status = DRV_EnableSyncAO(*(fd.at(index)), 1);
+      if (status) {
+        DRV_GetErrorMessage(status, err_msg);
+        emit showWarning(tr("%1").arg(err_msg));
+        return false;
+      }
+      // check value in range
+      if ( value >= min.at(index) && value <= max.at(index) ) {
+        if (mode.at(index) == "VOLT") {
+          memset(chOutV.at(index), 0, sizeof(PT_AOVoltageOut));
+          chOutV.at(index)->chan = output;
+          chOutV.at(index)->OutputValue = value;
+        }
+        else if (mode.at(index) == "CURRENT") {
+          memset(chOutC.at(index), 0, sizeof(PT_AOCurrentOut));
+          chOutC.at(index)->chan = output;
+          chOutC.at(index)->OutputValue = value;
+        }
+        QLOG_DEBUG ( ) << "Setting new " << mode.at(index) << " " << value
+                       << " for " << dac.at(index) << " at channel " <<  output;
+        if (mode.at(index) == "VOLT")
+          status = DRV_AOVoltageOut(*(fd.at(index)), chOutV.at(index));
+        else if (mode.at(index) == "CURRENT")
+          status = DRV_AOCurrentOut(*(fd.at(index)), chOutC.at(index));
+        if (status) {
+          DRV_GetErrorMessage(status, err_msg);
+          emit showWarning(tr("%1").arg(err_msg));
+          return false;
+        }
+        dacvalues.at(index)->replace(output,value);
+      }
+      else
+        emit showWarning(tr("DacAdvantech value %1 out of range !").arg(value));
+
+      /* write sync*/
+      status = DRV_WriteSyncAO(*(fd.at(index)));
+      if (status) {
+        DRV_GetErrorMessage(status, err_msg);
+        emit showWarning(tr("%1").arg(err_msg));
+        return false;
+      }
+      /* disable sync*/
+      status = DRV_EnableSyncAO(*(fd.at(index)), 0);
+      if (status) {
+        DRV_GetErrorMessage(status, err_msg);
+        emit showWarning(tr("%1").arg(err_msg));
+        return false;
+      }
+      return true;
+    }
+  }
+  emit showWarning(tr("Check connection to %1").arg(newdac));
+  return false;
+}
+bool
 DacAdvantech::setDacValue(QString newdac, int output, double value) {
   int status;
   char err_msg[100];
@@ -471,7 +537,20 @@ DacAdvantech::setDacValue(QString newdac, int output, double value) {
   emit showWarning(tr("Check connection to %1").arg(newdac));
   return false; 
 }
-
+float 
+DacAdvantech::getDacValue(QString newdac, int output) {
+  
+  for (int index = 0 ; index < dac.size(); index++)  {
+    if ( dac.at(index) == newdac && connectSuccess.at(index) == true) {
+      float value = dacvalues.at(index)->at(output);
+      QLOG_DEBUG ( ) << "DacAdvantech::getDacValue " << newdac << ": " << output << ":" << value;
+      return value;
+    }
+  }
+  QLOG_ERROR ( ) << "DacAdvantech::getDacValue> " << newdac << " connection problem";
+  emit showWarning(tr("Check connection to %1").arg(newdac));
+  return 0;
+}
 // function : update DB with ADVANTECHDAC value
 bool
 DacAdvantech::updateDBValues(QString newdac) {

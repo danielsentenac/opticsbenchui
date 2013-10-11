@@ -37,6 +37,8 @@ class DacAdvantech : public Dac
   bool connectDac(QString newdac);
   bool resetDac(QString newdac);
   bool setDacValue(QString newdac, int output, double value);
+  bool setDacRValue(QString newdac, int output, double rvalue);
+  float getDacValue(QString newdac,int output);
   bool updateDBValues(QString newdac);
   void setDbPath(QString _path);
   

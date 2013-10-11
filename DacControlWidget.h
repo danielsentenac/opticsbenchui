@@ -41,6 +41,7 @@ class DacControlWidget : public QWidget
   void connectDac();
   void resetDac();
   void setDacValue(int output);
+  void setDacRValue(int output);
   void getDescription(QString description);
   void getOutputs(int outputs, QString mode);
   void getOutputValues(QVector<float> *dacvalues);
@@ -54,10 +55,12 @@ class DacControlWidget : public QWidget
   QComboBox   *dacCombo;
   QVector<QLabel*>  *outputsList;
   QVector<QPushButton*> *setButtonList;
+  QVector<QPushButton*> *shiftButtonList;
   QVector<QLineEdit*>   *dacvalueList;
+  QVector<QLineEdit*>   *dacrvalueList;
   QVector<QString> *dacList;
   Dac  *dac;
   QGridLayout *layout;
-  QSignalMapper *signalMapper;
+  QSignalMapper *signalMapper, *shiftsignalMapper;
 };
 #endif

@@ -76,6 +76,7 @@ class AcquisitionSequence
 
   // Dac attributes
   double   dacValue;
+  double   dacRValue;
   int     dacOutput;
 
   // Counter Comedi attributes

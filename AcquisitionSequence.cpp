@@ -26,6 +26,7 @@ AcquisitionSequence::AcquisitionSequence( )
   motorAction = "";
   motorValue = 0;
   dacValue = 0;
+  dacRValue = 0;
   dacOutput = 0;
   comediValue = 0;
   comediData = 0;
@@ -142,6 +143,27 @@ void
 AcquisitionSequence::prepare() {
   datagroup = "";
   QLOG_DEBUG ( ) <<"Sequence " << settings << ":" << scanplan;
+   // Treat scanplanList
+  QStringList scanplanList;
+  QStringList subscanplanList;
+  scanplanList = scanplan.split(" ",QString::SkipEmptyParts);
+  for (int i = 0 ; i < scanplanList.size(); i++ ) {
+    subscanplanList = scanplanList.at(i).split("=",QString::SkipEmptyParts);
+    for (int j = 0 ; j < subscanplanList.size(); j++ ) {
+      if (subscanplanList.at(j) == "DATAGROUP" && subscanplanList.size() > j + 1)
+        datagroup = subscanplanList.at(j+1);
+      else if (subscanplanList.at(j) == "DATANAME" && subscanplanList.size() > j + 1)
+        dataname = subscanplanList.at(j+1);
+      else if (subscanplanList.at(j) == "LOOP" && subscanplanList.size() > j + 1) {
+        loop = IS_LOOP;
+        loopNumber = subscanplanList.at(j+1).toInt();
+        loopends = LOOP_START;
+        if (loopNumber == 0)
+          loopends = LOOP_END;
+        remainingLoops = loopNumber;
+      }
+    }
+  } 
   // Treat settingsList
   QStringList settingsList;
   QStringList subsettingsList;
@@ -194,6 +216,9 @@ AcquisitionSequence::prepare() {
       }
       else if (subsettingsList.at(j) == "VALUE" && subsettingsList.size() > j + 1) {
 	dacValue = subsettingsList.at(j+1).toDouble();
+      }
+      else if (subsettingsList.at(j) == "RVALUE" && subsettingsList.size() > j + 1) {
+        dacRValue = subsettingsList.at(j+1).toDouble();
       }
       // ComediCounter section
       else if (subsettingsList.at(j) == "ITIME" && subsettingsList.size() > j + 1) {
@@ -326,32 +351,9 @@ AcquisitionSequence::prepare() {
       }
     }
   }
-
   // Preparation configuration
   // For SLM
   imgnum = startnum - stepnum;
-
-  // Treat scanplanList
-  QStringList scanplanList;
-  QStringList subscanplanList;
-  scanplanList = scanplan.split(" ",QString::SkipEmptyParts);
-  for (int i = 0 ; i < scanplanList.size(); i++ ) {
-    subscanplanList = scanplanList.at(i).split("=",QString::SkipEmptyParts);
-    for (int j = 0 ; j < subscanplanList.size(); j++ ) {
-      if (subscanplanList.at(j) == "DATAGROUP" && subscanplanList.size() > j + 1)
-	datagroup = subscanplanList.at(j+1);
-      else if (subscanplanList.at(j) == "DATANAME" && subscanplanList.size() > j + 1)
-	dataname = subscanplanList.at(j+1);
-      else if (subscanplanList.at(j) == "LOOP" && subscanplanList.size() > j + 1) {
-	loop = IS_LOOP;
-	loopNumber = subscanplanList.at(j+1).toInt();
-	loopends = LOOP_START;
-	if (loopNumber == 0)
-	  loopends = LOOP_END;
-	remainingLoops = loopNumber;		  
-      }
-    }
-  }  
 }
 bool
 AcquisitionSequence::setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequence *sequenceRight) {

@@ -810,7 +810,7 @@ CameraIEEE1394::acquireImage() {
     max = 0;
     min = 65535;
     if ( pixel_encoding == B8 ) {
-      for (unsigned int i = 0 ; i < width * height; i++) {
+      for (unsigned int i = width ; i < width * height - width; i++) { // avoid first/last line to calculate min/max
         if (frame->image[i] > max)
           max = frame->image[i];
         if (frame->image[i] < min)
@@ -819,7 +819,7 @@ CameraIEEE1394::acquireImage() {
     }
     if ( pixel_encoding == B16 ) {
       tmpBuf = reinterpret_cast<ushort*>(frame->image); 
-      for (unsigned int i = 0 ; i < width * height; i++) {
+      for (unsigned int i = width ; i < width * height - width; i++) { // avoid first line to calculate min/max
         ushort ui_current = *(tmpBuf++);
         if (ui_current > max)
           max = ui_current;
