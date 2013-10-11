@@ -31,6 +31,8 @@ class Dac : public QObject
   virtual bool connectDac(QString newdac) = 0;
   virtual bool resetDac(QString newdac) = 0;
   virtual bool setDacValue(QString newdac, int output, double value) = 0;
+  virtual bool setDacRValue(QString newdac, int output, double rvalue) = 0;
+  virtual float getDacValue(QString newdac,int output) = 0;
   virtual bool updateDBValues(QString newdac) = 0;
   virtual void setDbPath(QString _path) = 0;
   
