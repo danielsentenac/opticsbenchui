@@ -25,16 +25,16 @@ DEFINES 	+= 	IEEE1394CAMERA
 DEFINES 	+= 	GIGECAMERA
 
 # Andor Neo camera support
-DEFINES         +=      NEOCAMERA
+#DEFINES         +=      NEOCAMERA
 
 # Advantech DAC support
-#DEFINES         +=     ADVANTECHDAC
+DEFINES         +=     ADVANTECHDAC
 
 # Comedi Counters support
-DEFINES         +=     COMEDICOUNTER
+#DEFINES         +=     COMEDICOUNTER
 
 # Comedi Dac support
-DEFINES         +=     COMEDIDAC
+#DEFINES         +=     COMEDIDAC
 
 QMAKE_CXXFLAGS 	+= 	-g `pkg-config --cflags glib-2.0`
 
@@ -81,7 +81,7 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			DacWindow.h \
 			DacControlWidget.h \
 			Dac.h \
-#			DacAdvantech.h \
+			DacAdvantech.h \
 			MotorWindow.h \
 			MotorControlWidget.h \
 			Motor.h \
@@ -128,7 +128,7 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			ComediWindow.cpp \
 			DacWindow.cpp \
 			DacControlWidget.cpp \
-#			DacAdvantech.cpp \
+			DacAdvantech.cpp \
 			MotorWindow.cpp \
 			MotorControlWidget.cpp \
 			Motor.cpp \
@@ -159,7 +159,7 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 
 INCLUDEPATH 	+=	\
 			$$COMEDI_INC_PATH \
-#			$$ADVDAQ_INC_PATH \
+			$$ADVDAQ_INC_PATH \
 			$$STANDA_INC_PATH \
 			$$RAW1394_INC_PATH \
 			$$DC1394_INC_PATH \
@@ -170,7 +170,7 @@ INCLUDEPATH 	+=	\
 
 LIBS 		+= 	 \
 			-L$$COMEDI_LIB_PATH -lcomedi \
-#			-L$$ADVDAQ_LIB_PATH -ladvdaq \
+			-L$$ADVDAQ_LIB_PATH -ladvdaq \
 			-L$$USB_LIB_PATH -lusb-1.0 \
 			-L$$GLIB_LIB_PATH -lgobject-2.0 \
 			-L$$DC1394_LIB_PATH -ldc1394 \
