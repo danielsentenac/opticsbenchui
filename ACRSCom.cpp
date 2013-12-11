@@ -118,7 +118,6 @@ ACRSCom::Read (string & message, ...)
 {
   char dataChar;
   int nbCharRead = 0;
-  
   message.erase();
   do
     {
@@ -132,9 +131,8 @@ ACRSCom::Read (string & message, ...)
 	  break;
 	}
     }
-  while ((dataChar != '\n'));
+  while ((dataChar != '\n') || (dataChar != '\r'));
   return nbCharRead;
-
 }
 
 // ----------------------------------------------------------------------------
