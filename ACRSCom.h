@@ -1,4 +1,4 @@
-/*******************************************************************
+/*
 This file is part of OpticsBenchUI.
 
 OpticsBenchUI is free software: you can redistribute it and/or modify
@@ -31,8 +31,7 @@ public:
   /** Constructor
    */
   ACRSCom (string device, string settings):
-    ACCom (device, settings),
-    _readDelay (DEFAULT_READ_DELAY)
+    ACCom (device, settings)
   {
   }
   
@@ -41,8 +40,7 @@ public:
   ACRSCom (const ACRSCom & channel):
     ACCom (channel),
     _hCom (channel._hCom),
-    _commSetup (channel._commSetup),
-    _commOldSetup (channel._commOldSetup), _readDelay (channel._readDelay)
+    _commSetup (channel._commSetup)
   {
   }
 
@@ -89,11 +87,6 @@ private:
   virtual int WriteEcho (string message);
   
   /**
-     The default read delay
-  */
-  static const int DEFAULT_READ_DELAY;
-
-  /**
      The Setup method initialize the RS232 properties
   */
   int Setup ();
@@ -108,28 +101,41 @@ private:
   */
   struct termios _commSetup;
 
-  /**
-     former communication setup
-  */
-  struct termios _commOldSetup;
-
   /** 
       The internal baud rate (can be set by the server configuration)
   */
   int _ispeed;
 
   /**
-     The internal read delay known as vtime parameter 
-     (can be set by the server configuration)
+     The parity:
+     - ODD
+     - EVEN
+     - NONE 
   */
-  int _readDelay;
+  QString _parity;
+
+  /**
+     The bits number   
+  */
+  int _numBits;
+
+  /**
+     The stop bits 
+  */
+  int _stopBits;
+
+  /**
+     The character read delay 
+  */
+  int _vtime;
 
   /**
      The internal flow type can be : \n
      - NONE : default flow control\n
-     - XONXOFF
+     - XON/XOFF
+     - RTSCTS
   */
-  char _flow[32];
+  QString _flow;
 
 };
 

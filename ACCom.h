@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "QsLog.h"
 #include <QString>
+#include <QStringList>
 
 #define ADVCOMDEBUG 2
 #define STRLENGTH 1024

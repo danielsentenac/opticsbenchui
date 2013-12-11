@@ -22,9 +22,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <fcntl.h>
 #include "ACRSCom.h"
 
-
-const int ACRSCom::DEFAULT_READ_DELAY = 20;
-
 // ----------------------------------------------------------------------------
 /// Operation : Open
 /// Opens the communication channel by opening 
@@ -37,8 +34,16 @@ ACRSCom::Open ()
 {
   int status = -1;
   
-  sscanf (_settings.c_str (), "%d,%d,%s", &_ispeed, &_readDelay,_flow);
-  _hCom = open (_device.c_str (), O_RDWR);
+  QString str = QString(_settings.c_str());
+  QStringList  list = str.split(",");
+  _ispeed = list.at(0).toInt();
+  _numBits = list.at(1).toInt();
+  _parity = list.at(2);
+  _stopBits = list.at(3).toInt();
+  _vtime = list.at(4).toInt();
+  _flow = list.at(5);
+
+  _hCom = open (_device.c_str (), O_RDWR | O_NOCTTY );
   if (_hCom == -1)
     {
       QLOG_INFO ( ) << "ACRSCom::Open failed at open" << endl;
@@ -143,7 +148,9 @@ ACRSCom::Close ()
   int status = 0;
   if (_state == OPEN)
     {
-      tcsetattr (_hCom, TCSANOW, &_commOldSetup);
+      tcsetattr (_hCom, TCSANOW, &_commSetup);
+      tcflush(_hCom, TCOFLUSH);
+      tcflush(_hCom, TCIFLUSH);
     }
   if (close (_hCom))
     {
@@ -152,6 +159,7 @@ ACRSCom::Close ()
   else
     {
       _state = CLOSED;
+      _hCom = -1;
     }
   return status;
 }
@@ -165,118 +173,110 @@ ACRSCom::Setup ()
 {
   int status = 0;
   speed_t speed = B9600;
+  struct termios termios_p;
+  //
+  // Init structure
+  //
+  tcgetattr(_hCom, &termios_p);
+  memcpy(&_commSetup, &termios_p, sizeof(struct termios));
 
   switch (_ispeed)
     {
     case 1200:
-      speed = B1200;
+      termios_p.c_cflag = B1200;
       break;
     case 2400:
-      speed = B2400;
+      termios_p.c_cflag = B2400;
       break;
     case 4800:
-      speed = B4800;
+      termios_p.c_cflag = B4800;
       break;
     case 9600:
-      speed = B9600;
+      termios_p.c_cflag = B9600;
       break;
     case 19200:
-      speed = B19200;
+      termios_p.c_cflag = B19200;
       break;
     case 38400:
-      speed = B38400;
+      termios_p.c_cflag = B38400;
+      break;
+    case 57600:
+      termios_p.c_cflag = B57600;
       break;
     case 115200:
-      speed = B115200;
+      termios_p.c_cflag = B115200;
       break;
     default:
       QLOG_ERROR () << "Bad speed!";
     }
-  tcgetattr (_hCom, &_commOldSetup);	/* save current port settings */
-  _commSetup = _commOldSetup;
-
-  if (cfsetispeed (&_commSetup, speed) == -1 ||
-      cfsetospeed (&_commSetup, speed) == -1)
+    QLOG_DEBUG ( ) << "RS232 uses " << _ispeed << " baudrate";
+    //
+    // Number of bits
+    //
+       switch(_numBits)
     {
-      Close ();
-      status = -1;
+	case 5:
+	    termios_p.c_cflag |= CS5;
+	    break;
+	case 6:
+	    termios_p.c_cflag |= CS6;
+	    break;
+	case 7:
+	    termios_p.c_cflag |= CS7;
+	    break;
+	case 8:
+	    termios_p.c_cflag |= CS8;
+	    break;
+        default:
+            termios_p.c_cflag |= CS8;
     }
-
-  else
-    {
-      /* input modes */
-
-      _commSetup.c_iflag &= ~INPCK;	/* parity checking disabled */
-      _commSetup.c_iflag &= ~IGNPAR;	/* don't ignore bytes with bad parity */
-      _commSetup.c_iflag &= ~PARMRK;	/* don't mark bytes with bad parity */
-      _commSetup.c_iflag &= ~ISTRIP;	/* use 8 bit bytes */
-      _commSetup.c_iflag |= IGNBRK;	/* ignore break conditions */
-      _commSetup.c_iflag &= ~BRKINT;	/* don't generate signals on break cond. */
-      _commSetup.c_iflag &= ~IGNCR;	/* don't ignore carriage return */
-      _commSetup.c_iflag &= ~ICRNL;	/* don't translate \r to \n */
-      _commSetup.c_iflag &= ~INLCR;	/* don't translate \n to \r */
-      if (!strcmp(_flow,"XONXOFF")) {
-	QLOG_DEBUG ( ) << "RS232 uses software flow control (XONXOFF)";
-	_commSetup.c_iflag |= ~IXOFF;	/* enable */
-	_commSetup.c_iflag |= ~IXON;	/* enable */
-      }
-      else {
-	_commSetup.c_iflag &= ~IXOFF;	/* disable */
-	_commSetup.c_iflag &= ~IXON;	/* disable */
-      }
-      _commSetup.c_iflag &= ~IMAXBEL;	/* disable */
-
-      /* output modes */
-      QLOG_DEBUG ( ) << "RS232 disabled output processing";
-      _commSetup.c_oflag &= ~OPOST;	/* don't process output characters */
-
-      /* control modes */
-
-      _commSetup.c_cflag &= ~HUPCL;	/* don't generate a modem disconnect */
-      QLOG_DEBUG ( ) << "RS232 enabled receiver and set to local mode";
-      _commSetup.c_cflag |= CLOCAL;	/* ignore modem status lines */
-      _commSetup.c_cflag |= CREAD;	/* input can be read from the terminal */
-      QLOG_DEBUG ( ) << "RS232 uses 8 data bits";
-      _commSetup.c_cflag |= CS8;	/* use 8 bits per byte */
-      QLOG_DEBUG ( ) << "RS232 uses 1 stop bit";
-      _commSetup.c_cflag &= ~CSTOPB;	/* use only one stop bit */
-      QLOG_DEBUG ( ) << "RS232 uses no parity";
-      _commSetup.c_cflag &= ~PARENB;	/* disable parity bit */
-      _commSetup.c_cflag &= ~CSIZE;     /* disable bit mask for data bits */
-
-      if (!strcmp(_flow,"RTSCTS")) {
-        QLOG_DEBUG ( ) << "RS232 uses hardware flow control (RTS/CTS)";
-        _commSetup.c_cflag |= CRTSCTS;  /* enable RTS/CTS */
-      }
-      else 
-        _commSetup.c_cflag &= ~CRTSCTS; /* disable RTS/CTS */
-
-      /* local modes */
-      QLOG_DEBUG ( ) << "RS232 select raw input mode";
-      _commSetup.c_lflag &= ~ICANON;	/* disable canonical input process. mode */
-      _commSetup.c_lflag &= ~ECHO;	/* disable echoing of input characters */
-      _commSetup.c_lflag &= ~ECHOE;	/* don't echo erase */
-      _commSetup.c_lflag &= ~ECHOPRT;
-      _commSetup.c_lflag &= ~ECHOK;	/* disable kill character */
-      _commSetup.c_lflag &= ~ECHOKE;	/* disable kill character */
-      _commSetup.c_lflag &= ~ECHONL;	/* don't echo \n */
-      _commSetup.c_lflag &= ~ECHOCTL;	/* don't echo control characters */
-      _commSetup.c_lflag &= ~ISIG;	/* don't generate INTR, QUIT and SUSP */
-      _commSetup.c_lflag &= ~IEXTEN;	/* disable other special characters */
-      _commSetup.c_lflag &= ~NOFLSH;	/* don't flush buffers on signals */
-      _commSetup.c_lflag &= ~TOSTOP;
-      _commSetup.c_lflag &= ~FLUSHO;
-      _commSetup.c_lflag &= ~PENDIN;
-
-      _commSetup.c_cc[VMIN] = 0;	        // Non blocking read
-      _commSetup.c_cc[VTIME] = _readDelay;	//  timeout (tenth of second)
-
-      tcflush (_hCom, TCIFLUSH);
-      if (tcsetattr (_hCom, TCSANOW, &_commSetup) == -1)
-	{
-	  Close ();
-	  status = -1;
-	}
+    QLOG_DEBUG ( ) << "RS232 uses " << _numBits << " bits";
+    //
+    // Parity
+    //
+    if (!_parity.compare("odd", Qt::CaseInsensitive)) 
+        termios_p.c_cflag |= PARODD | PARENB;
+    else if (!_parity.compare("even", Qt::CaseInsensitive)) 
+        termios_p.c_cflag |= PARENB;
+    QLOG_DEBUG ( ) << "RS232 uses " << _parity << " parity";
+    //
+    // Stop bits
+    //
+    if ( _stopBits == 2 ) {
+	termios_p.c_cflag |= CSTOPB;
+        QLOG_DEBUG ( ) << "RS232 uses 2 stop bits";
+    }
+    else
+    QLOG_DEBUG ( ) << "RS232 uses " << _stopBits << " stop bits";
+    termios_p.c_cflag |= PARENB;
+    termios_p.c_cflag |= CREAD;
+    termios_p.c_iflag = IGNPAR | IGNBRK;
+    //
+    // Flow control
+    //
+    if (!_flow.compare("software", Qt::CaseInsensitive)) {
+        termios_p.c_iflag |= IXON | IXOFF;
+        QLOG_DEBUG ( ) << "RS232 uses " << _flow <<  " flow control (Xon/Xoff)";
+    }
+    else if (!_flow.compare("hardware", Qt::CaseInsensitive)) {
+        termios_p.c_cflag |= CRTSCTS;
+        QLOG_DEBUG ( ) << "RS232 uses " << _flow << " flow control (RTS/CTS)";
+    }
+    else  {
+        termios_p.c_cflag |= CLOCAL;
+        QLOG_DEBUG ( ) << "RS232 uses " << _flow << " flow control";
+    }
+    termios_p.c_oflag = 0;
+    termios_p.c_lflag = 0;
+    termios_p.c_cc[VTIME] = _vtime;
+    termios_p.c_cc[VMIN] = 0;
+    QLOG_DEBUG ( ) << "RS232 uses VMIN=0,VTIME=" << _vtime;
+   
+    tcflush(_hCom, TCOFLUSH);
+    tcflush(_hCom, TCIFLUSH);
+    if (tcsetattr (_hCom, TCSANOW, &termios_p) == -1) {
+       Close ();
+       status = -1;
     }
   return status;
 }
