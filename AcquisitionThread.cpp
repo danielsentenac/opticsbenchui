@@ -257,9 +257,20 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
                  << " connected " << comedidacsuccess;
 
     if (comedidacsuccess == true) {
-     comedidacsuccess = comedidac->setComediValue(sequence->instrumentName,
-                                             sequence->comediOutput,
-                                             (void*)&sequence->dacValue);
+      if ( sequence->dacRValue != 0 ) {
+        double dacValue;
+        comedidacsuccess |= comedidac->getComediValue(sequence->instrumentName,sequence->dacOutput,dacValue); 
+        dacValue += sequence->dacRValue;
+        comedidacsuccess |= comedidac->setComediValue(sequence->instrumentName,
+                                                   sequence->dacOutput,
+                                                   (void*)&dacValue);
+        comedidacsuccess |= comedidac->getComediValue(sequence->instrumentName,sequence->dacOutput,
+                                                     sequence->dacValue);
+      }
+      else
+        comedidacsuccess |= comedidac->setComediValue(sequence->instrumentName,
+                                                     sequence->comediOutput,
+                                                     (void*)&sequence->dacValue);
     }
     sequence->status = comedidacsuccess;
     //emit getComediStatus(comedidacsuccess);
@@ -564,7 +575,7 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
     QLOG_INFO() << "AcquisitionThread::saveData> save COMEDI DAC data";
     status = H5LTset_attribute_double(sequence->refgrp, sequence->grpname.toStdString().c_str(),
                                      sequence->dataname.toStdString().c_str(),
-                                     &(sequence->comediData),1);
+                                     &(sequence->dacValue),1);
   }
   // Save SLM data in the group
   else if (sequence->instrumentType == "SLM" && slmsuccess == true) {
@@ -645,8 +656,9 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
 	  // reset sequence data
 	  sequence->reset =true;
 	}
-	else if (sequence->instrumentRef == "DAC" && treatmentsuccess == true ) {
-	  QLOG_DEBUG() << "AcquisitionThread::saveData> Save average DAC data in groupname " 
+	else if ((sequence->instrumentRef == "DAC" || sequence->instrumentRef == "COMEDIDAC") 
+                  && treatmentsuccess == true ) {
+	  QLOG_DEBUG() << "AcquisitionThread::saveData> Save average DAC or COMEDIDAC data in groupname " 
 		       << grandparentSequence->grpname
 		       << " refgrp " << grandparentSequence->refgrp;
 	  
