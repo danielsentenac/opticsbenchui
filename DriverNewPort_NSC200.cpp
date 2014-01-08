@@ -89,7 +89,7 @@ int DriverNewPort_NSC200::Init(string& rstateData) const
     QLOG_DEBUG() << "Error code = " << QString(answerTE.c_str());
     if (answerTE == "") {
 	QLOG_DEBUG() << "Trying again...";
-	 }	
+    }	
     tries++;
     if (tries == MAX_TRIES) {
       QLOG_INFO() << "Giving Up !";
