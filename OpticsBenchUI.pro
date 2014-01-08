@@ -28,19 +28,19 @@ DEFINES 	+= 	GIGECAMERA
 #DEFINES         +=      NEOCAMERA
 
 # Advantech DAC support
-DEFINES         +=     ADVANTECHDAC
+#DEFINES         +=     ADVANTECHDAC
 
 # Comedi Counters support
 #DEFINES         +=     COMEDICOUNTER
 
 # Comedi Dac support
-#DEFINES         +=     COMEDIDAC
+DEFINES         +=     COMEDIDAC
 
 QMAKE_CXXFLAGS 	+= 	-g `pkg-config --cflags glib-2.0`
 
 # External packages
 HDF5_LIB_PATH 	 =  	/usr/local/hdf5/lib
-COMEDI_LIB_PATH  =      /usr/lib
+COMEDI_LIB_PATH  =      /usr/local/lib
 ADVDAQ_LIB_PATH  =	/usr/lib
 DC1394_LIB_PATH  =      /usr/local/lib
 RAW1394_LIB_PATH =	/usr/local/lib
@@ -51,7 +51,7 @@ GLIB_LIB_PATH	 =      /usr/lib
 NEO_LIB_PATH     =	/usr/local/lib
 
 HDF5_INC_PATH 	 =  	/usr/local/hdf5/include
-COMEDI_INC_PATH  =      /usr/include
+COMEDI_INC_PATH  =      /usr/local/include
 ADVDAQ_INC_PATH  =	/usr/local/include/Advantech
 DC1394_INC_PATH  =      /usr/local/include/dc1394
 RAW1394_INC_PATH =	/usr/local/include/libraw1394/src
