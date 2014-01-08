@@ -36,16 +36,18 @@ ComediDacControlWidget::ComediDacControlWidget(QVector<QString>  *_comediList)
 
   layout->addWidget(connectButton,0,0,1,1);
   layout->addWidget(comediCombo,0,1,1,1);
-  layout->addWidget(descriptionLabel,0,2,1,1);
+  layout->addWidget(descriptionLabel,0,2,1,5);
   layout->addWidget(resetButton,1,0,1,1);
   
   setLayout(layout);
   signalMapper = NULL;
+  shiftsignalMapper = NULL;
   outputsList = new QVector<QLabel*>();
   unitsList = new QVector<QLabel*>();
   setButtonList = new QVector<QPushButton*>();
   comedivalueList = new QVector<QLineEdit*>();
-  comeditimerList = new QVector<QLineEdit*>();
+  shiftButtonList = new QVector<QPushButton*>();
+  comedirvalueList = new QVector<QLineEdit*>();
 }
 ComediDacControlWidget::~ComediDacControlWidget()
 {
@@ -70,30 +72,47 @@ ComediDacControlWidget::getOutputs(int outputs, QString mode) {
   outputsList->clear();
   comedivalueList->clear();
   setButtonList->clear();
+  comedirvalueList->clear();
+  shiftButtonList->clear();
+
   // Create a signal mapper for buttons
   if (signalMapper != NULL) delete signalMapper;
+  if (shiftsignalMapper != NULL) delete shiftsignalMapper;
+  shiftsignalMapper = new QSignalMapper(this);
   signalMapper = new QSignalMapper(this);
   for (int i = 0 ; i < outputs; i++) {
     QLabel *outputLabel = new QLabel(tr("Channel %1").arg(i));
     outputLabel->setFixedWidth(100);
     QLabel *unitsLabel = new QLabel("volts");
+    unitsLabel->setFixedWidth(30);
     outputsList->push_back(outputLabel);
     unitsList->push_back(unitsLabel);
     QLineEdit *comedivalue = new QLineEdit("");
     comedivalue->setFixedWidth(100);
     comedivalueList->push_back(comedivalue);
+    QLineEdit *comedirvalue = new QLineEdit("");
+    comedirvalue->setFixedWidth(100);
+    comedirvalueList->push_back(comedirvalue);
     QPushButton *button = new QPushButton(tr("Set %1").arg(mode));
     button->setFixedWidth(150);
     connect( button, SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(button, i);
     setButtonList->push_back(button);
+    QPushButton *shiftbutton = new QPushButton(tr("SHIFT %1").arg(mode));
+    shiftbutton->setFixedWidth(150);
+    connect( shiftbutton, SIGNAL(clicked()), shiftsignalMapper, SLOT(map()));
+    shiftsignalMapper->setMapping(shiftbutton, i);
+    shiftButtonList->push_back(shiftbutton);
 
     layout->addWidget(outputLabel,i + 2,0,1,1);
     layout->addWidget(comedivalue,i + 2,1,1,1);
     layout->addWidget(unitsLabel,i + 2,2,1,1);
     layout->addWidget(button,i + 2,3,1,1);
+    layout->addWidget(comedirvalue,i + 2,4,1,1);
+    layout->addWidget(shiftbutton,i + 2,5,1,1);
   }
    connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(setComediValue(int)));
+   connect(shiftsignalMapper, SIGNAL(mapped(int)),this, SLOT(setComediRValue(int)));
 }
 void 
 ComediDacControlWidget::getDescription(QString description){
@@ -136,3 +155,14 @@ ComediDacControlWidget::setComediValue(int output) {
   comedi->setComediValue(newcomedi,output, (void*)&value);
   comedi->updateDBValues(newcomedi);
 }
+void
+ComediDacControlWidget::setComediRValue(int output) {
+  // Get value to be set
+  QString newcomedi;
+  double value;
+  value = comedivalueList->at(output)->text().toDouble() + comedirvalueList->at(output)->text().toDouble();
+  newcomedi = comediCombo->itemText(comediCombo->currentIndex());
+  comedi->setComediValue(newcomedi,output, (void*)&value);
+  comedi->updateDBValues(newcomedi);
+}
+

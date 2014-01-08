@@ -41,6 +41,7 @@ class ComediDacControlWidget : public QWidget
   void connectComedi();
   void resetComedi();
   void setComediValue(int output);
+  void setComediRValue(int output);
   void getDescription(QString description);
   void getOutputs(int outputs, QString mode);
   void getOutputValues(void *comedivalues);
@@ -55,11 +56,12 @@ class ComediDacControlWidget : public QWidget
   QVector<QLabel*>  *outputsList;
   QVector<QLabel*>  *unitsList;
   QVector<QPushButton*> *setButtonList;
+  QVector<QPushButton*> *shiftButtonList;
   QVector<QLineEdit*>   *comedivalueList;
-  QVector<QLineEdit*>   *comeditimerList;
+  QVector<QLineEdit*>   *comedirvalueList;
   QVector<QString> *comediList;
   Comedi  *comedi;
   QGridLayout *layout;
-  QSignalMapper *signalMapper;
+  QSignalMapper *signalMapper, *shiftsignalMapper;
 };
 #endif
