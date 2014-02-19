@@ -4,7 +4,7 @@
 
 TEMPLATE 	= 	app
 
-VERSION         =       0.10
+VERSION         =       0.11
 
 TARGET 		= 
 
@@ -26,6 +26,13 @@ DEFINES 	+= 	GIGECAMERA
 
 # Andor Neo camera support
 #DEFINES         +=      NEOCAMERA
+
+# Andor Zyla camera support
+DEFINES         +=      ZYLACAMERA
+
+
+# SuperK support
+DEFINES         +=      SUPERK
 
 # Advantech DAC support
 #DEFINES         +=     ADVANTECHDAC
@@ -66,6 +73,7 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			CameraIEEE1394.h \
 			CameraGiGE.h \
            		CameraNeo.h \
+                        CameraZyla.h \
 			CameraWindow.h \
 			CameraControlWidget.h \
 			CameraPropWidget.h \
@@ -96,6 +104,10 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			DriverPI_C862.h \
 			DriverStanda_uSMC.h \
 			DriverNewPort_AGUC2.h \
+                        SuperK.h \
+                        DriverSuperK.h \
+                        SuperKWindow.h \
+                        SuperKControlWidget.h \
 			ACCom.h \
 			ACEthCom.h \
 			ACRSCom.h \
@@ -115,6 +127,7 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			CameraIEEE1394.cpp \
 			CameraGiGE.cpp \
 			CameraNeo.cpp \
+                        CameraZyla.cpp \
 			CameraWindow.cpp \
 			CameraControlWidget.cpp \
 			CameraPropWidget.cpp \
@@ -142,6 +155,10 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			DriverStanda_uSMC.cpp \
 			DriverNewPort_AGUC2.cpp \
 			DriverPI_E725.cpp \
+                        SuperK.cpp \
+                        DriverSuperK.cpp \
+                        SuperKWindow.cpp \
+                        SuperKControlWidget.cpp \
 			ACCom.cpp \
 			ACEthCom.cpp \
 			ACRSCom.cpp \
