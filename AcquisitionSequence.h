@@ -71,13 +71,24 @@ class AcquisitionSequence
 
   // Motor attributes
   QString motorAction;
+  QString superkAction;
   float   motorValue; 
   float   position;
 
+  // SuperK attributes
+  int   superkPowerValue;
+  int   superkNdValue;
+  int   superkSwpValue;
+  int   superkLwpValue;
+  int   superkRPowerValue;
+  int   superkRNdValue;
+  int   superkRSwpValue;
+  int   superkRLwpValue;
+ 
   // Dac attributes
   double   dacValue;
   double   dacRValue;
-  int     dacOutput;
+  int      dacOutput;
 
   // Counter Comedi attributes
   int    comediValue;

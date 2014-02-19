@@ -56,9 +56,10 @@ public:
      @param ...
      The parametrization must be either of the following:\n
      - NULL : default mode\n
+     - "BYTE" : reads one byte message
   */
   virtual int Read (string & message, ...);
-  
+
   /**
      The Write method allows to write in the channel
      @param message
@@ -69,6 +70,7 @@ public:
      - "ECHO" : echo mode writes character by character, each write 
      followed by a single character read.\n 
      The message string must be finished with "\r" character
+     - "SIZE=XX" : writes the exact number of character determined by SIZE
   */
   virtual int Write (string & message, ...);
   
@@ -86,6 +88,18 @@ private:
   */
   virtual int WriteEcho (string message);
   
+  /** The ReadByte methods reads one byte message,
+      @param message
+      The one byte message string
+  */
+  virtual int ReadByte (string & message);
+
+  /** The ReadStream methods reads a stream byte message terminated with a carriage return/line feed
+      @param message
+      The one byte message string
+  */
+  virtual int ReadStream (string & message);
+
   /**
      The Setup method initialize the RS232 properties
   */

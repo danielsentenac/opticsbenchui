@@ -43,7 +43,7 @@ ACRSCom::Open ()
   _vtime = list.at(4).toInt();
   _flow = list.at(5);
 
-  _hCom = open (_device.c_str (), O_RDWR | O_NOCTTY );
+  _hCom = open (_device.c_str (), O_RDWR | O_NOCTTY | O_NDELAY);
   if (_hCom == -1)
     {
       QLOG_INFO ( ) << "ACRSCom::Open failed at open" << endl;
@@ -102,19 +102,68 @@ ACRSCom::Write (string & message, ...)
       va_end(args);
       return (WriteEcho(message));
     }
+   else if  (!strncmp(typewrite,"SIZE",4)) {
+     QLOG_DEBUG ( ) << "ACRSCom::Write> WRITE type = " <<  QString(typewrite);
+     QString typewriteQt(typewrite);
+     QStringList size = typewriteQt.split("=");
+     va_end(args);
+     QLOG_DEBUG() << "ACRSCom::Write> WRITE bytes " << QString(message.c_str ());
+     return (write (_hCom, message.c_str (), size.at(1).toInt()));
+    }
+
   }
   va_end(args);
+  QLOG_DEBUG() << "ACRSCom::Write> WRITE bytes " << QString(message.c_str ());
   return (write (_hCom, message.c_str (), (message.length ())));
 }
-
 // ----------------------------------------------------------------------------
 /// Operation : Read
-/// Reads datas on the serial port. Returns the number of read characters.
+/// @param message
+///    data to be read on the serial port
+// ----------------------------------------------------------------------------
+int
+ACRSCom::Read (string & message, ...)
+{
+  va_list args;
+  /*--------------------------------------------------------------------------*/
+  va_start( args, (&message)[0] );
+  char * typeread = va_arg(args,char*);
+  if (typeread && (sizeof(typeread) == sizeof(char*))) {
+   if (!strcmp(typeread,"BYTE")) {
+     QLOG_DEBUG ( ) << "ACRSCom::Read> READ type = " <<  QString(typeread);
+      va_end(args);
+      return (ReadByte(message));
+    }
+  }
+  va_end(args);
+  return (ReadStream(message));
+}
+// ----------------------------------------------------------------------------
+/// Operation : ReadByte
+/// Reads on byte data on the serial port. Returns the number of read characters.
 /// @param message
 ///    data read on the serial port
 // ----------------------------------------------------------------------------
 int
-ACRSCom::Read (string & message, ...)
+ACRSCom::ReadByte (string & message)
+{
+  char dataChar;
+  int nbCharRead = 0;
+  message.erase();
+  
+  nbCharRead = read (_hCom, &dataChar, 1); 
+  message = dataChar;
+  QLOG_DEBUG ( ) << "ACRSCom::ReadByte> " << nbCharRead << " byte read : " << QString(dataChar);
+  return nbCharRead;
+}
+// ----------------------------------------------------------------------------
+/// Operation : ReadStream
+/// Reads  stream byte on the serial port. Returns the number of read characters.
+/// @param message
+///    data read on the serial port
+// ----------------------------------------------------------------------------
+int
+ACRSCom::ReadStream (string & message)
 {
   char dataChar;
   int nbCharRead = 0;
@@ -170,7 +219,6 @@ int
 ACRSCom::Setup ()
 {
   int status = 0;
-  speed_t speed = B9600;
   struct termios termios_p;
   //
   // Init structure

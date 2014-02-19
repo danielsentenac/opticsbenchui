@@ -25,6 +25,15 @@ AcquisitionSequence::AcquisitionSequence( )
   settings = "";
   motorAction = "";
   motorValue = 0;
+  superkAction = "";
+  superkPowerValue = -99999;
+  superkNdValue = -99999;
+  superkSwpValue = -99999;
+  superkLwpValue = -99999;
+  superkRPowerValue = -99999;
+  superkRNdValue = -99999;
+  superkRSwpValue = -99999;
+  superkRLwpValue = -99999;
   dacValue = 0;
   dacRValue = 0;
   dacOutput = 0;
@@ -209,7 +218,32 @@ AcquisitionSequence::prepare() {
 	motorAction = subsettingsList.at(j);
 	motorValue = subsettingsList.at(j+1).toFloat();
       }
-     // Dac and Comedi section
+      // SuperK section
+      else if (subsettingsList.at(j) == "POWER" && subsettingsList.size() > j + 1) {
+        superkPowerValue = subsettingsList.at(j+1).toInt();
+      }
+      else if (subsettingsList.at(j) == "ND" && subsettingsList.size() > j + 1) {
+        superkNdValue = subsettingsList.at(j+1).toInt();
+      }
+      else if (subsettingsList.at(j) == "SWP" && subsettingsList.size() > j + 1) {
+        superkSwpValue = subsettingsList.at(j+1).toInt();
+      }
+      else if (subsettingsList.at(j) == "LWP" && subsettingsList.size() > j + 1) {
+        superkLwpValue = subsettingsList.at(j+1).toInt();
+      }
+      else if (subsettingsList.at(j) == "RPOWER" && subsettingsList.size() > j + 1) {
+        superkRPowerValue = subsettingsList.at(j+1).toInt();
+      }
+      else if (subsettingsList.at(j) == "RND" && subsettingsList.size() > j + 1) {
+        superkRNdValue = subsettingsList.at(j+1).toInt();
+      }
+      else if (subsettingsList.at(j) == "RSWP" && subsettingsList.size() > j + 1) {
+        superkRSwpValue = subsettingsList.at(j+1).toInt();
+      }
+      else if (subsettingsList.at(j) == "RLWP" && subsettingsList.size() > j + 1) {
+        superkRLwpValue = subsettingsList.at(j+1).toInt();
+      }
+      // Dac and Comedi section
       else if (subsettingsList.at(j) == "OUTPUT" && subsettingsList.size() > j + 1) {
 	dacOutput = subsettingsList.at(j+1).toInt();
         comediOutput = subsettingsList.at(j+1).toInt();

@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "OpticsBenchUIMain.h"
 #include <QDesktopServices>
 
-#define DEBUG_LEVEL QsLogging::InfoLevel
+#define DEBUG_LEVEL QsLogging::DebugLevel
 
 OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, Qt::WFlags fl)
   : QMainWindow( parent, fl )
@@ -27,6 +27,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   assistant = new Assistant(appDirPath);
   dacwindow = NULL;
   motorwindow = NULL;
+  superkwindow = NULL;
   isopencamerawindow.clear();
   isopenanalysiswidget = false; 
   isopenacquisitionwidget = false;
@@ -70,6 +71,14 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   motorwindow = new MotorWindow(this,Qt::Window,motor);
   connect(this,SIGNAL(setDbPath(QString)),motorwindow,SLOT(setDbPath(QString)));
   
+  //
+  // Create SuperK manager
+  //
+  superk = new SuperK(0,qdir.currentPath());
+  connect(superk,SIGNAL(showWarning(QString)),this,SLOT(showSuperKWarning(QString)));
+  superkwindow = new SuperKWindow(this,Qt::Window,superk);
+  connect(this,SIGNAL(setDbPath(QString)),superkwindow,SLOT(setDbPath(QString)));
+
   //
   // Create IEEE1394 Camera manager
   //
@@ -116,6 +125,21 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
     camerawindowList.push_back(NULL);
   }
 #endif
+  //
+  // Create Zyla Andor Camera manager
+  //
+#ifdef ZYLACAMERA
+  cameraZylaMgr = new CameraZyla();
+  cameraZylaMgr->findCamera();
+  QLOG_INFO() << "Found " <<  cameraZylaMgr->num << " ZYLA Andor camera";
+  for (int i = 0 ; i < cameraZylaMgr->num; i++) {
+    Camera *camera = new CameraZyla();
+    camera->setCamera(cameraZylaMgr->cameralist.at(i),i);
+    cameraList.push_back(camera);
+    isopencamerawindow.push_back(false);
+    camerawindowList.push_back(NULL);
+  }
+#endif
 
   analysiswidget = new AnalysisWidget();
   analysiswidget->setObjectName("Analysis");
@@ -141,6 +165,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
 #endif
 
   acquisitionwidget->setMotor(motor);
+  acquisitionwidget->setSuperK(superk);
   acquisitionwidget->setCamera(cameraList);
   acquisitionwidget->setDelegates();
   
@@ -222,9 +247,23 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
     signalMapper->setMapping(action, cameranumber++);
   }
 #endif
-
+#ifdef ZYLACAMERA
+  for (int i = 0 ; i < cameraZylaMgr->num; i++) {
+    QString selectedCamera = QString(cameraZylaMgr->vendorlist.at(i)) + " / " +
+      QString(cameraZylaMgr->modelist.at(i));
+    QAction *action = new QAction(selectedCamera, this);
+    menuInstruments->addAction(action);
+    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(action, cameranumber++);
+  }
+#endif
   connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(openCameraWindow(int)));
+
   menuInstruments->addAction("Motor", this, SLOT(openMotorWindow()) );
+
+#ifdef SUPERK
+  menuInstruments->addAction("SuperK", this, SLOT(openSuperKWindow()) );
+#endif
 
 #ifdef ADVANTECHDAC
   menuInstruments->addAction("Dac", this, SLOT(openDacWindow()) );
@@ -300,6 +339,10 @@ void OpticsBenchUIMain::openMotorWindow() {
   if (motorwindow->isHidden()) 
     motorwindow->show();
 }
+void OpticsBenchUIMain::openSuperKWindow() {
+  if (superkwindow->isHidden())
+    superkwindow->show();
+}
 void OpticsBenchUIMain::openDacWindow() {
   if (dacwindow->isHidden())
     dacwindow->show();
@@ -317,7 +360,9 @@ OpticsBenchUIMain::~OpticsBenchUIMain()
   delete acquisitionwidget;
   delete assistant;
   if (dacwindow) delete dacwindow;
+  if (comedidacwindow) delete comedidacwindow;
   if (motorwindow) delete motorwindow;
+  if (superkwindow) delete superkwindow;
   for (int i = 0 ; i < cameraList.size() ; i++) {
     if (isopencamerawindow.at(i) == true) {
      QLOG_INFO() << " Exiting Camera Window " << i;
@@ -376,6 +421,10 @@ void
 OpticsBenchUIMain::showMotorWarning(QString message) {
   QMessageBox::warning(this, "Motor Error:", message);
 }
+void
+OpticsBenchUIMain::showSuperKWarning(QString message) {
+  QMessageBox::warning(this, "SuperK Error:", message);
+}
 void 
 OpticsBenchUIMain::showCameraWarning(QString message) {
   QMessageBox::warning(this, "Camera Error:", message);
@@ -395,7 +444,6 @@ int main(int argc, char *argv[])
 #endif
   qInstallMsgHandler(myMessageOutput);
   QApplication app(argc, argv); 
-  app.addLibraryPath("/usr/local/bin");
   // init the logging mechanism
   QsLogging::Logger& logger = QsLogging::Logger::instance();
   QDir qdir;

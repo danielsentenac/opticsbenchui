@@ -86,10 +86,12 @@ AcquisitionWidget::AcquisitionWidget(QString _appDirPath)
 
   acquisition = new AcquisitionThread();
   connect(acquisition,SIGNAL(getPosition(QString)),this,SLOT(getPosition(QString)));
+  connect(acquisition,SIGNAL(getSuperKData(QString)),this,SLOT(getSuperKData(QString)));
   connect(acquisition,SIGNAL(getAcquiring(int)),this,SLOT(getAcquiring(int)));
   connect(acquisition,SIGNAL(getFilenumber(int)),this,SLOT(getFilenumber(int)));
   connect(acquisition,SIGNAL(getDacStatus(bool)),this,SLOT(getDacStatus(bool)));
   connect(acquisition,SIGNAL(getMotorStatus(bool)),this,SLOT(getMotorStatus(bool)));
+  connect(acquisition,SIGNAL(getSuperKStatus(bool)),this,SLOT(getSuperKStatus(bool)));
   connect(acquisition,SIGNAL(getCameraStatus(bool)),this,SLOT(getCameraStatus(bool)));
   connect(acquisition,SIGNAL(getTreatmentStatus(bool)),this,SLOT(getTreatmentStatus(bool)));
   connect(acquisition,SIGNAL(showWarning(QString)),this,SLOT(showAcquisitionWarning(QString)));
@@ -151,6 +153,10 @@ void
 AcquisitionWidget::setMotor(Motor* _motor){
   motor = _motor;
 }
+void
+AcquisitionWidget::setSuperK(SuperK* _superk){
+  superk = _superk;
+}
 void 
 AcquisitionWidget::setDac(Dac* _dac){
   dac = _dac;
@@ -172,6 +178,7 @@ AcquisitionWidget::setDelegates(){
   typeList->append("DAC");
   typeList->append("COMEDIDAC");
   typeList->append("COMEDICOUNTER");
+  typeList->append("SUPERK");
   typeList->append("CAMERA");
   typeList->append("SLM");
   typeList->append("FILE");
@@ -219,6 +226,16 @@ AcquisitionWidget::setDelegates(){
   querycomedidac.exec("select name from comedi_settings");
   while (querycomedidac.next())
     instrumentList->append(querycomedidac.value(0).toString());
+
+  // Populate instrument list from superk database
+  QString superkdb;
+  superkdb = appDirPath;
+  superkdb.append(QDir::separator()).append("superk.db3");
+  superkdb = QDir::toNativeSeparators(superkdb);
+  QSqlQuery querysuperk(QSqlDatabase::database(superkdb));
+  querysuperk.exec("select name from superk_driver");
+  while (querysuperk.next())
+    instrumentList->append(querysuperk.value(0).toString());
 
   // Populate instrument list from cameraList 
   for (int i = 0 ; i < cameraList.size(); i++) {
@@ -301,6 +318,7 @@ AcquisitionWidget::run(){
   acquisition->setFile(filepath,filenumber.toInt());
   acquisition->setCamera(cameraList);
   acquisition->setMotor(motor);
+  acquisition->setSuperK(superk);
   acquisition->setDac(dac);
   acquisition->setComediCounter(comedicounter);
   acquisition->setComediDac(comedidac);
@@ -333,6 +351,17 @@ AcquisitionWidget::getPosition(QString positionQString) {
   query.addBindValue(cur_record);
   query.exec();
   QLOG_DEBUG ( ) << "getPosition::Db " << query.lastError().text();
+  InitConfig();
+}
+void
+AcquisitionWidget::getSuperKData(QString dataStr) {
+  QSqlQuery query(QSqlDatabase::database(path));
+  QString statusQString = "Data:" + dataStr;
+  query.prepare("update acquisition_sequence set status = ? where record = ?");
+  query.addBindValue(statusQString);
+  query.addBindValue(cur_record);
+  query.exec();
+  QLOG_DEBUG ( ) << "getSuperKData::Db " << query.lastError().text();
   InitConfig();
 }
 void AcquisitionWidget::getCameraStatus(bool imagesuccess) {
@@ -376,7 +405,20 @@ void AcquisitionWidget::getMotorStatus(bool motorsuccess){
   query.exec();
   InitConfig();
 }
+void AcquisitionWidget::getSuperKStatus(bool superksuccess){
+  QSqlQuery query(QSqlDatabase::database(path));
 
+  QString statusQString;
+  if (superksuccess == true)
+    statusQString = "OK";
+  else
+    statusQString = "FAIL";
+  query.prepare("update acquisition_sequence set status = ? where record = ?");
+  query.addBindValue(statusQString);
+  query.addBindValue(cur_record);
+  query.exec();
+  InitConfig();
+}
 void AcquisitionWidget::getTreatmentStatus(bool treatmentsuccess){
   QSqlQuery query(QSqlDatabase::database(path));
  

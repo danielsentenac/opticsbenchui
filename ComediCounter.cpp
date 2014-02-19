@@ -29,7 +29,7 @@ ComediCounter::ComediCounter(QString _appDirPath)
 
 ComediCounter::~ComediCounter()
 {
-  QLOG_DEBUG ( ) <<"deleting ComediCounter";
+  QLOG_DEBUG ( ) <<"Deleting ComediCounter";
  
   for (int i = 0 ; i < comedivalues.size(); i++)
     if (comedivalues.at(i)) delete comedivalues.at(i);

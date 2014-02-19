@@ -44,6 +44,7 @@ ACCom::ACCom (string device, string settings): _device (device), _settings (sett
 ACCom *ACCom::Create (string channelType, string device, string settings)
 {
     ACCom *channel = NULL;
+
     if (channelType == RS_COM)
     {
         channel = new ACRSCom (device, settings);

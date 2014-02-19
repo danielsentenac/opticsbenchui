@@ -25,12 +25,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "CameraWindow.h"
 #include "MotorWindow.h"
+#include "SuperKWindow.h"
 #include "AcquisitionWidget.h"
 #include "AnalysisWidget.h"
 #include "DacWindow.h"
 #include "Dac.h"
 #include "ComediWindow.h"
 #include "Comedi.h"
+#include "Motor.h"
+#include "SuperK.h"
+#include "QsLog.h"
+#include "QsLogDest.h"
+#include "Assistant.h"
+
 #ifdef COMEDICOUNTER
 #include "ComediCounter.h"
 #endif
@@ -40,7 +47,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef ADVANTECHDAC
 #include "DacAdvantech.h"
 #endif
-#include "Motor.h"
 #ifdef IEEE1394CAMERA
 #include "CameraIEEE1394.h"
 #endif
@@ -50,9 +56,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef NEOCAMERA
 #include "CameraNeo.h"
 #endif
-#include "QsLog.h"
-#include "QsLogDest.h"
-#include "Assistant.h"
+#ifdef ZYLACAMERA
+#include "CameraZyla.h"
+#endif
 
 class OpticsBenchUIMain : public QMainWindow
 {
@@ -81,12 +87,14 @@ class OpticsBenchUIMain : public QMainWindow
   void openanalysis();
   void openCameraWindow(int cameraNumber);
   void openMotorWindow();
+  void openSuperKWindow();
   void openDacWindow();
   void openComediCounterWindow();
   void openComediDacWindow();
   void showDacWarning(QString);
   void showComediWarning(QString);
   void showMotorWarning(QString);
+  void showSuperKWarning(QString);
   void showCameraWarning(QString);
   void showCameraControlWidgetWarning(QString);
   void showAcquisitionWarning(QString);
@@ -104,22 +112,23 @@ class OpticsBenchUIMain : public QMainWindow
   Assistant *assistant;
 
   QSignalMapper *signalMapper;
-  MotorWindow  *motorwindow;
-  DacWindow    *dacwindow;
-  ComediWindow *comedicounterwindow, *comedidacwindow;
-  QTabWidget   *tab;
+  MotorWindow   *motorwindow;
+  SuperKWindow  *superkwindow;
+  DacWindow     *dacwindow;
+  ComediWindow  *comedicounterwindow, *comedidacwindow;
+  QTabWidget    *tab;
   AcquisitionWidget *acquisitionwidget;
-  AnalysisWidget *analysiswidget;
+  AnalysisWidget    *analysiswidget;
   Dac      *dac;
   Comedi   *comedicounter, *comedidac;
   Motor    *motor;
+  SuperK   *superk;
   Camera   *cameraIEEE1394Mgr;
   Camera   *cameraGiGEMgr;
   Camera   *cameraNeoMgr;
+  Camera   *cameraZylaMgr;
   QVector<Camera*> cameraList;
   QVector<CameraWindow*> camerawindowList;
   
 };
-
-
 #endif // OPTICSBENCHUIMAIN_H

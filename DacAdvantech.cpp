@@ -27,7 +27,7 @@ DacAdvantech::DacAdvantech(QString _appDirPath)
 
 DacAdvantech::~DacAdvantech()
 {
-  QLOG_DEBUG ( ) <<"deleting DacAdvantech";
+  QLOG_DEBUG ( ) <<"Deleting DacAdvantech";
   for (int i = 0 ; i < fd.size(); i++) {
     if (fd.at(i) )   {
       if ( connectSuccess.at(i) == true) DRV_DeviceClose(fd.at(i));

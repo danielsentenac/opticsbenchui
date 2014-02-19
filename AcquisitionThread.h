@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "AcquisitionSequence.h"
 #include "Camera.h"
 #include "Motor.h"
+#include "SuperK.h"
 #include "Dac.h"
 #include "Comedi.h"
 #include "QsLog.h"
@@ -36,6 +37,7 @@ class AcquisitionThread : public QThread
 
   void setCamera(QVector<Camera*> _cameraList);
   void setMotor(Motor* _motor);
+  void setSuperK(SuperK* _superk);
   void setDac(Dac* _dac);
   void setComediCounter(Comedi* _comedi);
   void setComediDac(Comedi* _comedi);
@@ -55,9 +57,15 @@ class AcquisitionThread : public QThread
 
  signals:
   void getPosition(QString positionQString);
+  void getSuperKData(QString dataStr);
+  void getPower(int power);
+  void getNd(int nd);
+  void getSwp(int swp);
+  void getLwp(int lwp);
   void getCameraStatus(bool imagesuccess);
   void getDacStatus(bool dacsuccess);
   void getMotorStatus(bool motorsuccess);
+  void getSuperKStatus(bool superksuccess);
   void getTreatmentStatus(bool treatmentsuccess); 
   void getAcquiring(int record);
   void getFilenumber(int number);
@@ -73,6 +81,7 @@ class AcquisitionThread : public QThread
   QVector<Camera*> cameraList;
   int    record;
   Motor  *motor;
+  SuperK *superk;
   Dac    *dac;
   Comedi *comedicounter, *comedidac;
   bool   dacsuccess;

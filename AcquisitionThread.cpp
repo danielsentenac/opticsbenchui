@@ -52,6 +52,10 @@ void
 AcquisitionThread::setMotor(Motor* _motor){
   motor = _motor;
 }
+void
+AcquisitionThread::setSuperK(SuperK* _superk){
+  superk = _superk;
+}
 void 
 AcquisitionThread::setDac(Dac* _dac){
   dac = _dac;
@@ -152,13 +156,21 @@ AcquisitionThread::run() {
         // Update DB Counter values
         if (comedidac != NULL)  comedidac->updateDBValues(sequence->instrumentName);
       }
-
       if ( sequence->instrumentType == "MOTOR" ) {
         QLOG_DEBUG() << "AcquisitionThread::execute> Update Db MOTOR values...";
         // Emit last position
         QString positionQString;
         positionQString.setNum (sequence->position, 'f',3);
         emit getPosition(positionQString);
+      }
+      if ( sequence->instrumentType == "SUPERK" ) {
+        QLOG_DEBUG() << "AcquisitionThread::execute> Update Db SUPERK values...";
+        // Emit last data
+        QString superKData = QString::number(sequence->superkPowerValue) + " " + 
+                             QString::number(sequence->superkNdValue) + " " +
+                             QString::number(sequence->superkSwpValue) + " " + 
+                             QString::number(sequence->superkLwpValue);
+        emit getSuperKData(superKData);
       }
       delete sequence;
     }
@@ -205,6 +217,45 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     sequence->status = true;
     // Save motor position data
     sequence->position = motor->getPosition(sequence->instrumentName);
+  }
+  else if ( sequence->instrumentType == "SUPERK" ) {
+    superk->connectSuperK(sequence->instrumentName);
+   
+    if (sequence->superkPowerValue != -99999 ) 
+      superk->setPower(sequence->instrumentName,sequence->superkPowerValue);
+    if (sequence->superkNdValue != -99999 ) 
+      superk->setNd(sequence->instrumentName,sequence->superkNdValue);
+    if (sequence->superkSwpValue != -99999 )
+      superk->setSwp(sequence->instrumentName,sequence->superkSwpValue);
+    if (sequence->superkLwpValue != -99999 )
+      superk->setLwp(sequence->instrumentName,sequence->superkLwpValue);
+    if (sequence->superkRPowerValue != -99999 ) {
+      sequence->superkPowerValue = superk->getPower(sequence->instrumentName) + sequence->superkRPowerValue;
+      superk->setPower(sequence->instrumentName,sequence->superkPowerValue);
+    }
+    if (sequence->superkRNdValue != -99999 ) {
+      sequence->superkNdValue = superk->getNd(sequence->instrumentName) + sequence->superkRNdValue;
+      superk->setNd(sequence->instrumentName,sequence->superkNdValue);
+    }
+    if (sequence->superkRSwpValue != -99999 ) {
+      sequence->superkSwpValue = superk->getSwp(sequence->instrumentName) + sequence->superkRSwpValue;
+      superk->setSwp(sequence->instrumentName,sequence->superkSwpValue);
+    }
+    if (sequence->superkRLwpValue != -99999 ) {
+      sequence->superkLwpValue = superk->getLwp(sequence->instrumentName) + sequence->superkRLwpValue;
+      superk->setLwp(sequence->instrumentName,sequence->superkLwpValue);
+    }
+    // Wait for superk to be completed
+    while (superk->getOperationComplete(sequence->instrumentName) <= 0 ) {
+      usleep(100);
+      superk->operationComplete();
+    }
+    sequence->status = true;
+    // Get updated superk data sequence
+    sequence->superkPowerValue = superk->getPower(sequence->instrumentName);
+    sequence->superkNdValue = superk->getNd(sequence->instrumentName);
+    sequence->superkSwpValue = superk->getSwp(sequence->instrumentName);
+    sequence->superkLwpValue = superk->getLwp(sequence->instrumentName);
   }
   else if ( sequence->instrumentType == "DAC" ) {
     QLOG_INFO() << "AcquisitionThread::execute> connecting DAC ..." << sequence->instrumentName;
@@ -554,10 +605,30 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
   if (sequence->dataname == "") return;
 
   // Save MOTOR data in the group
-  if (sequence->instrumentType == "MOTOR")
+  if (sequence->instrumentType == "MOTOR") {
     status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(), 
 				     sequence->dataname.toStdString().c_str(), 
 				     &(sequence->position),1);
+  }
+  // Save SUPERK data in the group
+  if (sequence->instrumentType == "SUPERK") {
+    QString datanamefull = sequence->dataname + QString("_Power");
+    status = H5LTset_attribute_int(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     datanamefull.toStdString().c_str(),
+                                     &(sequence->superkPowerValue),1);
+    datanamefull = sequence->dataname + QString("_Nd");
+    status = H5LTset_attribute_int(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     datanamefull.toStdString().c_str(),
+                                     &(sequence->superkNdValue),1);
+    datanamefull = sequence->dataname + QString("_Swp");
+    status = H5LTset_attribute_int(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     datanamefull.toStdString().c_str(),
+                                     &(sequence->superkSwpValue),1);
+    datanamefull = sequence->dataname + QString("_Lwp");
+    status = H5LTset_attribute_int(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     datanamefull.toStdString().c_str(),
+                                     &(sequence->superkLwpValue),1);
+  }
   // Save DAC data in the group
   else if (sequence->instrumentType == "DAC" && dacsuccess == true) {
     status = H5LTset_attribute_double(sequence->refgrp, sequence->grpname.toStdString().c_str(), 

@@ -36,6 +36,7 @@ class AcquisitionWidget : public QWidget
  
   void setCamera(QVector<Camera*> _cameraList);
   void setMotor(Motor* _motor);
+  void setSuperK(SuperK* _superk);
   void setDac(Dac* _dac);
   void setComediCounter(Comedi* _comedi);
   void setComediDac(Comedi* _comedi);
@@ -51,9 +52,11 @@ class AcquisitionWidget : public QWidget
   void run();
   void stop();
   void getPosition(QString positionQString);
+  void getSuperKData(QString dataStr);
   void getCameraStatus(bool imagesuccess);
   void getDacStatus(bool dacsuccess);
   void getMotorStatus(bool motorsuccess);
+  void getSuperKStatus(bool superksuccess);
   void getTreatmentStatus(bool treatmentstatus);
   void getAcquiring(int record);
   void getFilenumber(int number);
@@ -66,6 +69,7 @@ class AcquisitionWidget : public QWidget
  private:
   QVector<Camera*> cameraList;
   Motor  *motor;
+  SuperK *superk;
   Dac    *dac;
   Comedi *comedicounter, *comedidac;
   QLabel *splashLabel;

@@ -28,7 +28,7 @@ ComediDac::ComediDac(QString _appDirPath)
 
 ComediDac::~ComediDac()
 {
-  QLOG_DEBUG ( ) <<"deleting ComediDac";
+  QLOG_DEBUG ( ) <<"Deleting ComediDac";
    for (int i = 0 ; i < comedivalues.size(); i++)
     if (comedivalues.at(i)) delete comedivalues.at(i);
   for (int i = 0 ; i < device.size(); i++)
@@ -199,10 +199,12 @@ ComediDac::resetComedi(QString newcomedi) {
   comedi_range *rng;
   int maxdata;
 
-  // Read tensions from device and update DB
+  // Set all tensions to 0, reread tensions from device and update DB
   for (int index = 0 ; index < comedi.size(); index++)  {
     if ( comedi.at(index) == newcomedi && connectSuccess.at(index) == true) {
       for (int channel = 0 ; channel < outputs.at(index); channel++)  {
+        double zerovalue = 0;
+        setComediValue(newcomedi, channel, &zerovalue);
         maxdata = comedi_get_maxdata(device.at(index), subdev.at(index), channel);
         rng=comedi_get_range(device.at(index), subdev.at(index), channel, 0);
         ret = comedi_data_read(device.at(index), subdev.at(index), channel, 0, AREF_GROUND, &data);
