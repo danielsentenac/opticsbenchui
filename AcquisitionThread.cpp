@@ -613,21 +613,25 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
   // Save SUPERK data in the group
   if (sequence->instrumentType == "SUPERK") {
     QString datanamefull = sequence->dataname + QString("_Power");
-    status = H5LTset_attribute_int(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+    float tmpF = sequence->superkPowerValue / 10.;
+    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
                                      datanamefull.toStdString().c_str(),
-                                     &(sequence->superkPowerValue),1);
+                                     &(tmpF),1);
     datanamefull = sequence->dataname + QString("_Nd");
-    status = H5LTset_attribute_int(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+    tmpF = sequence->superkNdValue / 10.;
+    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
                                      datanamefull.toStdString().c_str(),
-                                     &(sequence->superkNdValue),1);
+                                     &(tmpF),1);
     datanamefull = sequence->dataname + QString("_Swp");
-    status = H5LTset_attribute_int(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+    tmpF = sequence->superkSwpValue / 10.;
+    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
                                      datanamefull.toStdString().c_str(),
-                                     &(sequence->superkSwpValue),1);
+                                     &(tmpF),1);
     datanamefull = sequence->dataname + QString("_Lwp");
-    status = H5LTset_attribute_int(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+    tmpF = sequence->superkLwpValue / 10.;
+    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
                                      datanamefull.toStdString().c_str(),
-                                     &(sequence->superkLwpValue),1);
+                                     &(tmpF),1);
   }
   // Save DAC data in the group
   else if (sequence->instrumentType == "DAC" && dacsuccess == true) {

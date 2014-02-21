@@ -37,70 +37,83 @@ SuperKControlWidget::SuperKControlWidget(QVector<QString>  *_driverList)
   cur_powerLabel = new QLabel("Power:");
   cur_power = new QLineEdit();
   cur_power->setFixedWidth(100);
+  power_units = new QLabel("%");
 
   nd = new QSpinBox();
-  nd->setRange(0,10000);
+  nd->setRange(0,100000);
   nd->setFixedWidth(100);
   ndButton = new QPushButton("Set Nd");
   connect(ndButton, SIGNAL(clicked()), this, SLOT(setNd()));
   cur_ndLabel = new QLabel("Nd:");
   cur_nd = new QLineEdit();
   cur_nd->setFixedWidth(100);
+  nd_units = new QLabel("%");
 
   swp = new QSpinBox();
-  swp->setRange(0,10000);
+  swp->setRange(0,100000);
   swp->setFixedWidth(100);
   swpButton = new QPushButton("Set Swp");
   connect(swpButton, SIGNAL(clicked()), this, SLOT(setSwp()));
   cur_swpLabel = new QLabel("Swp:");
   cur_swp = new QLineEdit();
   cur_swp->setFixedWidth(100); 
-   
+  swp_units = new QLabel("nm"); 
+
   lwp = new QSpinBox();
-  lwp->setRange(0,10000);
+  lwp->setRange(0,100000);
   lwp->setFixedWidth(100);
   lwpButton = new QPushButton("Set Lwp");
   connect(lwpButton, SIGNAL(clicked()), this, SLOT(setLwp()));
   cur_lwpLabel = new QLabel("Lwp:");
   cur_lwp = new QLineEdit();
   cur_lwp->setFixedWidth(100);
+  lwp_units = new QLabel("nm");
 
   cur_cwLabel = new QLabel("Central Wavelength:");
   cur_cw = new QLabel();
   cur_cw->setFixedWidth(100);
+  cw_units = new QLabel("nm");
 
   cur_bwLabel = new QLabel("Bandwidth:");
   cur_bw = new QLabel();
   cur_bw->setFixedWidth(100);
+  bw_units = new QLabel("nm");
 
   layout->addWidget(connectButton,0,0,1,1);
   layout->addWidget(driverCombo,0,1,1,1);
-  layout->addWidget(descriptionLabel,0,2,1,2);
+  layout->addWidget(descriptionLabel,0,2,1,4);
 
   layout->addWidget(cur_cwLabel,1,0,1,1);
-  layout->addWidget(cur_cw,1,1,1,1);
-  layout->addWidget(cur_bwLabel,1,2,1,1,Qt::AlignRight);
-  layout->addWidget(cur_bw,1,3,1,1);
+  layout->addWidget(cur_cw,1,1,1,1,Qt::AlignCenter);
+  layout->addWidget(cw_units,1,1,1,1,Qt::AlignRight);
+
+  layout->addWidget(cur_bwLabel,1,2,1,1);
+  layout->addWidget(cur_bw,1,3,1,1,Qt::AlignCenter);
+  layout->addWidget(bw_units,1,3,1,1,Qt::AlignRight);
 
   layout->addWidget(powerButton,2,0,1,1);
   layout->addWidget(power,2,1,1,1);
   layout->addWidget(cur_powerLabel,2,2,1,1,Qt::AlignRight);
   layout->addWidget(cur_power,2,3,1,1);
+  layout->addWidget(power_units,2,4,1,2);
 
   layout->addWidget(ndButton,3,0,1,1);
   layout->addWidget(nd,3,1,1,1);
   layout->addWidget(cur_ndLabel,3,2,1,1,Qt::AlignRight);
   layout->addWidget(cur_nd,3,3,1,1);
+  layout->addWidget(nd_units,3,4,1,2);
  
   layout->addWidget(swpButton,4,0,1,1);
   layout->addWidget(swp,4,1,1,1);
   layout->addWidget(cur_swpLabel,4,2,1,1,Qt::AlignRight);
   layout->addWidget(cur_swp,4,3,1,1);
+  layout->addWidget(swp_units,4,4,1,2);
 
   layout->addWidget(lwpButton,5,0,1,1);
   layout->addWidget(lwp,5,1,1,1);
   layout->addWidget(cur_lwpLabel,5,2,1,1,Qt::AlignRight);
   layout->addWidget(cur_lwp,5,3,1,1);
+  layout->addWidget(lwp_units,5,4,1,2);
 
   setLayout(layout);
 
@@ -112,26 +125,34 @@ SuperKControlWidget::~SuperKControlWidget()
 void
 SuperKControlWidget::getPower(int power) {
   QString powerQString;
-  powerQString.setNum(power);
+  float tmpF = (float) power;
+  tmpF/=10.;
+  powerQString.setNum(tmpF);
   cur_power->setText(powerQString);
 }
 void
 SuperKControlWidget::getNd(int nd) {
   QString ndQString;
-  ndQString.setNum(nd);
+  float tmpF = (float) nd;
+  tmpF/=10.;
+  ndQString.setNum(tmpF);
   cur_nd->setText(ndQString);
 }
 void
 SuperKControlWidget::getSwp(int swp) {
   QString swpQString;
-  swpQString.setNum(swp);
+  float tmpF = (float) swp;
+  tmpF/=10.;
+  swpQString.setNum(tmpF);
   cur_swp->setText(swpQString);
   updateParam();
 }
 void
 SuperKControlWidget::getLwp(int lwp) {
   QString lwpQString;
-  lwpQString.setNum(lwp);
+  float tmpF = (float) lwp;
+  tmpF/=10.; 
+  lwpQString.setNum(tmpF);
   cur_lwp->setText(lwpQString);
   updateParam();
 }

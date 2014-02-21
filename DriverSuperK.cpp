@@ -36,13 +36,16 @@ int
 DriverSuperK::Init()
 {
   QLOG_DEBUG() << "DriverSuperK::Init";
+  int retStatus = 0;
   unsigned char* version;
   version = readInterbus_Stream(0x0F, 0x64);
   QLOG_INFO() << " Version : " << QString((char*)version);
-  unsigned char *emission;
+  unsigned char *emission = NULL;
   emission = readInterbus_Byte(0x0F, 0x30);
-  QLOG_INFO() << " Read On/Off emission " << QString("%1").arg(emission[0],0,16);
-  int retStatus = 0;
+  if (emission)
+   QLOG_INFO() << " Read On/Off emission " << QString("%1").arg(emission[0],0,16);
+  else
+   retStatus = -1;
   return retStatus;
 }
 int 

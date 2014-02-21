@@ -135,6 +135,8 @@ static double GetTime( void ) {
 CameraZyla::CameraZyla()
   :Camera()
 {
+  vflip = 0;
+  hflip = 0;
   image = NULL;
   buffer = NULL;
   snapshot = NULL;
@@ -216,8 +218,12 @@ CameraZyla::setCamera(void* _camera, int _id)
  i_err = AT_GetIntMin(*camera, L"AOIWidth", &aoiwidth_min);
  i_err = AT_GetIntMax(*camera, L"AOIWidth", &aoiwidth_max);
  aoi_width = aoiwidth_max;
+ 
  i_err = AT_SetInt(*camera, L"AOIWidth", (AT_64)zyla_aoi_settings[0][0]);
  errorOk(i_err, "AT_SetInt 'AOIWidth'");
+ i_err = AT_GetInt(*camera, L"AOIWidth", &aoi_width);
+ QLOG_INFO() << "CameraZyla::setCamera> SET AOI WIDTH = " << aoi_width;
+ 
  if (pixel_encoding == B12P)
     i_err = AT_SetInt(*camera, L"AOILeft", (AT_64)zyla_aoi_settings_packed[0][1]);
  else
@@ -225,16 +231,12 @@ CameraZyla::setCamera(void* _camera, int _id)
  errorOk(i_err, "AT_SetInt 'AOILeft'");
  i_err = AT_SetInt(*camera, L"AOIHeight", (AT_64)zyla_aoi_settings[0][2]);
  errorOk(i_err, "AT_SetInt 'AOIHeight'");
+ i_err = AT_GetInt(*camera, L"AOIHeight", &aoi_height);
+ QLOG_INFO() << "CameraZyla::setCamera> SET AOI HEIGHT = " << aoi_height;
  i_err = AT_SetInt(*camera, L"AOITop", (AT_64)zyla_aoi_settings[0][3]);
  errorOk(i_err, "AT_SetInt 'AOITop'");
- i_err = AT_GetInt(*camera, L"AOIWidth", &aoi_width);
- errorOk(i_err, "AT_SetInt 'AOIWidth'");
- i_err = AT_GetInt(*camera, L"AOILeft", &aoi_left);
- errorOk(i_err, "AT_SetInt 'AOILeft'");
- i_err = AT_GetInt(*camera, L"AOIHeight", &aoi_height);
- errorOk(i_err, "AT_SetInt 'AOIHeight'");
  i_err = AT_GetInt(*camera, L"AOITop", &aoi_top);
- errorOk(i_err, "AT_SetInt 'AOITop'");
+ 
  int aoi_num = 0;
  int aoi_min = 0, aoi_max = AOI_NUMBER - 1;
  if (aoi_top !=  1)
@@ -335,7 +337,7 @@ CameraZyla::setCamera(void* _camera, int _id)
  i_err = AT_SetEnumString(*camera, L"PixelEncoding", L"Mono12" );
  errorOk(i_err, "AT_SetEnumString 'PixelEncoding'");
  i_err = AT_GetEnumIndex(*camera, L"PixelEncoding", &encoding_num );
-   errorOk(i_err, "AT_GetEnumIndex 'PixelEncoding'");
+ errorOk(i_err, "AT_GetEnumIndex 'PixelEncoding'");
    // Set Pixel encoding
    switch (encoding_num) {
     case 0:
@@ -1028,6 +1030,19 @@ CameraZyla::connectCamera() {
   errorOk(i_err, "AT_SetEnumIndex 'FanSpeed'");
   QLOG_INFO () << "CameraZyla::connectCamera> Set FanSpeed On";
 
+  // Get Pixel encodings
+  int pixelencodingcnt;
+  i_err = AT_GetEnumCount(*camera, L"PixelEncoding", &pixelencodingcnt);
+  errorOk(i_err, "AT_GetEnumCount 'PixelEncoding'");
+  for (int i = 0 ; i < pixelencodingcnt; i++) {
+     AT_WC item[128];
+     char citem[128];
+     i_err = AT_GetEnumStringByIndex(*camera, L"PixelEncoding", i, item, 128);
+     wcstombs(citem, item, 64);
+     QLOG_INFO () << "CameraZyla::connectCamera> PixelEncoding " << i
+                  << " " << QString(citem);
+  }
+
   // Set rolling shutter mode
   int shuttercnt;
   i_err = AT_GetEnumCount(*camera, L"ElectronicShutteringMode", &shuttercnt);
@@ -1289,6 +1304,16 @@ CameraZyla::acquireImage() {
       else
        buffer[i] = 255;
      }
+    }
+    if (vflip) {
+      buffer = transpose(buffer,height * width);
+      buffer = rotate(buffer,height * width, width);
+      buffer32 = transpose(buffer32,height * width);
+      buffer32 = rotate(buffer32,height * width, width);
+    }
+    else if (hflip) {
+     buffer = rotate(buffer,height*width, width);
+     buffer32 = rotate(buffer32,height*width, width);
     }
     snapshotMutex->unlock();
 

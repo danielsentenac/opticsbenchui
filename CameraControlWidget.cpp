@@ -118,6 +118,19 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   snapshotButton->setFixedWidth(80);
   QObject::connect(snapshotButton, SIGNAL(clicked()), this, SLOT(snapShot()));
   layout->addWidget(snapshotButton,0,1000+2,1,1,Qt::AlignCenter);
+  
+  vflipLabel = new QLabel("Flip vertical");
+  vflipBox = new QCheckBox();
+  QObject::connect(vflipBox, SIGNAL(stateChanged(int)), camera, SLOT(vflipImage(int)));
+  layout->addWidget(vflipLabel,1,1000+2,1,1,Qt::AlignCenter);
+  layout->addWidget(vflipBox,1,1000+3,1,1,Qt::AlignCenter);
+
+  hflipLabel = new QLabel("Flip horizontal");
+  hflipBox = new QCheckBox();
+  QObject::connect(hflipBox, SIGNAL(stateChanged(int)), camera, SLOT(hflipImage(int)));
+  layout->addWidget(hflipLabel,2,1000+2,1,1,Qt::AlignCenter);
+  layout->addWidget(hflipBox,2,1000+3,1,1,Qt::AlignCenter);
+
   setMinimumHeight(DOCK_HEIGHT);
   setLayout(layout);
 }

@@ -115,6 +115,8 @@ static double GetTime( void ) {
 CameraIEEE1394::CameraIEEE1394()
   :Camera()
 {
+  hflip = 0;
+  vflip = 0;
   image = NULL;
   buffer = NULL;
   snapshot = NULL;
@@ -846,6 +848,16 @@ CameraIEEE1394::acquireImage() {
         else
           buffer[i] = 255;
       }
+    }
+    if (vflip) {
+      buffer = transpose(buffer,height * width);
+      buffer = rotate(buffer,height * width, width);
+      buffer32 = transpose(buffer32,height * width);
+      buffer32 = rotate(buffer32,height * width, width);
+    }
+    else if (hflip) {
+     buffer = rotate(buffer,height*width, width);
+     buffer32 = rotate(buffer32,height*width, width);
     }
     snapshotMutex->unlock();
     image->loadFromData (buffer,width * height);

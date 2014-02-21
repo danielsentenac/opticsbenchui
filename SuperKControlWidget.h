@@ -59,22 +59,28 @@ class SuperKControlWidget : public QWidget
   QPushButton *powerButton;
   QLabel      *cur_powerLabel;
   QLineEdit   *cur_power;
+  QLabel      *power_units;
   QSpinBox    *nd;
   QPushButton *ndButton;
   QLabel      *cur_ndLabel;
   QLineEdit   *cur_nd;
+  QLabel      *nd_units;
   QSpinBox    *swp;
   QPushButton *swpButton;
   QLabel      *cur_swpLabel;
   QLineEdit   *cur_swp;
+  QLabel      *swp_units;
   QSpinBox    *lwp;
   QPushButton *lwpButton;
   QLabel      *cur_lwpLabel;
   QLineEdit   *cur_lwp;
+  QLabel      *lwp_units;
   QLabel      *cur_cwLabel;
   QLabel      *cur_cw;
+  QLabel      *cw_units;
   QLabel      *cur_bwLabel;
   QLabel      *cur_bw;
+  QLabel      *bw_units;
   
   SuperK *superk;
 

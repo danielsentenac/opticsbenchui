@@ -100,13 +100,79 @@ class Camera : public QThread
   virtual void setImageSize(const int &_imageWidth, const int &_imageHeight) = 0;
   virtual void setFeature(int feature, double value) = 0;
   virtual void setMode(int feature, bool value) = 0;
+  virtual void  vflipImage(int state) {
+      vflip = state;
+  }
+  virtual void  hflipImage(int state) {
+      hflip = state;
+  }
+  virtual uchar* transpose(uchar *buffer, int buffersize) {
+    if (buffer == NULL) return NULL; 
+    uchar *transposedbuffer;
+    transposedbuffer = (uchar*) malloc ( sizeof(uchar) * buffersize);
+    memset(transposedbuffer,0, sizeof(uchar) * buffersize);
+    for ( int i = 0; i < buffersize ; i++ )
+      transposedbuffer[i] = buffer[buffersize - i - 1];
+    memcpy(buffer,transposedbuffer,buffersize);
+    if (transposedbuffer) {free(transposedbuffer); transposedbuffer = NULL;}
+    return buffer;
+  }
+  virtual uchar* rotate(uchar *buffer, int buffersize, int width) {
+    if (buffer == NULL) return NULL;
+    uchar *rotatebuffer;
+    rotatebuffer = (uchar*) malloc ( sizeof(uchar) * buffersize);
+    memset(rotatebuffer,0, sizeof(uchar) * buffersize);
+    int  ncol=0;
+    int  nline = 1;
+    for ( int i = 0; i < buffersize ; i++) {
+      if ( i && !(i%width)) {
+        nline++;
+        ncol = 0;
+      }
+      rotatebuffer[i] = buffer[nline * width - ncol - 1];
+      ncol++;
+    }
+    memcpy(buffer,rotatebuffer,buffersize);
+    if (rotatebuffer) {free(rotatebuffer); rotatebuffer = NULL;}
+    return buffer;
+  }
+  virtual int* transpose(int *buffer, int buffersize) {
+    if (buffer == NULL) return NULL;
+    int *transposedbuffer;
+    transposedbuffer = (int*) malloc ( sizeof(int) * buffersize);
+    memset(transposedbuffer, 0, sizeof(int) * buffersize);
+    for ( int i = 0; i < buffersize ; i++ )
+      transposedbuffer[i] = buffer[buffersize - i - 1];
+    memcpy(buffer,transposedbuffer,buffersize);
+    if (transposedbuffer) {free(transposedbuffer); transposedbuffer = NULL;}
+    return buffer;
+  }
+  virtual int* rotate(int *buffer, int buffersize, int width) {
+    if (buffer == NULL) return NULL;
+    int *rotatebuffer;
+    rotatebuffer = (int*) malloc ( sizeof(int) * buffersize);
+    memset(rotatebuffer,0,sizeof(int) * buffersize);
+    int  ncol=0;
+    int  nline = 1;
+    for ( int i = 0; i < buffersize ; i++) {
+      if ( i && !(i%width)) {
+        nline++;
+        ncol = 0;
+      }
+      rotatebuffer[i] = buffer[nline * width - ncol - 1];
+      ncol++;
+    }
+    memcpy(buffer,rotatebuffer,buffersize);
+    if (rotatebuffer) {free(rotatebuffer); rotatebuffer = NULL;}
+    return buffer;
+  }
 
  protected:
   virtual void run() = 0;
   virtual int  connectCamera() = 0;
   virtual int  acquireImage() = 0;
   virtual void cleanup_and_exit() = 0;
-
+  int vflip, hflip;
   double eTimeTotal, frequency;
 
 };

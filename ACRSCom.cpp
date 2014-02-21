@@ -43,7 +43,7 @@ ACRSCom::Open ()
   _vtime = list.at(4).toInt();
   _flow = list.at(5);
 
-  _hCom = open (_device.c_str (), O_RDWR | O_NOCTTY | O_NDELAY);
+  _hCom = open (_device.c_str (), O_RDWR | O_NOCTTY | O_NDELAY );
   if (_hCom == -1)
     {
       QLOG_INFO ( ) << "ACRSCom::Open failed at open" << endl;

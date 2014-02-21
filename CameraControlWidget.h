@@ -63,6 +63,8 @@ class CameraControlWidget : public QWidget
   QVector<QLineEdit*> sliderValueList; 
   QVector<QCheckBox*> modeCheckBoxList;
   QPushButton *snapshotButton;
+  QLabel  *hflipLabel, *vflipLabel;
+  QCheckBox *hflipBox, *vflipBox;
   QSignalMapper *featureMapper, *sliderValueMapper, *modeMapper;
 };
 #endif
