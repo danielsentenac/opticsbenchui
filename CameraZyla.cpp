@@ -1306,14 +1306,14 @@ CameraZyla::acquireImage() {
      }
     }
     if (vflip) {
-      buffer = transpose(buffer,height * width);
-      buffer = rotate(buffer,height * width, width);
-      buffer32 = transpose(buffer32,height * width);
-      buffer32 = rotate(buffer32,height * width, width);
+      buffer = reversebytes(buffer,height * width);
+      buffer = fliphorizontal(buffer,height * width, width);
+      buffer32 = reversebytes(buffer32,height * width);
+      buffer32 = fliphorizontal(buffer32,height * width, width);
     }
-    else if (hflip) {
-     buffer = rotate(buffer,height*width, width);
-     buffer32 = rotate(buffer32,height*width, width);
+    if (hflip) {
+     buffer = fliphorizontal(buffer,height*width, width);
+     buffer32 = fliphorizontal(buffer32,height*width, width);
     }
     snapshotMutex->unlock();
 
