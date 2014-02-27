@@ -24,6 +24,7 @@
 	  <TD> type </TD>
 	  <TD> The type of sequence. Can take one of the following name:<br>
 	  <li> <b>MOTOR</b>: a motor is called for a movement </li>
+          <li> <b>SUPERK</b>: a supercontinnum laser is called for a filter setting </li>
 	  <li> <b>DAC</b>: a DAC is called for setting an output value </li>
 	  <li> <b>CAMERA</b>: a camera is called for taking an image </li>
 	  <li> <b>TREATMENT</b>: a calculation on existing sequence data is performed</li></TD>
@@ -40,6 +41,8 @@
 	  <TD> Here we put the information on what to do with the instrument, usually in format : [key=value] separated by one space<br>
 	  <li> <b>MOTOR</b>: a motor can have MOVEREL (relative movement), MOVEABS (absolute movement) calls, 
 	      with the value to be reached </li>
+          <li> <b>SUPERK</b>: a superk can have (R)POWER (power level), (R)ND (output level), (R)SWP (short wavelength setpoint), (R)LWP (long wavelength setpoint) calls
+              with the value (absolute or (R) relative) to be reached </li>
 	  <li> <b>DAC</b>:  The DAC output is specified by OUTPUT key with the corresponding value to be set using 
                             key VALUE for absolute value or ke RVALUE for relative value</li>
 	  <li> <b>CAMERA</b>: The SNAPSHOT key is used to grab an image from the camera to the format Mono 8-bit. 
