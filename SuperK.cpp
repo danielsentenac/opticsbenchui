@@ -262,7 +262,8 @@ SuperK::setSwp(QString newdriver, int swp)
   for (int i = 0 ; i < driver.size(); i++) {
     if (driver.at(i) == newdriver && connectSuccess.at(i) == true) {
       operationcomplete.replace(i,0);
-      driverSuperK.at(i)->setSwp(swp);
+      if ( swp < 11000 && swp > 4500 ) 
+        driverSuperK.at(i)->setSwp(swp);
       runningDriver = driver.at(i);
       break;
     } 
@@ -287,7 +288,8 @@ SuperK::setLwp(QString newdriver, int lwp)
   for (int i = 0 ; i < driver.size(); i++) {
     if (driver.at(i) == newdriver && connectSuccess.at(i) == true) {
       operationcomplete.replace(i,0);
-      driverSuperK.at(i)->setLwp(lwp);
+      if ( lwp < 11000 && lwp > 4500 )
+        driverSuperK.at(i)->setLwp(lwp);
       runningDriver = driver.at(i);
       break;
     }

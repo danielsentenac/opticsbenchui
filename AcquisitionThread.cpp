@@ -220,42 +220,75 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
   }
   else if ( sequence->instrumentType == "SUPERK" ) {
     superk->connectSuperK(sequence->instrumentName);
-   
-    if (sequence->superkPowerValue != -99999 ) 
-      superk->setPower(sequence->instrumentName,sequence->superkPowerValue);
-    if (sequence->superkNdValue != -99999 ) 
-      superk->setNd(sequence->instrumentName,sequence->superkNdValue);
-    if (sequence->superkSwpValue != -99999 )
-      superk->setSwp(sequence->instrumentName,sequence->superkSwpValue);
-    if (sequence->superkLwpValue != -99999 )
-      superk->setLwp(sequence->instrumentName,sequence->superkLwpValue);
-    if (sequence->superkRPowerValue != -99999 ) {
-      sequence->superkPowerValue = superk->getPower(sequence->instrumentName) + sequence->superkRPowerValue;
-      superk->setPower(sequence->instrumentName,sequence->superkPowerValue);
+    if (sequence->superkPowerValue > -88888) 
+      superk->setPower(sequence->instrumentName,sequence->superkPowerValue * 10);
+    if (sequence->superkNdValue > -88888 ) 
+      superk->setNd(sequence->instrumentName,sequence->superkNdValue * 10);
+    if (sequence->superkSwpValue > -88888 )
+      superk->setSwp(sequence->instrumentName,sequence->superkSwpValue * 10);
+    if (sequence->superkLwpValue > -88888 )
+      superk->setLwp(sequence->instrumentName,sequence->superkLwpValue * 10);
+    if (sequence->superkBwValue > -88888 && sequence->superkCwValue > -88888 )  {
+      superk->setLwp(sequence->instrumentName, (sequence->superkCwValue - sequence->superkBwValue / 2) * 10);
+      superk->setSwp(sequence->instrumentName, (sequence->superkCwValue + sequence->superkBwValue / 2) * 10);
     }
-    if (sequence->superkRNdValue != -99999 ) {
-      sequence->superkNdValue = superk->getNd(sequence->instrumentName) + sequence->superkRNdValue;
-      superk->setNd(sequence->instrumentName,sequence->superkNdValue);
+    if (sequence->superkRPowerValue > -88888  ) {
+      sequence->superkPowerValue = (float)superk->getPower(sequence->instrumentName) / 10 + sequence->superkRPowerValue ;
+      QLOG_INFO() << "sequence->superkPowerValue=" << sequence->superkPowerValue 
+                  << " " << superk->getPower(sequence->instrumentName)  << " + " << sequence->superkRPowerValue;
+      superk->setPower(sequence->instrumentName,sequence->superkPowerValue * 10);
     }
-    if (sequence->superkRSwpValue != -99999 ) {
-      sequence->superkSwpValue = superk->getSwp(sequence->instrumentName) + sequence->superkRSwpValue;
-      superk->setSwp(sequence->instrumentName,sequence->superkSwpValue);
+    if (sequence->superkRNdValue > -88888  ) {
+      sequence->superkNdValue = (float)superk->getNd(sequence->instrumentName) / 10 + sequence->superkRNdValue ;
+      superk->setNd(sequence->instrumentName,sequence->superkNdValue * 10);
     }
-    if (sequence->superkRLwpValue != -99999 ) {
-      sequence->superkLwpValue = superk->getLwp(sequence->instrumentName) + sequence->superkRLwpValue;
-      superk->setLwp(sequence->instrumentName,sequence->superkLwpValue);
+    if (sequence->superkRSwpValue > -88888  ) {
+      sequence->superkSwpValue = (float)superk->getSwp(sequence->instrumentName) / 10 + sequence->superkRSwpValue;
+      superk->setSwp(sequence->instrumentName,sequence->superkSwpValue * 10);
     }
+    if (sequence->superkRLwpValue > -88888  ) {
+      sequence->superkLwpValue = (float)superk->getLwp(sequence->instrumentName) / 10 + sequence->superkRLwpValue;
+      superk->setLwp(sequence->instrumentName,sequence->superkLwpValue * 10);
+    }
+    if (sequence->superkRBwValue > -88888  && sequence->superkCwValue > -88888 )  {
+      QLOG_INFO() << "sequence->superkRBwValue " << sequence->superkRBwValue;
+      QLOG_INFO() << "sequence->superkCwValue " << sequence->superkCwValue;
+
+      sequence->superkBwValue = 
+          ( (float)superk->getSwp(sequence->instrumentName) - (float)superk->getLwp(sequence->instrumentName) )  / 10 
+                                        + sequence->superkRBwValue;
+      superk->setLwp(sequence->instrumentName, (sequence->superkCwValue - sequence->superkBwValue / 2) * 10);
+      superk->setSwp(sequence->instrumentName, (sequence->superkCwValue + sequence->superkBwValue / 2) * 10);
+    }
+    if (sequence->superkBwValue > -88888  && sequence->superkRCwValue > -88888  )  {
+      QLOG_INFO() << "sequence->superkBwValue " << sequence->superkBwValue;
+      QLOG_INFO() << "sequence->superkRCwValue " << sequence->superkRCwValue;
+
+      sequence->superkCwValue = 
+        ( (float)superk->getLwp(sequence->instrumentName) + (float)superk->getSwp(sequence->instrumentName) ) / 10 / 2
+                                        + sequence->superkRCwValue;
+      superk->setLwp(sequence->instrumentName, (sequence->superkCwValue - sequence->superkBwValue / 2) * 10);
+      superk->setSwp(sequence->instrumentName, (sequence->superkCwValue + sequence->superkBwValue / 2) * 10);
+    }
+    if (sequence->superkRBwValue > -88888  && sequence->superkRCwValue > -88888  )  {
+      QLOG_INFO() << "sequence->superkRBwValue " << sequence->superkRBwValue;
+      QLOG_INFO() << "sequence->superkRCwValue " << sequence->superkRCwValue;
+      sequence->superkCwValue = 
+        ( (float)superk->getLwp(sequence->instrumentName) + (float)superk->getSwp(sequence->instrumentName) ) / 10 / 2
+                                        + sequence->superkRCwValue;
+      sequence->superkBwValue = 
+            ( (float)superk->getSwp(sequence->instrumentName) - (float)superk->getLwp(sequence->instrumentName) ) / 10
+                                        + sequence->superkRBwValue;
+      superk->setLwp(sequence->instrumentName, (sequence->superkCwValue - sequence->superkBwValue / 2) * 10);
+      superk->setSwp(sequence->instrumentName, (sequence->superkCwValue + sequence->superkBwValue / 2) * 10);
+    }
+    
     // Wait for superk to be completed
     while (superk->getOperationComplete(sequence->instrumentName) <= 0 ) {
       usleep(100);
       superk->operationComplete();
     }
     sequence->status = true;
-    // Get updated superk data sequence
-    sequence->superkPowerValue = superk->getPower(sequence->instrumentName);
-    sequence->superkNdValue = superk->getNd(sequence->instrumentName);
-    sequence->superkSwpValue = superk->getSwp(sequence->instrumentName);
-    sequence->superkLwpValue = superk->getLwp(sequence->instrumentName);
   }
   else if ( sequence->instrumentType == "DAC" ) {
     QLOG_INFO() << "AcquisitionThread::execute> connecting DAC ..." << sequence->instrumentName;
@@ -613,22 +646,32 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
   // Save SUPERK data in the group
   if (sequence->instrumentType == "SUPERK") {
     QString datanamefull = sequence->dataname + QString("_Power");
-    float tmpF = sequence->superkPowerValue / 10.;
+    float tmpF = (float)superk->getPower(sequence->instrumentName) / 10 ;
     status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
                                      datanamefull.toStdString().c_str(),
                                      &(tmpF),1);
     datanamefull = sequence->dataname + QString("_Nd");
-    tmpF = sequence->superkNdValue / 10.;
+    tmpF = (float)superk->getNd(sequence->instrumentName) / 10 ;
     status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
                                      datanamefull.toStdString().c_str(),
                                      &(tmpF),1);
     datanamefull = sequence->dataname + QString("_Swp");
-    tmpF = sequence->superkSwpValue / 10.;
+    tmpF = (float)superk->getSwp(sequence->instrumentName) / 10 ;
     status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
                                      datanamefull.toStdString().c_str(),
                                      &(tmpF),1);
     datanamefull = sequence->dataname + QString("_Lwp");
-    tmpF = sequence->superkLwpValue / 10.;
+    tmpF = (float)superk->getLwp(sequence->instrumentName) / 10 ;
+    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     datanamefull.toStdString().c_str(),
+                                     &(tmpF),1);
+    datanamefull = sequence->dataname + QString("_Cw");
+    tmpF = ( (float)superk->getLwp(sequence->instrumentName)  + (float)superk->getSwp(sequence->instrumentName) ) / 10 / 2 ;
+    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     datanamefull.toStdString().c_str(),
+                                     &(tmpF),1);
+    datanamefull = sequence->dataname + QString("_Bw");
+    tmpF = ( (float)superk->getSwp(sequence->instrumentName) - (float)superk->getLwp(sequence->instrumentName) ) / 10 ;
     status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
                                      datanamefull.toStdString().c_str(),
                                      &(tmpF),1);

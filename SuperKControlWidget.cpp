@@ -29,8 +29,7 @@ SuperKControlWidget::SuperKControlWidget(QVector<QString>  *_driverList)
   driverCombo->setFixedWidth(100);
   descriptionLabel = new QLabel();
 
-  power = new QSpinBox();
-  power->setRange(0,1000);
+  power = new QLineEdit();
   power->setFixedWidth(100);
   powerButton = new QPushButton("Set Power");
   connect(powerButton, SIGNAL(clicked()), this, SLOT(setPower()));
@@ -39,8 +38,7 @@ SuperKControlWidget::SuperKControlWidget(QVector<QString>  *_driverList)
   cur_power->setFixedWidth(100);
   power_units = new QLabel("%");
 
-  nd = new QSpinBox();
-  nd->setRange(0,100000);
+  nd = new QLineEdit();
   nd->setFixedWidth(100);
   ndButton = new QPushButton("Set Nd");
   connect(ndButton, SIGNAL(clicked()), this, SLOT(setNd()));
@@ -49,47 +47,38 @@ SuperKControlWidget::SuperKControlWidget(QVector<QString>  *_driverList)
   cur_nd->setFixedWidth(100);
   nd_units = new QLabel("%");
 
-  swp = new QSpinBox();
-  swp->setRange(0,100000);
-  swp->setFixedWidth(100);
-  swpButton = new QPushButton("Set Swp");
-  connect(swpButton, SIGNAL(clicked()), this, SLOT(setSwp()));
-  cur_swpLabel = new QLabel("Swp:");
-  cur_swp = new QLineEdit();
-  cur_swp->setFixedWidth(100); 
-  swp_units = new QLabel("nm"); 
+  bw = new QLineEdit();
+  bw->setFixedWidth(100);
+  
+  cw = new QLineEdit();
+  cw->setFixedWidth(100);
+  cwButton = new QPushButton("Set Wavelength: \n  and \n Bandwith:");
+  cwButton->setFixedHeight(80);
+  connect(cwButton, SIGNAL(clicked()), this, SLOT(setWavelengthBandwith()));
+  
+  cur_bwLabel = new QLabel("Bandwith:");
+  cur_bw = new QLineEdit();
+  cur_bw->setFixedWidth(100);
+  bw_units = new QLabel("nm");
 
-  lwp = new QSpinBox();
-  lwp->setRange(0,100000);
-  lwp->setFixedWidth(100);
-  lwpButton = new QPushButton("Set Lwp");
-  connect(lwpButton, SIGNAL(clicked()), this, SLOT(setLwp()));
-  cur_lwpLabel = new QLabel("Lwp:");
-  cur_lwp = new QLineEdit();
-  cur_lwp->setFixedWidth(100);
-  lwp_units = new QLabel("nm");
-
-  cur_cwLabel = new QLabel("Central Wavelength:");
-  cur_cw = new QLabel();
+  cur_cwLabel = new QLabel("Wavelength:");
+  cur_cw = new QLineEdit();
   cur_cw->setFixedWidth(100);
   cw_units = new QLabel("nm");
 
-  cur_bwLabel = new QLabel("Bandwidth:");
-  cur_bw = new QLabel();
-  cur_bw->setFixedWidth(100);
-  bw_units = new QLabel("nm");
+  cur_lwpLabel = new QLabel("Lwp:");
+  cur_lwp = new QLabel();
+  cur_lwp->setFixedWidth(50);
+  lwp_units = new QLabel("nm");
+
+  cur_swpLabel = new QLabel("Swp:");
+  cur_swp = new QLabel();
+  cur_swp->setFixedWidth(50);
+  swp_units = new QLabel("nm");
 
   layout->addWidget(connectButton,0,0,1,1);
   layout->addWidget(driverCombo,0,1,1,1);
   layout->addWidget(descriptionLabel,0,2,1,4);
-
-  layout->addWidget(cur_cwLabel,1,0,1,1);
-  layout->addWidget(cur_cw,1,1,1,1,Qt::AlignCenter);
-  layout->addWidget(cw_units,1,1,1,1,Qt::AlignRight);
-
-  layout->addWidget(cur_bwLabel,1,2,1,1);
-  layout->addWidget(cur_bw,1,3,1,1,Qt::AlignCenter);
-  layout->addWidget(bw_units,1,3,1,1,Qt::AlignRight);
 
   layout->addWidget(powerButton,2,0,1,1);
   layout->addWidget(power,2,1,1,1);
@@ -103,17 +92,30 @@ SuperKControlWidget::SuperKControlWidget(QVector<QString>  *_driverList)
   layout->addWidget(cur_nd,3,3,1,1);
   layout->addWidget(nd_units,3,4,1,2);
  
-  layout->addWidget(swpButton,4,0,1,1);
-  layout->addWidget(swp,4,1,1,1);
-  layout->addWidget(cur_swpLabel,4,2,1,1,Qt::AlignRight);
-  layout->addWidget(cur_swp,4,3,1,1);
-  layout->addWidget(swp_units,4,4,1,2);
+  layout->addWidget(cwButton,4,0,2,1);
+  layout->addWidget(cw,4,1,1,1);
+  layout->addWidget(cur_cwLabel,4,2,1,1,Qt::AlignRight);
+  layout->addWidget(cur_cw,4,3,1,1);
+  layout->addWidget(cw_units,4,4,1,2);
 
-  layout->addWidget(lwpButton,5,0,1,1);
-  layout->addWidget(lwp,5,1,1,1);
-  layout->addWidget(cur_lwpLabel,5,2,1,1,Qt::AlignRight);
-  layout->addWidget(cur_lwp,5,3,1,1);
-  layout->addWidget(lwp_units,5,4,1,2);
+  layout->addWidget(bw,5,1,1,1);
+  layout->addWidget(cur_bwLabel,5,2,1,1,Qt::AlignRight);
+  layout->addWidget(cur_bw,5,3,1,1);
+  layout->addWidget(bw_units,5,4,1,2);
+
+  QHBoxLayout *lwplayout = new QHBoxLayout();
+  lwplayout->addWidget(cur_lwpLabel);
+  lwplayout->addWidget(cur_lwp);
+  lwplayout->addWidget(lwp_units);
+
+  layout->addLayout(lwplayout,6,1,1,1);
+
+  QHBoxLayout *swplayout = new QHBoxLayout();
+  swplayout->addWidget(cur_swpLabel);
+  swplayout->addWidget(cur_swp);
+  swplayout->addWidget(swp_units);
+
+  layout->addLayout(swplayout,7,1,1,1);
 
   setLayout(layout);
 
@@ -123,36 +125,36 @@ SuperKControlWidget::~SuperKControlWidget()
   QLOG_DEBUG ( ) << "Deleting SuperKControlWidget";
 }
 void
-SuperKControlWidget::getPower(int power) {
+SuperKControlWidget::getPower(int pw) {
   QString powerQString;
-  float tmpF = (float) power;
-  tmpF/=10.;
-  powerQString.setNum(tmpF);
+  float tmp = (float) pw;
+  tmp/=10.;
+  powerQString.setNum(tmp);
   cur_power->setText(powerQString);
+  power->setText(powerQString);
 }
 void
-SuperKControlWidget::getNd(int nd) {
+SuperKControlWidget::getNd(int n) {
   QString ndQString;
-  float tmpF = (float) nd;
-  tmpF/=10.;
-  ndQString.setNum(tmpF);
+  float tmp = (float) n;
+  tmp/=10.;
+  ndQString.setNum(tmp);
   cur_nd->setText(ndQString);
+  nd->setText(ndQString);
 }
 void
 SuperKControlWidget::getSwp(int swp) {
+  swpValue = (float)swp / 10;
   QString swpQString;
-  float tmpF = (float) swp;
-  tmpF/=10.;
-  swpQString.setNum(tmpF);
+  swpQString.setNum(swpValue);
   cur_swp->setText(swpQString);
   updateParam();
 }
 void
 SuperKControlWidget::getLwp(int lwp) {
+  lwpValue = (float)lwp / 10;
   QString lwpQString;
-  float tmpF = (float) lwp;
-  tmpF/=10.; 
-  lwpQString.setNum(tmpF);
+  lwpQString.setNum(lwpValue);
   cur_lwp->setText(lwpQString);
   updateParam();
 }
@@ -160,7 +162,8 @@ void
 SuperKControlWidget::setPower() {
   QString driver;
   driver = driverCombo->itemText(driverCombo->currentIndex());
-  int powerValue = power->text().toInt();
+  int powerValue = power->text().toFloat() * 10;
+  QLOG_INFO() << "setPower " << powerValue;
   superk->setPower(driver, powerValue);
   timer->start(100);
 }
@@ -168,36 +171,46 @@ void
 SuperKControlWidget::setNd() {
   QString driver;
   driver = driverCombo->itemText(driverCombo->currentIndex());
-  int ndValue = nd->text().toInt();
+  int ndValue = nd->text().toFloat() * 10;
   superk->setNd(driver, ndValue);
   timer->start(100);
+}
+void
+SuperKControlWidget::setWavelengthBandwith() {
+  setPower();
+  setSwp();
+  setLwp();
 }
 void
 SuperKControlWidget::setSwp() {
   QString driver;
   driver = driverCombo->itemText(driverCombo->currentIndex());
-  int swpValue = swp->text().toInt();
-  superk->setSwp(driver, swpValue);
+  swpValue = cw->text().toFloat() * 10 + bw->text().toFloat() * 10 / 2 ;
+  QLOG_INFO() << "setSwp " << swpValue ;
+  superk->setSwp(driver, (int)swpValue);
   timer->start(100);
 }
 void
 SuperKControlWidget::setLwp() {
   QString driver;
   driver = driverCombo->itemText(driverCombo->currentIndex());
-  int lwpValue = lwp->text().toInt();
-  superk->setLwp(driver, lwpValue);
+  lwpValue = cw->text().toFloat() * 10 - bw->text().toFloat() * 10 / 2;
+  QLOG_INFO() << "setLwp " << lwpValue;
+  superk->setLwp(driver, (int)lwpValue);
   timer->start(100);
 }
 void
 SuperKControlWidget::updateParam() {
   QString cwQString, bwQString;
-  int cw = (cur_swp->text().toInt() - cur_lwp->text().toInt()) / 2;
-  int bw = (cur_swp->text().toInt() - cur_lwp->text().toInt());
-  cwQString.setNum(cw);
-  cur_cw->setText(cwQString);
-  bwQString.setNum(bw);
+  float bwValue, cwValue;
+  bwValue = swpValue - lwpValue;
+  cwValue = (swpValue + lwpValue) / 2;
+  bwQString.setNum(bwValue);
   cur_bw->setText(bwQString);
-
+  bw->setText(bwQString);
+  cwQString.setNum(cwValue);
+  cur_cw->setText(cwQString);
+  cw->setText(cwQString);
 }
 void
 SuperKControlWidget::setSuperK(SuperK *_superk) {

@@ -30,10 +30,14 @@ AcquisitionSequence::AcquisitionSequence( )
   superkNdValue = -99999;
   superkSwpValue = -99999;
   superkLwpValue = -99999;
+  superkCwValue = -99999;
+  superkBwValue = -99999;
   superkRPowerValue = -99999;
   superkRNdValue = -99999;
   superkRSwpValue = -99999;
   superkRLwpValue = -99999;
+  superkRCwValue = -99999;
+  superkRBwValue = -99999;
   dacValue = 0;
   dacRValue = 0;
   dacOutput = 0;
@@ -220,28 +224,40 @@ AcquisitionSequence::prepare() {
       }
       // SuperK section
       else if (subsettingsList.at(j) == "POWER" && subsettingsList.size() > j + 1) {
-        superkPowerValue = subsettingsList.at(j+1).toInt();
+        superkPowerValue = subsettingsList.at(j+1).toFloat();
       }
       else if (subsettingsList.at(j) == "ND" && subsettingsList.size() > j + 1) {
-        superkNdValue = subsettingsList.at(j+1).toInt();
+        superkNdValue = subsettingsList.at(j+1).toFloat();
       }
       else if (subsettingsList.at(j) == "SWP" && subsettingsList.size() > j + 1) {
-        superkSwpValue = subsettingsList.at(j+1).toInt();
+        superkSwpValue = subsettingsList.at(j+1).toFloat();
       }
       else if (subsettingsList.at(j) == "LWP" && subsettingsList.size() > j + 1) {
-        superkLwpValue = subsettingsList.at(j+1).toInt();
+        superkLwpValue = subsettingsList.at(j+1).toFloat();
+      }
+      else if (subsettingsList.at(j) == "CW" && subsettingsList.size() > j + 1) {
+        superkCwValue = subsettingsList.at(j+1).toFloat();
+      }
+      else if (subsettingsList.at(j) == "BW" && subsettingsList.size() > j + 1) {
+        superkBwValue = subsettingsList.at(j+1).toFloat();
       }
       else if (subsettingsList.at(j) == "RPOWER" && subsettingsList.size() > j + 1) {
-        superkRPowerValue = subsettingsList.at(j+1).toInt();
+        superkRPowerValue = subsettingsList.at(j+1).toFloat();
       }
       else if (subsettingsList.at(j) == "RND" && subsettingsList.size() > j + 1) {
-        superkRNdValue = subsettingsList.at(j+1).toInt();
+        superkRNdValue = subsettingsList.at(j+1).toFloat();
       }
       else if (subsettingsList.at(j) == "RSWP" && subsettingsList.size() > j + 1) {
-        superkRSwpValue = subsettingsList.at(j+1).toInt();
+        superkRSwpValue = subsettingsList.at(j+1).toFloat();
       }
       else if (subsettingsList.at(j) == "RLWP" && subsettingsList.size() > j + 1) {
-        superkRLwpValue = subsettingsList.at(j+1).toInt();
+        superkRLwpValue = subsettingsList.at(j+1).toFloat();
+      }
+      else if (subsettingsList.at(j) == "RCW" && subsettingsList.size() > j + 1) {
+        superkRCwValue = subsettingsList.at(j+1).toFloat();
+      }
+      else if (subsettingsList.at(j) == "RBW" && subsettingsList.size() > j + 1) {
+        superkRBwValue = subsettingsList.at(j+1).toFloat();
       }
       // Dac and Comedi section
       else if (subsettingsList.at(j) == "OUTPUT" && subsettingsList.size() > j + 1) {

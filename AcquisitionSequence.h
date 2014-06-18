@@ -76,15 +76,19 @@ class AcquisitionSequence
   float   position;
 
   // SuperK attributes
-  int   superkPowerValue;
-  int   superkNdValue;
-  int   superkSwpValue;
-  int   superkLwpValue;
-  int   superkRPowerValue;
-  int   superkRNdValue;
-  int   superkRSwpValue;
-  int   superkRLwpValue;
- 
+  float   superkPowerValue;
+  float   superkNdValue;
+  float   superkSwpValue;
+  float   superkLwpValue;
+  float   superkCwValue;
+  float   superkBwValue;
+  float   superkRPowerValue;
+  float   superkRNdValue;
+  float   superkRSwpValue;
+  float   superkRLwpValue;
+  float   superkRCwValue;
+  float   superkRBwValue;
+
   // Dac attributes
   double   dacValue;
   double   dacRValue;

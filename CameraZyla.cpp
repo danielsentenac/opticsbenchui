@@ -1311,7 +1311,7 @@ CameraZyla::acquireImage() {
       buffer32 = reversebytes(buffer32,height * width);
       buffer32 = fliphorizontal(buffer32,height * width, width);
     }
-    if (hflip) {
+    if (!hflip) {
      buffer = fliphorizontal(buffer,height*width, width);
      buffer32 = fliphorizontal(buffer32,height*width, width);
     }
