@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QBuffer>
 #include <QMutex>
 #include <QWaitCondition>
-
+#include <QTime>
 #include "QsLog.h"
 
 typedef enum {

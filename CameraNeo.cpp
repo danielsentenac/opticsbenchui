@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define NUMBER_OF_BUFFERS 1
 #define GAIN_NUMBER 8
 #define TRIGGER_NUMBER 7
+#define ELECTRONICSHUTTERING_NUMBER 2
 #define ENCODING_NUMBER 3
 #define AOI_NUMBER 8
 #define READOUTRATE_NUMBER 4
@@ -35,7 +36,8 @@ char *neo_features[]  = {
                         (char*)"Frame Rate",
                         (char*)"Readout Rate",
 			(char*)"Trigger",
-                        (char*)"Encoding"
+                        (char*)"Encoding",
+                        (char*)"Electronic Shuttering"
                         };
 char *neo_props[]  = {
                         (char*)"Temperature",
@@ -46,7 +48,8 @@ char *neo_props[]  = {
 			(char*)"Readout Rate",
                         (char*)"Frame Rate",
 			(char*)"PC Rate",
-			(char*)"Trigger"
+			(char*)"Trigger",
+                        (char*)"Electronic Shuttering"
                         };
 char *neo_encodings[]  = {
                         (char*)"Mono12",
@@ -85,7 +88,13 @@ char *neo_trigger_modes[]  = {
 			(char*)"Advanced", 
 			(char*)"External" 
 			};
-int neo_aoi_settings[][4] = {{2544,25,2160,1},
+char *neo_electronicshuttering_modes[]  = {
+                        (char*)"Rolling",
+                        (char*)"Global"
+                        };
+int neo_aoi_settings[][4] = {
+                          //{2592,1,2160,1},
+                          {2544,25,2160,1},
 			  {2064,265,2048,57},
 			  {1776,409,1760,201},
 			  {1920,337,1080,537},
@@ -93,8 +102,9 @@ int neo_aoi_settings[][4] = {{2544,25,2160,1},
 			  {528,1033,512,825},
 			  {240,1177,256,953},
  			  {144,1225,128,1017}};
-
-int neo_aoi_settings_packed[][4] = {{2544,17,2160,1},
+int neo_aoi_settings_packed[][4] = {
+                          //{2592,1,2160,1},
+                          {2544,17,2160,1},
                           {2064,257,2048,57},
                           {1776,401,1760,201},
                           {1920,337,1080,537},
@@ -102,6 +112,7 @@ int neo_aoi_settings_packed[][4] = {{2544,17,2160,1},
                           {528,1025,512,825},
                           {240,1169,256,953},
                           {144,1217,128,1017}};
+
 
 #include <sys/time.h>
 /*----------------------------------------------------------------------------*/
@@ -133,7 +144,7 @@ CameraNeo::CameraNeo()
   acqstart = new QWaitCondition();
   acqend = new QWaitCondition();
   id = 0;
-  exposure = 0.6;
+  exposure = 0.01;
   frequency = 0.;
   modeCheckEnabled = false;
 }
@@ -196,6 +207,7 @@ CameraNeo::setCamera(void* _camera, int _id)
  // AOI feature
  AT_64 aoiheight_min, aoiheight_max;
  AT_64 aoiwidth_min, aoiwidth_max;
+ AT_64 aoi_stride;
  i_err = AT_GetIntMin(*camera, L"AOIHeight", &aoiheight_min);
  i_err = AT_GetIntMax(*camera, L"AOIHeight", &aoiheight_max);
  aoi_height = aoiheight_max;
@@ -221,6 +233,9 @@ CameraNeo::setCamera(void* _camera, int _id)
  errorOk(i_err, "AT_SetInt 'AOIHeight'");
  i_err = AT_GetInt(*camera, L"AOITop", &aoi_top);
  errorOk(i_err, "AT_SetInt 'AOITop'");
+ i_err = AT_GetInt(*camera, L"AOIStride", &aoi_stride);
+ errorOk(i_err, "AT_GetInt 'AOIStride'");
+ QLOG_INFO() << "CameraNeo::setCamera> AOIStride = " << (int)aoi_stride;
  int aoi_num = 0;
  int aoi_min = 0, aoi_max = AOI_NUMBER - 1;
  if (aoi_top !=  1)
@@ -238,6 +253,11 @@ CameraNeo::setCamera(void* _camera, int _id)
  QLOG_INFO() << "CameraNeo::setCamera> value " << aoi_num << "(min "
              << aoi_min << " max " << aoi_max  << ")";
 
+ // FullAOIControl
+ AT_BOOL  aoictrl;
+ i_err = AT_GetBool(*camera, L"FullAOIControl", &aoictrl);
+ errorOk(i_err, "AT_GetBool 'FullAOIControl'");
+ QLOG_INFO() << "CameraNeo::setCamera>  FullAOICOntrol : " << aoictrl;
  // Gain feature
  int gain_min = 0, gain_max = GAIN_NUMBER - 1; 
  i_err = AT_GetEnumIndex(*camera, L"PreAmpGainControl", &gain_num);
@@ -318,10 +338,10 @@ CameraNeo::setCamera(void* _camera, int _id)
 
  // Pixel encoding feature
  int encoding_min = 0, encoding_max = ENCODING_NUMBER - 1;
- i_err = AT_SetEnumString(*camera, L"PixelEncoding", L"Mono12" );
- errorOk(i_err, "AT_SetEnumString 'PixelEncoding'");
  i_err = AT_GetEnumIndex(*camera, L"PixelEncoding", &encoding_num );
-   errorOk(i_err, "AT_GetEnumIndex 'PixelEncoding'");
+ errorOk(i_err, "AT_GetEnumIndex 'PixelEncoding'");
+ i_err = AT_SetEnumIndex(*camera, L"PixelEncoding", encoding_num );
+ errorOk(i_err, "AT_SetEnumIndex 'PixelEncoding'");
    // Set Pixel encoding
    switch (encoding_num) {
     case 0:
@@ -350,6 +370,22 @@ CameraNeo::setCamera(void* _camera, int _id)
              << featureNameList.at(featureCnt);
  QLOG_INFO() << "CameraNeo::setCamera> value " << (int) encoding_num << "(min "
              << encoding_min << " max " << encoding_max << ")";
+
+ // ElectronicShuttering mode feature
+ int acq_min = 0, acq_max = ELECTRONICSHUTTERING_NUMBER - 1;
+ featureIdList.push_back(++featureCnt);
+ featureNameList.push_back(neo_features[featureCnt]);
+ featureMinList.push_back(acq_min);
+ featureMaxList.push_back(acq_max);
+ i_err = AT_GetEnumIndex(*camera, L"ElectronicShutteringMode", &acq_num);
+ errorOk(i_err, "AT_GetEnumIndex 'ElectronicShutteringMode'");
+ featureValueList.push_back(acq_num);
+ featureAbsCapableList.push_back(false);
+ featureAbsValueList.push_back(acq_num);
+ featureModeAutoList.push_back(false);
+ QLOG_INFO() << "CameraNeo::setCamera> get electronic shutter mode feature "
+             << featureNameList.at(featureCnt);
+ QLOG_INFO() << "CameraNeo::setCamera> value " << neo_electronicshuttering_modes[acq_num];
 
  i_err = AT_GetInt(*camera, L"ImageSizeBytes", &BufferSize);
  errorOk(i_err, "AT_GetInt 'ImageSizeBytes'");
@@ -427,6 +463,13 @@ CameraNeo::setCamera(void* _camera, int _id)
  errorOk(i_err, "AT_GetEnumIndex 'TriggerMode'");
  triggerStr.append(" : " + QString(neo_trigger_modes[trigger_num]));
  propList.push_back(triggerStr);
+
+ // ElectronicShuttering Mode
+ QString acqStr = neo_props[++propCnt];;
+ i_err = AT_GetEnumIndex(*camera, L"ElectronicShutteringMode", &acq_num);
+ errorOk(i_err, "AT_GetEnumIndex 'ElectronicShutteringMode'");
+ acqStr.append(" : " + QString(neo_electronicshuttering_modes[acq_num]));
+ propList.push_back(acqStr);
 
  id = _id;
  
@@ -588,6 +631,12 @@ CameraNeo::setFeature(int feature, double value) {
    }
    video_mode = pixel_encoding;
    break;
+   case 7:
+   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[7])
+               << " value " << QString(neo_electronicshuttering_modes[(int)value]);
+   i_err = AT_SetEnumIndex(*camera, L"ElectronicShutteringMode", 1);
+   errorOk(i_err, "AT_SetEnumIndex 'ElectronicShutteringMode'");
+   break;
    default:
    break;
  }
@@ -713,6 +762,13 @@ CameraNeo::getProps() {
  triggerStr.append(" : " + QString(neo_trigger_modes[trigger_num]));
  propList.replace(propCnt, triggerStr);
 
+ // ElectronicShuttering Mode
+ QString acqStr = neo_props[++propCnt];;
+ i_err = AT_GetEnumIndex(*camera, L"ElectronicShutteringMode", &acq_num);
+ errorOk(i_err, "AT_GetEnumIndex 'ElectronicShutteringMode'");
+ acqStr.append(" : " + QString(neo_electronicshuttering_modes[acq_num]));
+ propList.replace(propCnt, acqStr);
+
  QLOG_DEBUG() << "CameraNeo::getProps> Properties updated";
  emit updateProps();
 }
@@ -827,6 +883,15 @@ CameraNeo::getFeatures() {
    }
    video_mode = pixel_encoding;
  
+  // ElectronicShuttering Mode feature
+  featureCnt++;
+  i_err = AT_GetEnumIndex(*camera, L"ElectronicShutteringMode", &acq_num);
+  errorOk(i_err, "AT_GetEnumIndex 'ElectronicShutteringMode'");
+  featureValueList.replace(featureCnt,acq_num);
+  QLOG_INFO() << "CameraNeo::getFeature> get ElectronicShuttering mode feature "
+              << featureNameList.at(featureCnt);
+  QLOG_INFO() << "CameraNeo::getFeature> value " << neo_electronicshuttering_modes[acq_num];
+
   // Refresh properties
   getProps();
 
@@ -885,6 +950,22 @@ CameraNeo::connectCamera() {
   height = static_cast<int>(aoi_height);
   width  = static_cast<int>(aoi_width);
 
+  // Set global shutter mode
+  int shuttercnt;
+  i_err = AT_GetEnumCount(*camera, L"ElectronicShutteringMode", &shuttercnt);
+  errorOk(i_err, "AT_GetEnumCount 'ElectronicShutteringMode'");
+  for (int i = 0 ; i < shuttercnt; i++) {
+     AT_WC item[128];
+     char citem[128];
+     i_err = AT_GetEnumStringByIndex(*camera, L"ElectronicShutteringMode", i, item, 128);
+     wcstombs(citem, item, 64);
+     QLOG_INFO () << "CameraNeo::connectCamera> ElectronicShutteringMode " << i
+                  << " " << QString(citem);
+  }
+  i_err = AT_SetEnumString(*camera, L"ElectronicShutteringMode", L"Global");
+  errorOk(i_err, "AT_SetEnumString 'ElectronicShutteringMode'");
+  QLOG_INFO () << "CameraNeo::connectCamera> Set Global Shutter Mode";
+
   // Set continuous acquisition mode
   int cyclecnt;
   i_err = AT_GetEnumCount(*camera, L"CycleMode", &cyclecnt);
@@ -900,22 +981,6 @@ CameraNeo::connectCamera() {
   i_err = AT_SetEnumString(*camera, L"CycleMode", L"Continuous");
   errorOk(i_err, "AT_SetEnumString 'CycleMode'");
   QLOG_INFO () << "CameraNeo::connectCamera> Set Continuous Cycle Mode";
-
-  // Set rolling shutter mode
-  int shuttercnt;
-  i_err = AT_GetEnumCount(*camera, L"ElectronicShutteringMode", &shuttercnt);
-  errorOk(i_err, "AT_GetEnumCount 'ElectronicShutteringMode'");
-  for (int i = 0 ; i < shuttercnt; i++) {
-     AT_WC item[128];
-     char citem[128];
-     i_err = AT_GetEnumStringByIndex(*camera, L"ElectronicShutteringMode", i, item, 128);
-     wcstombs(citem, item, 64);
-     QLOG_INFO () << "CameraNeo::connectCamera> ElectronicShutteringMode " << i
-                  << " " << QString(citem);
-  }
-  i_err = AT_SetEnumString(*camera, L"ElectronicShutteringMode", L"Rolling");
-  errorOk(i_err, "AT_SetEnumIndex 'ElectronicShutteringMode'");
-  QLOG_INFO () << "CameraNeo::connectCamera> Set Rolling Shutter Mode";
 
   // Set PreAmpGainControl mode
   int gaincnt;
@@ -968,7 +1033,7 @@ CameraNeo::connectCamera() {
      QLOG_INFO () << "CameraNeo::connectCamera> TriggerMode " << i 
                   << " " << QString(citem);
   }
-  i_err = AT_SetEnumString(*camera, L"TriggerMode", L"Internal");
+  i_err = AT_SetEnumString(*camera, L"TriggerMode", L"Software");
   errorOk(i_err, "AT_SetEnumString 'TriggerMode'");
   QLOG_INFO () << "CameraNeo::connectCamera> Set TriggerMode Software";
   

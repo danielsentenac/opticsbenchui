@@ -14,19 +14,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
-#ifdef NEOCAMERA
-#ifndef CAMERANEO_H
-#define CAMERANEO_H
+#ifdef RAPTORCAMERA
+#ifndef CAMERARAPTOR_H
+#define CAMERARAPTOR_H
+#include <xcliball.h>
 #include "Camera.h"
-#include "atcore.h"
 
-class CameraNeo : public Camera
+class CameraRAPTOR : public Camera
 {
   Q_OBJECT
     
     public:
-  CameraNeo();
-  ~CameraNeo();
+  CameraRAPTOR();
+  ~CameraRAPTOR();
  
   void stop();
   int  findCamera();
@@ -34,12 +34,11 @@ class CameraNeo : public Camera
   void getFeatures();
   uchar* getSnapshot();
   int* getSnapshot32();
-  
+
  signals:
   void  getImage(const QImage &image);
   void  showWarning(QString message);
   void  updateFeatures();
-  void  updateProps();
   void  updateMin(int min);
   void  updateMax(int max);
   
@@ -55,23 +54,24 @@ class CameraNeo : public Camera
   int  connectCamera();
   int  acquireImage();
   void cleanup_and_exit();
-  const char * sdkErrorString(int _i_errorCode);
-  bool errorOk(int _i_err, const char * _sz_caller);
-
+  int  readFeature(char* sendreg, int size_sreg, char* readreg, int size_rreg, uchar* data, int size_data);
+  int  writeFeature(char* sendreg, int size_sreg);
+  double getPCBtemperature();
+  double getCCDtemperature();
+  double getEMgain();
+  void   setEMgain(int g);
+  void   setAOI(int left, int width, int top, int height);
+  double getExposure();
+  void   setExposure(double e);
+  struct xclibs *xc;
+  struct pxvidstate   *vidstate;
+  pxbuffer_t framenum;
+  ushort *image16;
   QImage *image;
   int imageWidth;
   int imageHeight;
-  // Neo Andor
-  int i_err;
-  int i_available;
-  AT_H *camera;
-  double exposure, frate, temp;
-  int rrate;
-  AT_64 BufferSize, aoi_height, aoi_width, aoi_left, aoi_top; 
-  ushort** AlignedBuffers;
-  int FrameNumber, encoding_num, gain_num, trigger_num, acq_num;
-  double eTimeTotal, frequency;
+  double frate, frameTotal;
 };
 
-#endif // CAMERANEO_H
+#endif // CAMERARAPTOR_H
 #endif

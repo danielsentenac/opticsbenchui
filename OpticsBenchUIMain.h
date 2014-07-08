@@ -59,6 +59,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef ZYLACAMERA
 #include "CameraZyla.h"
 #endif
+#ifdef RAPTORCAMERA
+#include "CameraRAPTOR.h"
+#endif
 
 class OpticsBenchUIMain : public QMainWindow
 {
@@ -127,6 +130,7 @@ class OpticsBenchUIMain : public QMainWindow
   Camera   *cameraGiGEMgr;
   Camera   *cameraNeoMgr;
   Camera   *cameraZylaMgr;
+  Camera   *cameraRAPTORMgr;
   QVector<Camera*> cameraList;
   QVector<CameraWindow*> camerawindowList;
   

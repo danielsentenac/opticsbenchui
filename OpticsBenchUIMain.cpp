@@ -140,6 +140,21 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
     camerawindowList.push_back(NULL);
   }
 #endif
+  //
+  // Create RAPTOR Falcon Camera manager
+  //
+#ifdef RAPTORCAMERA
+  cameraRAPTORMgr = new CameraRAPTOR();
+  cameraRAPTORMgr->findCamera();
+  QLOG_INFO() << "Found " <<  cameraRAPTORMgr->num << " RAPTOR Falcon camera";
+  for (int i = 0 ; i < cameraRAPTORMgr->num; i++) {
+    Camera *camera = new CameraRAPTOR();
+    camera->setCamera(cameraRAPTORMgr->cameralist.at(i),i);
+    cameraList.push_back(camera);
+    isopencamerawindow.push_back(false);
+    camerawindowList.push_back(NULL);
+  }
+#endif
 
   analysiswidget = new AnalysisWidget();
   analysiswidget->setObjectName("Analysis");
@@ -257,6 +272,17 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
     signalMapper->setMapping(action, cameranumber++);
   }
 #endif
+#ifdef RAPTORCAMERA
+  for (int i = 0 ; i < cameraRAPTORMgr->num; i++) {
+    QString selectedCamera = QString(cameraRAPTORMgr->vendorlist.at(i)) + " / " +
+      QString(cameraRAPTORMgr->modelist.at(i));
+    QAction *action = new QAction(selectedCamera, this);
+    menuInstruments->addAction(action);
+    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(action, cameranumber++);
+  }
+#endif
+
   connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(openCameraWindow(int)));
 
   menuInstruments->addAction("Motor", this, SLOT(openMotorWindow()) );
@@ -443,12 +469,12 @@ int main(int argc, char *argv[])
   g_type_init ();
 #endif
   qInstallMsgHandler(myMessageOutput);
-  QApplication app(argc, argv); 
+
   // init the logging mechanism
   QsLogging::Logger& logger = QsLogging::Logger::instance();
   QDir qdir;
   const QString sLogPath(qdir.currentPath() +  QDir::separator() +
-                        "OpticsBenchUI_" + 
+                        "OpticsBenchUI_" +
                          QDateTime::currentDateTime().toString("MMMdd,yy-hh:mm:ss") +
                          ".log");
   QsLogging::DestinationPtr fileDestination(QsLogging::DestinationFactory::MakeFileDestination(sLogPath) );
@@ -456,12 +482,14 @@ int main(int argc, char *argv[])
   logger.addDestination(debugDestination.get());
   logger.addDestination(fileDestination.get());
   logger.setLoggingLevel(DEBUG_LEVEL);
-  
-  QLOG_INFO() << "OpticsBenchUI version " << OPTICSBENCHUIVERSION
-	      << " started : " <<  app.applicationDirPath();
+
+  QApplication app(argc, argv); 
+  app.addLibraryPath("/usr/local/lib"); 
   QLOG_INFO() << "Built with Qt" << QT_VERSION_STR << "running on" << qVersion();
   QLOG_INFO() << "Qt User Data location : " 
               << QDesktopServices::storageLocation(QDesktopServices::DataLocation); 
+  QLOG_INFO() << "OpticsBenchUI version " << OPTICSBENCHUIVERSION
+              << " started : " <<  app.applicationDirPath();
   OpticsBenchUIMain* OpticsBenchUI = new OpticsBenchUIMain(app.applicationDirPath(),NULL,NULL);
   OpticsBenchUI->setWindowTitle("OpticsBenchUI");
   OpticsBenchUI->show();
@@ -472,6 +500,5 @@ int main(int argc, char *argv[])
   QLOG_INFO() << " Virtual Desktop " << desktop->isVirtualDesktop();
   QLOG_INFO() << " X,Y " << desktop->screenGeometry(0).width() << " " << 
                  desktop->screenGeometry(0).height();
- 
   return app.exec();
 }
