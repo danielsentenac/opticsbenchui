@@ -625,7 +625,7 @@ CameraNeo::setFeature(int feature, double value) {
    errorOk(i_err, "AT_SetFloat 'FrameRate'");
    break;*/
    case 3:
-   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[4])
+   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[3])
                << " value " << QString(neo_readout_rates[(int)value]);
    i_err = AT_SetEnumIndex(*camera, L"PixelReadoutRate", (int)value);
    errorOk(i_err, "AT_SetEnumIndex 'PixelReadoutRate'");
@@ -633,13 +633,13 @@ CameraNeo::setFeature(int feature, double value) {
    errorOk(i_err, "AT_GetEnumIndex 'PixelReadoutRate'");
    break;
    case 4:
-   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[5])
+   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[4])
                << " value " << QString(neo_trigger_modes[(int)value]);
    i_err = AT_SetEnumIndex(*camera, L"TriggerMode", (int)value);
    errorOk(i_err, "AT_SetEnumIndex 'TriggerMode'");
    break;
    case 5:
-   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[6])
+   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[5])
                << " value " << QString(neo_encodings[(int)value]);
    i_err = AT_SetEnumIndex(*camera, L"PixelEncoding", (int)value);
    errorOk(i_err, "AT_SetEnumIndex 'PixelEncoding'");
@@ -663,7 +663,7 @@ CameraNeo::setFeature(int feature, double value) {
    video_mode = pixel_encoding;
    break;
    case 6:
-   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[7])
+   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[6])
                << " value " << QString(neo_electronicshuttering_modes[(int)value]);
    AT_BOOL available;
    i_err = AT_IsEnumIndexAvailable(*camera, L"ElectronicShutteringMode", (int)value, &available);
@@ -673,6 +673,8 @@ CameraNeo::setFeature(int feature, double value) {
    errorOk(i_err, "AT_SetEnumIndex L'ElectronicShutteringMode'");
    break;
    case 7:
+   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[7])
+               << " value " << QString(neo_spurious_modes[(int)value]);
    spurmode = (int) value;
    i_err = AT_SetBool(*camera, L"SpuriousNoiseFilter", spurmode);
    errorOk(i_err, "AT_SetBool 'SpuriousNoiseFilter'");

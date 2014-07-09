@@ -620,7 +620,7 @@ CameraZyla::setFeature(int feature, double value) {
    errorOk(i_err, "AT_SetFloat 'FrameRate'");
    break;*/
    case 3:
-   QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[4])
+   QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[3])
                << " value " << QString(zyla_readout_rates[(int)value]);
    i_err = AT_SetEnumIndex(*camera, L"PixelReadoutRate", (int)value);
    errorOk(i_err, "AT_SetEnumIndex 'PixelReadoutRate'");
@@ -628,13 +628,13 @@ CameraZyla::setFeature(int feature, double value) {
    errorOk(i_err, "AT_GetEnumIndex 'PixelReadoutRate'");
    break;
    case 4:
-   QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[5])
+   QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[4])
                << " value " << QString(zyla_trigger_modes[(int)value]);
    i_err = AT_SetEnumIndex(*camera, L"TriggerMode", (int)value);
    errorOk(i_err, "AT_SetEnumIndex 'TriggerMode'");
    break;
    case 5:
-   QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[6])
+   QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[5])
                << " value " << QString(zyla_encodings[(int)value]);
    i_err = AT_SetEnumIndex(*camera, L"PixelEncoding", (int)value);
    errorOk(i_err, "AT_SetEnumIndex 'PixelEncoding'");
@@ -658,7 +658,7 @@ CameraZyla::setFeature(int feature, double value) {
    video_mode = pixel_encoding;
    break;
    case 6:
-   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(zyla_features[7])
+   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(zyla_features[6])
                << " value " << QString(zyla_electronicshuttering_modes[(int)value]);
    if ((int)value == 0)
      i_err = AT_SetEnumString(*camera, L"ElectronicShutteringMode", L"Rolling");
