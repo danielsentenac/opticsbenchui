@@ -35,7 +35,8 @@ char *zyla_features[]  = {
                         (char*)"Frame Rate",
                         (char*)"Readout Rate",
 			(char*)"Trigger",
-                        (char*)"Encoding"
+                        (char*)"Encoding",
+			(char*)"Electronic Shuttering"
                         };
 char *zyla_props[]  = {
                         (char*)"Temperature",
@@ -49,7 +50,8 @@ char *zyla_props[]  = {
 			(char*)"Readout Rate",
                         (char*)"Frame Rate",
 			(char*)"PC Rate",
-			(char*)"Trigger"
+			(char*)"Trigger",
+			(char*)"Electronic Shuttering"
                         };
 char *zyla_encodings[]  = {
                            (char*)"Mono12", 
@@ -367,6 +369,22 @@ CameraZyla::setCamera(void* _camera, int _id)
  QLOG_INFO() << "CameraZyla::setCamera> value " << (int) encoding_num << "(min "
              << encoding_min << " max " << encoding_max << ")";
 
+ // ElectronicShuttering mode feature
+ int acq_min = 0, acq_max = ELECTRONICSHUTTERING_NUMBER - 1;
+ featureIdList.push_back(++featureCnt);
+ featureNameList.push_back(zyla_features[featureCnt]);
+ featureMinList.push_back(acq_min);
+ featureMaxList.push_back(acq_max);
+ i_err = AT_GetEnumIndex(*camera, L"ElectronicShutteringMode", &acq_num);
+ errorOk(i_err, "AT_GetEnumIndex 'ElectronicShutteringMode'");
+ featureValueList.push_back(acq_num);
+ featureAbsCapableList.push_back(false);
+ featureAbsValueList.push_back(acq_num);
+ featureModeAutoList.push_back(false);
+ QLOG_INFO() << "CameraNeo::setCamera> get electronic shutter mode feature "
+             << featureNameList.at(featureCnt);
+ QLOG_INFO() << "CameraNeo::setCamera> value " << zyla_electronicshuttering_modes[acq_num];
+
  i_err = AT_GetInt(*camera, L"ImageSizeBytes", &BufferSize);
  errorOk(i_err, "AT_GetInt 'ImageSizeBytes'");
  QLOG_INFO () << "CameraZyla::setCamera> size for image " 
@@ -466,6 +484,13 @@ CameraZyla::setCamera(void* _camera, int _id)
  errorOk(i_err, "AT_GetEnumIndex 'TriggerMode'");
  triggerStr.append(" : " + QString(zyla_trigger_modes[trigger_num]));
  propList.push_back(triggerStr);
+
+ // ElectronicShuttering Mode
+ QString acqStr = zyla_props[++propCnt];;
+ i_err = AT_GetEnumIndex(*camera, L"ElectronicShutteringMode", &acq_num);
+ errorOk(i_err, "AT_GetEnumIndex 'ElectronicShutteringMode'");
+ acqStr.append(" : " + QString(zyla_electronicshuttering_modes[acq_num]));
+ propList.push_back(acqStr);
 
  id = _id;
  
@@ -627,6 +652,12 @@ CameraZyla::setFeature(int feature, double value) {
    }
    video_mode = pixel_encoding;
    break;
+   case 7:
+   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(zyla_features[7])
+               << " value " << QString(zyla_electronicshuttering_modes[(int)value]);
+   i_err = AT_SetEnumIndex(*camera, L"ElectronicShutteringMode", 1);
+   errorOk(i_err, "AT_SetEnumIndex 'ElectronicShutteringMode'");
+   break;
    default:
    break;
  }
@@ -774,6 +805,13 @@ CameraZyla::getProps() {
  errorOk(i_err, "AT_GetEnumIndex 'TriggerMode'");
  triggerStr.append(" : " + QString(zyla_trigger_modes[trigger_num]));
  propList.replace(propCnt, triggerStr);
+
+ // ElectronicShuttering Mode
+ QString acqStr = zyla_props[++propCnt];;
+ i_err = AT_GetEnumIndex(*camera, L"ElectronicShutteringMode", &acq_num);
+ errorOk(i_err, "AT_GetEnumIndex 'ElectronicShutteringMode'");
+ acqStr.append(" : " + QString(zyla_electronicshuttering_modes[acq_num]));
+ propList.replace(propCnt, acqStr);
 
  QLOG_DEBUG() << "CameraZyla::getProps> Properties updated";
  emit updateProps();
