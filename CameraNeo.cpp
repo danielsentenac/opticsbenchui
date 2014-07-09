@@ -37,7 +37,8 @@ char *neo_features[]  = {
                         (char*)"Readout Rate",
 			(char*)"Trigger",
                         (char*)"Encoding",
-                        (char*)"Electronic Shuttering"
+                        (char*)"Electronic Shuttering",
+                        (char*)"Spurious mode filter"
                         };
 char *neo_props[]  = {
                         (char*)"Temperature",
@@ -49,7 +50,8 @@ char *neo_props[]  = {
                         (char*)"Frame Rate",
 			(char*)"PC Rate",
 			(char*)"Trigger",
-                        (char*)"Electronic Shuttering"
+                        (char*)"Electronic Shuttering",
+                        (char*)"Spurious mode filter"
                         };
 char *neo_encodings[]  = {
                         (char*)"Mono12",
@@ -91,6 +93,10 @@ char *neo_trigger_modes[]  = {
 char *neo_electronicshuttering_modes[]  = {
                         (char*)"Rolling",
                         (char*)"Global"
+                        };
+char *neo_spurious_modes[]  = {
+                        (char*)"OFF",
+                        (char*)"ON"
                         };
 int neo_aoi_settings[][4] = {
                           //{2592,1,2160,1},
@@ -387,6 +393,24 @@ CameraNeo::setCamera(void* _camera, int _id)
              << featureNameList.at(featureCnt);
  QLOG_INFO() << "CameraNeo::setCamera> value " << neo_electronicshuttering_modes[acq_num];
 
+ // Spurious Mode Filter
+ AT_BOOL  spurmode;
+ int spurmode_min = 0, spurmode_max = 1;
+ featureIdList.push_back(++featureCnt);
+ featureNameList.push_back(neo_features[featureCnt]);
+ featureMinList.push_back(spurmode_min);
+ featureMaxList.push_back(spurmode_max);
+ i_err = AT_GetBool(*camera, L"SpuriousNoiseFilter", &spurmode);
+ errorOk(i_err, "AT_GetBool 'SpuriousNoiseFilter'");
+ QLOG_INFO() << "CameraNeo::setCamera>  SpuriousNoiseFilter : " << spurmode;
+ featureValueList.push_back(spurmode);
+ featureAbsCapableList.push_back(false);
+ featureAbsValueList.push_back(spurmode);
+ featureModeAutoList.push_back(false);
+ QLOG_INFO() << "CameraNeo::setCamera> get spurious mode feature "
+             << featureNameList.at(featureCnt);
+ QLOG_INFO() << "CameraNeo::setCamera> value " << neo_spurious_modes[spurmode];
+
  i_err = AT_GetInt(*camera, L"ImageSizeBytes", &BufferSize);
  errorOk(i_err, "AT_GetInt 'ImageSizeBytes'");
  QLOG_INFO () << "CameraNeo::setCamera> size for image " 
@@ -471,6 +495,13 @@ CameraNeo::setCamera(void* _camera, int _id)
  acqStr.append(" : " + QString(neo_electronicshuttering_modes[acq_num]));
  propList.push_back(acqStr);
 
+ // Spurious Mode Filter
+ QString spurmodeStr = neo_props[++propCnt];;
+ i_err = AT_GetBool(*camera, L"SpuriousNoiseFilter", &spurmode);
+ errorOk(i_err, "AT_GetBool 'SpuriousNoiseFilter'");
+ spurmodeStr.append(" : " + QString(neo_electronicshuttering_modes[spurmode]));
+ propList.push_back(spurmodeStr);
+ 
  id = _id;
  
  camera_err = connectCamera();
@@ -555,7 +586,7 @@ CameraNeo::setFeature(int feature, double value) {
   i_err = AT_Flush(*camera);
   errorOk(i_err, "AT_Flush");
   FrameNumber = 0;
-
+  AT_BOOL spurmode;
    switch ( feature ) {
    case 0:
    QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[0])
@@ -634,9 +665,17 @@ CameraNeo::setFeature(int feature, double value) {
    case 6:
    QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[7])
                << " value " << QString(neo_electronicshuttering_modes[(int)value]);
-   i_err = AT_SetEnumIndex(*camera, L"ElectronicShutteringMode", 1);
-   errorOk(i_err, "AT_SetEnumIndex 'ElectronicShutteringMode'");
+   AT_BOOL available;
+   i_err = AT_IsEnumIndexAvailable(*camera, L"ElectronicShutteringMode", (int)value, &available);
+   errorOk(i_err, "AT_IsEnumIndexAvailable L'ElectronicShutteringMode'");
+   QLOG_INFO() << "CameraNeo::setFeature> " << QString(neo_electronicshuttering_modes[(int)value]) << " is available ? " << available;
+   i_err = AT_SetEnumIndex(*camera, L"ElectronicShutteringMode", (int) value);
+   errorOk(i_err, "AT_SetEnumIndex L'ElectronicShutteringMode'");
    break;
+   case 7:
+   spurmode = (int) value;
+   i_err = AT_SetBool(*camera, L"SpuriousNoiseFilter", spurmode);
+   errorOk(i_err, "AT_SetBool 'SpuriousNoiseFilter'");
    default:
    break;
  }
@@ -770,6 +809,14 @@ CameraNeo::getProps() {
  acqStr.append(" : " + QString(neo_electronicshuttering_modes[acq_num]));
  propList.replace(propCnt, acqStr);
 
+ // Spuriouse Mode Filter
+ QString spurmodeStr = neo_props[++propCnt];
+ AT_BOOL spurmode;
+ i_err = AT_GetBool(*camera, L"SpuriousNoiseFilter", &spurmode);
+ errorOk(i_err, "AT_GetBool 'SpuriousNoiseFilter'");
+ spurmodeStr.append(" : " + QString(neo_spurious_modes[spurmode]));
+ propList.replace(propCnt, spurmodeStr);
+
  QLOG_DEBUG() << "CameraNeo::getProps> Properties updated";
  emit updateProps();
 }
@@ -893,6 +940,16 @@ CameraNeo::getFeatures() {
               << featureNameList.at(featureCnt);
   QLOG_INFO() << "CameraNeo::getFeature> value " << neo_electronicshuttering_modes[acq_num];
 
+  // Spurious Mode Filter feature
+  featureCnt++;
+  AT_BOOL spurmode;
+  i_err = AT_GetBool(*camera, L"SpuriousNoiseFilter", &spurmode);
+  errorOk(i_err, "AT_GetBool 'SpuriousNoiseFilter'");
+  featureValueList.replace(featureCnt,spurmode);
+  QLOG_INFO() << "CameraNeo::getFeature> get SpuriousNoiseFilter mode feature "
+              << featureNameList.at(featureCnt);
+  QLOG_INFO() << "CameraNeo::getFeature> value " << neo_spurious_modes[spurmode];
+
   emit updateFeatures();
 }
 
@@ -960,10 +1017,6 @@ CameraNeo::connectCamera() {
      QLOG_INFO () << "CameraNeo::connectCamera> ElectronicShutteringMode " << i
                   << " " << QString(citem);
   }
-  i_err = AT_SetEnumString(*camera, L"ElectronicShutteringMode", L"Global");
-  errorOk(i_err, "AT_SetEnumString 'ElectronicShutteringMode'");
-  QLOG_INFO () << "CameraNeo::connectCamera> Set Global Shutter Mode";
-
   // Set continuous acquisition mode
   int cyclecnt;
   i_err = AT_GetEnumCount(*camera, L"CycleMode", &cyclecnt);
@@ -980,7 +1033,7 @@ CameraNeo::connectCamera() {
   errorOk(i_err, "AT_SetEnumString 'CycleMode'");
   QLOG_INFO () << "CameraNeo::connectCamera> Set Continuous Cycle Mode";
 
-  // Set PreAmpGainControl mode
+  // Get PreAmpGainControl modes
   int gaincnt;
   i_err = AT_GetEnumCount(*camera, L"PreAmpGainControl", &gaincnt);
   errorOk(i_err, "AT_GetEnumCount 'PreAmpGainControl'");
@@ -993,7 +1046,7 @@ CameraNeo::connectCamera() {
                   << " " << QString(citem);
   }
 
-  // Set PixelEncoding
+  // Get PixelEncoding modes
   int encodingcnt;
   i_err = AT_GetEnumCount(*camera, L"PixelEncoding", &encodingcnt);
   errorOk(i_err, "AT_GetEnumCount 'PixelEncoding'");
@@ -1006,7 +1059,7 @@ CameraNeo::connectCamera() {
                   << " " << QString(citem);
   }
 
-  // Set Pixel Readout Rate mode
+  // Get Pixel Readout Rate modes
   int rratecnt;
   i_err = AT_GetEnumCount(*camera, L"PixelReadoutRate", &rratecnt);
   errorOk(i_err, "AT_GetEnumCount 'PixelReadoutRate'");
