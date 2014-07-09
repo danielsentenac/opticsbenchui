@@ -63,6 +63,8 @@ class CameraRAPTOR : public Camera
   void   setAOI(int left, int width, int top, int height);
   double getExposure();
   void   setExposure(double e);
+  QString getBloomState();
+  void   setBloomState(int value);
   struct xclibs *xc;
   struct pxvidstate   *vidstate;
   pxbuffer_t framenum;

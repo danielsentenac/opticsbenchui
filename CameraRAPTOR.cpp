@@ -23,7 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 char *raptor_features[]  = {
                         (char*)"Exposure",
                         (char*)"Gain",
-                        (char*)"AOI"
+                        (char*)"AOI",
+                        (char*)"Anti Blooming"
                         };
 char *raptor_props[]  = {
                         (char*)"PCB Temp.",
@@ -32,7 +33,8 @@ char *raptor_props[]  = {
                         (char*)"EM Gain",
                         (char*)"Exposure",
                         (char*)"PC Rate",
-                        (char*)"Frame Rate"
+                        (char*)"Frame Rate",
+                        (char*)"Anti Blooming"
                         };
 int raptor_aoi_settings[][4] = {
                           {0,128,0,128},
@@ -87,8 +89,13 @@ CameraRAPTOR::setCamera(void* _camera, int _id)
 {
   /* Init camera*/
   vendor = "FalconRaptor";
-  int featureCnt = 0;
 
+  camera_err = connectCamera();
+
+  QLOG_DEBUG() << "CameraRAPTOR::setCamera " << vendor << " model : "
+              << model << " - Err : " << camera_err;
+
+  int featureCnt = 0;
  // Exposure feature
  double exp_min, exp_max;
  featureIdList.push_back(featureCnt);
@@ -99,7 +106,7 @@ CameraRAPTOR::setCamera(void* _camera, int _id)
  featureMaxList.push_back(exp_max);
  double exposure = getExposure() ;
  featureValueList.push_back( exposure );
- featureAbsCapableList.push_back(true);
+ featureAbsCapableList.push_back(false);
  featureAbsValueList.push_back(exposure);
  featureModeAutoList.push_back(false);
 
@@ -113,10 +120,11 @@ CameraRAPTOR::setCamera(void* _camera, int _id)
  featureMaxList.push_back(gain_max);
  double gain = getEMgain() ;
  featureValueList.push_back( gain );
- featureAbsCapableList.push_back(true);
+ featureAbsCapableList.push_back(false);
  featureAbsValueList.push_back(gain);
  featureModeAutoList.push_back(false);
  
+ // AOI feature
  int aoi_num = 3;
  int aoi_min = 0, aoi_max = RAPTOR_AOI_NUMBER - 1;
  featureIdList.push_back(++featureCnt);
@@ -127,6 +135,21 @@ CameraRAPTOR::setCamera(void* _camera, int _id)
  featureAbsCapableList.push_back(false);
  featureAbsValueList.push_back(aoi_num);
  featureModeAutoList.push_back(false);
+
+ // Antiblooming feature
+ int bloom_num = 0;
+ int bloom_min = 0, bloom_max = 1;
+ featureIdList.push_back(++featureCnt);
+ featureNameList.push_back(raptor_features[featureCnt]);
+ featureValueList.push_back(bloom_num);
+ featureMinList.push_back(bloom_min);
+ featureMaxList.push_back(bloom_max);
+ featureAbsCapableList.push_back(false);
+ featureAbsValueList.push_back(bloom_num);
+ featureModeAutoList.push_back(false);
+
+ // Update features from camera
+ getFeatures();
 
  // Properties
  int propCnt = 0;
@@ -172,10 +195,11 @@ CameraRAPTOR::setCamera(void* _camera, int _id)
   frateStr.append(" Hz");
   propList.push_back(frateStr);
 
-  camera_err = connectCamera();
+  // Antiblooming prop
+  QString bloomStr = raptor_props[++propCnt];;
+  bloomStr.append(" : " + getBloomState());
+  propList.push_back(bloomStr);
 
-  QLOG_DEBUG() << "CameraRAPTOR::setCamera " << vendor << " model : "
-              << model << " - Err : " << camera_err;
 }
 
 uchar* 
@@ -318,6 +342,8 @@ CameraRAPTOR::setFeature(int feature, double value) {
      image->setColorTable(table);
      acquireMutex->unlock();
      break;
+   case 3:
+     setBloomState((int)value);
    default:
      break;
   }
@@ -347,6 +373,14 @@ CameraRAPTOR::getFeatures() {
    if (width == raptor_aoi_settings[i][1])
      featureValueList.replace(++featureCnt, i );
  }
+ // Bloom feature
+ featureCnt++;
+ int bloomState = 0;
+ if ( getBloomState() == "ON" )
+   bloomState = 1;
+ featureValueList.replace(featureCnt, bloomState);
+
+ emit updateFeatures();
 }
 void 
 CameraRAPTOR::getProps()  {
@@ -395,6 +429,11 @@ CameraRAPTOR::getProps()  {
   frateStr.append(" : " + QString::number((int)frate));
   frateStr.append(" Hz");
   propList.replace(propCnt,frateStr);
+
+  // Bloom state prop
+  QString bloomStr = raptor_props[++propCnt];;
+  bloomStr.append(" : " + getBloomState());
+  propList.replace(propCnt,bloomStr);
 
   QLOG_DEBUG() << "CameraRAPTOR::getProps> Properties updated";
   emit updateProps();
@@ -636,40 +675,6 @@ void CameraRAPTOR::setAOI(int left, int width, int top, int height) {
   writeFeature (setadrs6, 6);
   writeFeature (setadrs7, 6);
   writeFeature (setadrs8, 6);
-
-  // Check new values
-  QLOG_DEBUG() << "CameraRAPTOR::setAOI> Check return values ";
-  char rsetadrs1[]   = { 0x53, 0xE0, 0x01, 0xDD, 0x50 };
-  char rsetadrs2[]   = { 0x53, 0xE0, 0x01, 0xDE, 0x50 };
-  char rsetadrs3[]   = { 0x53, 0xE0, 0x01, 0xDF, 0x50 };
-  char rsetadrs4[]   = { 0x53, 0xE0, 0x01, 0xE0, 0x50 };
-  char rsetadrs5[]   = { 0x53, 0xE0, 0x01, 0xD9, 0x50 };
-  char rsetadrs6[]   = { 0x53, 0xE0, 0x01, 0xDA, 0x50 };
-  char rsetadrs7[]   = { 0x53, 0xE0, 0x01, 0xDB, 0x50 };
-  char rsetadrs8[]   = { 0x53, 0xE0, 0x01, 0xDC, 0x50 };
-  char readadrs[]   = { 0x53, 0xE1, 0x01, 0x50 };
-  uchar resp1[] = { 0x0 };
-  uchar resp2[] = { 0x0 };
-  readFeature (rsetadrs1, 5, readadrs, 4, resp1, 1);
-  readFeature (rsetadrs2, 5, readadrs, 4, resp2, 1);
-  int  l = ((resp2[0]&0x0F)<<8) | (resp1[0]&0xFF);
-  QLOG_DEBUG() << "left =" <<  l;
-  readFeature (rsetadrs3, 5, readadrs, 4, resp1, 1);
-  readFeature (rsetadrs4, 5, readadrs, 4, resp2, 1);
-  int  w = ((resp2[0]&0x0F)<<8) | (resp1[0]&0xFF);
-  QLOG_DEBUG() << "width =" <<  w;
-  readFeature (rsetadrs5, 5, readadrs, 4, resp1, 1);
-  readFeature (rsetadrs6, 5, readadrs, 4, resp2, 1);
-  int  t = ((resp2[0]&0x0F)<<8) | (resp1[0]&0xFF);
-  QLOG_DEBUG() << "top =" <<  t;
-  readFeature (rsetadrs7, 5, readadrs, 4, resp1, 1);
-  readFeature (rsetadrs8, 5, readadrs, 4, resp2, 1);
-  int  h = ((resp2[0]&0x0F)<<8) | (resp1[0]&0xFF);
-  QLOG_DEBUG() << "height =" <<  h;
-  width = pxd_imageXdim();
-  height =  pxd_imageYdim();
-  QLOG_DEBUG() << "Returned width " << width;
-  QLOG_DEBUG() << "Returned height " << height;
 }
 double CameraRAPTOR::getExposure() {
   QLOG_DEBUG() << "Get Raptor exposure";
@@ -720,4 +725,40 @@ double CameraRAPTOR::getCCDtemperature() {
   QLOG_DEBUG() << "ccdtemp =" <<  t;
   return t;
 }
+QString CameraRAPTOR::getBloomState() {
+  QString bloomState;
+  QLOG_DEBUG() << "Get Raptor Bloom state";
+
+  char setadrs1[]   = { 0x53, 0xE0, 0x01, 0x0F, 0x50 };
+  char setadrs2[]   = { 0x53, 0xE0, 0x01, 0x10, 0x50 };
+  char readadrs[]   = { 0x53, 0xE1, 0x01, 0x50 };
+  uchar resp1[] = { 0x0 };
+  uchar resp2[] = { 0x0 };
+
+  readFeature (setadrs1, 5, readadrs, 4, resp1, 1);
+  readFeature (setadrs2, 5, readadrs, 4, resp2, 1);
+
+  if ( resp1[0] == 0x0A && resp2[0] == 0x8C )
+   bloomState = "ON";
+  else if ( resp1[0] == 0x09 && resp2[0] == 0x55 )
+   bloomState = "OFF";
+
+  return bloomState;
+}
+void CameraRAPTOR::setBloomState(int value) {
+  QLOG_DEBUG() << "Set Raptor Bloom state";
+  char setadrs1[]   = { 0x53, 0xE0, 0x02, 0x0F, 0x0A, 0x50 };
+  char setadrs2[]   = { 0x53, 0xE0, 0x02, 0x10, 0x8C, 0x50 };
+  char setadrs3[]   = { 0x53, 0xE0, 0x02, 0x0F, 0x09, 0x50 };
+  char setadrs4[]   = { 0x53, 0xE0, 0x02, 0x10, 0x55, 0x50 };
+  if ( value == 0 ) {
+    writeFeature (setadrs3, 6);
+    writeFeature (setadrs4, 6);
+  }
+  else if ( value == 1 ) {
+    writeFeature (setadrs1, 6);
+    writeFeature (setadrs2, 6);
+  }
+}
+
 #endif
