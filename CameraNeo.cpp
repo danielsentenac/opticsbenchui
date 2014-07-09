@@ -771,6 +771,8 @@ CameraNeo::getProps() {
 
  QLOG_DEBUG() << "CameraNeo::getProps> Properties updated";
  emit updateProps();
+
+ getFeatures();
 }
 
 void
