@@ -33,7 +33,7 @@ char *zyla_features[]  = {
                         (char*)"Exposure",
                         (char*)"ROI",
                         (char*)"Gain",
-                        (char*)"Frame Rate",
+//                        (char*)"Frame Rate",
                         (char*)"Readout Rate",
 			(char*)"Trigger",
                         (char*)"Encoding",
@@ -278,7 +278,7 @@ CameraZyla::setCamera(void* _camera, int _id)
  QLOG_INFO() << "CameraZyla::setCamera> value " << gain_num << "(min "
              << gain_min << " max " << gain_max  << ")";
 
- // Frame Rate feature
+ /* Frame Rate feature
  double frate_min, frate_max;
  featureIdList.push_back(++featureCnt);
  featureNameList.push_back(zyla_features[featureCnt]);
@@ -306,7 +306,7 @@ CameraZyla::setCamera(void* _camera, int _id)
              << featureNameList.at(featureCnt);
  QLOG_INFO() << "CameraZyla::setCamera> value " << (int) frate << "(min "
              << (int)frate_min << " max " << (int)frate_max << ")";
-
+*/
  // Readout Rate feature
  int rrate_min = 0, rrate_max = READOUTRATE_NUMBER - 1;
  featureIdList.push_back(++featureCnt);
@@ -613,13 +613,13 @@ CameraZyla::setFeature(int feature, double value) {
    i_err = AT_SetEnumIndex(*camera, L"SimplePreAmpGainControl", (int)value);
    errorOk(i_err, "AT_SetEnumIndex 'AOISimplePreAmpGainControl'");
    break;
-   case 3:
+ /*  case 3:
    QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[3])
                << " value " << value << " Hz";
    i_err = AT_SetFloat(*camera, L"FrameRate", value );
    errorOk(i_err, "AT_SetFloat 'FrameRate'");
-   break;
-   case 4:
+   break;*/
+   case 3:
    QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[4])
                << " value " << QString(zyla_readout_rates[(int)value]);
    i_err = AT_SetEnumIndex(*camera, L"PixelReadoutRate", (int)value);
@@ -627,13 +627,13 @@ CameraZyla::setFeature(int feature, double value) {
    i_err = AT_GetEnumIndex(*camera, L"PixelReadoutRate", &rrate);
    errorOk(i_err, "AT_GetEnumIndex 'PixelReadoutRate'");
    break;
-   case 5:
+   case 4:
    QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[5])
                << " value " << QString(zyla_trigger_modes[(int)value]);
    i_err = AT_SetEnumIndex(*camera, L"TriggerMode", (int)value);
    errorOk(i_err, "AT_SetEnumIndex 'TriggerMode'");
    break;
-   case 6:
+   case 5:
    QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[6])
                << " value " << QString(zyla_encodings[(int)value]);
    i_err = AT_SetEnumIndex(*camera, L"PixelEncoding", (int)value);
@@ -657,7 +657,7 @@ CameraZyla::setFeature(int feature, double value) {
    }
    video_mode = pixel_encoding;
    break;
-   case 7:
+   case 6:
    QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(zyla_features[7])
                << " value " << QString(zyla_electronicshuttering_modes[(int)value]);
    if ((int)value == 0)
@@ -708,6 +708,7 @@ CameraZyla::setFeature(int feature, double value) {
    QLOG_INFO () << "CameraZyla::setFeature> AcquisitionStart";
    //acquireMutex->unlock();
    this->start();
+   getFeatures();
    getProps();
 }
 void
@@ -875,7 +876,7 @@ CameraZyla::getFeatures() {
   if (errorOk(i_err, "AT_GetEnumIndex 'SimplePreAmpGainControl'")) 
     featureValueList.replace(featureCnt, gain_num); 
 
-  // Frame Rate feature
+  /* Frame Rate feature
   featureCnt++;
   double frate_min, frate_max;
   i_err = AT_GetFloat(*camera, L"FrameRate", &frate);
@@ -894,7 +895,7 @@ CameraZyla::getFeatures() {
              << featureNameList.at(featureCnt);
   QLOG_INFO() << "CameraZyla::getFeature> value " << (int)frate << "(min "
              << (int)frate_min << " max " << (int)frate_max << ")";
-  
+  */
   // Readout Rate feature
   featureCnt++;
   i_err = AT_GetEnumIndex(*camera, L"PixelReadoutRate", &rrate);
@@ -937,7 +938,16 @@ CameraZyla::getFeatures() {
     break;
    }
    video_mode = pixel_encoding;
- 
+  
+  // ElectronicShuttering Mode feature
+  featureCnt++;
+  i_err = AT_GetEnumIndex(*camera, L"ElectronicShutteringMode", &acq_num);
+  errorOk(i_err, "AT_GetEnumIndex 'ElectronicShutteringMode'");
+  featureValueList.replace(featureCnt,acq_num);
+  QLOG_INFO() << "CameraZyla::getFeature> get ElectronicShuttering mode feature "
+              << featureNameList.at(featureCnt);
+  QLOG_INFO() << "CameraZyla::getFeature> value " << zyla_electronicshuttering_modes[acq_num];
+
   emit updateFeatures();
 }
 
@@ -1089,7 +1099,7 @@ CameraZyla::connectCamera() {
                   << " " << QString(citem);
   }
 
-  // Set rolling shutter mode
+  /* Set rolling shutter mode
   int shuttercnt;
   i_err = AT_GetEnumCount(*camera, L"ElectronicShutteringMode", &shuttercnt);
   errorOk(i_err, "AT_GetEnumCount 'ElectronicShutteringMode'");
@@ -1104,7 +1114,7 @@ CameraZyla::connectCamera() {
   i_err = AT_SetEnumString(*camera, L"ElectronicShutteringMode", L"Rolling");
   errorOk(i_err, "AT_SetEnumIndex 'ElectronicShutteringMode'");
   QLOG_INFO () << "CameraZyla::connectCamera> Set Rolling Shutter Mode";
-
+ */
   // Set SimplePreAmpGainControl mode
   int gaincnt;
   i_err = AT_GetEnumCount(*camera, L"SimplePreAmpGainControl", &gaincnt);

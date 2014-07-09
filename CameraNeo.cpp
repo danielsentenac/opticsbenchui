@@ -33,7 +33,7 @@ char *neo_features[]  = {
                         (char*)"Exposure",
                         (char*)"ROI",
                         (char*)"Gain",
-                        (char*)"Frame Rate",
+//                        (char*)"Frame Rate",
                         (char*)"Readout Rate",
 			(char*)"Trigger",
                         (char*)"Encoding",
@@ -275,7 +275,7 @@ CameraNeo::setCamera(void* _camera, int _id)
  QLOG_INFO() << "CameraNeo::setCamera> value " << gain_num << "(min "
              << gain_min << " max " << gain_max  << ")";
 
- // Frame Rate feature
+ /* Frame Rate feature
  double frate_min, frate_max;
  featureIdList.push_back(++featureCnt);
  featureNameList.push_back(neo_features[featureCnt]);
@@ -303,7 +303,7 @@ CameraNeo::setCamera(void* _camera, int _id)
              << featureNameList.at(featureCnt);
  QLOG_INFO() << "CameraNeo::setCamera> value " << (int) frate << "(min "
              << (int)frate_min << " max " << (int)frate_max << ")";
-
+*/
  // Readout Rate feature
  int rrate_min = 0, rrate_max = READOUTRATE_NUMBER - 1;
  featureIdList.push_back(++featureCnt);
@@ -587,13 +587,13 @@ CameraNeo::setFeature(int feature, double value) {
    i_err = AT_SetEnumIndex(*camera, L"PreAmpGainControl", (int)value);
    errorOk(i_err, "AT_SetEnumIndex 'AOIPreAmpGainControl'");
    break;
-   case 3:
+ /*  case 3:
    QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[3])
                << " value " << value << " Hz";
    i_err = AT_SetFloat(*camera, L"FrameRate", value );
    errorOk(i_err, "AT_SetFloat 'FrameRate'");
-   break;
-   case 4:
+   break;*/
+   case 3:
    QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[4])
                << " value " << QString(neo_readout_rates[(int)value]);
    i_err = AT_SetEnumIndex(*camera, L"PixelReadoutRate", (int)value);
@@ -601,13 +601,13 @@ CameraNeo::setFeature(int feature, double value) {
    i_err = AT_GetEnumIndex(*camera, L"PixelReadoutRate", &rrate);
    errorOk(i_err, "AT_GetEnumIndex 'PixelReadoutRate'");
    break;
-   case 5:
+   case 4:
    QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[5])
                << " value " << QString(neo_trigger_modes[(int)value]);
    i_err = AT_SetEnumIndex(*camera, L"TriggerMode", (int)value);
    errorOk(i_err, "AT_SetEnumIndex 'TriggerMode'");
    break;
-   case 6:
+   case 5:
    QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[6])
                << " value " << QString(neo_encodings[(int)value]);
    i_err = AT_SetEnumIndex(*camera, L"PixelEncoding", (int)value);
@@ -631,7 +631,7 @@ CameraNeo::setFeature(int feature, double value) {
    }
    video_mode = pixel_encoding;
    break;
-   case 7:
+   case 6:
    QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(neo_features[7])
                << " value " << QString(neo_electronicshuttering_modes[(int)value]);
    i_err = AT_SetEnumIndex(*camera, L"ElectronicShutteringMode", 1);
@@ -676,6 +676,7 @@ CameraNeo::setFeature(int feature, double value) {
    QLOG_INFO () << "CameraNeo::setFeature> AcquisitionStart";
    //acquireMutex->unlock();
    this->start();
+   getFeatures();
    getProps();
 }
 void
@@ -771,8 +772,6 @@ CameraNeo::getProps() {
 
  QLOG_DEBUG() << "CameraNeo::getProps> Properties updated";
  emit updateProps();
-
- getFeatures();
 }
 
 void
@@ -822,7 +821,7 @@ CameraNeo::getFeatures() {
   if (errorOk(i_err, "AT_GetEnumIndex 'PreAmpGainControl'")) 
     featureValueList.replace(featureCnt, gain_num); 
 
-  // Frame Rate feature
+  /* Frame Rate feature
   featureCnt++;
   double frate_min, frate_max;
   i_err = AT_GetFloat(*camera, L"FrameRate", &frate);
@@ -841,7 +840,7 @@ CameraNeo::getFeatures() {
              << featureNameList.at(featureCnt);
   QLOG_INFO() << "CameraNeo::getFeature> value " << (int)frate << "(min "
              << (int)frate_min << " max " << (int)frate_max << ")";
-  
+  */
   // Readout Rate feature
   featureCnt++;
   i_err = AT_GetEnumIndex(*camera, L"PixelReadoutRate", &rrate);
