@@ -1088,11 +1088,6 @@ CameraNeo::connectCamera() {
   errorOk(i_err, "AT_SetEnumString 'TriggerMode'");
   QLOG_INFO () << "CameraNeo::connectCamera> Set TriggerMode Software";
   
-  // Set spurious noise filter mode
-  i_err = AT_SetBool(*camera, L"SpuriousNoiseFilter", AT_TRUE);
-  errorOk(i_err, "AT_SetBool 'SpuriousNoiseFilter'");
-  QLOG_INFO () << "CameraNeo::connectCamera> Set SpuriousNoiseFilter to TRUE";
-
   /*-----------------------------------------------------------------------
    *  setup capture
    *-----------------------------------------------------------------------*/
