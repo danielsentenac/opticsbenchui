@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define NUMBER_OF_BUFFERS 1
 #define GAIN_NUMBER 3
 #define TRIGGER_NUMBER 7
+#define ELECTRONICSHUTTERING_NUMBER 2
 #define ENCODING_NUMBER 3
 #define AOI_NUMBER 8
 #define READOUTRATE_NUMBER 4
@@ -102,6 +103,10 @@ char *zyla_trigger_modes[]  = {
                         (char*)"Advanced",
                         (char*)"External"
 			};
+char *zyla_electronicshuttering_modes[]  = {
+                        (char*)"Rolling",
+                        (char*)"Global"
+                        };
 int zyla_aoi_settings[][4] = {
 		       	  {2544,25,2160,1},
 			  {2064,265,2048,57},
@@ -655,8 +660,14 @@ CameraZyla::setFeature(int feature, double value) {
    case 7:
    QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(zyla_features[7])
                << " value " << QString(zyla_electronicshuttering_modes[(int)value]);
-   i_err = AT_SetEnumIndex(*camera, L"ElectronicShutteringMode", 1);
-   errorOk(i_err, "AT_SetEnumIndex 'ElectronicShutteringMode'");
+   if ((int)value == 0)
+     i_err = AT_SetEnumString(*camera, L"ElectronicShutteringMode", L"Rolling");
+   else if ((int)value == 1) {
+     i_err = AT_SetEnumString(*camera, L"ElectronicShutteringMode", L"Global");
+     QLOG_INFO() << "CameraNeo::setFeature> Confirm feature " << QString(zyla_features[7])
+               << " value " << QString(zyla_electronicshuttering_modes[(int)value]);
+   }
+   errorOk(i_err, "AT_SetEnumString 'ElectronicShutteringMode'");
    break;
    default:
    break;
@@ -697,7 +708,7 @@ CameraZyla::setFeature(int feature, double value) {
    QLOG_INFO () << "CameraZyla::setFeature> AcquisitionStart";
    //acquireMutex->unlock();
    this->start();
-
+   getProps();
 }
 void
 CameraZyla::setMode(int feature, bool value) {
@@ -871,10 +882,10 @@ CameraZyla::getFeatures() {
   errorOk(i_err, "AT_GetFloat 'FrameRate'");
   i_err = AT_GetFloatMin(*camera, L"FrameRate", &frate_min);
   if (errorOk(i_err, "AT_GetFloatMin 'FrameRate'"))
-    QLOG_INFO() << "CameraZyla::setCamera> FrameRateMin = " << frate_min;
+    QLOG_INFO() << "CameraZyla::getFeature> FrameRateMin = " << frate_min;
   i_err = AT_GetFloatMax(*camera, L"FrameRate", &frate_max);
   if (errorOk(i_err, "AT_GetFloatMax 'FrameRate'")) 
-    QLOG_INFO() << "CameraZyla::setCamera> FrameRateMax = " << frate_max;
+    QLOG_INFO() << "CameraZyla::getFeature> FrameRateMax = " << frate_max;
   featureMinList.replace(featureCnt, frate_min );
   featureMaxList.replace(featureCnt, frate_max );
   featureValueList.replace(featureCnt, frate );
@@ -927,9 +938,6 @@ CameraZyla::getFeatures() {
    }
    video_mode = pixel_encoding;
  
-  // Refresh properties
-  getProps();
-
   emit updateFeatures();
 }
 

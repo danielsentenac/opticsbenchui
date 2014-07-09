@@ -19,19 +19,19 @@ DEFINES 	+=      OPTICSBENCHUIVERSION=\\\"$$VERSION\\\"
 DEFINES 	+= 	QT_NO_DEBUG_OUTPUT
 
 # Firewire camera support
-#DEFINES 	+= 	IEEE1394CAMERA
+DEFINES 	+= 	IEEE1394CAMERA
 
 # GigEVision camera support
-#DEFINES 	+= 	GIGECAMERA
+DEFINES 	+= 	GIGECAMERA
 
 # Andor Neo camera support
-DEFINES         +=      NEOCAMERA
+#DEFINES         +=      NEOCAMERA
 
 # Andor Zyla camera support
-#DEFINES         +=      ZYLACAMERA
+DEFINES         +=      ZYLACAMERA
 
 # Andor Raptor camera support
-DEFINES         +=      RAPTORCAMERA
+#DEFINES         +=      RAPTORCAMERA
 
 # SuperK support
 #DEFINES         +=      SUPERK
@@ -40,7 +40,7 @@ DEFINES         +=      RAPTORCAMERA
 #DEFINES         +=     ADVANTECHDAC
 
 # Comedi Counters support
-DEFINES         +=     COMEDICOUNTER
+#DEFINES         +=     COMEDICOUNTER
 
 # Comedi Dac support
 DEFINES         +=     COMEDIDAC
@@ -78,7 +78,7 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			CameraGiGE.h \
            		CameraNeo.h \
                         CameraZyla.h \
-                        CameraRAPTOR.h \
+#                        CameraRAPTOR.h \
 			CameraWindow.h \
 			CameraControlWidget.h \
 			CameraPropWidget.h \
@@ -133,7 +133,7 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			CameraGiGE.cpp \
 			CameraNeo.cpp \
                         CameraZyla.cpp \
-                        CameraRAPTOR.cpp \
+#                        CameraRAPTOR.cpp \
 			CameraWindow.cpp \
 			CameraControlWidget.cpp \
 			CameraPropWidget.cpp \
@@ -203,7 +203,7 @@ LIBS 		+= 	 \
 			-L$$STANDA_LIB_PATH -lusmc \
 			-L$$HDF5_LIB_PATH -lhdf5 -lhdf5_hl \
    			-L$$NEO_LIB_PATH -latcore \
-			-Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64.a -Wl,-Bdynamic 
+#			-Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64.a -Wl,-Bdynamic 
 
 # make install
 documentation.extra = ./make_doc.run

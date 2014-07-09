@@ -69,7 +69,7 @@ class CameraZyla : public Camera
   int rrate;
   AT_64 BufferSize, aoi_height, aoi_width, aoi_left, aoi_top, stride; 
   ushort** AlignedBuffers;
-  int FrameNumber, encoding_num, gain_num, bin_num, trigger_num;
+  int FrameNumber, encoding_num, gain_num, bin_num, trigger_num,acq_num;
   double eTimeTotal, frequency;
 };
 

@@ -676,7 +676,7 @@ CameraNeo::setFeature(int feature, double value) {
    QLOG_INFO () << "CameraNeo::setFeature> AcquisitionStart";
    //acquireMutex->unlock();
    this->start();
-
+   getProps();
 }
 void
 CameraNeo::setMode(int feature, bool value) {
@@ -891,9 +891,6 @@ CameraNeo::getFeatures() {
   QLOG_INFO() << "CameraNeo::getFeature> get ElectronicShuttering mode feature "
               << featureNameList.at(featureCnt);
   QLOG_INFO() << "CameraNeo::getFeature> value " << neo_electronicshuttering_modes[acq_num];
-
-  // Refresh properties
-  getProps();
 
   emit updateFeatures();
 }

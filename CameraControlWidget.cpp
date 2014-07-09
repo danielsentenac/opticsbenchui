@@ -205,7 +205,7 @@ CameraControlWidget::setFeatureValue(int position) {
   else
     value = (double) (featureSlider->value());
   emit setFeature(camera->featureIdList.at(position),value);
-  camera->getFeatures();
+  //camera->getFeatures();
 }
 void
 CameraControlWidget::setSliderValue(int position) {
