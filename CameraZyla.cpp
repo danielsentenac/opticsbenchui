@@ -37,7 +37,8 @@ char *zyla_features[]  = {
                         (char*)"Readout Rate",
 			(char*)"Trigger",
                         (char*)"Encoding",
-			(char*)"Electronic Shuttering"
+			(char*)"Electronic Shuttering",
+                        (char*)"Spurious mode filter"
                         };
 char *zyla_props[]  = {
                         (char*)"Temperature",
@@ -52,7 +53,8 @@ char *zyla_props[]  = {
                         (char*)"Frame Rate",
 			(char*)"PC Rate",
 			(char*)"Trigger",
-			(char*)"Electronic Shuttering"
+			(char*)"Electronic Shuttering",
+			(char*)"Spurious mode filter"
                         };
 char *zyla_encodings[]  = {
                            (char*)"Mono12", 
@@ -103,6 +105,10 @@ char *zyla_trigger_modes[]  = {
                         (char*)"Advanced",
                         (char*)"External"
 			};
+char *zyla_spurious_modes[]  = {
+                        (char*)"OFF",
+                        (char*)"ON"
+                        };
 char *zyla_electronicshuttering_modes[]  = {
                         (char*)"Rolling",
                         (char*)"Global"
@@ -390,6 +396,24 @@ CameraZyla::setCamera(void* _camera, int _id)
              << featureNameList.at(featureCnt);
  QLOG_INFO() << "CameraNeo::setCamera> value " << zyla_electronicshuttering_modes[acq_num];
 
+ // Spurious Mode Filter
+ AT_BOOL  spurmode;
+ int spurmode_min = 0, spurmode_max = 1;
+ featureIdList.push_back(++featureCnt);
+ featureNameList.push_back(zyla_features[featureCnt]);
+ featureMinList.push_back(spurmode_min);
+ featureMaxList.push_back(spurmode_max);
+ i_err = AT_GetBool(*camera, L"SpuriousNoiseFilter", &spurmode);
+ errorOk(i_err, "AT_GetBool 'SpuriousNoiseFilter'");
+ QLOG_INFO() << "CameraNeo::setCamera>  SpuriousNoiseFilter : " << spurmode;
+ featureValueList.push_back(spurmode);
+ featureAbsCapableList.push_back(false);
+ featureAbsValueList.push_back(spurmode);
+ featureModeAutoList.push_back(false);
+ QLOG_INFO() << "CameraNeo::setCamera> get spurious mode feature "
+             << featureNameList.at(featureCnt);
+ QLOG_INFO() << "CameraNeo::setCamera> value " << zyla_spurious_modes[spurmode];
+
  i_err = AT_GetInt(*camera, L"ImageSizeBytes", &BufferSize);
  errorOk(i_err, "AT_GetInt 'ImageSizeBytes'");
  QLOG_INFO () << "CameraZyla::setCamera> size for image " 
@@ -497,6 +521,13 @@ CameraZyla::setCamera(void* _camera, int _id)
  acqStr.append(" : " + QString(zyla_electronicshuttering_modes[acq_num]));
  propList.push_back(acqStr);
 
+  // Spurious Mode Filter
+ QString spurmodeStr = zyla_props[++propCnt];;
+ i_err = AT_GetBool(*camera, L"SpuriousNoiseFilter", &spurmode);
+ errorOk(i_err, "AT_GetBool 'SpuriousNoiseFilter'");
+ spurmodeStr.append(" : " + QString(zyla_electronicshuttering_modes[spurmode]));
+ propList.push_back(spurmodeStr);
+
  id = _id;
  
  camera_err = connectCamera();
@@ -581,7 +612,7 @@ CameraZyla::setFeature(int feature, double value) {
   i_err = AT_Flush(*camera);
   errorOk(i_err, "AT_Flush");
   FrameNumber = 0;
-
+  AT_BOOL spurmode;
    switch ( feature ) {
    case 0:
    QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[0])
@@ -668,6 +699,13 @@ CameraZyla::setFeature(int feature, double value) {
                << " value " << QString(zyla_electronicshuttering_modes[(int)value]);
    }
    errorOk(i_err, "AT_SetEnumString 'ElectronicShutteringMode'");
+   break;
+      case 7:
+   QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(zyla_features[7])
+               << " value " << QString(zyla_spurious_modes[(int)value]);
+   spurmode = (int) value;
+   i_err = AT_SetBool(*camera, L"SpuriousNoiseFilter", spurmode);
+   errorOk(i_err, "AT_SetBool 'SpuriousNoiseFilter'");
    break;
    default:
    break;
@@ -825,6 +863,14 @@ CameraZyla::getProps() {
  acqStr.append(" : " + QString(zyla_electronicshuttering_modes[acq_num]));
  propList.replace(propCnt, acqStr);
 
+  // Spuriouse Mode Filter
+ QString spurmodeStr = zyla_props[++propCnt];
+ AT_BOOL spurmode;
+ i_err = AT_GetBool(*camera, L"SpuriousNoiseFilter", &spurmode);
+ errorOk(i_err, "AT_GetBool 'SpuriousNoiseFilter'");
+ spurmodeStr.append(" : " + QString(zyla_spurious_modes[spurmode]));
+ propList.replace(propCnt, spurmodeStr);
+
  QLOG_DEBUG() << "CameraZyla::getProps> Properties updated";
  emit updateProps();
 }
@@ -947,6 +993,16 @@ CameraZyla::getFeatures() {
   QLOG_INFO() << "CameraZyla::getFeature> get ElectronicShuttering mode feature "
               << featureNameList.at(featureCnt);
   QLOG_INFO() << "CameraZyla::getFeature> value " << zyla_electronicshuttering_modes[acq_num];
+
+    // Spurious Mode Filter feature
+  featureCnt++;
+  AT_BOOL spurmode;
+  i_err = AT_GetBool(*camera, L"SpuriousNoiseFilter", &spurmode);
+  errorOk(i_err, "AT_GetBool 'SpuriousNoiseFilter'");
+  featureValueList.replace(featureCnt,spurmode);
+  QLOG_INFO() << "CameraNeo::getFeature> get SpuriousNoiseFilter mode feature "
+              << featureNameList.at(featureCnt);
+  QLOG_INFO() << "CameraNeo::getFeature> value " << zyla_spurious_modes[spurmode];
 
   emit updateFeatures();
 }

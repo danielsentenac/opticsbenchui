@@ -678,6 +678,7 @@ CameraNeo::setFeature(int feature, double value) {
    spurmode = (int) value;
    i_err = AT_SetBool(*camera, L"SpuriousNoiseFilter", spurmode);
    errorOk(i_err, "AT_SetBool 'SpuriousNoiseFilter'");
+   break;
    default:
    break;
  }
