@@ -58,6 +58,9 @@ class CameraRAPTOR : public Camera
   int  writeFeature(char* sendreg, int size_sreg);
   double getPCBtemperature();
   double getCCDtemperature();
+  QString getBinningFactor();
+  void setBinningFactor(int value);
+  void updateFrameGrabberAOI(int v0, int v1, int v2, int v3);
   double getEMgain();
   void   setEMgain(int g);
   void   setAOI(int left, int width, int top, int height);
@@ -73,6 +76,7 @@ class CameraRAPTOR : public Camera
   int imageWidth;
   int imageHeight;
   double frate, frameTotal;
+  bool binning_changed, aoi_changed;
 };
 
 #endif // CAMERARAPTOR_H

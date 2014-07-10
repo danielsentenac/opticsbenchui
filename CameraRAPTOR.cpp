@@ -18,18 +18,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "CameraRAPTOR.h"
 #include <sys/time.h>
 
-#define RAPTOR_AOI_NUMBER 4
+#define RAPTOR_AOI_NUMBER 5
+#define BINNING_NUMBER 5
 
 char *raptor_features[]  = {
                         (char*)"Exposure",
                         (char*)"Gain",
                         (char*)"AOI",
+			(char*)"Binning",
                         (char*)"Anti Blooming"
+			
                         };
 char *raptor_props[]  = {
                         (char*)"PCB Temp.",
 			(char*)"CCD Temp.",
                         (char*)"Image Size",
+			(char*)"Binning",
                         (char*)"EM Gain",
                         (char*)"Exposure",
                         (char*)"PC Rate",
@@ -37,10 +41,18 @@ char *raptor_props[]  = {
                         (char*)"Anti Blooming"
                         };
 int raptor_aoi_settings[][4] = {
-                          {0,128,0,128},
-                          {0,256,0,256},
-                          {0,512,0,512},
-                          {0,1004,0,1002}};
+                          {0,200,0,200},
+                          {0,250,0,250},
+                          {0,333,0,333},
+                          {0,500,0,500},
+                          {0,1000,0,1000}};
+
+char* raptor_binning_settings[] = {"5x5",
+				   "4x4",
+				   "3x3",
+				   "2x2",
+				   "1x1"};
+                        
 
 /*----------------------------------------------------------------------------*/
 /*------------------------------------------------------------------- GetTime */
@@ -71,6 +83,8 @@ CameraRAPTOR::CameraRAPTOR()
   acqstart = new QWaitCondition();
   acqend = new QWaitCondition();
   modeCheckEnabled = true;
+  binning_changed = false;
+  aoi_changed = false;
 }
 
 CameraRAPTOR::~CameraRAPTOR()
@@ -125,7 +139,7 @@ CameraRAPTOR::setCamera(void* _camera, int _id)
  featureModeAutoList.push_back(false);
  
  // AOI feature
- int aoi_num = 3;
+ int aoi_num = RAPTOR_AOI_NUMBER - 1;
  int aoi_min = 0, aoi_max = RAPTOR_AOI_NUMBER - 1;
  featureIdList.push_back(++featureCnt);
  featureNameList.push_back(raptor_features[featureCnt]);
@@ -134,6 +148,25 @@ CameraRAPTOR::setCamera(void* _camera, int _id)
  featureMaxList.push_back(aoi_max);
  featureAbsCapableList.push_back(false);
  featureAbsValueList.push_back(aoi_num);
+ featureModeAutoList.push_back(false);
+
+ // Binning feature
+ int bin_num = BINNING_NUMBER - 1;
+ int bin_min = 0, bin_max = BINNING_NUMBER - 1;
+ QString initbinStr = getBinningFactor();
+ for ( int i = 0; i < BINNING_NUMBER; i++ ) {
+  if (initbinStr ==  raptor_binning_settings[i] ) {
+    bin_num = i;
+    break;
+  }
+ }
+ featureIdList.push_back(++featureCnt);
+ featureNameList.push_back(raptor_features[featureCnt]);
+ featureValueList.push_back(bin_num);
+ featureMinList.push_back(bin_min);
+ featureMaxList.push_back(bin_max);
+ featureAbsCapableList.push_back(false);
+ featureAbsValueList.push_back(bin_num);
  featureModeAutoList.push_back(false);
 
  // Antiblooming feature
@@ -169,6 +202,11 @@ CameraRAPTOR::setCamera(void* _camera, int _id)
   imgSizeStr.append(" pixels");
   propList.push_back(imgSizeStr);
 
+  // Binning prop
+  QString binStr = raptor_props[++propCnt];;
+  binStr.append(" : " + getBinningFactor());
+  propList.push_back(binStr);
+
   // EM gain prop
   QString emgainStr = raptor_props[++propCnt];
   emgainStr.append(" : " + QString::number(getEMgain()));
@@ -197,8 +235,9 @@ CameraRAPTOR::setCamera(void* _camera, int _id)
   bloomStr.append(" : " + getBloomState());
   propList.push_back(bloomStr);
 
-  // Init AOI to max
-  setFeature(2,3);
+  // Init AOI to max and Binning to 1x1
+  setFeature(2,4);
+  setFeature(3,4);
 
 }
 
@@ -278,6 +317,7 @@ CameraRAPTOR::setFeature(int feature, double value) {
   QLOG_INFO() << "CameraRAPTOR::setFeature> Update feature " << QString(raptor_features[feature])
                << " value " << QString::number(value);
   int err = 0;
+  int bin_width,bin_height;
   QVector<QRgb> table;
   switch ( feature ) {
    case 0:
@@ -288,40 +328,22 @@ CameraRAPTOR::setFeature(int feature, double value) {
      break;
    case 2:
      //acquireMutex->lock();
-     // Update frame grabber AOI
-     if (!(xc = pxd_xclibEscape(0, 0, 0))) {
-      QLOG_DEBUG() << "CameraRAPTOR::setFeature> Cannot update frame grabber state";
-      break;
-     }
-     xclib_DeclareVidStateStructs2(vidstate, pxd_infoModel(1));
-     xclib_InitVidStateStructs2(vidstate, pxd_infoModel(1));
-     xc->pxlib.getState(&xc->pxlib, 0, PXMODE_DIGI, &vidstate);
-     vidstate.vidformat->xviddim[PXLHCM_MAX] = raptor_aoi_settings[(int)value][1];
-     vidstate.vidformat->xdatdim[PXLHCM_MAX] = raptor_aoi_settings[(int)value][1];
-     vidstate.vidformat->yviddim[PXLHCM_MAX] = raptor_aoi_settings[(int)value][3];
-     vidstate.vidformat->ydatdim[PXLHCM_MAX] = raptor_aoi_settings[(int)value][3];
-     vidstate.vidformat->xvidoffset[PXLHCM_MAX] = raptor_aoi_settings[(int)value][1];
-     vidstate.vidformat->yvidoffset[PXLHCM_MAX] = raptor_aoi_settings[(int)value][3];
-     vidstate.vidformat->xviddim[PXLHCM_MOD] = 0;
-     vidstate.vidformat->xdatdim[PXLHCM_MOD] = 0;
-     vidstate.vidformat->yviddim[PXLHCM_MOD] = 0;
-     vidstate.vidformat->ydatdim[PXLHCM_MOD] = 0;
-     vidstate.vidformat->is.hoffset = raptor_aoi_settings[(int)value][0];
-     vidstate.vidformat->is.voffset = raptor_aoi_settings[(int)value][2];
-     vidstate.vidres->x.setmaxdatsamples = 1;
-     vidstate.vidres->x.setmaxvidsamples = 1;
-     vidstate.vidres->y.setmaxdatsamples = 1;
-     vidstate.vidres->y.setmaxvidsamples = 1;
-     vidstate.vidres->setmaxdatfields    = 1;
-     vidstate.vidres->setmaxdatphylds    = 1;
-     xc->pxlib.defineState(&xc->pxlib, 0, PXMODE_DIGI, &vidstate);
-     pxd_xclibEscaped(1, 0, 0);
+     updateFrameGrabberAOI(raptor_aoi_settings[(int)value][0],
+			   raptor_aoi_settings[(int)value][1],
+			   raptor_aoi_settings[(int)value][2],
+			   raptor_aoi_settings[(int)value][3]);
      QLOG_INFO() << "CameraRAPTOR::setFeature> set AOI left " << raptor_aoi_settings[(int)value][0]
                                         <<  " width " << raptor_aoi_settings[(int)value][1]
                                         <<  " top " << raptor_aoi_settings[(int)value][2]
                                         <<  " height " << raptor_aoi_settings[(int)value][3];
-     setAOI(raptor_aoi_settings[(int)value][0],raptor_aoi_settings[(int)value][1],
+     if (binning_changed == false) {
+       aoi_changed = true;
+       setAOI(raptor_aoi_settings[(int)value][0],raptor_aoi_settings[(int)value][1],
             raptor_aoi_settings[(int)value][2], raptor_aoi_settings[(int)value][3]);
+       setBinningFactor(4);
+     }
+     else
+        binning_changed = false;
      // Update memory allocation
      width = pxd_imageXdim();
      height =  pxd_imageYdim();
@@ -343,7 +365,40 @@ CameraRAPTOR::setFeature(int feature, double value) {
      //acquireMutex->unlock();
      break;
    case 3:
+     binning_changed = true;
+     //acquireMutex->lock();
+    // Update frame grabber AOI
+     updateFrameGrabberAOI(raptor_aoi_settings[(int)value][0],
+			   raptor_aoi_settings[(int)value][1],
+			   raptor_aoi_settings[(int)value][2],
+			   raptor_aoi_settings[(int)value][3]);
+     // Update memory allocation
+     width = pxd_imageXdim();
+     height =  pxd_imageYdim();
+     QLOG_INFO() << "CameraRAPTOR::setFeature> Updated width " << width;
+     QLOG_INFO() << "CameraRAPTOR::setFeature> Updated height " << height;
+     if (buffer) { free(buffer); buffer = NULL;}
+     if (snapshot) { free(snapshot); snapshot = NULL;}
+     if (buffer32) { free(buffer32); buffer32 = NULL;}
+     if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+     delete image;
+     buffer = (uchar*)malloc( sizeof(uchar) * width * height);
+     snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
+     buffer32 = (int*)malloc( sizeof(int) * width * height);
+     snapshot32 = (int*)malloc( sizeof(int) * width * height);
+     image16 = (ushort*)malloc( sizeof(ushort) * width * height);
+     image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
+     for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
+     image->setColorTable(table);
+   
+     // Adjust AOI prior Binning change
+     setBinningFactor((int)value);
+
+     //acquireMutex->unlock();
+     break;
+   case 4:
      setBloomState((int)value);
+     break;
    default:
      break;
   }
@@ -375,6 +430,18 @@ CameraRAPTOR::getFeatures() {
    if (width == raptor_aoi_settings[i][1])
      featureValueList.replace(++featureCnt, i );
  }
+
+ // Binning feature
+ int bin_num = 0;
+ QString initbinStr = getBinningFactor();
+ for ( int i = 0; i < BINNING_NUMBER; i++ ) {
+  if (initbinStr ==  raptor_binning_settings[i] ) {
+    bin_num = i;
+    break;
+  }
+ }
+ featureValueList.replace(++featureCnt, bin_num );
+
  // Bloom feature
  featureCnt++;
  int bloomState = 0;
@@ -407,6 +474,11 @@ CameraRAPTOR::getProps()  {
   imgSizeStr.append(" : " + QString::number(pxd_imageXdim()) + "x" + QString::number(pxd_imageYdim()));
   imgSizeStr.append(" pixels");
   propList.replace(propCnt,imgSizeStr);
+
+   // Binning prop
+  QString binStr = raptor_props[++propCnt];;
+  binStr.append(" : " + getBinningFactor());
+  propList.replace(propCnt,binStr);
 
   // EM gain prop
   QString emgainStr = raptor_props[++propCnt];
@@ -750,6 +822,41 @@ double CameraRAPTOR::getCCDtemperature() {
   QLOG_DEBUG() << "ccdtemp =" <<  t;
   return t;
 }
+QString CameraRAPTOR::getBinningFactor() {
+  QLOG_DEBUG() << "Get Raptor Binning";
+  QString binStr;
+  char setadrs[]   = { 0x53, 0xE0, 0x01, 0xEB, 0x50 };
+  char readadrs[]  = { 0x53, 0xE1, 0x01, 0x50 };
+  uchar resp[] = { 0x0 };
+  readFeature (setadrs, 5, readadrs, 4, resp, 1);
+  QLOG_INFO() << "binning =" <<  resp[0];
+  if ( resp[0] == 0x0 )
+   binStr = "1x1";
+  else if ( resp[0] == 0x11 )
+    binStr = "2x2";
+  else if ( resp[0] == 0x22 )
+    binStr = "3x3";
+   else if ( resp[0] == 0x33 )
+    binStr = "4x4";
+  else if ( resp[0] == 0x44 )
+    binStr = "5x5";
+  return binStr;
+}
+void CameraRAPTOR::setBinningFactor(int value) {
+  QLOG_DEBUG() << "Set Raptor Binning";
+  char setadrs[]   = { 0x53, 0xE0, 0x02, 0xEB, 0x0, 0x50 };
+  if ( value == 0 ) 
+    setadrs[4] = 0x44;
+  else if ( value == 1 )
+    setadrs[4] = 0x33;
+  else if ( value == 2 )
+    setadrs[4] = 0x22;
+  else if ( value == 3 )
+    setadrs[4] = 0x11;
+  else if ( value == 4 )
+    setadrs[4] = 0x00;
+  writeFeature (setadrs, 6);
+}
 QString CameraRAPTOR::getBloomState() {
   QString bloomState;
   QLOG_DEBUG() << "Get Raptor Bloom state";
@@ -785,5 +892,33 @@ void CameraRAPTOR::setBloomState(int value) {
     writeFeature (setadrs2, 6);
   }
 }
-
+void CameraRAPTOR::updateFrameGrabberAOI(int v0, int v1, int v2, int v3) {
+     // Update frame grabber AOI
+     if (!(xc = pxd_xclibEscape(0, 0, 0)))
+      QLOG_DEBUG() << "CameraRAPTOR::updateFrameGrabberAOI> Cannot update frame grabber state";
+     
+     xclib_DeclareVidStateStructs2(vidstate, pxd_infoModel(1));
+     xclib_InitVidStateStructs2(vidstate, pxd_infoModel(1));
+     xc->pxlib.getState(&xc->pxlib, 0, PXMODE_DIGI, &vidstate);
+     vidstate.vidformat->xviddim[PXLHCM_MAX] = v1;
+     vidstate.vidformat->xdatdim[PXLHCM_MAX] = v1;
+     vidstate.vidformat->yviddim[PXLHCM_MAX] = v3;
+     vidstate.vidformat->ydatdim[PXLHCM_MAX] = v3;
+     vidstate.vidformat->xvidoffset[PXLHCM_MAX] = v1;
+     vidstate.vidformat->yvidoffset[PXLHCM_MAX] = v3;
+     vidstate.vidformat->xviddim[PXLHCM_MOD] = 0;
+     vidstate.vidformat->xdatdim[PXLHCM_MOD] = 0;
+     vidstate.vidformat->yviddim[PXLHCM_MOD] = 0;
+     vidstate.vidformat->ydatdim[PXLHCM_MOD] = 0;
+     vidstate.vidformat->is.hoffset = v0;
+     vidstate.vidformat->is.voffset = v2;
+     vidstate.vidres->x.setmaxdatsamples = 1;
+     vidstate.vidres->x.setmaxvidsamples = 1;
+     vidstate.vidres->y.setmaxdatsamples = 1;
+     vidstate.vidres->y.setmaxvidsamples = 1;
+     vidstate.vidres->setmaxdatfields    = 1;
+     vidstate.vidres->setmaxdatphylds    = 1;
+     xc->pxlib.defineState(&xc->pxlib, 0, PXMODE_DIGI, &vidstate);
+     pxd_xclibEscaped(1, 0, 0);
+}
 #endif

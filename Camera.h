@@ -46,6 +46,73 @@ class Camera : public QThread
     
     public:
   
+  Camera() {
+   hot <<
+    qRgb( 10,   0,   0)<<
+    qRgb( 21,   0,   0)<<
+    qRgb( 31,   0,   0)<<
+    qRgb( 42,   0,   0)<<
+    qRgb( 53,   0,   0)<<
+    qRgb( 63,   0,   0)<<
+    qRgb( 74,   0,   0)<<
+    qRgb( 84,   0,   0)<<
+    qRgb( 95,   0,   0)<<
+    qRgb(106,   0,   0)<<
+    qRgb(116,   0,   0)<<
+    qRgb(127,   0,   0)<<
+    qRgb(138,   0,   0)<<
+    qRgb(148,   0,   0)<<
+    qRgb(159,   0,   0)<<
+    qRgb(170,   0,   0)<<
+    qRgb(180,   0,   0)<<
+    qRgb(191,   0,   0)<<
+    qRgb(201,   0,   0)<<
+    qRgb(212,   0,   0)<<
+    qRgb(223,   0,   0)<<
+    qRgb(233,   0,   0)<<
+    qRgb(244,   0,   0)<<
+    qRgb(255,   0,   0)<<
+    qRgb(255,  10,   0)<<
+    qRgb(255,  21,   0)<<
+    qRgb(255,  31,   0)<<
+    qRgb(255,  42,   0)<<
+    qRgb(255,  53,   0)<<
+    qRgb(255,  63,   0)<<
+    qRgb(255,  74,   0)<<
+    qRgb(255,  84,   0)<<
+    qRgb(255,  95,   0)<<
+    qRgb(255, 106,   0)<<
+    qRgb(255, 116,   0)<<
+    qRgb(255, 127,   0)<<
+    qRgb(255, 138,   0)<<
+    qRgb(255, 148,   0)<<
+    qRgb(255, 159,   0)<<
+    qRgb(255, 170,   0)<<
+    qRgb(255, 180,   0)<<
+    qRgb(255, 191,   0)<<
+    qRgb(255, 201,   0)<<
+    qRgb(255, 212,   0)<<
+    qRgb(255, 223,   0)<<
+    qRgb(255, 233,   0)<<
+    qRgb(255, 244,   0)<<
+    qRgb(255, 255,   0)<<
+    qRgb(255, 255,  15)<<
+    qRgb(255, 255,  31)<<
+    qRgb(255, 255,  47)<<
+    qRgb(255, 255,  63)<<
+    qRgb(255, 255,  79)<<
+    qRgb(255, 255,  95)<<
+    qRgb(255, 255, 111)<<
+    qRgb(255, 255, 127)<<
+    qRgb(255, 255, 143)<<
+    qRgb(255, 255, 159)<<
+    qRgb(255, 255, 175)<<
+    qRgb(255, 255, 191)<<
+    qRgb(255, 255, 207)<<
+    qRgb(255, 255, 223)<<
+    qRgb(255, 255, 239)<<
+    qRgb(255, 255, 255);
+  };
   virtual void stop() = 0;
   virtual int  findCamera() = 0;
   virtual void setCamera(void *_camera, int _id) = 0;
@@ -171,7 +238,7 @@ class Camera : public QThread
   virtual void cleanup_and_exit() = 0;
   int vflip, hflip;
   double eTimeTotal, frequency;
-
+  QVector<QRgb> hot;
 };
 
 
