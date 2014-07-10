@@ -101,7 +101,7 @@ CameraRAPTOR::setCamera(void* _camera, int _id)
  featureIdList.push_back(featureCnt);
  featureNameList.push_back(raptor_features[featureCnt]);
  exp_min = 1;
- exp_max = 60000;
+ exp_max = 10000;
  featureMinList.push_back(exp_min);
  featureMaxList.push_back(exp_max);
  double exposure = getExposure() ;
@@ -147,9 +147,6 @@ CameraRAPTOR::setCamera(void* _camera, int _id)
  featureAbsCapableList.push_back(false);
  featureAbsValueList.push_back(bloom_num);
  featureModeAutoList.push_back(false);
-
- // Update features from camera
- getFeatures();
 
  // Properties
  int propCnt = 0;
@@ -199,6 +196,9 @@ CameraRAPTOR::setCamera(void* _camera, int _id)
   QString bloomStr = raptor_props[++propCnt];;
   bloomStr.append(" : " + getBloomState());
   propList.push_back(bloomStr);
+
+  // Init AOI to max
+  setFeature(2,3);
 
 }
 
@@ -264,7 +264,7 @@ CameraRAPTOR::run() {
        frameTotal = pxd_videoFieldCount(1);
        acq_cnt = 0;
        // Update props
-       getProps();
+       //getProps();
       }
      has_started = true;
     }
@@ -275,7 +275,7 @@ CameraRAPTOR::run() {
 void
 CameraRAPTOR::setFeature(int feature, double value) {
 
-  QLOG_DEBUG() << "CameraRAPTOR::setFeature> Update feature " << QString(raptor_features[feature])
+  QLOG_INFO() << "CameraRAPTOR::setFeature> Update feature " << QString(raptor_features[feature])
                << " value " << QString::number(value);
   int err = 0;
   QVector<QRgb> table;
@@ -287,7 +287,7 @@ CameraRAPTOR::setFeature(int feature, double value) {
      setEMgain((int)value);
      break;
    case 2:
-     acquireMutex->lock();
+     //acquireMutex->lock();
      // Update frame grabber AOI
      if (!(xc = pxd_xclibEscape(0, 0, 0))) {
       QLOG_DEBUG() << "CameraRAPTOR::setFeature> Cannot update frame grabber state";
@@ -316,7 +316,7 @@ CameraRAPTOR::setFeature(int feature, double value) {
      vidstate.vidres->setmaxdatphylds    = 1;
      xc->pxlib.defineState(&xc->pxlib, 0, PXMODE_DIGI, &vidstate);
      pxd_xclibEscaped(1, 0, 0);
-     QLOG_DEBUG() << "CameraRAPTOR::setFeature> set AOI left " << raptor_aoi_settings[(int)value][0]
+     QLOG_INFO() << "CameraRAPTOR::setFeature> set AOI left " << raptor_aoi_settings[(int)value][0]
                                         <<  " width " << raptor_aoi_settings[(int)value][1]
                                         <<  " top " << raptor_aoi_settings[(int)value][2]
                                         <<  " height " << raptor_aoi_settings[(int)value][3];
@@ -325,8 +325,8 @@ CameraRAPTOR::setFeature(int feature, double value) {
      // Update memory allocation
      width = pxd_imageXdim();
      height =  pxd_imageYdim();
-     QLOG_DEBUG() << "CameraRAPTOR::setFeature> Updated width " << width;
-     QLOG_DEBUG() << "CameraRAPTOR::setFeature> Updated height " << height;
+     QLOG_INFO() << "CameraRAPTOR::setFeature> Updated width " << width;
+     QLOG_INFO() << "CameraRAPTOR::setFeature> Updated height " << height;
      if (buffer) { free(buffer); buffer = NULL;}
      if (snapshot) { free(snapshot); snapshot = NULL;}
      if (buffer32) { free(buffer32); buffer32 = NULL;}
@@ -340,13 +340,15 @@ CameraRAPTOR::setFeature(int feature, double value) {
      image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
      for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
      image->setColorTable(table);
-     acquireMutex->unlock();
+     //acquireMutex->unlock();
      break;
    case 3:
      setBloomState((int)value);
    default:
      break;
   }
+  getFeatures();
+  getProps();
 }
 void  
 CameraRAPTOR::setMode(int feature, bool value) {
@@ -482,7 +484,20 @@ CameraRAPTOR::connectCamera() {
   QLOG_DEBUG() << "CameraRAPTOR::connectCamera()> Bdim=" << pxd_imageBdim();
 
   // Init AOI and buffers
-  setFeature(2,3);
+  QVector<QRgb> table;
+  width = pxd_imageXdim();
+  height =  pxd_imageYdim();
+  QLOG_DEBUG() << "CameraRAPTOR::connectCamera> Updated width " << width;
+  QLOG_DEBUG() << "CameraRAPTOR::connectCamera> Updated height " << height;
+  buffer = (uchar*)malloc( sizeof(uchar) * width * height);
+  snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
+  buffer32 = (int*)malloc( sizeof(int) * width * height);
+  snapshot32 = (int*)malloc( sizeof(int) * width * height);
+  image16 = (ushort*)malloc( sizeof(ushort) * width * height);
+  image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
+  for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
+  image->setColorTable(table);
+
   /*-----------------------------------------------------------------------
    *  have the camera start sending data
    *-----------------------------------------------------------------------*/
@@ -568,29 +583,33 @@ int CameraRAPTOR::readFeature(char* sendreg, int size_sreg, char* readreg, int s
   int error = 0;
   uchar tmp[] = { 0x0 };
 
+  usleep(5000);
   while (pxd_serialRead(0x1, 0, (char*)tmp, 1) == 1) {
     QLOG_DEBUG() << "CameraRAPTOR::readFeature> tmp=" << tmp[0];
   }
+  usleep(5000);
   error = pxd_serialWrite(0x1, 0, sendreg, size_sreg);
   if ( error < 0 ) {
    QLOG_WARN() << "CameraRAPTOR::readFeature> error=" << error;
    return error;
   }
-  usleep(1000);
+  usleep(5000);
   while (pxd_serialRead(0x1, 0, (char*)tmp, 1) == 1) {
     QLOG_DEBUG() << "CameraRAPTOR::readFeature> tmp=" << tmp[0];
   }
+  usleep(5000);
   error = pxd_serialWrite(0x1, 0, readreg, size_rreg);
   if ( error < 0 ) {
    QLOG_WARN() << "CameraRAPTOR::readFeature> error=" << error;
    return error;
   }
-  usleep(1000);
+  usleep(5000);
   error = pxd_serialRead(0x1, 0, (char*)data, size_data);
   if ( error < 0 ) {
    QLOG_WARN() << "CameraRAPTOR::readFeature> pxd_serialRead error=" << error;
    return error;
   }
+  pxd_serialRead(0x1, 0, (char*)tmp, 1);
   for (int i= 0; i < size_data; i++)
     QLOG_DEBUG() << "CameraRAPTOR::readFeature> reads: " << " data[" << i << "]=" << data[i];
 
@@ -599,12 +618,18 @@ int CameraRAPTOR::readFeature(char* sendreg, int size_sreg, char* readreg, int s
 int CameraRAPTOR::writeFeature(char* sendreg, int size_sreg) {
   int error;
   uchar tmp[] = { 0x0 };
+
+  usleep(5000);
+  while (pxd_serialRead(0x1, 0, (char*)tmp, 1) == 1) {
+    QLOG_DEBUG() << "CameraRAPTOR::readFeature> tmp=" << tmp[0];
+  }
+  usleep(5000);
   error = pxd_serialWrite(0x1, 0, sendreg, size_sreg);
   if ( error < 0 ) {
    QLOG_WARN() << "CameraRAPTOR::writeFeature> error=" << error;
    return error;
   }
-  usleep(1000);
+  usleep(5000);
   while (pxd_serialRead(0x1, 0, (char*)tmp, 1) == 1) {
     QLOG_DEBUG() << "CameraRAPTOR::readFeature> tmp=" << tmp[0];
   }
