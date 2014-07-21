@@ -319,6 +319,9 @@ CameraRAPTOR::setFeature(int feature, double value) {
   int err = 0;
   int bin_width,bin_height;
   QVector<QRgb> table;
+  while (acquireMutex->tryLock() == false) {
+         usleep(100);
+  }
   switch ( feature ) {
    case 0:
      setExposure(value);
@@ -327,74 +330,63 @@ CameraRAPTOR::setFeature(int feature, double value) {
      setEMgain((int)value);
      break;
    case 2:
-     //acquireMutex->lock();
-     updateFrameGrabberAOI(raptor_aoi_settings[(int)value][0],
-			   raptor_aoi_settings[(int)value][1],
-			   raptor_aoi_settings[(int)value][2],
-			   raptor_aoi_settings[(int)value][3]);
-     QLOG_INFO() << "CameraRAPTOR::setFeature> set AOI left " << raptor_aoi_settings[(int)value][0]
+     if (binning_changed == false) {
+        aoi_changed = true;
+        updateFrameGrabberAOI(raptor_aoi_settings[(int)value][0],
+                           raptor_aoi_settings[(int)value][1],
+                           raptor_aoi_settings[(int)value][2],
+                           raptor_aoi_settings[(int)value][3]);
+        QLOG_INFO() << "CameraRAPTOR::setFeature> set AOI left " << raptor_aoi_settings[(int)value][0]
                                         <<  " width " << raptor_aoi_settings[(int)value][1]
                                         <<  " top " << raptor_aoi_settings[(int)value][2]
                                         <<  " height " << raptor_aoi_settings[(int)value][3];
-     if (binning_changed == false) {
-       aoi_changed = true;
-       setAOI(raptor_aoi_settings[(int)value][0],raptor_aoi_settings[(int)value][1],
+
+        setAOI(raptor_aoi_settings[(int)value][0],raptor_aoi_settings[(int)value][1],
             raptor_aoi_settings[(int)value][2], raptor_aoi_settings[(int)value][3]);
-       setBinningFactor(4);
+        int bin_num = 0;
+        /*QString initbinStr = getBinningFactor();
+        for ( int i = 0; i < BINNING_NUMBER; i++ ) {
+         if (initbinStr ==  raptor_binning_settings[i] ) {
+          bin_num = i;
+         break;
+         }
+        }
+        if ((int)value == 1 && bin_num < 1) 
+         setBinningFactor(1);
+        if ((int)value == 2 && bin_num < 2)    
+         setBinningFactor(2);
+        if ((int)value == 3 && bin_num < 3)
+         setBinningFactor(3);
+        if ((int)value == 4 && bin_num < 4)
+         setBinningFactor(4);*/
+        setBinningFactor(4);
      }
-     else
-        binning_changed = false;
-     // Update memory allocation
-     width = pxd_imageXdim();
-     height =  pxd_imageYdim();
-     QLOG_INFO() << "CameraRAPTOR::setFeature> Updated width " << width;
-     QLOG_INFO() << "CameraRAPTOR::setFeature> Updated height " << height;
-     if (buffer) { free(buffer); buffer = NULL;}
-     if (snapshot) { free(snapshot); snapshot = NULL;}
-     if (buffer32) { free(buffer32); buffer32 = NULL;}
-     if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
-     delete image;
-     buffer = (uchar*)malloc( sizeof(uchar) * width * height);
-     snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
-     buffer32 = (int*)malloc( sizeof(int) * width * height);
-     snapshot32 = (int*)malloc( sizeof(int) * width * height);
-     image16 = (ushort*)malloc( sizeof(ushort) * width * height);
-     image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-     for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
-     image->setColorTable(table);
-     //acquireMutex->unlock();
+     else {
+       aoi_changed = false;
+       binning_changed = false;
+     }
      break;
    case 3:
-     binning_changed = true;
-     //acquireMutex->lock();
-    // Update frame grabber AOI
-     updateFrameGrabberAOI(raptor_aoi_settings[(int)value][0],
-			   raptor_aoi_settings[(int)value][1],
-			   raptor_aoi_settings[(int)value][2],
-			   raptor_aoi_settings[(int)value][3]);
-     // Update memory allocation
-     width = pxd_imageXdim();
-     height =  pxd_imageYdim();
-     QLOG_INFO() << "CameraRAPTOR::setFeature> Updated width " << width;
-     QLOG_INFO() << "CameraRAPTOR::setFeature> Updated height " << height;
-     if (buffer) { free(buffer); buffer = NULL;}
-     if (snapshot) { free(snapshot); snapshot = NULL;}
-     if (buffer32) { free(buffer32); buffer32 = NULL;}
-     if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
-     delete image;
-     buffer = (uchar*)malloc( sizeof(uchar) * width * height);
-     snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
-     buffer32 = (int*)malloc( sizeof(int) * width * height);
-     snapshot32 = (int*)malloc( sizeof(int) * width * height);
-     image16 = (ushort*)malloc( sizeof(ushort) * width * height);
-     image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-     for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
-     image->setColorTable(table);
-   
-     // Adjust AOI prior Binning change
-     setBinningFactor((int)value);
-
-     //acquireMutex->unlock();
+     if (aoi_changed == false) {
+       binning_changed = true;
+       updateFrameGrabberAOI(raptor_aoi_settings[4][0],
+                           raptor_aoi_settings[4][1],
+                           raptor_aoi_settings[4][2],
+                           raptor_aoi_settings[4][3]);
+       setAOI(raptor_aoi_settings[4][0],raptor_aoi_settings[4][1],
+            raptor_aoi_settings[4][2], raptor_aoi_settings[4][3]);
+       setBinningFactor(4);
+       updateFrameGrabberAOI(raptor_aoi_settings[(int)value][0],
+                           raptor_aoi_settings[(int)value][1],
+                           raptor_aoi_settings[(int)value][2],
+                           raptor_aoi_settings[(int)value][3]);
+       // Apply now Binning change
+       setBinningFactor((int)value);
+     }
+     else { 
+        binning_changed = false;
+        aoi_changed = false;
+     }
      break;
    case 4:
      setBloomState((int)value);
@@ -402,6 +394,26 @@ CameraRAPTOR::setFeature(int feature, double value) {
    default:
      break;
   }
+  // Update memory allocation
+       width = pxd_imageXdim();
+       height =  pxd_imageYdim();
+       QLOG_INFO() << "CameraRAPTOR::setFeature> Updated width " << width;
+       QLOG_INFO() << "CameraRAPTOR::setFeature> Updated height " << height;
+       if (buffer) { free(buffer); buffer = NULL;}
+       if (snapshot) { free(snapshot); snapshot = NULL;}
+       if (buffer32) { free(buffer32); buffer32 = NULL;}
+       if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+       delete image;
+       buffer = (uchar*)malloc( sizeof(uchar) * width * height);
+       snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
+       buffer32 = (int*)malloc( sizeof(int) * width * height);
+       snapshot32 = (int*)malloc( sizeof(int) * width * height);
+       image16 = (ushort*)malloc( sizeof(ushort) * width * height);
+       image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
+       for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
+       image->setColorTable(table);
+
+  acquireMutex->unlock();
   getFeatures();
   getProps();
 }
@@ -596,7 +608,9 @@ int
 CameraRAPTOR::acquireImage() {
 
     // Capture a new frame
-    acquireMutex->lock();
+    while (acquireMutex->tryLock() == false) {
+       usleep(100);
+    }
     int err = pxd_doSnap(1,1,100);
     err = pxd_readushort(1, 1, 0, 0, width, height, image16, (size_t)(width * height), "Grey");
     if (err < 0)
