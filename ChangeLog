@@ -38,6 +38,7 @@ ver. 0.10
     Add ComediCounterControlWidget.cpp class
     Add ComediWindow.cpp class
 ver. 0.11
-1-  Update Andor SDK to 3.4.30007 and add support to Zyla Camera
-2-  Add support to Dac Comedi 
-3-  Add support to Supercontinuum source from NKT SuperKVaria
+1-  Update Andor SDK to 3.4.30007 and add support to Zyla Camera (CameraZyla classes)
+2-  Add support to Dac Comedi (DacComedi classes)
+3-  Add support to Supercontinuum source from NKT SuperKVaria (SuperK classes)
+4-  Add support to Raptor Falcon camera (CameraRAPTOR classes)
