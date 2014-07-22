@@ -533,14 +533,15 @@ CameraRAPTOR::findCamera() {
   err = pxd_PIXCIopen("", "default", "");
   QLOG_DEBUG() << "Open Raptor" << err;
   if (err < 0) {
+    num = 0;
     pxd_PIXCIclose();
     return 0;
   }
-  int camera = 1;
+  int camera = 1; // Camera internal ID
   cameralist.push_back((int*)&camera);
   vendorlist.push_back("Falcon");
   modelist.push_back("Raptor");
-  num = 1;
+  num = 1; // Camera number
 
   return 0;
 }
