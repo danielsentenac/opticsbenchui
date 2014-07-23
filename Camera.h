@@ -48,7 +48,7 @@ class Camera : public QThread
   
   Camera() {
   
-   for (int i = 0; i < 256; i++) 
+   for (int i = 0; i < 255; i++) 
      gray.append(qRgb(i, i, i));
 
    hot <<
