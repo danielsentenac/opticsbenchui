@@ -66,7 +66,6 @@ class CameraIEEE1394 : public Camera
   dc1394featureset_t     features;
   dc1394video_mode_t     video_mode;
   int                    video_mode_feature, color_coding_feature;
-  QImage *image;
   int imageWidth;
   int imageHeight;
 };

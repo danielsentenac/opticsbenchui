@@ -47,7 +47,7 @@ class Camera : public QThread
     public:
   
   Camera() {
-
+  
    for (int i = 0; i < 256; i++) 
      gray.append(qRgb(i, i, i));
 
@@ -308,6 +308,8 @@ class Camera : public QThread
     qRgb(255, 255, 253)<<
     qRgb(255, 255, 254)<<
     qRgb(255, 255, 255);
+
+    table = &gray;
   };
   virtual void stop() = 0;
   virtual int  findCamera() = 0;
@@ -427,6 +429,21 @@ class Camera : public QThread
      }
      return buffer;
   }
+  virtual void setColorTable(int id) {
+    if ( id == -3 ) {
+     QLOG_INFO() << "Camera::setColorTable> changing color to hot";
+     table = &hot;
+    }
+    if (id == -2) {
+      QLOG_INFO() << "Camera::setColorTable> changing color to gray";
+     table = &gray;
+    }
+    acquireMutex->lock();
+    delete image;
+    image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
+    image->setColorTable(*table);
+    acquireMutex->unlock(); 
+  }
  protected:
   virtual void run() = 0;
   virtual int  connectCamera() = 0;
@@ -436,6 +453,8 @@ class Camera : public QThread
   double eTimeTotal, frequency;
   QVector<QRgb> hot;
   QVector<QRgb> gray;
+  QVector<QRgb> *table;
+  QImage *image;
 };
 
 

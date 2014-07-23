@@ -30,6 +30,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QLCDNumber>
+#include <QRadioButton>
+#include <QButtonGroup>
 #include "QsLog.h"
 #include "hdf5.h"
 #include "hdf5_hl.h"
@@ -65,6 +67,8 @@ class CameraControlWidget : public QWidget
   QPushButton *snapshotButton;
   QLabel  *hflipLabel, *vflipLabel;
   QCheckBox *hflipBox, *vflipBox;
+  QButtonGroup *colorGroup;  
+  
   QSignalMapper *featureMapper, *sliderValueMapper, *modeMapper;
 };
 #endif

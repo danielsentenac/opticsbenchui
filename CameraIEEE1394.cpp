@@ -480,9 +480,7 @@ CameraIEEE1394::setFeature(int feature, double value) {
     snapshot32 = (int*)malloc( sizeof(int) * width * height);
     delete image;
     image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-    QVector<QRgb> table;
-    for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
-    image->setColorTable(table);
+    image->setColorTable(*table);
     sleep(1);
     err = dc1394_video_set_iso_channel(camera,id);
     err = dc1394_video_set_iso_speed(camera,DC1394_ISO_SPEED_400);
@@ -544,9 +542,7 @@ CameraIEEE1394::setFeature(int feature, double value) {
     snapshot32 = (int*)malloc( sizeof(int) * width * height);
     delete image;
     image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-    QVector<QRgb> table;
-    for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
-    image->setColorTable(table);
+    image->setColorTable(*table);
     sleep(1);
     err = dc1394_video_set_iso_channel(camera,id);
     err = dc1394_video_set_iso_speed(camera,DC1394_ISO_SPEED_400);
@@ -759,10 +755,7 @@ CameraIEEE1394::connectCamera() {
   snapshot32 = (int*)malloc( sizeof(int) * width * height);
 
   image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-  QVector<QRgb> table;
-  for (int i = 0; i < 256; i++)
-    table.append(qRgb(i, i, i));
-  image->setColorTable(table);
+  image->setColorTable(*table);
 
   /*-----------------------------------------------------------------------
    *  have the camera start sending data

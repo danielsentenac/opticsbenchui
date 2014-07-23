@@ -731,9 +731,7 @@ CameraZyla::setFeature(int feature, double value) {
    snapshot32 = (int*)malloc( sizeof(int) * width * height);
    delete image;
    image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-   QVector<QRgb> table;
-   for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
-   image->setColorTable(table);
+   image->setColorTable(*table);
    for (int i = 0; i < NUMBER_OF_BUFFERS; i++) {
      delete AlignedBuffers[i];
      AlignedBuffers[i] = new ushort[BufferSize];
@@ -1240,9 +1238,7 @@ CameraZyla::connectCamera() {
   snapshot32 = (int*)malloc( sizeof(int) * width * height);
 
   image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-  QVector<QRgb> table;
-  for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
-  image->setColorTable(table);
+  image->setColorTable(*table);
 
   //Allocate a number of memory buffers to store frames
   AlignedBuffers = new ushort*[NUMBER_OF_BUFFERS];
@@ -1479,9 +1475,7 @@ CameraZyla::acquireImage() {
 
    delete image;
    image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-   QVector<QRgb> table;
-   for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
-   image->setColorTable(table);
+   image->setColorTable(*table);
    for (int i = 0; i < NUMBER_OF_BUFFERS; i++) {
      delete AlignedBuffers[i];
      AlignedBuffers[i] = new ushort[BufferSize];

@@ -58,7 +58,6 @@ class CameraZyla : public Camera
   const char * sdkErrorString(int _i_errorCode);
   bool errorOk(int _i_err, const char * _sz_caller);
 
-  QImage *image;
   int imageWidth;
   int imageHeight;
   // Zyla Andor

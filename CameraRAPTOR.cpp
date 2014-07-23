@@ -318,7 +318,6 @@ CameraRAPTOR::setFeature(int feature, double value) {
                << " value " << QString::number(value);
   int err = 0;
   int bin_width,bin_height;
-  QVector<QRgb> table;
   while (acquireMutex->tryLock() == false) {
          usleep(100);
   }
@@ -410,8 +409,7 @@ CameraRAPTOR::setFeature(int feature, double value) {
        snapshot32 = (int*)malloc( sizeof(int) * width * height);
        image16 = (ushort*)malloc( sizeof(ushort) * width * height);
        image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-       for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
-       image->setColorTable(table);
+       image->setColorTable(*table);
 
   acquireMutex->unlock();
   getFeatures();
@@ -569,7 +567,6 @@ CameraRAPTOR::connectCamera() {
   QLOG_DEBUG() << "CameraRAPTOR::connectCamera()> Bdim=" << pxd_imageBdim();
 
   // Init AOI and buffers
-  QVector<QRgb> table;
   width = pxd_imageXdim();
   height =  pxd_imageYdim();
   QLOG_DEBUG() << "CameraRAPTOR::connectCamera> Updated width " << width;
@@ -580,8 +577,7 @@ CameraRAPTOR::connectCamera() {
   snapshot32 = (int*)malloc( sizeof(int) * width * height);
   image16 = (ushort*)malloc( sizeof(ushort) * width * height);
   image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-  for (int i = 0; i < 256; i++) table.append(qRgb(i, i, i));
-  image->setColorTable(table);
+  image->setColorTable(*table);
 
   /*-----------------------------------------------------------------------
    *  have the camera start sending data

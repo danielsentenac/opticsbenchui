@@ -131,6 +131,16 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   layout->addWidget(hflipLabel,2,1000+2,1,1,Qt::AlignCenter);
   layout->addWidget(hflipBox,2,1000+3,1,1,Qt::AlignCenter);
 
+  colorGroup = new QButtonGroup(this);
+  connect(colorGroup, SIGNAL(buttonClicked(int)), camera, SLOT(setColorTable(int))) ;
+  QRadioButton *grayButton = new QRadioButton("gray");
+  QRadioButton *hotButton =  new QRadioButton(" hot ");
+  colorGroup->addButton(grayButton);
+  colorGroup->addButton(hotButton);
+  layout->addWidget(grayButton,1,2000,1,1,Qt::AlignCenter);
+  layout->addWidget(hotButton,2,2000,1,1,Qt::AlignCenter);
+  
+  grayButton->setChecked(true);
   setMinimumHeight(DOCK_HEIGHT);
   setLayout(layout);
 }

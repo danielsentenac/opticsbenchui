@@ -72,7 +72,6 @@ class CameraRAPTOR : public Camera
   struct pxvidstate   *vidstate;
   pxbuffer_t framenum;
   ushort *image16;
-  QImage *image;
   int imageWidth;
   int imageHeight;
   double frate, frameTotal;

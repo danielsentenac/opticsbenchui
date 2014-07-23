@@ -384,10 +384,7 @@ CameraGiGE::setFeature(int feature, double value) {
        snapshot32 = (int*)malloc( sizeof(int) * width * height);
        delete image;
        image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-       QVector<QRgb> table;
-       for (int i = 0; i < 256; i++)
-         table.append(qRgb(i, i, i));
-       image->setColorTable(table);
+       image->setColorTable(*table);
 
        // Start acquisition
        payload = arv_camera_get_payload (camera);
@@ -684,10 +681,7 @@ CameraGiGE::connectCamera() {
   snapshot32 = (int*)malloc( sizeof(int) * width * height);
 
   image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-  QVector<QRgb> table;
-  for (int i = 0; i < 256; i++)
-    table.append(qRgb(i, i, i));
-  image->setColorTable(table);
+  image->setColorTable(*table);
 
   /*-----------------------------------------------------------------------
    *  have the camera start sending data

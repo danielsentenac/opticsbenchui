@@ -57,7 +57,6 @@ class CameraGiGE : public Camera
   int  acquireImage();
   void cleanup_and_exit();
 
-  QImage *image;
   int imageWidth;
   int imageHeight;
   // Aravis
