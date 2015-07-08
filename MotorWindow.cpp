@@ -100,7 +100,7 @@ MotorWindow::MotorWindow( QMainWindow* parent, Qt::WFlags fl , Motor *_motor)
   actuatortable->setHeaderData(2, Qt::Horizontal, tr("description"));
   actuatortable->setHeaderData(3, Qt::Horizontal, tr("settings"));
   actuatortable->setHeaderData(4, Qt::Horizontal, tr("position"));
-  actuatorview->setColumnHidden (4, true);
+  //actuatorview->setColumnHidden (4, true);
 
   
   InitConfig();

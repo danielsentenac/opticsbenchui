@@ -1153,7 +1153,7 @@ CameraZyla::connectCamera() {
                   << " " << QString(citem);
   }
 
-  /* Set rolling shutter mode
+  /* Set global shutter mode
   int shuttercnt;
   i_err = AT_GetEnumCount(*camera, L"ElectronicShutteringMode", &shuttercnt);
   errorOk(i_err, "AT_GetEnumCount 'ElectronicShutteringMode'");
@@ -1165,9 +1165,9 @@ CameraZyla::connectCamera() {
      QLOG_INFO () << "CameraZyla::connectCamera> ElectronicShutteringMode " << i
                   << " " << QString(citem);
   }
-  i_err = AT_SetEnumString(*camera, L"ElectronicShutteringMode", L"Rolling");
-  errorOk(i_err, "AT_SetEnumIndex 'ElectronicShutteringMode'");
-  QLOG_INFO () << "CameraZyla::connectCamera> Set Rolling Shutter Mode";
+  i_err = AT_SetEnumString(*camera, L"ElectronicShutteringMode", L"Global");
+  errorOk(i_err, "AT_SetEnumString 'ElectronicShutteringMode'");
+  QLOG_INFO () << "CameraZyla::connectCamera> Set Global Shutter Mode";
  */
   // Set SimplePreAmpGainControl mode
   int gaincnt;
@@ -1181,6 +1181,9 @@ CameraZyla::connectCamera() {
      QLOG_INFO () << "CameraZyla::connectCamera> SimplePreAmpGainControl " << i
                   << " " << QString(citem);
   }
+  i_err = AT_SetEnumIndex(*camera, L"SimplePreAmpGainControl", 0);
+  errorOk(i_err, "AT_SetEnumIndex 'SimplePreAmpGainControl'");
+  QLOG_INFO () << "CameraZyla::connectCamera> Set SimplePreAmpGainControl Mode to zero";
 
   // Get PixelEncoding
   int encodingcnt;

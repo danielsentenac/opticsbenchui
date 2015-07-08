@@ -196,7 +196,8 @@ class Driver
                             float& rconvertedValue,
                             float& rrange) const = 0;
     virtual int SendGeneralCommand(char* buffer,string& rply) const ;
- 
+    virtual int Exit(string actuatorSetting){ return 0; }
+
  protected :
     
     mutable DriverDefinition::ADErrorCode _lastError; // code of the last error

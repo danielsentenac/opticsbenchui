@@ -68,6 +68,7 @@
 				    float valueToConvert, 
 				    float& rconvertedValue,
 				    float& rrange) const;
+            virtual int Exit(string actuatorSetting);
 
 	  protected : 
 	    static const int BUFFER_SIZE;

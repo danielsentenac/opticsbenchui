@@ -89,21 +89,16 @@ int DriverStanda_uSMC::InitActuator(string actuatorSetting,
       QLOG_ERROR () << " Error retrieving parameters for device " << _cur_dev;
       return -1;
   }
-  // Set actuator position 
-  _params.StartPos = position;
-  // Save parameters to Flash
-  if ( USMC_SetParameters ( _cur_dev, &_params ) )
-  {
-      QLOG_ERROR () << " Error setting parameters for device " << _cur_dev;
-      return -1;
-  }
-  if ( USMC_SaveParametersToFlash ( _cur_dev ) )
-  {
-      QLOG_ERROR () << " Error saving parameters to flash for device " << _cur_dev;
-      return -1;
-  }
-  retStatus = GetPos(actuatorSetting,position); 
-  QLOG_INFO () << " Device " << _cur_dev << " initial position set to " << position; 
+  // Save last position in controller
+    QLOG_DEBUG () << " Save last position for device " << (int) position;
+    // Set actuator position
+    if ( USMC_SetCurrentPosition ( _cur_dev, (int) position ) )
+      {
+        QLOG_ERROR () << " Error setting position in controller " << _cur_dev;
+        return -1;
+      }
+  retStatus = GetPos(actuatorSetting,position);
+  QLOG_INFO () << " Device " << _cur_dev << " initial position from controller is to " << position;
   return retStatus;
 }
 
@@ -155,7 +150,6 @@ int DriverStanda_uSMC::Move(string actuatorSetting,
       QLOG_ERROR () << "Bad Actuator setting";
       return -1;
     }
-
    // Get current position
    float curpos;
    GetPos(actuatorSetting, curpos);
@@ -169,7 +163,7 @@ int DriverStanda_uSMC::Move(string actuatorSetting,
     }
 
    _start_params.SDivisor = _divisor;
-   _start_params.SlStart = TRUE;
+   _start_params.SlStart = FALSE;
    _start_params.LoftEn = FALSE;
    if ( USMC_Start ( _cur_dev, dest_pos, &_speed, &_start_params ) )
     {
@@ -197,7 +191,6 @@ int DriverStanda_uSMC::MoveAbs(string actuatorSetting,
       QLOG_ERROR () << "Bad Actuator setting";
       return -1;
     }
-
    // Get current position
    float curpos;
    GetPos(actuatorSetting, curpos);
@@ -211,7 +204,8 @@ int DriverStanda_uSMC::MoveAbs(string actuatorSetting,
     }
 
    _start_params.SDivisor = _divisor;
-   _start_params.SlStart = TRUE;
+   _start_params.SlStart = FALSE;
+   _start_params.LoftEn = FALSE;
    if ( USMC_Start ( _cur_dev, dest_pos, &_speed, &_start_params ) )
     {
       QLOG_ERROR () << " USMC_Start failed ";
@@ -279,8 +273,19 @@ int DriverStanda_uSMC::OperationComplete(string& rstateData,
         return -1;
     }
   if ( _state.RUN ) retStatus = 0;
-  else 
+  else { 
     retStatus = 1; 
+    // Save last position in controller 
+    float position;
+    GetPos(actuatorSetting,position);
+    QLOG_DEBUG () << " Save last position for device " << (int) position;
+    // Set actuator position
+    if ( USMC_SetCurrentPosition ( _cur_dev, (int) position ) )
+      {
+        QLOG_ERROR () << " Error setting position in controller " << _cur_dev;
+        return -1;
+      }
+  }
   return retStatus;
 }
 
@@ -328,3 +333,44 @@ int DriverStanda_uSMC::ConvertUnit(int unit,
   rrange = 0;
   return retStatus;
 }
+int DriverStanda_uSMC::Exit(string actuatorSetting)
+{
+  if (sscanf(actuatorSetting.c_str(),"axisNumber=%u rotator=%d speed=%f divisor=%d",
+             &_cur_dev, &_rotator, &_speed, &_divisor) != NB_ITEM_INIT_SETTING)
+    {
+      QLOG_ERROR () << "Bad Actuator setting";
+      return -1;
+    }
+
+  QLOG_INFO() << " Saving last position in flash memory for device" << (int) _cur_dev;
+  // Go to Full Step (automaticaly), then Turn Off
+ /* _mode.ResetD = TRUE;
+
+  if ( USMC_SetMode ( _cur_dev, &_mode ) )
+       return  -1;
+
+  // Wait until Previous Comand is Done
+  do {
+     usleep ( 50 );
+
+     if ( USMC_GetState ( _cur_dev, &_state ) )
+          return -1;
+     } while ( _state.Power == TRUE );
+*/
+  float position;
+  GetPos(actuatorSetting,position);
+  QLOG_INFO () << " Device " << _cur_dev << " last position " << position;
+
+  // Remember CurPos in Parameters Only While state.Power - FALSE
+  QLOG_INFO () << " Device " << _cur_dev << " last controller position " << _state.CurPos;
+
+  _params.StartPos = _state.CurPos;
+
+  if ( USMC_SetParameters ( _cur_dev, &_params ) )
+       return  -1;
+
+  // Then of Course You Need to SaveToFlash
+  if ( USMC_SaveParametersToFlash ( _cur_dev ) )
+       return  -1;
+   return 0;
+} 

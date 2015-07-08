@@ -208,15 +208,24 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       usleep(100);
       motor->operationComplete();
     }
-    // New position
+    // Save motor position data
+    sequence->position = motor->getPosition(sequence->instrumentName);
+    usleep(100);
+    motor->operationComplete();
+    while (sequence->position != motor->getPosition(sequence->instrumentName)) {
+      sequence->position = motor->getPosition(sequence->instrumentName);
+      usleep(100);
+      motor->operationComplete();
+    }
+    // Update motor position
     QString positionQString;
-    positionQString.setNum (motor->getPosition(sequence->instrumentName), 'f',3);
-    //emit getPosition(positionQString);
+    // Save motor position data
+    sequence->position = motor->getPosition(sequence->instrumentName);
+    positionQString.setNum (sequence->position, 'f',3);
+    emit getPosition(positionQString);
     QLOG_INFO () << "AcquisitionThread::execute> " << sequence->instrumentName 
                  << " new position:" << positionQString; 
     sequence->status = true;
-    // Save motor position data
-    sequence->position = motor->getPosition(sequence->instrumentName);
   }
   else if ( sequence->instrumentType == "SUPERK" ) {
     superk->connectSuperK(sequence->instrumentName);

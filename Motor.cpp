@@ -27,9 +27,13 @@ Motor::Motor(QObject* parent, QString _appDirPath)
 }
 Motor::~Motor()
 {
-  QLOG_DEBUG ( ) << "Deleting Motor";
+  QLOG_INFO ( ) << "Deleting Motor";
   QLOG_DEBUG () << " actuatorCom.size " << actuatorCom.size();
   QLOG_DEBUG () << " actuatorDriver.size " << actuatorDriver.size();
+
+  float a,b,c;
+  for (int i = actuatorDriver.size() - 1 ; i >= 0; i--)
+    if (actuatorDriver.at(i)) actuatorDriver.at(i)->Exit(actuatorSettings.at(i).toStdString());
 
   for (int i = actuatorCom.size() - 1 ; i >= 0; i--)
     if (actuatorCom.at(i)) actuatorCom.at(i)->Close();
@@ -337,9 +341,13 @@ Motor::operationComplete() {
 	QLOG_DEBUG ( ) << "OperationComplete " << success << " position " << position.at(i);
 	emit getPosition(position.at(i));
 	if (success > 0 ) {
-	  // Save last position in Db
+          // Save last position in Db
+          actuatorDriver.at(i)->GetPos(actuatorSettings.at(i).toStdString(),curpos);
+          position.replace(i, curpos);
+          positionQString.setNum (position.at(i), 'f',3);
+          QLOG_DEBUG ( ) << "OperationComplete " << success << " position " << position.at(i);
+          emit getPosition(position.at(i));
 	  QSqlQuery query(QSqlDatabase::database(path));
-
 	  query.prepare("update motor_actuator set position = ? "
 			"where name = ?");
 	  query.addBindValue(positionQString);
