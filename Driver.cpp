@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "DriverPI_C509.h"
 #include "DriverMicos_Pollux.h"
 #include "DriverNewPort_NSC200.h"
-#include "DriverStanda_uSMC.h"
+#include "DriverStanda_uSMC2.h"
 #include "DriverNewPort_AGUC2.h"
 #include "DriverPI_E725.h"
 
@@ -33,7 +33,7 @@ const string Driver::NEWFOCUS_8750_CL     = "NewFocus_8750_Cl";
 const string Driver::PI_C509              = "PI_C509";
 const string Driver::MICOS_POLLUX         = "Micos_Pollux";
 const string Driver::NEWPORT_NSC200       = "NewPort_NSC200";
-const string Driver::STANDA_USMC          = "Standa_uSMC";
+const string Driver::STANDA_USMC2         = "Standa_uSMC2";
 const string Driver::PI_E725              = "PI_E725";
 const string Driver::NEWPORT_AGUC2        = "NewPort_AGUC2";
 
@@ -84,9 +84,9 @@ Driver* Driver::Create(string driverType,
   {
     pactuatorDrv = new DriverNewPort_NSC200(channel);
   }
-  else if (driverType == STANDA_USMC)
+  else if (driverType == STANDA_USMC2)
   {
-    pactuatorDrv = new DriverStanda_uSMC(channel);
+    pactuatorDrv = new DriverStanda_uSMC2(channel);
   }
   else if (driverType == NEWPORT_AGUC2)
   {
@@ -152,10 +152,10 @@ Driver* Driver::Create(const Driver* prefActuatorDrv,
     {
       pactuatorDrv = new DriverNewPort_NSC200(*prefNewPort_NSC200Drv,prefChannel);
     }
-  else if (const DriverStanda_uSMC* prefStanda_uSMCDrv =
-           dynamic_cast<const DriverStanda_uSMC*> (prefActuatorDrv))
+  else if (const DriverStanda_uSMC2* prefStanda_uSMCDrv =
+           dynamic_cast<const DriverStanda_uSMC2*> (prefActuatorDrv))
     {
-      pactuatorDrv = new DriverStanda_uSMC(*prefStanda_uSMCDrv,prefChannel);
+      pactuatorDrv = new DriverStanda_uSMC2(*prefStanda_uSMCDrv,prefChannel);
     }
   else if (const DriverNewPort_AGUC2* prefNewPort_AGUC2Drv =
            dynamic_cast<const DriverNewPort_AGUC2*> (prefActuatorDrv))

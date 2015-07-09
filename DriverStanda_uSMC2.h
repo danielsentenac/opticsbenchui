@@ -1,5 +1,5 @@
-/// @file DriverStanda_uSMC.h
-/// Class DriverStanda_uSMC
+/// @file DriverStanda_uSMC2.h
+/// Class DriverStanda_uSMC2
 ///
 /// @brief
 ///  This file provides a class implementing a USMC driver 
@@ -15,33 +15,34 @@
 
 
 #include "Driver.h"
-#include <libusb-1.0/libusb.h>
-class DriverStanda_uSMC : public Driver
+#include "ximc.h"
+
+class DriverStanda_uSMC2 : public Driver
 {
   public:
  
     // Constructor
-    DriverStanda_uSMC(){}
+    DriverStanda_uSMC2(){}
     
-    DriverStanda_uSMC(ACCom* commChannel):
+    DriverStanda_uSMC2(ACCom* commChannel):
       Driver(commChannel)
       {};
-      DriverStanda_uSMC(const DriverStanda_uSMC& actuatorDrvUSMC,
+      DriverStanda_uSMC2(const DriverStanda_uSMC2& actuatorDrvUSMC,
 			 ACCom* commChannel):
 	Driver(actuatorDrvUSMC, commChannel)
 	{};
 
     // Destructor
-      virtual ~DriverStanda_uSMC(){};
+      virtual ~DriverStanda_uSMC2(){};
 
     // Copy Constructor
-    DriverStanda_uSMC(const DriverStanda_uSMC& actuatorDrvUSMC ):
+    DriverStanda_uSMC2(const DriverStanda_uSMC2& actuatorDrvUSMC ):
        Driver(actuatorDrvUSMC)
       {};
   
     // Affectation Operator 
-    virtual DriverStanda_uSMC& operator = (
-       const DriverStanda_uSMC& actuatorDrvUSMC) 
+    virtual DriverStanda_uSMC2& operator = (
+       const DriverStanda_uSMC2& actuatorDrvUSMC) 
     {
        _pcommChannel = actuatorDrvUSMC._pcommChannel;
        return *this;
@@ -66,8 +67,7 @@ class DriverStanda_uSMC : public Driver
                             float valueToConvert, 
                             float& rconvertedValue,
                             float& rrange) const;
-
-    virtual int SendGeneralCommand(char* buffer,string& rply) const ;
+    virtual int Exit();
     
   protected : 
     static const int BUFFER_SIZE;
@@ -77,7 +77,14 @@ class DriverStanda_uSMC : public Driver
     static const int NB_ITEM_DRV_SETTING;
     static const int MAX_TRIES;
     static const int MIN_BYTES_TRANS;
-    static const DriverDefinition::DriverFeature USMC_FEATURE; 
-    
+    static const DriverDefinition::DriverFeature USMC2_FEATURE; 
+
+    mutable map<int,device_t> _device;
+    mutable device_enumeration_t _devenum;
+    mutable stage_name_t _stage_name;
+    mutable engine_settings_t _engine_settings;
+    mutable status_t _status;
+    mutable status_calb_t _status_calb;
+    mutable calibration_t _calibration;
 };
 #endif //_DRIVERNEWPORTUSMC_H_

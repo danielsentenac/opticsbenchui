@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <math.h>
 #include <sstream>
-
+#include <unistd.h>
 #include "ACCom.h"
 #include "DriverDefinition.h"
 
@@ -57,7 +57,7 @@ class Driver
     /// Identifier for the NSA driver
     static const string NEWPORT_NSC200;
     /// Identifier for the NSA driver
-    static const string STANDA_USMC;
+    static const string STANDA_USMC2;
     /// Identifier for the NULL driver
     static const string NULL_DRV_ID;
     /// Identifier for the PI_E725 driver

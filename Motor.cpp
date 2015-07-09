@@ -36,7 +36,7 @@ Motor::~Motor()
     if (actuatorDriver.at(i)) actuatorDriver.at(i)->Exit(actuatorSettings.at(i).toStdString());
 
   for (int i = actuatorCom.size() - 1 ; i >= 0; i--)
-    if (actuatorCom.at(i)) actuatorCom.at(i)->Close();
+    if (actuatorCom.at(i) && actuatorCom.at(i)!=(ACCom*)(-1)) actuatorCom.at(i)->Close();
 
   actuatorCom.clear();
   actuatorDriver.clear();
@@ -60,7 +60,7 @@ void Motor::setDbPath(QString _path) {
   
   // Re_Init object
   for (int i = 0 ; i < actuatorCom.size(); i++)
-    if (actuatorCom.at(i)) actuatorCom.at(i)->Close();
+    if (actuatorCom.at(i) && actuatorCom.at(i)!=(ACCom*)(-1)) actuatorCom.at(i)->Close();
  
   actuatorCom.clear();
   actuatorDriver.clear();
@@ -203,6 +203,8 @@ Motor::connectMotor(QString newactuator) {
 	emit showWarning("Could not create Communication channel");
 	return;
       }
+      if (accom == (ACCom*)(-1))
+        QLOG_INFO() << "No Communication channel used";
       else if (accom->Open()) {
 	emit showWarning("Could not open communication with device");
         delete accom;

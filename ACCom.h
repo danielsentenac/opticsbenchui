@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <fstream>
 #include <vector>
 #include <stdarg.h>
-
+#include <unistd.h>
 #include "QsLog.h"
 #include <QString>
 #include <QStringList>
@@ -52,6 +52,9 @@ public:
   static const string USB_COM;
   /** The canbus protocol code name */
   static const string CAN_COM;
+  /** The blank protocol code name */
+  static const string NULL_COM;
+
 
   /** Constructor
       @param device

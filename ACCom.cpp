@@ -26,6 +26,7 @@ const string ACCom::ETH_COM = "ETHERNET";
 const string ACCom::MB_COM  = "MB_COM";
 const string ACCom::CAN_COM = "CAN_COM";
 const string ACCom::USB_COM = "USB_COM";
+const string ACCom::NULL_COM = "NULL_COM";
 
 ACCom::ACCom (string device, string settings): _device (device), _settings (settings)
 {
@@ -56,6 +57,10 @@ ACCom *ACCom::Create (string channelType, string device, string settings)
     else if (channelType == USB_COM)
     {
         channel = new ACUsbCom (device, settings);
+    }
+    else if (channelType == NULL_COM)
+    {
+        channel = (ACCom*)(-1);
     }
 
     return channel;

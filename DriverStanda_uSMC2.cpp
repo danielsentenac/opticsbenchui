@@ -1,5 +1,5 @@
 /// ----------------------------------------------------------------------------
-/// @file DriverStanda_uSMC.cpp
+/// @file DriverStanda_uSMC2.cpp
 ///
 /// @brief
 /// This file provides a USMC class implementing a driver for a non specified controller 
@@ -17,40 +17,51 @@
 
 using namespace DriverDefinition;
 
-const int   DriverStanda_uSMC::BUFFER_SIZE          = 0;  // buffer size for serial messages
-const int   DriverStanda_uSMC::MAX_DEVICES          = 0;  // maximum number of USMC controllers
-const float DriverStanda_uSMC::MAX_VEL              = 0; // maximum vel of USMC controllers
-const int   DriverStanda_uSMC::NB_ITEM_INIT_SETTING = 1;  // number of items at the actuator (#channel, velocity)
-const int   DriverStanda_uSMC::NB_ITEM_DRV_SETTING  = 0;  // number of items at the driver (axisnumber)
-const int   DriverStanda_uSMC::MAX_TRIES            = 10;  // Number of read tries
-const int   DriverStanda_uSMC::MIN_BYTES_TRANS      = 7;  // Minimum bytes transferred
+const int   DriverStanda_uSMC2::BUFFER_SIZE          = 0;  // buffer size for serial messages
+const int   DriverStanda_uSMC2::MAX_DEVICES          = 0;  // maximum number of USMC controllers
+const float DriverStanda_uSMC2::MAX_VEL              = 0; // maximum vel of USMC controllers
+const int   DriverStanda_uSMC2::NB_ITEM_INIT_SETTING = 2;  // number of items at the actuator (#channel, velocity)
+const int   DriverStanda_uSMC2::NB_ITEM_DRV_SETTING  = 0;  // number of items at the driver (axisnumber)
+const int   DriverStanda_uSMC2::MAX_TRIES            = 10;  // Number of read tries
+const int   DriverStanda_uSMC2::MIN_BYTES_TRANS      = 7;  // Minimum bytes transferred
 
-const DriverFeature DriverStanda_uSMC::USMC_FEATURE = 
+const DriverFeature DriverStanda_uSMC2::USMC2_FEATURE = 
   {"step","step",1,1,CLOSED_LOOP,NULL };
 
 // 
 // Init implementation
 //
-int DriverStanda_uSMC::Init(string& rstateData) const 
+int DriverStanda_uSMC2::Init(string& rstateData) const 
 {
-  QLOG_DEBUG () <<  "DriverStanda_uSMC::Init";
+  QLOG_DEBUG () <<  "DriverStanda_uSMC2::Init";
   int retStatus = 0;
-  string command;
-  string answer;
   int cnt = 0;
-  command = "unused";
-  unsigned char buffer[16];
-  int serial = 0;
-     
-  // Send initialization message to STANDA device (USB port)
-  if (_pcommChannel->Write(command,"CONTROL",0xC0,0xC9,0x00,0x00,&buffer[0],16,1000) < 16)
-    {
-      QLOG_ERROR () << "DriverStanda_uSMC::Init> Unable to write to port";
-      _lastError = COMMUNICATION_ERROR;
-      return -1;
-    }
-  QLOG_INFO () << " Controller serial number " << buffer; 
+  char ximc_version_str[32];
+  char device_name[256];
+  int probe_flags = 0;
+
+  ximc_version( ximc_version_str );
+  QLOG_INFO () << ximc_version_str ; 
  
+//	Device enumeration function. Returns an opaque pointer to device enumeration data.
+  _devenum = enumerate_devices( probe_flags, 0 );
+//	Gets device count from device enumeration data
+  cnt = get_device_count( _devenum );
+  QLOG_INFO () << "Found " << cnt << " devices";
+//      Terminate if there are no connected devices
+  if (cnt <= 0) {
+   QLOG_INFO() << "No devices found";
+//      Free memory used by device enumeration data
+   free_enumerate_devices( _devenum );
+   return -1;
+  }
+//	 get devices name into a string
+  for (int i = 0; i < cnt; i++) {
+    strcpy( device_name, get_device_name( _devenum, i ) );
+    
+    QLOG_INFO () << device_name;
+  }
+
   return retStatus;
 }
 
@@ -59,11 +70,28 @@ int DriverStanda_uSMC::Init(string& rstateData) const
 //
 // use company delivered optimized settings
 //
-int DriverStanda_uSMC::InitActuator(string actuatorSetting,
+int DriverStanda_uSMC2::InitActuator(string actuatorSetting,
 				     float  position) const 
 {
-  QLOG_DEBUG () <<  "DriverStanda_uSMC::InitActuator";
+  QLOG_DEBUG () <<  "DriverStanda_uSMC2::InitActuator";
+  int axisNumber;
+  int speed;
   int retStatus = 0;
+
+  if (sscanf(actuatorSetting.c_str(),"axisNumber=%d speed=%d",&axisNumber,&speed) != NB_ITEM_INIT_SETTING)
+  {
+    QLOG_ERROR () << "Bad Actuator setting";
+  }
+// Open device
+  device_t dev = open_device(get_device_name(_devenum,axisNumber-1));
+  if (dev != -1){
+    QLOG_INFO() << "Open device " << get_device_name(_devenum,axisNumber-1);
+    _device.insert(std::pair<int,device_t>(axisNumber,dev));
+  }
+  else {
+   QLOG_ERROR() << "Error opening device with axis number " << axisNumber;
+   retStatus = -1;
+  }
   return retStatus;
 }
 
@@ -74,52 +102,25 @@ int DriverStanda_uSMC::InitActuator(string actuatorSetting,
 // 2. read reply
 // 3. parse position from reply
 //
-int DriverStanda_uSMC::GetPos(string  actuatorSetting,
+int DriverStanda_uSMC2::GetPos(string  actuatorSetting,
 			       float&  position) const 
 {
-  QLOG_DEBUG () <<  "DriverStanda_uSMC::GetPos";
+  QLOG_DEBUG () <<  "DriverStanda_uSMC2::GetPos";
   int retStatus = 0;
-  string command;
-  char commandC[64];
-  string answer = "";
-  string subAns;
   int axisNumber;
-  int transferred, atransferred = 0;
-  int cnt = 0;
-  if (sscanf(actuatorSetting.c_str(),"axisNumber=%d",&axisNumber) != NB_ITEM_INIT_SETTING)
+  int speed;
+  get_position_t pos;
+
+  if (sscanf(actuatorSetting.c_str(),"axisNumber=%d speed=%d",&axisNumber,&speed) != NB_ITEM_INIT_SETTING)
   {
     QLOG_ERROR () << "Bad Actuator setting";
   }
-  sprintf(commandC,"%dTP\r\n",axisNumber);
-  command = commandC;
+  retStatus = (int) get_position( _device.find(axisNumber)->second, &pos);
+  
+  QLOG_INFO() << " Device:" << get_device_name(_devenum,axisNumber-1) << " Position:" << pos.Position;
 
-  QLOG_DEBUG () <<  "DriverStanda_uSMC::GetPos> command "
-	         << command.c_str();
-  while ( cnt < MAX_TRIES && atransferred < MIN_BYTES_TRANS) {
-    cnt++;
-    retStatus = 0;
-    usleep(10000);
-    if (_pcommChannel->Write(command,"BULK",0x02,&transferred,100) < (int)command.length())
-      {
-	QLOG_ERROR () << "DriverStanda_uSMC::GetPos> Unable to write to port";
-	_lastError = COMMUNICATION_ERROR;
-	retStatus = -1;
-      }
-    usleep(10000);
-    if (_pcommChannel->Read(answer,"BULK",0x81,&atransferred,100) < MIN_BYTES_TRANS)
-      {
-	QLOG_ERROR () << "DriverStanda_uSMC::GetPos> Unable to read from port";
-	_lastError = COMMUNICATION_ERROR;
-	position  = 0;
-      retStatus = -1;
-      }
-    else {
-      subAns = answer.substr(5,answer.length());
-      position = atoi(subAns.c_str());
-    }
-    QLOG_DEBUG () << "DriverStanda_uSMC::Init> answer " << answer.c_str() << " bytes transferred "
-                 << transferred;
-  }
+  position = (float) pos.Position;
+ 
   return retStatus;
 }
 
@@ -128,38 +129,22 @@ int DriverStanda_uSMC::GetPos(string  actuatorSetting,
 //
 // 1. send "xxPRnn" (move relative) to move xxxx steps
 //
-int DriverStanda_uSMC::Move(string actuatorSetting,
+int DriverStanda_uSMC2::Move(string actuatorSetting,
 			     float  nbSteps,
 			     int    unit) const 
 {
-  QLOG_DEBUG () <<  "DriverStanda_uSMC::Move";
+  QLOG_DEBUG () <<  "DriverStanda_uSMC2::Move";
 
   int retStatus = 0;
-  string command;
-  char commandC[64];
   int axisNumber;
-  int transferred;
-  int numberOfSteps;
- 
-  usleep(10000);
-  if (sscanf(actuatorSetting.c_str(),"axisNumber=%d",&axisNumber) != NB_ITEM_INIT_SETTING)
+  int speed;
+
+  if (sscanf(actuatorSetting.c_str(),"axisNumber=%d speed=%d",&axisNumber,&speed) != NB_ITEM_INIT_SETTING)
   {
     QLOG_ERROR () << "Bad Actuator setting";
   }
- 
-  numberOfSteps = (int) nbSteps;
-  sprintf(commandC,"%dPR%d\r\n",axisNumber,numberOfSteps);
-  command = commandC;
-  
-  QLOG_DEBUG () << 
-	       "DriverStanda_uSMC::Move> command " << command.c_str();
-  if (_pcommChannel->Write(command,"BULK",0x02,&transferred,100) < (int)command.length())
-    {
-      QLOG_ERROR () << "DriverStanda_uSMC::Move> Unable to write to port";
-      _lastError = COMMUNICATION_ERROR;
-      retStatus = -1;
-    }
-  
+  retStatus = (int) command_movr(_device.find(axisNumber)->second, (int) nbSteps, 0);
+  usleep(500000);
   return retStatus;
 }
 
@@ -168,12 +153,21 @@ int DriverStanda_uSMC::Move(string actuatorSetting,
 //
 // 1. send "xxPAnn" move absolute command to move to position absPos
 //
-int DriverStanda_uSMC::MoveAbs(string actuatorSetting,
+int DriverStanda_uSMC2::MoveAbs(string actuatorSetting,
 			      float  absPos,
 			      int    unit) const 
 {
-  QLOG_DEBUG () <<  "DriverStanda_uSMC::MoveAbs";
-  int retStatus = NOT_CLOSED_LOOP;
+  QLOG_DEBUG () <<  "DriverStanda_uSMC2::MoveAbs";
+  int retStatus = 0;
+  int axisNumber;
+  int speed;
+
+  if (sscanf(actuatorSetting.c_str(),"axisNumber=%d speed=%d",&axisNumber,&speed) != NB_ITEM_INIT_SETTING)
+  {
+    QLOG_ERROR () << "Bad Actuator setting";
+  }
+  retStatus = (int) command_move(_device.find(axisNumber)->second, (int) absPos, 0);
+  usleep(500000);
   return retStatus;
 }
 
@@ -183,35 +177,20 @@ int DriverStanda_uSMC::MoveAbs(string actuatorSetting,
 // 1. send "xxST" (stop smoothly) to stop the
 //    current movement
 //
-int DriverStanda_uSMC::Stop(string actuatorSetting) const 
+int DriverStanda_uSMC2::Stop(string actuatorSetting) const 
 {
-  QLOG_DEBUG () <<  "DriverStanda_uSMC::Stop";
+  QLOG_DEBUG () <<  "DriverStanda_uSMC2::Stop";
 
   int retStatus = 0;
-  string command;
-  string answer;
-  char commandC[64];
   int axisNumber;
-  int transferred;
-  usleep(10000);
-  if (sscanf(actuatorSetting.c_str(),"axisNumber=%d",&axisNumber) != NB_ITEM_INIT_SETTING)
-    {
-      QLOG_ERROR () << "Bad Actuator setting";
-    }
-  else 
-    {
-      sprintf(commandC,"%dST\r\n",axisNumber);
-      command = commandC;
-      
-      QLOG_DEBUG () <<  "DriverStanda_uSMC::Stop> command = %s"
-		    << command.c_str();
-      if (_pcommChannel->Write(command,"BULK",0x02,&transferred,100) < (int)command.length())
-	{
-	  QLOG_ERROR () << "DriverStanda_uSMC::Stop> Unable to write to port";
-	  _lastError = COMMUNICATION_ERROR;
-	  retStatus = -1;
-	} 
-    }
+  int speed;
+
+  if (sscanf(actuatorSetting.c_str(),"axisNumber=%d speed=%d",&axisNumber,&speed) != NB_ITEM_INIT_SETTING)
+  {
+    QLOG_ERROR () << "Bad Actuator setting";
+  }
+  retStatus = (int) command_stop(_device.find(axisNumber)->second);
+
   return retStatus;
 }
 
@@ -224,65 +203,34 @@ int DriverStanda_uSMC::Stop(string actuatorSetting) const
 // 4. compare the bits
 //
 //
-int DriverStanda_uSMC::OperationComplete(string& rstateData,
+int DriverStanda_uSMC2::OperationComplete(string& rstateData,
 					  string actuatorSetting,
 					  ADLimitSwitch& rlimitSwitch) const
 {
-  QLOG_DEBUG () <<  "DriverStanda_uSMC::OperationComplete";
+  QLOG_DEBUG () <<  "DriverStanda_uSMC2::OperationComplete";
   
   int  retStatus = 1;
-  string command;
-  char commandC[64];
-  string answer;
-  string subAns;
   int axisNumber;
-  int transferred, atransferred = 0;
-  int status;
-  int cnt = 0;
+  int speed;
 
-  if (sscanf(actuatorSetting.c_str(),"axisNumber=%d",&axisNumber) != NB_ITEM_INIT_SETTING)
+  if (sscanf(actuatorSetting.c_str(),"axisNumber=%d speed=%d",&axisNumber,&speed) != NB_ITEM_INIT_SETTING)
   {
     QLOG_ERROR () << "Bad Actuator setting";
   }
-  else 
-  {
-    sprintf(commandC,"%dTS\r\n",axisNumber);
-    command = commandC;
-    while ( cnt < MAX_TRIES && atransferred < MIN_BYTES_TRANS) {
-      cnt++;
-      retStatus = 1;
-      usleep(10000);
-      QLOG_DEBUG () <<  
-		   "DriverStanda_uSMC::OperationComplete> command "
-		    << command.c_str();
-      if (_pcommChannel->Write(command,"BULK",0x02,&transferred,100) < (int)command.length())
-	{
-	  QLOG_ERROR () << "DriverStanda_uSMC::OperationComplete> Unable to write to port";
-	  _lastError = COMMUNICATION_ERROR;
-	  retStatus = -1;
-	}
-      usleep(10000);
-      if (_pcommChannel->Read(answer,"BULK",0x81,&atransferred,100) < MIN_BYTES_TRANS)
-	{
-	  QLOG_ERROR () << "DriverStanda_uSMC::OperationComplete> Unable to read from port";
-	  _lastError = COMMUNICATION_ERROR;
-	  retStatus = -1;
-	}
-      else {
-        QLOG_DEBUG () << "DriverStanda_uSMC::Init> answer " << answer.c_str() << " bytes transferred "
-                 << atransferred;
-	subAns = answer.substr(5,1);
-	status = atoi(subAns.c_str());
-	QLOG_DEBUG () << 
-			"DriverStanda_uSMC::OperationComplete> status TS " << status;
-	if (status == 1) // motion not completed
-	  retStatus = 0;
-	if (status == 0) // motion completed
-	  retStatus = 1; 
-      }
-    }
+  retStatus = (int) get_status(_device.find(axisNumber)->second, &_status);
+  
+  QLOG_INFO () << " get_status " << (int) retStatus  << " MoveSts " << _status.MoveSts;
+  if ( _status.MoveSts != 0 )
+    retStatus = 0;
+  else {
+    // Save last position in controller
+    float position;
+    GetPos(actuatorSetting,position);
+    QLOG_INFO () << " Save last position for device " << (int) position;
+    retStatus= 1;
   }
-  return retStatus;
+
+  return (retStatus);
 }
 
 //
@@ -290,13 +238,13 @@ int DriverStanda_uSMC::OperationComplete(string& rstateData,
 //
 //    Gives the translation stages features
 //
-int DriverStanda_uSMC::GetActuatorFeature(DriverFeature& ractuatorFeature) const
+int DriverStanda_uSMC2::GetActuatorFeature(DriverFeature& ractuatorFeature) const
 {
-  QLOG_DEBUG () <<  "DriverStanda_uSMC::GetActuatorFeature";
+  QLOG_DEBUG () <<  "DriverStanda_uSMC2::GetActuatorFeature";
   
   int retStatus = 0;
   
-  ractuatorFeature = USMC_FEATURE;
+  ractuatorFeature = USMC2_FEATURE;
   
   return retStatus;
 }
@@ -318,76 +266,29 @@ int DriverStanda_uSMC::GetActuatorFeature(DriverFeature& ractuatorFeature) const
 ///    conversion result
 // -----------------------------------------------------------------------------
 // Use indifferently default units or custom units configuration (STEPS == MM)
-int DriverStanda_uSMC::ConvertUnit(int unit, 
+int DriverStanda_uSMC2::ConvertUnit(int unit, 
 				   float valueToConvert, 
 				   float& rconvertedValue,
 				   float& rrange) const 
 {
-  QLOG_DEBUG () <<  "DriverStanda_uSMC::ConvertUnit";
+  QLOG_DEBUG () <<  "DriverStanda_uSMC2::ConvertUnit";
   int retStatus = 0;  
   rconvertedValue = valueToConvert;
   rrange = 0;
   return retStatus;
 }
-//------------------------------------------------------------------------------
-/// Operation : SendGeneralCommand
-///    Sends a command to the motor driver interface
-///
-/// @param state
-///    command line text
-/// @param actuatorName
-/// actuator name
-//------------------------------------------------------------------------------
-int 
-DriverStanda_uSMC::SendGeneralCommand(char *buffer,string& rply) const
-{  
-  int retStatus = 0;
-  string answer = "";
-  string command = "";
-  int transferred, atransferred = 0;
-  char mybuffer[32];
-  vector<string>  mBufferVect;
-  string strbuffer =  buffer;
-  string commandPrefix;
-  int clength;
+//
+// Exit funtion
+//
+int DriverStanda_uSMC2::Exit() 
+{
+// Close devices
+   std::map<int,device_t>::iterator it;
+   for ( it = _device.begin() ; it != _device.end(); ++it)
+     close_device((device_t*)&(it->second));
 
-  QLOG_DEBUG () <<  "DriverStanda_uSMC::SendGeneralCommand> reSttatus " << retStatus;
-  
-  if (!mBufferVect.empty()) mBufferVect.erase(mBufferVect.begin(),mBufferVect.end());  
-  Tokenize(strbuffer,mBufferVect,",");
-  for (unsigned int i = 0 ; i < mBufferVect.size(); i++ ) {
-    sprintf(mybuffer,"%s\r",mBufferVect[i].c_str());
-    command = mybuffer;
-    commandPrefix = command.substr(0,3);
-    clength = command.length();
-    QLOG_DEBUG () <<  "DriverStanda_uSMC::SendGeneralCommand> Send Command " << command.c_str() << " length " 
-		  << command.length();
-    //////////////////////////////////////////////////////////////////////////
-    // Apply Command
-    //////////////////////////////////////////////////////////////////////////
-    if (_pcommChannel->Write(command,"BULK",0x02,&transferred,100) < (int)command.length()) { 
-      QLOG_DEBUG () <<  
-		   "DriverStanda_uSMC::SendGeneralCommand> Unable to write to port";
-      retStatus = (1 << 0);
-      QLOG_DEBUG () <<  "DriverStanda_uSMC::SendGeneralCommand> reSttatus " << retStatus;
-    }
-    
-    usleep(100000);
-  }
-  ////////////////////////////////////////////////////////////////////////////////////
-  // Read reply
-  ////////////////////////////////////////////////////////////////////////////////////
-  if (!_pcommChannel->Read(answer,"BULK",0x81,&atransferred,100)) {
-    QLOG_DEBUG () <<  
-		 "Driver> Unable to read from port";
-    retStatus |= (1 << 1);
-    QLOG_DEBUG () <<  "DriverStanda_uSMC::SendGeneralCommand> retStatus " << retStatus;
-  }
-  QLOG_DEBUG () << "DriverStanda_uSMC::Init> answer " << answer.c_str() << " bytes transferred "
-                 << atransferred;
-  rply = answer;
-  QLOG_DEBUG () <<  
-	       "DriverStanda_uSMC::SendGeneralCommand> returning retStatus " << retStatus;
-  return retStatus;
+   // Free memory used by device enumeration data
+   free_enumerate_devices( _devenum );
+
+   return 0;
 }
-

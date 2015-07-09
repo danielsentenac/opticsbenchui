@@ -28,7 +28,7 @@ DEFINES 	+= 	GIGECAMERA
 #DEFINES         +=      NEOCAMERA
 
 # Andor Zyla camera support
-DEFINES         +=      ZYLACAMERA
+#DEFINES         +=      ZYLACAMERA
 
 # Andor Raptor camera support
 #DEFINES         +=      RAPTORCAMERA
@@ -40,7 +40,7 @@ DEFINES         +=      SUPERK
 #DEFINES         +=     ADVANTECHDAC
 
 # Comedi Counters support
-#DEFINES         +=     COMEDICOUNTER
+DEFINES         +=     COMEDICOUNTER
 
 # Comedi Dac support
 DEFINES         +=     COMEDIDAC
@@ -55,6 +55,7 @@ DC1394_LIB_PATH  =      /usr/local/lib
 RAW1394_LIB_PATH =	/usr/local/lib
 ARAVIS_LIB_PATH  =      /usr/local/lib
 STANDA_LIB_PATH  =      /usr/local/lib
+XIMC_LIB_PATH    =      /usr/lib64
 USB_LIB_PATH     =      /usr/lib
 GLIB_LIB_PATH	 =      /usr/lib
 NEO_LIB_PATH     =	/usr/local/lib
@@ -67,6 +68,7 @@ DC1394_INC_PATH  =      /usr/local/include/dc1394
 RAW1394_INC_PATH =	/usr/local/include/libraw1394/src
 ARAVIS_INC_PATH  =      /usr/local/include/aravis-0.2
 STANDA_INC_PATH  =      /usr/local/include
+XIMC_INC_PATH    =      /usr/include
 USB_INC_PATH     =      /usr/include
 GLIB_INC_PATH	 =      /usr/include/glib-2.0 /usr/lib/glib-2.0/include
 NEO_INC_PATH	 =	/usr/local/include
@@ -107,7 +109,7 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			DriverPI_C509.h \
 			DriverMicos_Pollux.h \
 			DriverPI_C862.h \
-			DriverStanda_uSMC.h \
+			DriverStanda_uSMC2.h \
 			DriverNewPort_AGUC2.h \
                         SuperK.h \
                         DriverSuperK.h \
@@ -158,7 +160,7 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			DriverPI_C509.cpp \
 			DriverMicos_Pollux.cpp \
 			DriverPI_C862.cpp \
-			DriverStanda_uSMC.cpp \
+			DriverStanda_uSMC2.cpp \
 			DriverNewPort_AGUC2.cpp \
 			DriverPI_E725.cpp \
                         SuperK.cpp \
@@ -184,6 +186,7 @@ INCLUDEPATH 	+=	\
 			$$COMEDI_INC_PATH \
 			$$ADVDAQ_INC_PATH \
 			$$STANDA_INC_PATH \
+                        $$XIMC_INC_PATH \
 			$$RAW1394_INC_PATH \
 			$$DC1394_INC_PATH \
 			$$ARAVIS_INC_PATH \
@@ -200,7 +203,8 @@ LIBS 		+= 	 \
 			-L$$DC1394_LIB_PATH -ldc1394 \
 			-L$$RAW1394_LIB_PATH -lraw1394 \
 			-L$$ARAVIS_LIB_PATH -laravis-0.2 \
-			-L$$STANDA_LIB_PATH -lusmc \
+#			-L$$STANDA_LIB_PATH -lusmc \
+                        -L$$XIMC_LIB_PATH -lximc \
 			-L$$HDF5_LIB_PATH -lhdf5 -lhdf5_hl \
    			-L$$NEO_LIB_PATH -latcore \
 #                       -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64.a -Wl,-Bdynamic 
