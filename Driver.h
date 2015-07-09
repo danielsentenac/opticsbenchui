@@ -56,7 +56,9 @@ class Driver
     static const string MICOS_POLLUX;
     /// Identifier for the NSA driver
     static const string NEWPORT_NSC200;
-    /// Identifier for the NSA driver
+    /// Identifier for the STANDA (old) driver
+    static const string STANDA_USMC;
+    /// Identifier for the STANDA driver
     static const string STANDA_USMC2;
     /// Identifier for the NULL driver
     static const string NULL_DRV_ID;

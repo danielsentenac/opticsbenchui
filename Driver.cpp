@@ -22,7 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "DriverPI_C509.h"
 #include "DriverMicos_Pollux.h"
 #include "DriverNewPort_NSC200.h"
+#ifdef STANDA_uSMC
+#include "DriverStanda_uSMC.h"
+#else
 #include "DriverStanda_uSMC2.h"
+#endif
 #include "DriverNewPort_AGUC2.h"
 #include "DriverPI_E725.h"
 
@@ -33,6 +37,7 @@ const string Driver::NEWFOCUS_8750_CL     = "NewFocus_8750_Cl";
 const string Driver::PI_C509              = "PI_C509";
 const string Driver::MICOS_POLLUX         = "Micos_Pollux";
 const string Driver::NEWPORT_NSC200       = "NewPort_NSC200";
+const string Driver::STANDA_USMC          = "Standa_uSMC";
 const string Driver::STANDA_USMC2         = "Standa_uSMC2";
 const string Driver::PI_E725              = "PI_E725";
 const string Driver::NEWPORT_AGUC2        = "NewPort_AGUC2";
@@ -84,10 +89,17 @@ Driver* Driver::Create(string driverType,
   {
     pactuatorDrv = new DriverNewPort_NSC200(channel);
   }
+#ifdef STANDA_uSMC
+  else if (driverType == STANDA_USMC)
+  {
+    pactuatorDrv = new DriverStanda_uSMC(channel);
+  }
+#else
   else if (driverType == STANDA_USMC2)
   {
     pactuatorDrv = new DriverStanda_uSMC2(channel);
   }
+#endif
   else if (driverType == NEWPORT_AGUC2)
   {
     pactuatorDrv = new DriverNewPort_AGUC2(channel);
@@ -152,11 +164,19 @@ Driver* Driver::Create(const Driver* prefActuatorDrv,
     {
       pactuatorDrv = new DriverNewPort_NSC200(*prefNewPort_NSC200Drv,prefChannel);
     }
+#ifdef STANDA_uSMC
+  else if (const DriverStanda_uSMC* prefStanda_uSMCDrv =
+           dynamic_cast<const DriverStanda_uSMC*> (prefActuatorDrv))
+    {
+      pactuatorDrv = new DriverStanda_uSMC(*prefStanda_uSMCDrv,prefChannel);
+    }
+#else
   else if (const DriverStanda_uSMC2* prefStanda_uSMCDrv =
            dynamic_cast<const DriverStanda_uSMC2*> (prefActuatorDrv))
     {
       pactuatorDrv = new DriverStanda_uSMC2(*prefStanda_uSMCDrv,prefChannel);
     }
+#endif
   else if (const DriverNewPort_AGUC2* prefNewPort_AGUC2Drv =
            dynamic_cast<const DriverNewPort_AGUC2*> (prefActuatorDrv))
     {
