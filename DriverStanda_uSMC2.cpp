@@ -50,7 +50,7 @@ int DriverStanda_uSMC2::Init(string& rstateData) const
   QLOG_INFO () << "Found " << cnt << " devices";
 //      Terminate if there are no connected devices
   if (cnt <= 0) {
-   QLOG_INFO() << "No devices found";
+   QLOG_WARN() << "No devices found";
 //      Free memory used by device enumeration data
    free_enumerate_devices( _devenum );
    return -1;
@@ -90,8 +90,13 @@ int DriverStanda_uSMC2::InitActuator(string actuatorSetting,
   }
   else {
    QLOG_ERROR() << "Error opening device with axis number " << axisNumber;
-   retStatus = -1;
+   return -1;
   }
+// Set speed settings
+  retStatus = get_move_settings(_device.find(axisNumber)->second,&_move_settings);
+  _move_settings.Speed = speed;
+  retStatus = set_move_settings(_device.find(axisNumber)->second,&_move_settings);
+
   return retStatus;
 }
 
@@ -117,7 +122,7 @@ int DriverStanda_uSMC2::GetPos(string  actuatorSetting,
   }
   retStatus = (int) get_position( _device.find(axisNumber)->second, &pos);
   
-  QLOG_INFO() << " Device:" << get_device_name(_devenum,axisNumber-1) << " Position:" << pos.Position;
+  QLOG_DEBUG() << " Device:" << get_device_name(_devenum,axisNumber-1) << " Position:" << pos.Position;
 
   position = (float) pos.Position;
  
@@ -219,14 +224,14 @@ int DriverStanda_uSMC2::OperationComplete(string& rstateData,
   }
   retStatus = (int) get_status(_device.find(axisNumber)->second, &_status);
   
-  QLOG_INFO () << " get_status " << (int) retStatus  << " MoveSts " << _status.MoveSts;
+  QLOG_DEBUG () << " get_status " << (int) retStatus  << " MoveSts " << _status.MoveSts;
   if ( _status.MoveSts != 0 )
     retStatus = 0;
   else {
     // Save last position in controller
     float position;
     GetPos(actuatorSetting,position);
-    QLOG_INFO () << " Save last position for device " << (int) position;
+    QLOG_DEBUG () << " Save last position for device " << (int) position;
     retStatus= 1;
   }
 

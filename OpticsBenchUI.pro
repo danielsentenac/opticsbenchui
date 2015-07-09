@@ -217,6 +217,6 @@ documentation.files = doc/*
 target.path = /usr/local/bin
 
 sqldriverplugin.path = /usr/local/bin/sqldrivers
-sqldriverplugin.files = /root/Qt/Qt-4.7.2/plugins/sqldrivers/libqsqlite.so
+sqldriverplugin.files = /usr/lib64/qt4/plugins/sqldrivers/libqsqlite.so
 
 INSTALLS += documentation target sqldriverplugin

@@ -82,6 +82,7 @@ class DriverStanda_uSMC2 : public Driver
     mutable map<int,device_t> _device;
     mutable device_enumeration_t _devenum;
     mutable stage_name_t _stage_name;
+    mutable move_settings_t _move_settings;
     mutable engine_settings_t _engine_settings;
     mutable status_t _status;
     mutable status_calb_t _status_calb;
