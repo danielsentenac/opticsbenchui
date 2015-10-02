@@ -163,10 +163,10 @@ CameraGiGE::setCamera(void* _camera, int _id)
    if ( ARV_IS_GC_FLOAT (feature) ) {
      QVector<QString> feature_string_choice;
      arv_device_get_float_feature_bounds (device, gige_features[i], &feature_min_d, &feature_max_d);
-     QLOG_INFO () << "Feature Min " << QString::number(feature_min_d) << " Max " << QString::number(feature_max_d);
+     QLOG_INFO () << "FLOAT Feature Min " << QString::number(feature_min_d) << " Max " << QString::number(feature_max_d);
      QString feature_string_value;
      feature_string_value = QString(arv_gc_node_get_value_as_string (feature));
-     QLOG_INFO() << "CameraGiGE::setCamera> Feature "
+     QLOG_INFO() << "CameraGiGE::setCamera> FLOAT Feature "
                      << featureNameList.at(featureCnt) << " value " << feature_string_value;
      featureValueList.push_back( feature_string_value.toDouble() );
      featureMinList.push_back(feature_min_d );
@@ -178,10 +178,10 @@ CameraGiGE::setCamera(void* _camera, int _id)
    else if ( ARV_IS_GC_INTEGER (feature) ) {
      QVector<QString> feature_string_choice;
      arv_device_get_integer_feature_bounds (device, gige_features[i], &feature_min_i, &feature_max_i);
-     QLOG_INFO () << "Feature Min " << QString::number(feature_min_i) << " Max " << QString::number(feature_max_i);
+     QLOG_INFO () << "INTEGER Feature Min " << QString::number(feature_min_i) << " Max " << QString::number(feature_max_i);
      QString feature_string_value;
      feature_string_value = QString(arv_gc_node_get_value_as_string (feature));
-     QLOG_INFO() << "CameraGiGE::setCamera> Feature "
+     QLOG_INFO() << "CameraGiGE::setCamera> INTEGER Feature "
                      << featureNameList.at(featureCnt) << " value " << feature_string_value;
      featureValueList.push_back( feature_string_value.toInt());
      featureMinList.push_back(feature_min_i);
@@ -194,7 +194,7 @@ CameraGiGE::setCamera(void* _camera, int _id)
      QVector<QString> feature_string_choice;
      QString feature_string_value;
      feature_string_value = QString(arv_gc_node_get_value_as_string (feature));
-     QLOG_INFO() << "CameraGiGE::setCamera> Feature "
+     QLOG_INFO() << "CameraGiGE::setCamera> BOOLEAN Feature "
                  << featureNameList.at(featureCnt) << " value " << feature_string_value;
      feature_min_i = 0;
      feature_max_i = 1;
@@ -217,7 +217,7 @@ CameraGiGE::setCamera(void* _camera, int _id)
      childs = arv_gc_node_get_childs (feature);
      int feature_choicecnt = 0;
      for (iter = childs; iter != NULL; iter = iter->next) {
-       QLOG_INFO() << arv_gc_node_get_node_name ((ArvGcNode *)iter->data)
+       QLOG_INFO() << "ENUMERATION FEATURE " << arv_gc_node_get_node_name ((ArvGcNode *)iter->data)
                    << " " << arv_gc_node_get_name ((ArvGcNode *)iter->data);
        feature_string_choice.push_back(arv_gc_node_get_name ((ArvGcNode *)iter->data));
        QString feature_string_value = QString(arv_gc_node_get_value_as_string (feature));
@@ -360,8 +360,10 @@ CameraGiGE::setFeature(int feature, double value) {
    else if ( ARV_IS_GC_INTEGER (node) ) {
      QString feature_string_value = QString::number((int)value);
      // Particular Case Image Size
-     if (featureNameList.at(feature) == "Width" ||
-         featureNameList.at(feature) == "Height") {
+     if (featureNameList.at(feature) == "Width"   ||
+         featureNameList.at(feature) == "Height"  ||
+         featureNameList.at(feature) == "OffsetX" ||
+         featureNameList.at(feature) == "OffsetY" ) {
        // Stop acquisition
        this->stop();
        arv_camera_stop_acquisition (camera);
@@ -490,6 +492,10 @@ CameraGiGE::setFeature(int feature, double value) {
                     << featureNameList.at(feature) << " New value " << feature_string_choice.at(value);
      }
   }
+  //
+  // Update feature range
+  //
+  getFeatures();
 }
 void
 CameraGiGE::setMode(int feature, bool value) {
@@ -522,7 +528,10 @@ CameraGiGE::getFeatures() {
      featureValueList.replace(featureCnt, feature_string_value.toDouble() );
      featureAbsValueList.replace(featureCnt, feature_string_value.toDouble() );
      featureMinList.replace(featureCnt,feature_min_d );
-     featureMaxList.replace(featureCnt,feature_max_d );
+     if ( gige_features[i] == "ExposureTimeAbs" ) // Bug in aravis returns just half the value
+       featureMaxList.replace(featureCnt,feature_max_d * 2 );
+     else 
+       featureMaxList.replace(featureCnt,feature_max_d );
    }
    else if ( ARV_IS_GC_INTEGER (feature) ) {
      QLOG_INFO() << "CameraGiGE::getFeature> get feature "

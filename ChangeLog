@@ -42,3 +42,12 @@ ver. 0.11
 2-  Add support to Dac Comedi (DacComedi classes)
 3-  Add support to Supercontinuum source from NKT SuperKVaria (SuperK classes)
 4-  Add support to Raptor Falcon camera (CameraRAPTOR classes)
+ver. 0.12
+1- Update OpticsBenchUI with kernel 3.17 (Fedora 21)
+   - Installed updates for (new generation) Standa controllers XIMC lib
+   - Installed updates for Raptor Falcon camera (XCLIB)
+   - Installed comedi/comedilib updates
+   - Installed updates for Neo camera from Andor (SDK 3-3.10.30003.5)
+   - TBD: Test updates for Zyla camera from Andor
+   - TBD: Test updates for firewire camera
+

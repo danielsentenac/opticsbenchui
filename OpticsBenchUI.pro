@@ -4,7 +4,7 @@
 
 TEMPLATE 	= 	app
 
-VERSION         =       0.11
+VERSION         =       0.12
 
 TARGET 		= 
 
@@ -25,13 +25,13 @@ DEFINES 	+= 	IEEE1394CAMERA
 DEFINES 	+= 	GIGECAMERA
 
 # Andor Neo camera support
-#DEFINES         +=      NEOCAMERA
+DEFINES         +=      NEOCAMERA
 
 # Andor Zyla camera support
 #DEFINES         +=      ZYLACAMERA
 
 # Andor Raptor camera support
-#DEFINES         +=      RAPTORCAMERA
+DEFINES         +=      RAPTORCAMERA
 
 # SuperK support
 DEFINES         +=      SUPERK
@@ -207,7 +207,7 @@ LIBS 		+= 	 \
                         -L$$XIMC_LIB_PATH -lximc \
 			-L$$HDF5_LIB_PATH -lhdf5 -lhdf5_hl \
    			-L$$NEO_LIB_PATH -latcore \
-#                       -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64.a -Wl,-Bdynamic 
+                        -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64.a -Wl,-Bdynamic 
 
 # make install
 documentation.extra = ./make_doc.run

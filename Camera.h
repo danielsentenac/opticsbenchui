@@ -343,8 +343,8 @@ class Camera : public QThread
   QVector<QString> featureNameList;   /* Available feature list*/
   QVector<int> featureIdList;         /* Available feature id list*/
   QVector<double> featureValueList;   /* Available feature value list*/
-  QVector<int> featureMinList;        /* Available feature min list*/
-  QVector<int> featureMaxList;        /* Available feature max list*/
+  QVector<double> featureMinList;        /* Available feature min list*/
+  QVector<double> featureMaxList;        /* Available feature max list*/
   QVector<bool> featureModeAutoList;  /* Available feature mode list*/
   QVector<bool> featureAutoCapableList; /* Available feature mode auto capable list*/
   QVector<double> featureAbsValueList; /* Available feature abs value list*/
