@@ -208,10 +208,6 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       usleep(100);
       motor->operationComplete();
     }
-    // Save motor position data
-    sequence->position = motor->getPosition(sequence->instrumentName);
-    usleep(100);
-    motor->operationComplete();
     // Update motor position
     QString positionQString;
     // Save motor position data
