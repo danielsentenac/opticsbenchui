@@ -133,7 +133,6 @@ int DriverPI_E725::GetPos(string  actuatorSetting,
     QLOG_DEBUG() << "Unable to write to port";
     retStatus = -1;
   }
-  usleep(_delay);
   if (!_pcommChannel->Read(answer,NULL))
   {
     QLOG_DEBUG() << "Unable to read from port";
