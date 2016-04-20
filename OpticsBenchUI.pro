@@ -12,7 +12,7 @@ CONFIG          += 	qt thread warn_off release
 
 DEPENDPATH 	+= .
 
-QT      	+= 	multimedia sql
+QT      	+= 	multimedia sql concurrent
 
 DEFINES 	+=      OPTICSBENCHUIVERSION=\\\"$$VERSION\\\"
 
@@ -50,6 +50,7 @@ QMAKE_CXXFLAGS 	+= 	-g `pkg-config --cflags glib-2.0`
 # External packages
 HDF5_LIB_PATH 	 =  	/usr/local/hdf5/lib
 COMEDI_LIB_PATH  =      /usr/local/lib
+QWTPLOT_LIB_PATH =      /usr/local/qwt-6.1.2/lib
 ADVDAQ_LIB_PATH  =	/usr/lib
 DC1394_LIB_PATH  =      /usr/local/lib
 RAW1394_LIB_PATH =	/usr/local/lib
@@ -63,6 +64,7 @@ RAPTOR_LIB_PATH  =      /usr/local/xclib
 
 HDF5_INC_PATH 	 =  	/usr/local/hdf5/include
 COMEDI_INC_PATH  =      /usr/local/include
+QWTPLOT_INC_PATH =      /usr/local/qwt-6.1.2/include
 ADVDAQ_INC_PATH  =	/usr/local/include/Advantech
 DC1394_INC_PATH  =      /usr/local/include/dc1394
 RAW1394_INC_PATH =	/usr/local/include/libraw1394/src
@@ -90,6 +92,7 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
                         Comedi.h \
                         ComediCounter.h \
                         ComediCounterControlWidget.h \
+                        ComediCounterPlot.h \
                         ComediWindow.h \
                         ComediDac.h \
                         ComediDacControlWidget.h \
@@ -146,6 +149,7 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
                         ComediDacControlWidget.cpp \
 			ComediCounter.cpp \
  			ComediCounterControlWidget.cpp \
+                        ComediCounterPlot.cpp \
 			ComediWindow.cpp \
 			DacWindow.cpp \
 			DacControlWidget.cpp \
@@ -184,6 +188,7 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 
 INCLUDEPATH 	+=	\
 			$$COMEDI_INC_PATH \
+                        $$QWTPLOT_INC_PATH \
 			$$ADVDAQ_INC_PATH \
 			$$STANDA_INC_PATH \
                         $$XIMC_INC_PATH \
@@ -193,10 +198,11 @@ INCLUDEPATH 	+=	\
 			$$GLIB_INC_PATH \
 			$$HDF5_INC_PATH \
 			$$NEO_INC_PATH \
-                        $$RAPTOR_INC_PATH
+                        $$RAPTOR_INC_PATH 
 
 LIBS 		+= 	 \
 			-L$$COMEDI_LIB_PATH -lcomedi \
+                        -L$$QWTPLOT_LIB_PATH -lqwt \
 #                       -L$$ADVDAQ_LIB_PATH -ladvdaq \
 			-L$$USB_LIB_PATH -lusb-1.0 \
 			-L$$GLIB_LIB_PATH -lgobject-2.0 \

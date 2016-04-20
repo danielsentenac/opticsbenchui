@@ -21,7 +21,7 @@ ComediCounterControlWidget::ComediCounterControlWidget(QVector<QString>  *_comed
 {
 
   comediList = _comediList;
- 
+  
   layout = new QGridLayout(this);
   connectButton = new  QPushButton("Connect");
   connectButton->setFixedWidth(100);
@@ -34,12 +34,19 @@ ComediCounterControlWidget::ComediCounterControlWidget(QVector<QString>  *_comed
   comediCombo = new QComboBox();
   comediCombo->setFixedWidth(100);
   descriptionLabel = new QLabel();
-
+  
+  vBox = new QWidget(this);
+  vBox->setWindowTitle( "ComediCounter Plot" );
+  boxlayout = new QVBoxLayout( this );
+  vBox->setMinimumSize( 600, 400 );
+  vBox->setMaximumSize( 600, 400 );
+  plot = NULL;
+  boxlayout->addWidget( plot );
   layout->addWidget(connectButton,0,0,1,1);
   layout->addWidget(comediCombo,0,1,1,1);
   layout->addWidget(descriptionLabel,0,2,1,1);
   layout->addWidget(resetButton,1,0,1,1);
-  
+  layout->addLayout(boxlayout,2,0,1,5);
   setLayout(layout);
   signalMapper = NULL;
   outputsList = new QVector<QLabel*>();
@@ -50,7 +57,15 @@ ComediCounterControlWidget::ComediCounterControlWidget(QVector<QString>  *_comed
 }
 ComediCounterControlWidget::~ComediCounterControlWidget()
 {
-  QLOG_DEBUG ( ) << "Deleting ComediCounterControlWidget";
+  QLOG_INFO ( ) << "Deleting ComediCounterControlWidget";
+  stopFuture = true;
+  future.waitForFinished();
+  if (plot != NULL) {delete plot; plot = NULL;}
+  while(!boxlayout->isEmpty()) {
+      delete boxlayout->takeAt(0);
+  }
+  delete vBox;
+  if (comedi) delete comedi;
 }
 void
 ComediCounterControlWidget::setComedi(Comedi *_comedi) {
@@ -84,6 +99,7 @@ ComediCounterControlWidget::getOutputs(int outputs, QString mode) {
     comedivalue->setFixedWidth(100);
     comedivalueList->push_back(comedivalue);
     QPushButton *button = new QPushButton(tr("Start %1").arg(mode));
+    button->setCheckable(true);
     button->setFixedWidth(150);
     connect( button, SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(button, i);
@@ -92,13 +108,14 @@ ComediCounterControlWidget::getOutputs(int outputs, QString mode) {
     comeditimer->setFixedWidth(100);
     comeditimerList->push_back(comeditimer);
 
-    layout->addWidget(outputLabel,i + 2,0,1,1);
-    layout->addWidget(comedivalue,i + 2,1,1,1);
-    layout->addWidget(button,i + 2,2,1,1);
-    layout->addWidget(comeditimer,i + 2,3,1,1);
-    layout->addWidget(unitsLabel,i + 2,4,1,1);
+    layout->addWidget(outputLabel,i + 3,0,1,1);
+    layout->addWidget(comedivalue,i + 3,1,1,1);
+    layout->addWidget(button,i + 3,2,1,1);
+    layout->addWidget(comeditimer,i + 3,3,1,1);
+    layout->addWidget(unitsLabel,i + 3,4,1,1);
   }
-   connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(setComediValue(int)));
+   connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(startCounting(int)));
+
 }
 void 
 ComediCounterControlWidget::getDescription(QString description){
@@ -137,6 +154,39 @@ ComediCounterControlWidget::setComediValue(int output) {
   int value;
   value = comeditimerList->at(output)->text().toInt();
   newcomedi = comediCombo->itemText(comediCombo->currentIndex());
-  comedi->setComediValue(newcomedi,output, (void*)&value);
-  comedi->updateDBValues(newcomedi);
+  QPushButton *button = setButtonList->at(output);
+  while ( button->isChecked() && !stopFuture) {
+    comedi->setComediValue(newcomedi,output, (void*)&value);
+    comedi->updateDBValues(newcomedi);
+  }
 }
+void
+ComediCounterControlWidget::startCounting(int output) {
+  QPushButton *button = setButtonList->at(output);
+  if (button->isChecked()) {
+   for (int i = 0; i < setButtonList->size();i++) {
+     if ( i != output) {
+       QPushButton *button = setButtonList->at(i);
+       button->setChecked(false);
+       stopFuture = true;
+       future.waitForFinished();
+       if (plot != NULL) {delete plot; plot = NULL;}
+       while(!boxlayout->isEmpty()) {
+        delete boxlayout->takeAt(0);
+       }
+     }
+  }
+   stopFuture = false;
+   startPlot(output);
+   future = QtConcurrent::run(this,&ComediCounterControlWidget::setComediValue, output);
+  }
+}
+void 
+ComediCounterControlWidget::startPlot(int output) {
+  plot = new ComediCounterPlot(vBox, (ComediCounter*)comedi, output );
+  plot->setTitle( tr("Comedi Counter"));
+  const int margin = 5;
+  plot->setContentsMargins( margin, margin, margin, margin );
+  boxlayout->addWidget( plot );
+}
+

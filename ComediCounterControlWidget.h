@@ -17,11 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef COMEDICONTROLWIDGET_H
 #define COMEDICONTROLWIDGET_H
 
-#include "Comedi.h"
-
 #include <QtSql>
 #include <QtGui>
 #include "QsLog.h"
+#include <qtconcurrentrun.h>
+#include "ComediCounterPlot.h"
+
+using namespace QtConcurrent;
 
 
 typedef QVector<float> floatVector;
@@ -37,10 +39,15 @@ class ComediCounterControlWidget : public QWidget
   void setComedi(Comedi *_comedi);
   void setComediList(QVector<QString>  *_comediList);
 
+  bool stopFuture;
+  QVector<QPushButton*> *setButtonList;
+
   private slots:
   void connectComedi();
   void resetComedi();
   void setComediValue(int output);
+  void startCounting(int output);
+  void startPlot(int output) ;
   void getDescription(QString description);
   void getOutputs(int outputs, QString mode);
   void getOutputValues(void *comedivalues);
@@ -54,12 +61,15 @@ class ComediCounterControlWidget : public QWidget
   QComboBox   *comediCombo;
   QVector<QLabel*>  *outputsList;
   QVector<QLabel*>  *unitsList;
-  QVector<QPushButton*> *setButtonList;
   QVector<QLineEdit*>   *comedivalueList;
   QVector<QLineEdit*>   *comeditimerList;
   QVector<QString> *comediList;
   Comedi  *comedi;
   QGridLayout *layout;
   QSignalMapper *signalMapper;
+  ComediCounterPlot *plot;
+  QVBoxLayout *boxlayout;
+  QWidget *vBox;
+  QFuture<void> future;
 };
 #endif

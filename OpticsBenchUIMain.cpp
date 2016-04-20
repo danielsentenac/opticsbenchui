@@ -387,6 +387,7 @@ OpticsBenchUIMain::~OpticsBenchUIMain()
   delete assistant;
   if (dacwindow) delete dacwindow;
   if (comedidacwindow) delete comedidacwindow;
+  if (comedicounterwindow) delete comedicounterwindow;
   if (motorwindow) delete motorwindow;
   if (superkwindow) delete superkwindow;
   for (int i = 0 ; i < cameraList.size() ; i++) {

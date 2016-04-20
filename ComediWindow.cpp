@@ -91,7 +91,7 @@ ComediWindow::~ComediWindow()
 {
   QLOG_DEBUG ( ) << "Deleting ComediWindow";
   if (comeditable) delete comeditable;
-  if (comedi) delete comedi;
+  if (comediWidget) delete comediWidget;
 }
 void ComediWindow::setDbPath(QString _path) {
 
@@ -116,6 +116,11 @@ void ComediWindow::closeEvent(QCloseEvent* event)
 {
   event->accept();  
   QLOG_DEBUG ( ) << "Closing ComediWindow";
+  for (int i = 0; i < comediWidget->setButtonList->size();i++) {
+     QPushButton *button = comediWidget->setButtonList->at(i);
+     button->setChecked(false);
+  }
+  //comediWidget->stopFuture = true; // Stop eventual counter couting thread
   this->hide();
 }
 

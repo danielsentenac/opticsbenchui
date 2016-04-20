@@ -41,11 +41,15 @@ char *raptor_props[]  = {
                         (char*)"Anti Blooming"
                         };
 int raptor_aoi_settings[][4] = {
-                          {0,200,0,200},
-                          {0,250,0,250},
-                          {0,333,0,333},
-                          {0,500,0,500},
-                          {0,1000,0,1000}};
+                        {0,200,0,200},
+                        {0,250,0,250},
+                        {0,333,0,333},
+                        {0,500,0,500},
+                        /*{400,600,400,600},
+                        {375,625,375,625},
+                        {333,666,333,666},
+                        {250,750,250,750},*/
+                        {0,1000,0,1000}};
 
 char* raptor_binning_settings[] = {"5x5",
 				   "4x4",
@@ -103,7 +107,7 @@ CameraRAPTOR::setCamera(void* _camera, int _id)
 {
   /* Init camera*/
   vendor = "FalconRaptor";
-
+  model = "Raptor";
   camera_err = connectCamera();
 
   QLOG_DEBUG() << "CameraRAPTOR::setCamera " << vendor << " model : "

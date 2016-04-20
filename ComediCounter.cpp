@@ -288,7 +288,7 @@ ComediCounter::setComediValue(QString newcomedi, int output, void *value) {
   //  Start counting for fvalue time (in microseconds)
   for (int index = 0 ; index < comedi.size(); index++)  {
     if ( comedi.at(index) == newcomedi ) {
-      QLOG_DEBUG() << "ComediCounter::setComediValue> set value " << *ivalue;
+      QLOG_INFO() << "ComediCounter::setComediValue> set output " << output << " to value " << *ivalue;
       // Update output to math subdevice index
       int subdev = output + min.at(index);
       // set initial counter value by writing to channel 0
