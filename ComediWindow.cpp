@@ -116,11 +116,12 @@ void ComediWindow::closeEvent(QCloseEvent* event)
 {
   event->accept();  
   QLOG_DEBUG ( ) << "Closing ComediWindow";
-  for (int i = 0; i < comediWidget->setButtonList->size();i++) {
+  if ( comedi->comeditype == "COMEDICOUNTER" ) {
+   for (int i = 0; i < comediWidget->setButtonList->size();i++) {
      QPushButton *button = comediWidget->setButtonList->at(i);
      button->setChecked(false);
+   }
   }
-  //comediWidget->stopFuture = true; // Stop eventual counter couting thread
   this->hide();
 }
 
