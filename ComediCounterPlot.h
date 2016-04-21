@@ -2,7 +2,7 @@
 #include <qwt_plot.h>
 #include <QTime>
 
-#define HISTORY 3000 // 1/10 seconds
+#define HISTORY 1200 // 1/10 seconds
 
 class QwtPlotCurve;
 

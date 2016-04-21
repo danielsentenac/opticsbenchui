@@ -154,11 +154,14 @@ ComediCounterControlWidget::setComediValue(int output) {
   int value;
   value = comeditimerList->at(output)->text().toInt();
   newcomedi = comediCombo->itemText(comediCombo->currentIndex());
+  comedi->setComediValue(newcomedi,output, (void*)&value);
+  comedi->updateDBValues(newcomedi);
+}
+void
+ComediCounterControlWidget::setComediContinuousValue(int output) {
   QPushButton *button = setButtonList->at(output);
-  while ( button->isChecked() && !stopFuture) {
-    comedi->setComediValue(newcomedi,output, (void*)&value);
-    comedi->updateDBValues(newcomedi);
-  }
+  while ( button->isChecked() && !stopFuture)
+     setComediValue(output);
 }
 void
 ComediCounterControlWidget::startCounting(int output) {
@@ -178,7 +181,7 @@ ComediCounterControlWidget::startCounting(int output) {
   }
    stopFuture = false;
    startPlot(output);
-   future = QtConcurrent::run(this,&ComediCounterControlWidget::setComediValue, output);
+   future = QtConcurrent::run(this,&ComediCounterControlWidget::setComediContinuousValue, output);
   }
 }
 void 

@@ -46,6 +46,7 @@ class ComediCounterControlWidget : public QWidget
   void connectComedi();
   void resetComedi();
   void setComediValue(int output);
+  void setComediContinuousValue(int output);
   void startCounting(int output);
   void startPlot(int output) ;
   void getDescription(QString description);
