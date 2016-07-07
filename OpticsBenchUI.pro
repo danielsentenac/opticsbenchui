@@ -25,12 +25,12 @@ DEFINES 	+= 	IEEE1394CAMERA
 DEFINES 	+= 	GIGECAMERA
 
 # Andor Neo camera support
-DEFINES         +=      NEOCAMERA
+#DEFINES         +=      NEOCAMERA
 
 # Andor Zyla camera support
 #DEFINES         +=      ZYLACAMERA
 
-# Andor Raptor camera support
+#  Falcon Raptor camera support
 DEFINES         +=      RAPTORCAMERA
 
 # SuperK support
@@ -45,8 +45,9 @@ DEFINES         +=     COMEDICOUNTER
 # Comedi Dac support
 DEFINES         +=     COMEDIDAC
 
-QMAKE_CXXFLAGS 	+= 	-g `pkg-config --cflags glib-2.0`
+QMAKE_CXXFLAGS 	+= 	-g `pkg-config --cflags glib-2.0` -fPIC
 
+QMAKE_LFLAGS  += -fPIC
 # External packages
 HDF5_LIB_PATH 	 =  	/usr/local/hdf5/lib
 COMEDI_LIB_PATH  =      /usr/local/lib
@@ -213,7 +214,7 @@ LIBS 		+= 	 \
                         -L$$XIMC_LIB_PATH -lximc \
 			-L$$HDF5_LIB_PATH -lhdf5 -lhdf5_hl \
    			-L$$NEO_LIB_PATH -latcore \
-                        -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64.a -Wl,-Bdynamic 
+                        -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64_pic.a -Wl,-Bdynamic 
 
 # make install
 documentation.extra = ./make_doc.run

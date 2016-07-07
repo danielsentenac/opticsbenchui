@@ -20,6 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ComediWindow::ComediWindow( QMainWindow* parent, Qt::WFlags fl , Comedi *_comedi)
   : QMainWindow( parent, fl )
 {
+  comediWidget = NULL;
+  daccomediWidget = NULL;
   comedi = _comedi;
   dbPath = comedi->path;
   QLOG_INFO() << "ComediWindow::ComediWindow> get Db path " << dbPath;
@@ -92,6 +94,7 @@ ComediWindow::~ComediWindow()
   QLOG_DEBUG ( ) << "Deleting ComediWindow";
   if (comeditable) delete comeditable;
   if (comediWidget) delete comediWidget;
+  if (daccomediWidget) delete daccomediWidget;
 }
 void ComediWindow::setDbPath(QString _path) {
 

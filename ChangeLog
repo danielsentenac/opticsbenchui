@@ -50,3 +50,10 @@ ver. 0.12
    - Installed updates for Neo camera from Andor (SDK 3-3.10.30003.5)
    - TBD: Test updates for Zyla camera from Andor
    - TBD: Test updates for firewire camera
+ver. 0.13
+1- Update OpticsBenchUI with kernel 4.4.9 (Fedora 23)
+   - Recompile (new generation) Standa controllers XIMC lib
+   - Recompile Raptor Falcon camera (XCAP & XCLIB UPDATED with last V3.8 10/3/16):
+     --> remove /etc/rc.d/rc.local module pixci installation (not needed anymore)
+   - Update comedi/comedilib 3.11 (from github)
+   - Recompile Neo camera from Andor (last SDK3 3-3.11 fails at Bitflow module compilation, waiting for feedback from Andor)
