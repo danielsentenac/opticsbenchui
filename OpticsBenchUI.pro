@@ -28,10 +28,10 @@ DEFINES 	+= 	GIGECAMERA
 #DEFINES         +=      NEOCAMERA
 
 # Andor Zyla camera support
-#DEFINES         +=      ZYLACAMERA
+DEFINES         +=      ZYLACAMERA
 
 #  Falcon Raptor camera support
-DEFINES         +=      RAPTORCAMERA
+#DEFINES         +=      RAPTORCAMERA
 
 # SuperK support
 DEFINES         +=      SUPERK
@@ -51,7 +51,7 @@ QMAKE_LFLAGS  += -fPIC
 # External packages
 HDF5_LIB_PATH 	 =  	/usr/local/hdf5/lib
 COMEDI_LIB_PATH  =      /usr/local/lib
-QWTPLOT_LIB_PATH =      /usr/local/qwt-6.1.2/lib
+QWTPLOT_LIB_PATH =      /usr/lib
 ADVDAQ_LIB_PATH  =	/usr/lib
 DC1394_LIB_PATH  =      /usr/local/lib
 RAW1394_LIB_PATH =	/usr/local/lib
@@ -65,7 +65,7 @@ RAPTOR_LIB_PATH  =      /usr/local/xclib
 
 HDF5_INC_PATH 	 =  	/usr/local/hdf5/include
 COMEDI_INC_PATH  =      /usr/local/include
-QWTPLOT_INC_PATH =      /usr/local/qwt-6.1.2/include
+QWTPLOT_INC_PATH =      /usr/include/qwt
 ADVDAQ_INC_PATH  =	/usr/local/include/Advantech
 DC1394_INC_PATH  =      /usr/local/include/dc1394
 RAW1394_INC_PATH =	/usr/local/include/libraw1394/src

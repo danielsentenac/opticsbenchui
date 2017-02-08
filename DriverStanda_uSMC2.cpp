@@ -114,17 +114,17 @@ int DriverStanda_uSMC2::GetPos(string  actuatorSetting,
   int retStatus = 0;
   int axisNumber;
   int speed;
-  get_position_t pos;
+  status_t status;
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%d speed=%d",&axisNumber,&speed) != NB_ITEM_INIT_SETTING)
   {
     QLOG_ERROR () << "Bad Actuator setting";
   }
-  retStatus = (int) get_position( _device.find(axisNumber)->second, &pos);
+  retStatus = (int) get_status( _device.find(axisNumber)->second, &status);
   
-  QLOG_DEBUG() << " Device:" << get_device_name(_devenum,axisNumber-1) << " Position:" << pos.Position;
+  QLOG_DEBUG() << " Device:" << get_device_name(_devenum,axisNumber-1) << " Position:" << status.CurPosition;
 
-  position = (float) pos.Position;
+  position = (float) status.CurPosition;
  
   return retStatus;
 }

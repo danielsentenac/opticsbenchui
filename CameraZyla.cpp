@@ -1181,9 +1181,9 @@ CameraZyla::connectCamera() {
      QLOG_INFO () << "CameraZyla::connectCamera> SimplePreAmpGainControl " << i
                   << " " << QString(citem);
   }
-  i_err = AT_SetEnumIndex(*camera, L"SimplePreAmpGainControl", 0);
+  i_err = AT_SetEnumIndex(*camera, L"SimplePreAmpGainControl", 2);
   errorOk(i_err, "AT_SetEnumIndex 'SimplePreAmpGainControl'");
-  QLOG_INFO () << "CameraZyla::connectCamera> Set SimplePreAmpGainControl Mode to zero";
+  QLOG_INFO () << "CameraZyla::connectCamera> Set SimplePreAmpGainControl Mode to 2";
 
   // Get PixelEncoding
   int encodingcnt;
