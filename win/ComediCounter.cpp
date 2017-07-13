@@ -15,7 +15,7 @@ the Free Software Foundation, either version 3 of the License, or
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef COMEDICOUNTER
-#include "ComediCounter.h" dd
+#include "ComediCounter.h"
 #include <unistd.h>
 ComediCounter::ComediCounter(QString _appDirPath)
   : Comedi()				       
