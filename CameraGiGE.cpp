@@ -116,6 +116,7 @@ CameraGiGE::CameraGiGE()
   has_started = false;
   mutex = new QMutex(QMutex::NonRecursive);
   snapshotMutex = new QMutex(QMutex::Recursive);
+  acquireMutex = new QMutex(QMutex::Recursive);
   acqstart = new QWaitCondition();
   acqend = new QWaitCondition();
   modeCheckEnabled = false;
