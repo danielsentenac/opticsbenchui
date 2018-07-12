@@ -18,8 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "CameraWindow.h"
 #include "OpticsBenchUIMain.h"
 
-#define OFFSET_X 210
-#define OFFSET_Y 160
+#define OFFSET_X 250
+#define OFFSET_Y 250
 
 CameraWindow::CameraWindow( QMainWindow* parent, Qt::WFlags fl , Camera *_camera, int _cameraNumber)
   : QMainWindow( parent, fl )

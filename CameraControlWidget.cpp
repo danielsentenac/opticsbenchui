@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define EXTRACTHIGHPACKED(SourcePtr) ( (SourcePtr[2] << 4) + (SourcePtr[1] >> 4) )
 
 #define NUM_DIGITS 2
-#define SLIDER_FACTOR 100.0
+#define SLIDER_FACTOR 1.0
 
 CameraControlWidget::CameraControlWidget(Camera *_camera)
  
@@ -143,6 +143,7 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   grayButton->setChecked(true);
   setMinimumHeight(DOCK_HEIGHT);
   setLayout(layout);
+  this->setMinimumHeight(150);
 }
 CameraControlWidget::~CameraControlWidget()
 {
@@ -218,7 +219,7 @@ CameraControlWidget::setFeatureValue(int position) {
 }
 void
 CameraControlWidget::setSliderValue(int position) {
-
+ 
  QLineEdit *sliderValue = sliderValueList.at(position);
  QString slidervalueStr = sliderValue->text();
  double value = slidervalueStr.toDouble();
@@ -283,11 +284,11 @@ void CameraControlWidget::updateFeatures() {
 		   << camera->featureValueList.at(i);
     QLineEdit *sliderValue = sliderValueList.at(i);
     if ( camera->featureAbsCapableList.at(i) ) {
-      QLOG_DEBUG() << " ABS CAPABLE " << camera->featureNameList.at(i);
+      QLOG_INFO() << " ABS CAPABLE " << camera->featureNameList.at(i);
       sliderValue->setText(QString::number(camera->featureAbsValueList.at(i),'f',NUM_DIGITS));
     }
     else {
-      QLOG_DEBUG() << " NOT ABS CAPABLE " << camera->featureNameList.at(i);
+      QLOG_INFO() << " NOT ABS CAPABLE " << camera->featureNameList.at(i);
       sliderValue->setText(QString::number((int)camera->featureValueList.at(i)));
    }
   }

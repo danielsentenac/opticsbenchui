@@ -438,7 +438,9 @@ class Camera : public QThread
       QLOG_INFO() << "Camera::setColorTable> changing color to gray";
      table = &gray;
     }
-    acquireMutex->lock();
+    while (acquireMutex->tryLock() == false) {
+         usleep(100);
+    }
     delete image;
     image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
     image->setColorTable(*table);

@@ -143,13 +143,28 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   //
   // Create RAPTOR Falcon Camera manager
   //
-#ifdef RAPTORCAMERA
-  cameraRAPTORMgr = new CameraRAPTOR();
-  cameraRAPTORMgr->findCamera();
-  QLOG_INFO() << "Found " <<  cameraRAPTORMgr->num << " RAPTOR Falcon camera";
-  for (int i = 0 ; i < cameraRAPTORMgr->num; i++) {
-    Camera *camera = new CameraRAPTOR();
-    camera->setCamera(cameraRAPTORMgr->cameralist.at(i),i);
+#ifdef RAPTORFALCONCAMERA
+  cameraRAPTORFALCONMgr = new CameraRAPTORFALCON();
+  cameraRAPTORFALCONMgr->findCamera();
+  QLOG_INFO() << "Found " <<  cameraRAPTORFALCONMgr->num << " RAPTOR Falcon camera";
+  for (int i = 0 ; i < cameraRAPTORFALCONMgr->num; i++) {
+    Camera *camera = new CameraRAPTORFALCON();
+    camera->setCamera(cameraRAPTORFALCONMgr->cameralist.at(i),i);
+    cameraList.push_back(camera);
+    isopencamerawindow.push_back(false);
+    camerawindowList.push_back(NULL);
+  }
+#endif
+  //
+  // Create RAPTOR Ninox640 Camera manager
+  //
+#ifdef RAPTORNINOX640CAMERA
+  cameraRAPTORNINOX640Mgr = new CameraRAPTORNINOX640();
+  cameraRAPTORNINOX640Mgr->findCamera();
+  QLOG_INFO() << "Found " <<  cameraRAPTORNINOX640Mgr->num << " RAPTOR Ninox640 camera";
+  for (int i = 0 ; i < cameraRAPTORNINOX640Mgr->num; i++) {
+    Camera *camera = new CameraRAPTORNINOX640();
+    camera->setCamera(cameraRAPTORNINOX640Mgr->cameralist.at(i),i);
     cameraList.push_back(camera);
     isopencamerawindow.push_back(false);
     camerawindowList.push_back(NULL);
@@ -272,16 +287,27 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
     signalMapper->setMapping(action, cameranumber++);
   }
 #endif
-#ifdef RAPTORCAMERA
-  for (int i = 0 ; i < cameraRAPTORMgr->num; i++) {
-    QString selectedCamera = QString(cameraRAPTORMgr->vendorlist.at(i)) + " / " +
-      QString(cameraRAPTORMgr->modelist.at(i));
+#ifdef RAPTORFALCONCAMERA
+  for (int i = 0 ; i < cameraRAPTORFALCONMgr->num; i++) {
+    QString selectedCamera = QString(cameraRAPTORFALCONMgr->vendorlist.at(i)) + " / " +
+      QString(cameraRAPTORFALCONMgr->modelist.at(i));
     QAction *action = new QAction(selectedCamera, this);
     menuInstruments->addAction(action);
     connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
     signalMapper->setMapping(action, cameranumber++);
   }
 #endif
+#ifdef RAPTORNINOX640CAMERA
+  for (int i = 0 ; i < cameraRAPTORNINOX640Mgr->num; i++) {
+    QString selectedCamera = QString(cameraRAPTORNINOX640Mgr->vendorlist.at(i)) + " / " +
+      QString(cameraRAPTORNINOX640Mgr->modelist.at(i));
+    QAction *action = new QAction(selectedCamera, this);
+    menuInstruments->addAction(action);
+    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(action, cameranumber++);
+  }
+#endif
+
 
   connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(openCameraWindow(int)));
 

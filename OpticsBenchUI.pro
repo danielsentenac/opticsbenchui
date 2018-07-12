@@ -28,10 +28,13 @@ DEFINES 	+= 	GIGECAMERA
 #DEFINES         +=      NEOCAMERA
 
 # Andor Zyla camera support
-DEFINES         +=      ZYLACAMERA
+#DEFINES         +=      ZYLACAMERA
 
 #  Falcon Raptor camera support
-#DEFINES         +=      RAPTORCAMERA
+#DEFINES         +=      RAPTORFALCONCAMERA
+
+#  Ninox640 Raptor camera support
+DEFINES         +=      RAPTORNINOX640CAMERA
 
 # SuperK support
 DEFINES         +=      SUPERK
@@ -61,7 +64,7 @@ XIMC_LIB_PATH    =      /usr/lib64
 USB_LIB_PATH     =      /usr/lib
 GLIB_LIB_PATH	 =      /usr/lib
 NEO_LIB_PATH     =	/usr/local/lib
-RAPTOR_LIB_PATH  =      /usr/local/xclib
+RAPTOR_LIB_PATH  =      /usr/local/xclib/lib
 
 HDF5_INC_PATH 	 =  	/usr/local/hdf5/include
 COMEDI_INC_PATH  =      /usr/local/include
@@ -75,7 +78,7 @@ XIMC_INC_PATH    =      /usr/include
 USB_INC_PATH     =      /usr/include
 GLIB_INC_PATH	 =      /usr/include/glib-2.0 /usr/lib/glib-2.0/include
 NEO_INC_PATH	 =	/usr/local/include
-RAPTOR_INC_PATH  =      /usr/local/xclib
+RAPTOR_INC_PATH  =      /usr/local/xclib/inc
 
 HEADERS 	+= 	OpticsBenchUIMain.h \
 			Camera.h \
@@ -83,7 +86,8 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			CameraGiGE.h \
            		CameraNeo.h \
                         CameraZyla.h \
-                        CameraRAPTOR.h \
+                        CameraRAPTORFALCON.h \
+                        CameraRAPTORNINOX640.h \
 			CameraWindow.h \
 			CameraControlWidget.h \
 			CameraPropWidget.h \
@@ -139,7 +143,8 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			CameraGiGE.cpp \
 			CameraNeo.cpp \
                         CameraZyla.cpp \
-                        CameraRAPTOR.cpp \
+                        CameraRAPTORFALCON.cpp \
+                        CameraRAPTORNINOX640.cpp \
 			CameraWindow.cpp \
 			CameraControlWidget.cpp \
 			CameraPropWidget.cpp \
