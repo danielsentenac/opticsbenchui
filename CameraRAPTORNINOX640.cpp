@@ -22,7 +22,8 @@ char *raptorninox640_features[]  = {
                         (char*)"Frame Rate (Hz)",
                         (char*)"Exposure (millisecs)",
                         (char*)"Analog Gain",
-                        (char*)"Digital Gain (dB)"
+                        (char*)"Digital Gain (dB)",
+                        (char*)"NUC"
                         
                         };
 char *raptorninox640_props[]  = {
@@ -31,6 +32,7 @@ char *raptorninox640_props[]  = {
                         (char*)"Image Size",
                         (char*)"Analog Gain",
                         (char*)"Digital Gain",
+                        (char*)"NUC",
                         (char*)"Exposure",
                         (char*)"PC Rate",
                         (char*)"Frame Rate"
@@ -40,6 +42,14 @@ char *raptorninox640_gains[]  = {
                         (char*)"Low",
                         (char*)"High"
                         };
+
+char *raptorninox640_nuc[]  = {
+                        (char*)"Normal (Raw)",
+                        (char*)"Offset+Bad Pixel",
+                        (char*)"Offset+Gain+Bad Pixel",
+                        (char*)"Offset+Gain+Dark+Bad Pixel",
+                        };
+
 int raptorninox640_aoi_settings[][4] = {
                        {0,640,0,512}
                        };
@@ -155,6 +165,19 @@ CameraRAPTORNINOX640::setCamera(void* _camera, int _id)
  featureAbsCapableList.push_back(true);
  featureAbsValueList.push_back( dgain );
  featureModeAutoList.push_back(false);
+ // NUC feature
+ int nuc_min, nuc_max;
+ featureIdList.push_back(++featureCnt);
+ featureNameList.push_back(raptorninox640_features[featureCnt]);
+ nuc_min = 0;
+ nuc_max = 3;
+ featureMinList.push_back(nuc_min);
+ featureMaxList.push_back(nuc_max);
+ int nuc = (int)getNUC();
+ featureValueList.push_back( nuc );
+ featureAbsCapableList.push_back(true);
+ featureAbsValueList.push_back( nuc );
+ featureModeAutoList.push_back(false);
 
 
  // Properties
@@ -188,6 +211,11 @@ CameraRAPTORNINOX640::setCamera(void* _camera, int _id)
   dgainStr.append(" : " + QString::number(dgain));
   dgainStr.append(" dB");
   propList.push_back(dgainStr);
+
+  // NUC prop
+  QString nucStr = raptorninox640_props[++propCnt];
+  nucStr.append(" : " + QString(raptorninox640_nuc[nuc]));
+  propList.push_back(nucStr);
 
   // Exposure prop
   QString exposureStr = raptorninox640_props[++propCnt];
@@ -301,6 +329,9 @@ CameraRAPTORNINOX640::setFeature(int feature, double value) {
    case 3:
      setDGain(value);
      break;
+   case 4:
+     setNUC(value);
+     break;
    default:
      break;
   }
@@ -324,6 +355,8 @@ CameraRAPTORNINOX640::getFeatures() {
  featureAbsValueList.replace(++featureCnt, (int)getGain() );
  // Digital Gain feature
  featureAbsValueList.replace(++featureCnt, (int)getDGain() );
+ // NUC feature
+ featureAbsValueList.replace(++featureCnt, (int)getNUC() );
 
  emit updateFeatures();
 }
@@ -361,6 +394,11 @@ CameraRAPTORNINOX640::getProps()  {
   dgainStr.append(" : " + QString::number(getDGain()));
   dgainStr.append(" dB");
   propList.replace(propCnt,dgainStr);
+
+  // NUC prop
+  QString nucStr = raptorninox640_props[++propCnt];
+  nucStr.append(" : " + QString(raptorninox640_nuc[getNUC()]));
+  propList.replace(propCnt,nucStr);
 
   // Exposure prop
   QString exposureStr = raptorninox640_props[++propCnt];
@@ -606,7 +644,7 @@ double CameraRAPTORNINOX640::getPCBtemperature() {
   return t2;
 }
 double CameraRAPTORNINOX640::getDGain() {
-  QLOG_DEBUG() << "Get Raptor EM gain";
+  QLOG_DEBUG() << "Get Raptor Digital gain";
   char setadrs1[]   = { 0x53, 0xE0, 0x01, 0xC6, 0x50 };
   char setadrs2[]   = { 0x53, 0xE0, 0x01, 0xC7, 0x50 };
   char readadrs[]   = { 0x53, 0xE1, 0x01, 0x50 };
@@ -621,7 +659,7 @@ double CameraRAPTORNINOX640::getDGain() {
   return dbgain;
 }
 void CameraRAPTORNINOX640::setDGain(int g) {
-  QLOG_DEBUG() << "Set Raptor EM gain";
+  QLOG_DEBUG() << "Set Raptor Digital gain";
   char setadrs1[]   = { 0x53, 0xE0, 0x02, 0xC6, 0, 0x50 };
   char setadrs2[]   = { 0x53, 0xE0, 0x02, 0xC7, 0, 0x50 };
   int dn_gain = round(pow10f((double)(g)/20.0)*256.0);
@@ -767,6 +805,41 @@ void CameraRAPTORNINOX640::setGain(int g) {
   writeFeature (setadrs, 6);
 
 }
+
+int CameraRAPTORNINOX640::getNUC() {
+  QLOG_DEBUG() << "Get Raptor Ninox640 NUC";
+  char setadrs[]   = { 0x53, 0xE0, 0x01, 0xF9, 0x50 };
+  char readadrs[]   = { 0x53, 0xE1, 0x01, 0x50 };
+  uchar resp[] = { 0x0 };
+  readFeature (setadrs, 5, readadrs, 4, resp, 1);
+  QLOG_INFO() << "CameraRAPTORNINOX640::getNUC()> NUC =" <<  resp[0];
+  int nuc = 0;
+  if ( resp[0] == 0x40 )
+   nuc = 0;
+  else if ( resp[0] == 0x00 )
+   nuc = 1;
+  else if ( resp[0] == 0x20 )
+   nuc = 2;
+  else if ( resp[0] == 0x60 )
+   nuc = 3;
+  return nuc;
+}
+void CameraRAPTORNINOX640::setNUC(int n) {
+  QLOG_INFO() << "CameraRAPTORNINOX640::setExposure> Set Raptor  Ninox640 NUC " << n;
+
+  char setadrs[]   = { 0x53, 0xE0, 0x02, 0xF9, 0, 0x50 };
+  if ( n == 0 )
+    setadrs[4] = 0x40;
+  else if ( n == 1 )
+    setadrs[4] = 0x00;
+  else if ( n == 2 )
+    setadrs[4] = 0x20;
+  else if ( n == 3 )
+    setadrs[4] = 0x60;
+  writeFeature (setadrs, 6);
+
+}
+
 
 double CameraRAPTORNINOX640::getCCDtemperature() {
   QLOG_DEBUG() << "Get Raptor CCD temperature";

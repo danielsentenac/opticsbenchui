@@ -70,6 +70,8 @@ class CameraRAPTORNINOX640 : public Camera
   void   setGain(int g);
   double getDGain();
   void   setDGain(int g);
+  int    getNUC();
+  void   setNUC(int n);
   QString getBloomState();
   void   setBloomState(int value);
   struct xclibs *xc;
