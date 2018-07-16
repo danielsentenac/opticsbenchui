@@ -158,10 +158,7 @@ CameraControlWidget::snapShot() {
   // Take snapshot
   if ( camera->pixel_encoding == B8 )
      img8 = camera->getSnapshot();
-  else if ( camera->pixel_encoding == B10 || 
-            camera->pixel_encoding == B12 ||
-            camera->pixel_encoding == B12P||
-	    camera->pixel_encoding == B16 ) 
+  else  
      img32 = camera->getSnapshot32();
   // Save File
   QString filename = QFileDialog::getSaveFileName(this, tr("Take snapshot in HDF5 format"),
@@ -185,10 +182,7 @@ CameraControlWidget::snapShot() {
     H5LTset_attribute_int(file_id, "SNAPSHOT", "min", &camera->snapShotMin,1);
     H5LTset_attribute_int(file_id, "SNAPSHOT", "max", &camera->snapShotMax,1);
   }
-  else if ( camera->pixel_encoding == B10 ||
-            camera->pixel_encoding == B12 ||
-            camera->pixel_encoding == B12P||
-            camera->pixel_encoding == B16 ) {
+  else  {
      QLOG_INFO() << "CameraControlWidget::snapShot> Take snapshot pixel encoding " 
 		 << camera->pixel_encoding
                  << " width " << camera->width

@@ -243,6 +243,7 @@ CameraRAPTORFALCON::setCamera(void* _camera, int _id)
   setFeature(2,4);
   setFeature(3,4);
 
+  pixel_encoding = B14;
 }
 
 uchar* 
@@ -619,7 +620,7 @@ CameraRAPTORFALCON::acquireImage() {
       QLOG_WARN() << "pxd_readushort:" <<  pxd_mesgErrorCode(err) ;
     else if ( err != pxd_imageXdim() * pxd_imageYdim())
       QLOG_DEBUG() << "pxd_readushort  missing pixels" << err << "!= " << pxd_imageXdim() * pxd_imageYdim();
-
+    snapshotMutex->lock();
     // calculate min,max
     max = 0;
     min = 65535;
@@ -651,6 +652,7 @@ CameraRAPTORFALCON::acquireImage() {
      buffer = fliphorizontal(buffer,height*width, width);
      buffer32 = fliphorizontal(buffer32,height*width, width);
     }
+    snapshotMutex->unlock();
     // Format video image
     image->loadFromData (buffer,width * height);
     QImage imagescaled = image->scaled(imageWidth,imageHeight);

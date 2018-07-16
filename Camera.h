@@ -36,6 +36,7 @@ typedef enum {
   B10,
   B12,
   B12P,
+  B14,
   B16,
   UNKNOWN
 } pixel_encodings;

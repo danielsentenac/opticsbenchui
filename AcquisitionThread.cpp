@@ -383,19 +383,19 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       camera->mutex->lock();
       camera->acqend->wait(camera->mutex);
       camera->mutex->unlock();
-      if ( sequence->settings == "SNAPSHOT" ) 
+      if ( sequence->settings.contains("SNAPSHOT") && !sequence->settings.contains("32") ) 
         sequence->setImage(camera->getSnapshot(),
                            camera->width,
                            camera->height);
-      else if ( sequence->settings == "SNAPSHOT32" )
+      else if ( sequence->settings.contains("SNAPSHOT") && sequence->settings.contains("32") )
         sequence->setImage32(camera->getSnapshot32(),
                              camera->width,
                              camera->height);
       sequence->setImageMin(camera->snapShotMin);
       sequence->setImageMax(camera->snapShotMax);
-      QLOG_INFO() << " Save Image buffer in sequence from " << camera->vendor
-                  << " imageMin " << sequence->imageMin
-                  << " imageMax " << sequence->imageMax;
+      QLOG_INFO() << "AcquisitionThread::execute> Save Image buffer in sequence from " << camera->vendor
+                  << " imageMin " << camera->width << " " << sequence->imageMin
+                  << " imageMax " << camera->height << " " << sequence->imageMax;
       imagesuccess = true;
     }
     else
@@ -712,10 +712,10 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
     QLOG_INFO () << " Save image data " << sequence->dataname
                  << " width " << sequence->imageWidth
                  << " height " << sequence->imageHeight;
-   if ( sequence->settings == "SNAPSHOT" ) 
+   if ( sequence->settings.contains("SNAPSHOT") && !sequence->settings.contains("32")) 
        status = H5IMmake_image_8bit(sequence->grp,sequence->dataname.toStdString().c_str(),
 				 sequence->imageWidth,sequence->imageHeight,sequence->getImage());
-   else if ( sequence->settings == "SNAPSHOT32" ) 
+   else if ( sequence->settings.contains("SNAPSHOT") && sequence->settings.contains("32") ) 
        status = H5LTmake_dataset_int(sequence->grp,sequence->dataname.toStdString().c_str(),
                                  2,dset_dims,sequence->getImage32());
    

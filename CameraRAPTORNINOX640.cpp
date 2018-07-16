@@ -106,7 +106,7 @@ void
 CameraRAPTORNINOX640::setCamera(void* _camera, int _id)
 {
   /* Init camera*/
-  vendor = "RaptorNinoNinox640x640";
+  vendor = "RaptorNinox640x640";
   model = "Raptor Ninox640";
   camera_err = connectCamera();
 
@@ -235,7 +235,7 @@ CameraRAPTORNINOX640::setCamera(void* _camera, int _id)
   frateStr.append(" Hz");
   propList.push_back(frateStr);
 
- 
+  pixel_encoding = B14;
 }
 
 uchar* 
@@ -251,6 +251,7 @@ CameraRAPTORNINOX640::getSnapshot() {
 int*
 CameraRAPTORNINOX640::getSnapshot32() {
   snapshotMutex->lock();
+  QLOG_INFO() << "CameraRAPTORNINOX640::getSnapshot32()> width " << width << "height " << height;
   memcpy(snapshot32,buffer32, width * height * sizeof(int));
   snapShotMin = min;
   snapShotMax = max;
@@ -522,7 +523,8 @@ CameraRAPTORNINOX640::acquireImage() {
       QLOG_WARN() << "pxd_readushort:" <<  pxd_mesgErrorCode(err) ;
     else if ( err != pxd_imageXdim() * pxd_imageYdim())
       QLOG_DEBUG() << "pxd_readushort  missing pixels" << err << "!= " << pxd_imageXdim() * pxd_imageYdim();
-
+    // Copy image buffer
+    snapshotMutex->lock();
     // calculate min,max
     max = 0;
     min = 65535;
@@ -554,6 +556,7 @@ CameraRAPTORNINOX640::acquireImage() {
      buffer = fliphorizontal(buffer,height*width, width);
      buffer32 = fliphorizontal(buffer32,height*width, width);
     }
+    snapshotMutex->unlock();
     // Format video image
     image->loadFromData (buffer,width * height);
     QImage imagescaled = image->scaled(imageWidth,imageHeight);
