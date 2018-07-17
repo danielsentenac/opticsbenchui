@@ -325,7 +325,7 @@ CameraGiGE::run() {
        eTimeTotal = 0;
        acq_cnt = 0;
        // Update props
-       getProps();
+       //getProps();
       }
      has_started = true;
     }
@@ -337,6 +337,7 @@ CameraGiGE::run() {
 void
 CameraGiGE::setFeature(int feature, double value) {
 
+  
    device = arv_camera_get_device(camera);
 
    ArvGcNode *node = NULL;
@@ -400,13 +401,13 @@ CameraGiGE::setFeature(int feature, double value) {
        stream = arv_camera_create_stream (camera, NULL, NULL);
        if (stream != NULL) {
          if (ARV_IS_GV_STREAM (stream)) {
-            g_object_set (stream,
-                      "socket-buffer", ARV_GV_STREAM_SOCKET_BUFFER_AUTO,
-                      "socket-buffer-size", 0,
-                      NULL);
-            g_object_set (stream,
-                      "packet-resend", ARV_GV_STREAM_PACKET_RESEND_NEVER,
-                      NULL);
+ //           g_object_set (stream,
+ //                     "socket-buffer", ARV_GV_STREAM_SOCKET_BUFFER_AUTO,
+ //                     "socket-buffer-size", 0,
+ //                     NULL);
+ //           g_object_set (stream,
+ //                     "packet-resend", ARV_GV_STREAM_PACKET_RESEND_NEVER,
+ //                     NULL);
             g_object_set (stream,
                       "packet-timeout", 20 * 1000,
                       "frame-retention", 100 * 1000,
@@ -466,13 +467,13 @@ CameraGiGE::setFeature(int feature, double value) {
           stream = arv_camera_create_stream (camera, NULL, NULL);
           if (stream != NULL) {
             if (ARV_IS_GV_STREAM (stream)) {
-               g_object_set (stream,
-                      "socket-buffer", ARV_GV_STREAM_SOCKET_BUFFER_AUTO,
-                      "socket-buffer-size", 0,
-                      NULL);
-               g_object_set (stream,
-                      "packet-resend", ARV_GV_STREAM_PACKET_RESEND_NEVER,
-                      NULL);
+ //              g_object_set (stream,
+ //                     "socket-buffer", ARV_GV_STREAM_SOCKET_BUFFER_AUTO,
+ //                     "socket-buffer-size", 0,
+ //                     NULL);
+ //              g_object_set (stream,
+ //                     "packet-resend", ARV_GV_STREAM_PACKET_RESEND_NEVER,
+ //                     NULL);
                g_object_set (stream,
                       "packet-timeout", 20 * 1000,
                       "frame-retention", 100 * 1000,
@@ -497,6 +498,7 @@ CameraGiGE::setFeature(int feature, double value) {
   // Update feature range
   //
   getFeatures();
+ 
 }
 void
 CameraGiGE::setMode(int feature, bool value) {
@@ -660,13 +662,13 @@ CameraGiGE::connectCamera() {
   stream = arv_camera_create_stream (camera, NULL, NULL);
   if (stream != NULL) {
     if (ARV_IS_GV_STREAM (stream)) {
-       	g_object_set (stream,
-          	      "socket-buffer", ARV_GV_STREAM_SOCKET_BUFFER_AUTO,
-		      "socket-buffer-size", 0,
-		      NULL);
-	g_object_set (stream,
-		      "packet-resend", ARV_GV_STREAM_PACKET_RESEND_NEVER,
-		      NULL);
+       	//g_object_set (stream,
+        //  	      "socket-buffer", ARV_GV_STREAM_SOCKET_BUFFER_AUTO,
+//		      "socket-buffer-size", 0,
+//		      NULL);
+	//g_object_set (stream,
+//		      "packet-resend", ARV_GV_STREAM_PACKET_RESEND_NEVER,
+//		      NULL);
 	g_object_set (stream,
 	              "packet-timeout", 20 * 1000,
 	              "frame-retention", 100 * 1000,
@@ -731,15 +733,23 @@ CameraGiGE::acquireImage() {
   /*-----------------------------------------------------------------------
    * acquire frame
    *-----------------------------------------------------------------------*/
+  // Capture a new frame
+  while (acquireMutex->tryLock() == false) {
+      usleep(100);
+  }
+  snapshotMutex->lock();
   uchar *pBuf;
+  /* copy captured image */
+  
   arvbuffer = arv_stream_pop_buffer (stream);
-  while (arvbuffer == NULL) 
+  while (arvbuffer == NULL) {
+   usleep(1000);
    arvbuffer = arv_stream_pop_buffer (stream);
+  }
   QLOG_DEBUG () << "Buffer data size " << arvbuffer->size;
   QLOG_DEBUG () << "Pixel Encoding " << pixel_encoding;
+  
   if (arvbuffer->status != ARV_BUFFER_STATUS_SIZE_MISMATCH) { 
-  /* copy captured image */
-  snapshotMutex->lock();
   ushort *tmpBuf;
   pBuf = reinterpret_cast<uchar*>(arvbuffer->data);
   // calculate min,max
@@ -814,7 +824,7 @@ CameraGiGE::acquireImage() {
      buffer = fliphorizontal(buffer,height*width, width);
      buffer32 = fliphorizontal(buffer32,height*width, width);
     }
-  snapshotMutex->unlock();
+  
   image->loadFromData (buffer,width * height);
   
   // emit visualisation image
@@ -831,7 +841,8 @@ CameraGiGE::acquireImage() {
    * release frame
    *-----------------------------------------------------------------------*/
   arv_stream_push_buffer (stream, arvbuffer);
- 
+  snapshotMutex->unlock();
+  acquireMutex->unlock();
   return (1);
 }
 
