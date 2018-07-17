@@ -512,7 +512,10 @@ int
 CameraRAPTORNINOX640::acquireImage() {
 
     // Capture a new frame
-    acquireMutex->lock();
+    // Capture a new frame
+    while (acquireMutex->tryLock() == false) {
+       usleep(100);
+    }
       
     int err = pxd_doSnap(1,1,2000);
     if (err < 0)
