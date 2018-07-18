@@ -37,6 +37,7 @@ AcquisitionWidget::AcquisitionWidget(QString _appDirPath)
   gridlayout->addWidget(acquisitiontitle,0,0,1,10);
   acquisitiontable = new QSqlTableModel(this,QSqlDatabase::database(path));
   acquisitionview = new QTableView;
+  acquisitionview->setStyleSheet("QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};");
   acquisitionview->setModel(acquisitiontable);
   acquisitionview->verticalHeader()->hide();
 

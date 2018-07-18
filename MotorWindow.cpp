@@ -44,6 +44,7 @@ MotorWindow::MotorWindow( QMainWindow* parent, Qt::WFlags fl , Motor *_motor)
   vboxlayout->addWidget(comtitle);
   comtable = new QSqlTableModel(this,QSqlDatabase::database(dbPath));
   comview = new QTableView;
+  comview->setStyleSheet("QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};");
   comview->setModel(comtable);
   vboxlayout->addWidget(comview);
 
@@ -52,6 +53,7 @@ MotorWindow::MotorWindow( QMainWindow* parent, Qt::WFlags fl , Motor *_motor)
   vboxlayout->addWidget(drivertitle);
   drivertable = new QSqlTableModel(this,QSqlDatabase::database(dbPath));
   driverview = new QTableView;
+  driverview->setStyleSheet("QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};");
   driverview->setModel(drivertable);
   vboxlayout->addWidget(driverview);
 
@@ -60,6 +62,7 @@ MotorWindow::MotorWindow( QMainWindow* parent, Qt::WFlags fl , Motor *_motor)
   vboxlayout->addWidget(actuatortitle);
   actuatortable = new QSqlTableModel(this,QSqlDatabase::database(dbPath));
   actuatorview = new QTableView;
+  actuatorview->setStyleSheet("QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};");
   actuatorview->setModel(actuatortable);
   vboxlayout->addWidget(actuatorview);
 

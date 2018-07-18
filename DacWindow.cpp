@@ -47,6 +47,7 @@ DacWindow::DacWindow( QMainWindow* parent, Qt::WFlags fl , Dac *_dac)
   QSqlDatabase db = QSqlDatabase::database(dbPath);
   dactable = new QSqlTableModel(this,db);
   dacview = new QTableView;
+  dacview->setStyleSheet("QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};");
   dacview->setModel(dactable);
   vboxlayout->addWidget(dacview);
 

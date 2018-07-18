@@ -62,6 +62,7 @@ ComediWindow::ComediWindow( QMainWindow* parent, Qt::WFlags fl , Comedi *_comedi
   QSqlDatabase db = QSqlDatabase::database(dbPath);
   comeditable = new QSqlTableModel(this,db);
   comediview = new QTableView;
+  comediview->setStyleSheet("QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};");
   comediview->setModel(comeditable);
   vboxlayout->addWidget(comediview);
 

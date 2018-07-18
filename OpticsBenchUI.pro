@@ -25,7 +25,7 @@ DEFINES 	+= 	IEEE1394CAMERA
 DEFINES 	+= 	GIGECAMERA
 
 # Andor Neo camera support
-#DEFINES         +=      NEOCAMERA
+DEFINES         +=      NEOCAMERA
 
 # Andor Zyla camera support
 #DEFINES         +=      ZYLACAMERA
@@ -34,7 +34,7 @@ DEFINES 	+= 	GIGECAMERA
 #DEFINES         +=      RAPTORFALCONCAMERA
 
 #  Ninox640 Raptor camera support
-#DEFINES         +=      RAPTORNINOX640CAMERA
+DEFINES         +=      RAPTORNINOX640CAMERA
 
 # SuperK support
 DEFINES         +=      SUPERK
@@ -218,8 +218,8 @@ LIBS 		+= 	 \
 #			-L$$STANDA_LIB_PATH -lusmc \
                         -L$$XIMC_LIB_PATH -lximc \
 			-L$$HDF5_LIB_PATH -lhdf5 -lhdf5_hl \
-   			-L$$NEO_LIB_PATH -latcore 
-#                        -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64_pic.a -Wl,-Bdynamic 
+   			-L$$NEO_LIB_PATH -latcore \
+                        -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64_pic.a -Wl,-Bdynamic 
 
 # make install
 documentation.extra = ./make_doc.run

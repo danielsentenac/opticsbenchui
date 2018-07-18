@@ -44,6 +44,7 @@ SuperKWindow::SuperKWindow( QMainWindow* parent, Qt::WFlags fl , SuperK *_superk
   vboxlayout->addWidget(drivertitle);
   drivertable = new QSqlTableModel(this,QSqlDatabase::database(dbPath));
   driverview = new QTableView;
+  driverview->setStyleSheet("QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};");
   driverview->setModel(drivertable);
   vboxlayout->addWidget(driverview);
 
