@@ -355,6 +355,8 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
         comedidacsuccess |= comedidac->setComediValue(sequence->instrumentName,
                                                      sequence->comediOutput,
                                                      (void*)&sequence->dacValue);
+        comedidacsuccess |= comedidac->getComediValue(sequence->instrumentName,sequence->dacOutput,
+                                                      sequence->dacValue);
     }
     sequence->status = comedidacsuccess;
     //emit getComediStatus(comedidacsuccess);
