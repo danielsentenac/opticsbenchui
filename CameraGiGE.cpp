@@ -19,12 +19,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <arvcamera.h>
 
 #define GIGE_FRAME_NUMBER 50
-#define FEATURES_NUMBER 19
-#define PROPS_NUMBER 22
+#define FEATURES_NUMBER 3
+#define PROPS_NUMBER 5
 char *gige_features[]  = {
                           (char*)"ExposureTimeAbs",
                           (char*)"DigitalGain",
-			  (char*)"PixelFormat",
+			  (char*)"PixelFormat"/*,
                           (char*)"Width",
 			  (char*)"Height",
 			  (char*)"OffsetX",
@@ -40,13 +40,14 @@ char *gige_features[]  = {
        			  (char*)"Convolver_3x3_0_Coeff5",
       			  (char*)"Convolver_3x3_0_Coeff6",
        			  (char*)"Convolver_3x3_0_Coeff7",
-      			  (char*)"Convolver_3x3_0_Coeff8"
+      			  (char*)"Convolver_3x3_0_Coeff8"*/
                          };
 char *gige_props[] = {
                       (char*)"TemperatureADC_Local",
  	              (char*)"ExposureTimeAbs",
    		      (char*)"DigitalGain",
                       (char*)"PixelFormat",
+                      (char*)"PC Rate",/*
 		      (char*)"Width",
                       (char*)"Height",
 	              (char*)"OffsetX",
@@ -63,14 +64,15 @@ char *gige_props[] = {
                       (char*)"Convolver_3x3_0_Coeff5",
                       (char*)"Convolver_3x3_0_Coeff6",
                       (char*)"Convolver_3x3_0_Coeff7",
-                      (char*)"Convolver_3x3_0_Coeff8",
-                      (char*)"PC Rate"
+                      (char*)"Convolver_3x3_0_Coeff8"*/
+                      
                      };
 char *gige_props_units[] = {
                             (char*)"C",
  			    (char*)"ms",
                             (char*)"",
                             (char*)"",
+                            (char*)"Hz"/*,
 	                    (char*)"",
  			    (char*)"",
 			    (char*)"",
@@ -87,8 +89,7 @@ char *gige_props_units[] = {
                             (char*)"",
                             (char*)"",
                             (char*)"",
-                            (char*)"",
-                            (char*)"Hz"
+                            (char*)""*/
                            };
 #include <sys/time.h>
 /*----------------------------------------------------------------------------*/
@@ -679,7 +680,9 @@ CameraGiGE::connectCamera() {
 	g_object_unref (camera);
 	camera = NULL;
 	return camera_err;
-   } 
+   }
+   arv_stream_set_emit_signals (stream, TRUE);
+   
    for (int i = 0; i < GIGE_FRAME_NUMBER; i++)
       arv_stream_push_buffer (stream, arv_buffer_new (payload, NULL));
 
@@ -743,16 +746,15 @@ CameraGiGE::acquireImage() {
   
   arvbuffer = arv_stream_pop_buffer (stream);
   while (arvbuffer == NULL) {
-   usleep(1000);
-   arvbuffer = arv_stream_pop_buffer (stream);
+    arvbuffer = arv_stream_pop_buffer (stream);
   }
   QLOG_DEBUG () << "Buffer data size " << arvbuffer->size;
   QLOG_DEBUG () << "Pixel Encoding " << pixel_encoding;
   
   if (arvbuffer->status != ARV_BUFFER_STATUS_SIZE_MISMATCH) { 
-  ushort *tmpBuf;
-  pBuf = reinterpret_cast<uchar*>(arvbuffer->data);
-  // calculate min,max
+    ushort *tmpBuf;
+    pBuf = reinterpret_cast<uchar*>(arvbuffer->data);
+    // calculate min,max
     max = 0;
     min = 65535;
     if ( pixel_encoding == B8 ) {
