@@ -185,7 +185,7 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
   QLOG_INFO() << "AcquisitionThread::execute> instrument type " << sequence->instrumentType;
   //emit getAcquiring(record);
   
-  QLOG_DEBUG() << "AcquisitionThread::execute> Execute record " << record << " instrument " 
+  QLOG_INFO() << "AcquisitionThread::execute> Execute record " << record << " instrument " 
 	       <<  sequence->instrumentType
 	       << ":" << sequence->instrumentName << " remaining loops " 
 	       << sequence->remainingLoops << ":"

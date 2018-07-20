@@ -249,7 +249,6 @@ ComediDac::setComediValue(QString newcomedi, int output, void *value) {
         QLOG_INFO() << "ComediDac::setComediValue> replace at " << output
                     << " old value " << QString::number(comedivalues.at(index)->at(output))
                     << " new value " << QString::number(*dvalue);
-        usleep(1000);
         double real_value;
         getComediValue(newcomedi, output, real_value);
         comedivalues.at(index)->replace(output,real_value);

@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define GIGE_FRAME_NUMBER 50
 #define FEATURES_NUMBER 3
-#define PROPS_NUMBER 5
+#define PROPS_NUMBER 6
 char *gige_features[]  = {
                           (char*)"ExposureTimeAbs",
                           (char*)"DigitalGain",
@@ -47,6 +47,7 @@ char *gige_props[] = {
  	              (char*)"ExposureTimeAbs",
    		      (char*)"DigitalGain",
                       (char*)"PixelFormat",
+                      (char*)"Frame Rate",
                       (char*)"PC Rate",/*
 		      (char*)"Width",
                       (char*)"Height",
@@ -72,6 +73,7 @@ char *gige_props_units[] = {
  			    (char*)"ms",
                             (char*)"",
                             (char*)"",
+                            (char*)"Hz",
                             (char*)"Hz"/*,
 	                    (char*)"",
  			    (char*)"",
@@ -113,6 +115,7 @@ CameraGiGE::CameraGiGE()
   snapshot = NULL;
   buffer32 = NULL;
   snapshot32 = NULL;
+  arvbuffer_last = NULL;
   suspend = true;
   has_started = false;
   mutex = new QMutex(QMutex::NonRecursive);
@@ -253,7 +256,7 @@ CameraGiGE::setCamera(void* _camera, int _id)
   for ( int i = 0; i < PROPS_NUMBER; i++ ) {
     ArvGcNode *feature = NULL;
     feature = arv_device_get_feature (device, gige_props[i]);
-    if ( feature == NULL && gige_props[i] != "PC Rate" ) continue;
+    if ( feature == NULL && gige_props[i] != "PC Rate" && gige_props[i] != "Frame Rate" ) continue;
     QString propStr = gige_props[i];
     QLOG_INFO () << "CameraGiGE::setCamera> " << propStr << " property added ";
     propList.push_back(propStr);
@@ -361,6 +364,7 @@ CameraGiGE::setFeature(int feature, double value) {
      arv_gc_node_set_value_from_string (node, feature_string_value.toStdString().c_str());
    }
    else if ( ARV_IS_GC_INTEGER (node) ) {
+     QLOG_INFO() << "CameraGiGE::setFeature> feature has INT type ";
      QString feature_string_value = QString::number((int)value);
      // Particular Case Image Size
      if (featureNameList.at(feature) == "Width"   ||
@@ -451,43 +455,45 @@ CameraGiGE::setFeature(int feature, double value) {
           else if (feature_string_value == "Mono12")
             pixel_encoding = B12;
           
-          // Stop acquisition
-          this->stop();
-          arv_camera_stop_acquisition (camera);
-          g_object_unref (stream);
+         // Stop acquisition
+         this->stop();
+         arv_camera_stop_acquisition (camera);
+         g_object_unref (stream);
+       
+         // Set new Pixelformat
+         arv_gc_node_set_value_from_string (node, feature_string_value.toStdString().c_str());
+         
+         // Start acquisition
+         payload = arv_camera_get_payload (camera);
+         QLOG_INFO() << "CameraGiGE::setFeature> set feature "
+                   << featureNameList.at(feature)
+                   << " New value " << feature_string_value;
 
-          // Set new Pixelformat
-          arv_gc_node_set_value_from_string (node, feature_string_value.toStdString().c_str());
- 
-          // Start acquisition
-          payload = arv_camera_get_payload (camera);
-          QLOG_INFO() << "CameraGiGE::setFeature> set feature "
-                      << featureNameList.at(feature) 
-                      << " New value " << feature_string_choice.at(value)
-		      << " New payload " << payload;
-          stream = arv_camera_create_stream (camera, NULL, NULL);
-          if (stream != NULL) {
-            if (ARV_IS_GV_STREAM (stream)) {
- //              g_object_set (stream,
+
+         stream = arv_camera_create_stream (camera, NULL, NULL);
+         if (stream != NULL) {
+           if (ARV_IS_GV_STREAM (stream)) {
+ //           g_object_set (stream,
  //                     "socket-buffer", ARV_GV_STREAM_SOCKET_BUFFER_AUTO,
  //                     "socket-buffer-size", 0,
  //                     NULL);
- //              g_object_set (stream,
+ //           g_object_set (stream,
  //                     "packet-resend", ARV_GV_STREAM_PACKET_RESEND_NEVER,
  //                     NULL);
-               g_object_set (stream,
+            g_object_set (stream,
                       "packet-timeout", 20 * 1000,
                       "frame-retention", 100 * 1000,
                       NULL);
-           }
           }
-          else 
-            QLOG_ERROR() << "CameraGiGE::setFeature> cannot create new stream !";
-          for (int i = 0; i < GIGE_FRAME_NUMBER; i++)
-            arv_stream_push_buffer (stream, arv_buffer_new (payload, NULL));
-          arv_camera_set_acquisition_mode (camera, ARV_ACQUISITION_MODE_CONTINUOUS);
-          arv_camera_start_acquisition (camera);
-          this->start();
+       }
+       else
+         QLOG_ERROR() << "CameraGiGE::setFeature> cannot create new stream !";
+
+       for (int i = 0; i < GIGE_FRAME_NUMBER; i++)
+         arv_stream_push_buffer (stream, arv_buffer_new (payload, NULL));
+       arv_camera_set_acquisition_mode (camera, ARV_ACQUISITION_MODE_CONTINUOUS);
+       arv_camera_start_acquisition (camera);
+       this->start();
      }
      else {
         arv_gc_node_set_value_from_string (node, feature_string_value.toStdString().c_str());
@@ -588,7 +594,7 @@ CameraGiGE::getProps()  {
   int propCnt = 0, i = 0;
   QString propStr;
   
-  for ( i = 0; i < PROPS_NUMBER - 1; i++) {
+  for ( i = 0; i < PROPS_NUMBER - 2; i++) {
    ArvGcNode *feature = NULL;
    feature = arv_device_get_feature (device, gige_props[i]);
    if ( feature == NULL ) continue;
@@ -620,11 +626,21 @@ CameraGiGE::getProps()  {
      propList.replace(propCnt++,propStr);
    }
   }
-  // PC Rate prop
+  // Frame Rate prop
   propStr = gige_props[i];
+  int frame_rate = (int) arv_camera_get_frame_rate (camera);
+  propStr.append(" : " + QString::number(frame_rate) + " " + gige_props_units[i]);
+  QLOG_DEBUG () << "CameraGiGE::getProps> " << propStr << " updated ";
+  propList.replace(propCnt++,propStr);
+
+  // PC Rate prop
+  propStr = gige_props[++i];
   propStr.append(" : " + QString::number((int)frequency) + " " + gige_props_units[i]);
   QLOG_DEBUG () << "CameraGiGE::getProps> " << propStr << " updated ";
   propList.replace(propCnt,propStr);
+  
+  
+
   emit updateProps();
 }
 
@@ -744,16 +760,24 @@ CameraGiGE::acquireImage() {
   uchar *pBuf;
   /* copy captured image */
   
-  arvbuffer = arv_stream_pop_buffer (stream);
+  arvbuffer = NULL;
   while (arvbuffer == NULL) {
+    usleep(100);
     arvbuffer = arv_stream_pop_buffer (stream);
   }
+  /*-----------------------------------------------------------------------
+   * release frame
+   *-----------------------------------------------------------------------*/
+  if (arvbuffer_last != NULL)
+      arv_stream_push_buffer (stream, arvbuffer_last);
+  
+  arvbuffer_last = arvbuffer;
   QLOG_DEBUG () << "Buffer data size " << arvbuffer->size;
   QLOG_DEBUG () << "Pixel Encoding " << pixel_encoding;
   
   if (arvbuffer->status != ARV_BUFFER_STATUS_SIZE_MISMATCH) { 
     ushort *tmpBuf;
-    pBuf = reinterpret_cast<uchar*>(arvbuffer->data);
+    pBuf = reinterpret_cast<uchar*>(arvbuffer_last->data);
     // calculate min,max
     max = 0;
     min = 65535;
@@ -816,6 +840,7 @@ CameraGiGE::acquireImage() {
           buffer[i] = 255;
       }
     }
+
     if (vflip) {
       buffer = reversebytes(buffer,height * width);
       buffer = fliphorizontal(buffer,height * width, width);
@@ -838,11 +863,7 @@ CameraGiGE::acquireImage() {
   emit updateMax(max);
   }
   else
-   QLOG_ERROR() << " Arv buffer Error " << arvbuffer->status;
-  /*-----------------------------------------------------------------------
-   * release frame
-   *-----------------------------------------------------------------------*/
-  arv_stream_push_buffer (stream, arvbuffer);
+   QLOG_ERROR() << " Arv buffer Error " << arvbuffer_last->status;
   snapshotMutex->unlock();
   acquireMutex->unlock();
   return (1);

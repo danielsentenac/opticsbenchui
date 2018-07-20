@@ -65,6 +65,7 @@ class CameraGiGE : public Camera
   ArvGc *genicam;
   ArvStream *stream;
   ArvBuffer *arvbuffer;
+  ArvBuffer *arvbuffer_last;
   static const int arv_option_width = -1;
   static const int arv_option_height = -1;
   static const int arv_option_horizontal_binning = -1;
