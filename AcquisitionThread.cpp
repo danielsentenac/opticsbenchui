@@ -693,9 +693,11 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
   }
   else if ( sequence->instrumentType == "COMEDIDAC" && comedidacsuccess == true) {
     QLOG_INFO() << "AcquisitionThread::saveData> save COMEDI DAC data";
+    QString str = QString::number(sequence->dacValue, 'f', 3);
+    double rounded_value = str.toDouble();
     status = H5LTset_attribute_double(sequence->refgrp, sequence->grpname.toStdString().c_str(),
                                      sequence->dataname.toStdString().c_str(),
-                                     &(sequence->dacValue),1);
+                                     &rounded_value,1);
   }
   // Save SLM data in the group
   else if (sequence->instrumentType == "SLM" && slmsuccess == true) {

@@ -39,8 +39,8 @@ VideoPlayer::VideoPlayer(QWidget *parent, Camera *_camera)
     
     QBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(videoWidget);
-    
     setLayout(layout);
+    
   }
 }
 
@@ -97,4 +97,5 @@ void VideoPlayer::setVideoPlayerResolution(int width,int height) {
   emit setImageSize(width,height);
   this->setMaximumSize(QSize(width+20,height+20));
   this->setMinimumSize(QSize(width+20,height+20));
+   
 }

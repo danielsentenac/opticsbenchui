@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef COMEDIDAC
 #include "ComediDac.h"
+#include <unistd.h>
 
 ComediDac::ComediDac(QString _appDirPath)
   : Comedi()				       
@@ -203,19 +204,13 @@ ComediDac::resetComedi(QString newcomedi) {
   for (int index = 0 ; index < comedi.size(); index++)  {
     if ( comedi.at(index) == newcomedi && connectSuccess.at(index) == true) {
       for (int channel = 0 ; channel < outputs.at(index); channel++)  {
-        double zerovalue = 0;
+        double zerovalue = 0.001;
         setComediValue(newcomedi, channel, &zerovalue);
-        maxdata = comedi_get_maxdata(device.at(index), subdev.at(index), channel);
-        rng=comedi_get_range(device.at(index), subdev.at(index), channel, 0);
-        ret = comedi_data_read(device.at(index), subdev.at(index), channel, 0, AREF_GROUND, &data);
-        if (ret < 0){
-          comedi_perror(comedi.at(index).toStdString().c_str());
-          return false;
-        }
-        value = comedi_to_phys(data,rng,maxdata);
-        comedivalues.at(index)->replace(channel,value);
+        double real_value;
+        getComediValue(newcomedi, channel, real_value);
+        comedivalues.at(index)->replace(channel,real_value);
         QLOG_INFO ( ) << "ComediDac::resetComedi> read device " << newcomedi << ":subdev " << subdev.at(index) 
-                    << ":channel " << channel << ":value" << QString::number(value);
+                    << ":channel " << channel << ":value" << QString::number(real_value);
       }
       updateDBValues(newcomedi);
       return true;
@@ -254,7 +249,10 @@ ComediDac::setComediValue(QString newcomedi, int output, void *value) {
         QLOG_INFO() << "ComediDac::setComediValue> replace at " << output
                     << " old value " << QString::number(comedivalues.at(index)->at(output))
                     << " new value " << QString::number(*dvalue);
-        comedivalues.at(index)->replace(output,*dvalue);
+        usleep(1000);
+        double real_value;
+        getComediValue(newcomedi, output, real_value);
+        comedivalues.at(index)->replace(output,real_value);
         return true;
     }
   }
@@ -262,10 +260,24 @@ ComediDac::setComediValue(QString newcomedi, int output, void *value) {
   return false; 
 }
 bool
-ComediDac::getComediValue(QString newcomedi, int output, double &value) {
- for (int index = 0 ; index < comedi.size(); index++)  {
+ComediDac::getComediValue(QString newcomedi, int output, double &value) { // read value from board directly
+  lsampl_t data;
+  int ret;
+  comedi_range *rng;
+  int maxdata;
+  for (int index = 0 ; index < comedi.size(); index++)  {
     if ( comedi.at(index) == newcomedi ) {
-       value =  comedivalues.at(index)->at(output);
+        maxdata = comedi_get_maxdata(device.at(index), subdev.at(index), output);
+        rng=comedi_get_range(device.at(index), subdev.at(index), output, 0);
+        ret = comedi_data_read(device.at(index), subdev.at(index), output, 0, AREF_GROUND, &data);
+        if (ret < 0){
+          comedi_perror(comedi.at(index).toStdString().c_str());
+          return false;
+        }
+       value = comedi_to_phys(data,rng,maxdata);
+       QLOG_INFO ( ) << "ComediDac::getComediValue> read device " << newcomedi << ":subdev " << subdev.at(index) 
+                    << ":channel " << output << ":value" << QString::number(value);
+       //value =  comedivalues.at(index)->at(output);
        return true;
     }
   }

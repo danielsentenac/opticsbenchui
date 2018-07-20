@@ -74,6 +74,7 @@ CameraWindow::CameraWindow( QMainWindow* parent, Qt::WFlags fl , Camera *_camera
     this->setWindowTitle(QString(player->camera->vendor) + " / " + 
 			 QString(player->camera->model));
     this->setCentralWidget(player);
+    this->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
     this->set480x320();
   }
   else
