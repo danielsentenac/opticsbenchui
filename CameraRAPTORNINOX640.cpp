@@ -118,7 +118,7 @@ CameraRAPTORNINOX640::setCamera(void* _camera, int _id)
  int frate_min, frate_max;
  featureIdList.push_back(featureCnt);
  featureNameList.push_back(raptorninox640_features[featureCnt]);
- frate_min = 10;
+ frate_min = 1;
  frate_max = 120;
  featureMinList.push_back(frate_min);
  featureMaxList.push_back(frate_max);
