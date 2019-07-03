@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <QtHelpProject version="1.0">
+     <namespace>OpticsBenchUI</namespace>
+     <virtualFolder>doc</virtualFolder>
+     <filterSection>
+         <toc>
+             <section title="OpticsBenchUI" ref="index.html"> </section>
+             <section title="Comedi" ref="Comedi.html"></section>
+             <section title="DAC" ref="DAC.html"></section>
+             <section title="SuperK" ref="SUPERK.html"></section>
+             <section title="Motor" ref="Motor.html"></section>
+             <section title="Camera" ref="Camera.html"></section>
+             <section title="SLM" ref="SLM.html"></section>
+             <section title="File" ref="File.html"></section>
+             <section title="Acquisition" ref="Acquisition.html"></section>
+             </toc>
+         <keywords>
+             <keyword name="Optics" ref="./index.html"/>
+             <keyword name="Comedi" ref="./Comedi.html"/>
+             <keyword name="DAC" ref="./DAC.html"/>
+             <keyword name="SUPERK" ref="./SUPERK.html"/>
+             <keyword name="Motor" ref="./Motor.html"/>
+             <keyword name="Camera" ref="./Camera.html"/>
+             <keyword name="SLM" ref="./SLM.html"/>
+             <keyword name="Acquisition" ref="./Acquisition.html"/>
+             <keyword name="File" ref="./File.html"/>
+             </keywords>
+         <files>
+             <file>index.html</file>
+             <file>Comedi.html</file>
+             <file>ComediWindow.jpg</file>
+             <file>DAC.html</file>
+             <file>DACWindow.jpg</file>
+             <file>SUPERK.html</file>
+             <file>SuperKWindow.jpg</file>
+             <file>Motor.html</file>
+             <file>MotorWindow.jpg</file>
+             <file>Camera.html</file>
+             <file>CameraWindow.jpg</file>
+             <file>SLM.html</file>
+             <file>Acquisition.html</file>
+             <file>AcquisitionWindow.jpg</file>
+             <file>File.html</file>
+             </files>
+         </filterSection>
+     </QtHelpProject>

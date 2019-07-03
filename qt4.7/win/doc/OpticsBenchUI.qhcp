@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <QHelpCollectionProject version="1.0">
+     <assistant>
+         <title>OpticsBenchUI</title>
+         <applicationIcon>images/handbook.png</applicationIcon>
+         <cacheDirectory>OpticsBenchUI</cacheDirectory>
+         <startPage>/index.html</startPage>
+         <aboutMenuText>
+             <text>About OpticsBenchUI</text>
+         </aboutMenuText>
+         <aboutDialog>
+             <file>about.txt</file>
+             <icon>images/icon.png</icon>
+         </aboutDialog>
+         <enableDocumentationManager>false</enableDocumentationManager>
+         <enableAddressBar>false</enableAddressBar>
+         <enableFilterFunctionality>false</enableFilterFunctionality>
+     </assistant>
+     <docFiles>
+         <generate>
+             <file>
+                 <input>OpticsBenchUI.qhp</input>
+                 <output>OpticsBenchUI.qch</output>
+                 </file>
+             </generate>
+         <register>
+             <file>OpticsBenchUI.qch</file>
+             </register>
+         </docFiles>
+     </QHelpCollectionProject>
+

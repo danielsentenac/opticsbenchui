@@ -1,0 +1,5 @@
+#!/bin/tcsh
+setenv PATH ${PATH}:../../install/bin/
+cd doc
+qhelpgenerator OpticsBenchUI.qhp -o OpticsBenchUI.qch
+qcollectiongenerator OpticsBenchUI.qhcp -o OpticsBenchUIColl.qhc
