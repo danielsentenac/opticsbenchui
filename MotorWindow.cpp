@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "MotorWindow.h"
 
-MotorWindow::MotorWindow( QMainWindow* parent, Qt::WFlags fl , Motor *_motor)
+MotorWindow::MotorWindow( QMainWindow* parent, Qt::WindowFlags fl , Motor *_motor)
   : QMainWindow( parent, fl )
 {
   motor = _motor;
@@ -27,7 +27,7 @@ MotorWindow::MotorWindow( QMainWindow* parent, Qt::WFlags fl , Motor *_motor)
   QWidget *centralWidget = new QWidget(this);
  
   setCentralWidget(centralWidget);
-
+  centralWidget->setMinimumSize(20,20);
   vboxlayout = new QVBoxLayout();
   centralWidget->setLayout(vboxlayout);
   
@@ -36,7 +36,10 @@ MotorWindow::MotorWindow( QMainWindow* parent, Qt::WFlags fl , Motor *_motor)
   motorWidget->setMotor(motor);
   dockWidget = new QDockWidget(tr("Actuator Control"), this);
   dockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
-  dockWidget->setWidget(motorWidget);
+  QScrollArea *scrollableWidget = new  QScrollArea();
+  scrollableWidget->setWidget(motorWidget);
+  scrollableWidget->setWidgetResizable(true);
+  dockWidget->setWidget(scrollableWidget);
   this->addDockWidget(Qt::BottomDockWidgetArea, dockWidget);
 
   // 'motor_com' table model

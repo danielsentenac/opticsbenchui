@@ -68,6 +68,10 @@ void
 AcquisitionThread::setComediDac(Comedi* _comedi){
   comedidac = _comedi;
 }
+void
+AcquisitionThread::setRaspiDac(RaspiDac* _raspidac){
+  raspidac = _raspidac;
+}
 void 
 AcquisitionThread::setFile(QString _filename, int _filenumber) {
   filename = _filename;
@@ -153,8 +157,13 @@ AcquisitionThread::run() {
       }
       if ( sequence->instrumentType == "COMEDIDAC" ) {
         QLOG_DEBUG() << "AcquisitionThread::execute> Update Db COMEDI DAC values...";
-        // Update DB Counter values
+        // Update DB Comedi Dac values
         if (comedidac != NULL)  comedidac->updateDBValues(sequence->instrumentName);
+      }
+      if ( sequence->instrumentType == "RASPIDAC" ) {
+        QLOG_DEBUG() << "AcquisitionThread::execute> Update Db RASPI DAC values...";
+        // Update DB Raspi Dac values
+        if (raspidac != NULL)  raspidac->updateDBValues(sequence->instrumentName);
       }
       if ( sequence->instrumentType == "MOTOR" ) {
         QLOG_DEBUG() << "AcquisitionThread::execute> Update Db MOTOR values...";
@@ -361,6 +370,34 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     sequence->status = comedidacsuccess;
     //emit getComediStatus(comedidacsuccess);
   }
+  else if ( sequence->instrumentType == "RASPIDAC" ) {
+    QLOG_INFO() << "AcquisitionThread::execute> connecting RASPI DAC ..." << sequence->instrumentName;
+    raspidacsuccess = raspidac->connectRaspi(sequence->instrumentName);
+    QLOG_INFO() << "AcquisitionThread::execute> RASPI DAC " << sequence->instrumentName
+                 << " connected " << raspidacsuccess;
+
+    if (raspidacsuccess == true) {
+      if ( sequence->dacRValue != 0 ) {
+        double dacValue;
+        raspidacsuccess |= raspidac->getRaspiValue(sequence->instrumentName,sequence->dacOutput,dacValue);
+        dacValue += sequence->dacRValue;
+        raspidacsuccess |= raspidac->setRaspiValue(sequence->instrumentName,
+                                                   sequence->dacOutput,
+                                                   (void*)&dacValue);
+        raspidacsuccess |= raspidac->getRaspiValue(sequence->instrumentName,sequence->dacOutput,
+                                                     sequence->dacValue);
+      }
+      else
+        raspidacsuccess |= raspidac->setRaspiValue(sequence->instrumentName,
+                                                     sequence->comediOutput,
+                                                     (void*)&sequence->dacValue);
+        raspidacsuccess |= raspidac->getRaspiValue(sequence->instrumentName,sequence->dacOutput,
+                                                      sequence->dacValue);
+      }
+    sequence->status = raspidacsuccess;
+    //emit getRaspiStatus(raspidacsuccess);
+  }
+
   else if ( sequence->instrumentType == "CAMERA" ) {
     imagesuccess = false;
     bool cameraExists = false;
@@ -699,6 +736,14 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
                                      sequence->dataname.toStdString().c_str(),
                                      &rounded_value,1);
   }
+  else if ( sequence->instrumentType == "RASPIDAC" && raspidacsuccess == true) {
+    QLOG_INFO() << "AcquisitionThread::saveData> save RASPI DAC data";
+    QString str = QString::number(sequence->dacValue, 'f', 3);
+    double rounded_value = str.toDouble();
+    status = H5LTset_attribute_double(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     sequence->dataname.toStdString().c_str(),
+                                     &rounded_value,1);
+  }
   // Save SLM data in the group
   else if (sequence->instrumentType == "SLM" && slmsuccess == true) {
     status = H5LTset_attribute_int(sequence->refgrp, sequence->grpname.toStdString().c_str(), 
@@ -778,7 +823,9 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
 	  // reset sequence data
 	  sequence->reset =true;
 	}
-	else if ((sequence->instrumentRef == "DAC" || sequence->instrumentRef == "COMEDIDAC") 
+	else if ((sequence->instrumentRef == "DAC" || 
+                  sequence->instrumentRef == "COMEDIDAC" ||
+                  sequence->instrumentRef == "RASPIDAC") 
                   && treatmentsuccess == true ) {
 	  QLOG_DEBUG() << "AcquisitionThread::saveData> Save average DAC or COMEDIDAC data in groupname " 
 		       << grandparentSequence->grpname

@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define OFFSET_X 250
 #define OFFSET_Y 250
 
-CameraWindow::CameraWindow( QMainWindow* parent, Qt::WFlags fl , Camera *_camera, int _cameraNumber)
+CameraWindow::CameraWindow( QMainWindow* parent, Qt::WindowFlags fl , Camera *_camera, int _cameraNumber)
   : QMainWindow( parent, fl )
 {
   camera = _camera;
@@ -98,33 +98,33 @@ void CameraWindow::set480x320() {
   emit setVideoPlayerResolution(480,320);
   if (cameraPropWidget != NULL) {
     this->setMaximumSize(QSize(480 + OFFSET_X, 320 + OFFSET_Y));
-    this->setMinimumSize(QSize(480 + OFFSET_X, 320 + OFFSET_Y));  
+    //this->setMinimumSize(QSize(480 + OFFSET_X, 320 + OFFSET_Y));  
   }
   else {
     this->setMaximumSize(QSize(480, 320 + OFFSET_Y));
-    this->setMinimumSize(QSize(480, 320 + OFFSET_Y));
+    //this->setMinimumSize(QSize(480, 320 + OFFSET_Y));
   }
 }
 void CameraWindow::set640x480() {
   emit setVideoPlayerResolution(640,480); 
   if (cameraPropWidget != NULL) {
     this->setMaximumSize(QSize(640 + OFFSET_X, 480 + OFFSET_Y));
-    this->setMinimumSize(QSize(640 + OFFSET_X, 480 + OFFSET_Y));
+    //this->setMinimumSize(QSize(640 + OFFSET_X, 480 + OFFSET_Y));
   }
   else {
     this->setMaximumSize(QSize(640, 480 + OFFSET_Y));
-    this->setMinimumSize(QSize(640, 480 + OFFSET_Y));
+    //this->setMinimumSize(QSize(640, 480 + OFFSET_Y));
   }
 }
 void CameraWindow::set1280x960() {
   emit setVideoPlayerResolution(1280,960);
   if (cameraPropWidget != NULL) {
     this->setMaximumSize(QSize(1280 + OFFSET_X, 960 + OFFSET_Y));
-    this->setMinimumSize(QSize(1280 + OFFSET_X, 960 + OFFSET_Y));
+    //this->setMinimumSize(QSize(1280 + OFFSET_X, 960 + OFFSET_Y));
   }
   else {
     this->setMaximumSize(QSize(1280, 960 + OFFSET_Y));
-    this->setMinimumSize(QSize(1280, 960 + OFFSET_Y));
+    //this->setMinimumSize(QSize(1280, 960 + OFFSET_Y));
   }
 }
 void CameraWindow::update() {

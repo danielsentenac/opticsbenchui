@@ -31,10 +31,6 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   QLOG_INFO() << "CameraControlWidget::CameraControlWidget> NUM_DIGITS " << NUM_DIGITS;
   camera = _camera;
   
-  connect(this,SIGNAL(setFeature(int,double)),camera,SLOT(setFeature(int,double)));
-  connect(this,SIGNAL(setMode(int,bool)),camera,SLOT(setMode(int,bool)));
-  connect(camera,SIGNAL(updateFeatures()),this,SLOT(updateFeatures()));
-
   featureMapper = new QSignalMapper(this);
   sliderValueMapper = new QSignalMapper(this);
   modeMapper = new QSignalMapper(this);
@@ -55,6 +51,10 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
       sliderValue->setText(QString::number(camera->featureValueList.at(i),'f',NUM_DIGITS));
     }
     else {
+      QLOG_INFO() <<  "CameraControlWidget::CameraControlWidget::> " << camera->featureNameList.at(i)
+                << " value=" << camera->featureValueList.at(i)
+                << " min=" << camera->featureMinList.at(i)
+                << " max=" << camera->featureMaxList.at(i);
       featureSlider->setMinimum((int) (camera->featureMinList.at(i) ));
       featureSlider->setMaximum((int)(camera->featureMaxList.at(i) ));
       featureSlider->setValue((int)(camera->featureValueList.at(i) ));
@@ -70,9 +70,14 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
 
     QCheckBox *modeCheck = new QCheckBox();
     modeCheckBoxList.push_back(modeCheck);
-    connect( featureSlider, SIGNAL(valueChanged(int)), featureMapper, SLOT(map()));
-    connect( sliderValue, SIGNAL(editingFinished()), sliderValueMapper, SLOT(map()));
-    connect( modeCheck, SIGNAL(stateChanged(int)), modeMapper, SLOT(map()));
+    
+    connect(this,SIGNAL(setFeature(int,double)),camera,SLOT(setFeature(int,double)),Qt::UniqueConnection);
+    connect(this,SIGNAL(setMode(int,bool)),camera,SLOT(setMode(int,bool)),Qt::UniqueConnection);
+    connect(camera,SIGNAL(updateFeatures()),this,SLOT(updateFeatures()),Qt::UniqueConnection);
+
+    connect( featureSlider, SIGNAL(valueChanged(int)), featureMapper, SLOT(map()),Qt::UniqueConnection);
+    connect( sliderValue, SIGNAL(returnPressed()), sliderValueMapper, SLOT(map()),Qt::UniqueConnection);
+    connect( modeCheck, SIGNAL(stateChanged(int)), modeMapper, SLOT(map()),Qt::UniqueConnection);
     
     featureMapper->setMapping(featureSlider, featureSliderList.size() - 1 );
     sliderValueMapper->setMapping(sliderValue, sliderValueList.size() - 1 );
@@ -95,44 +100,44 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
     QLOG_DEBUG() << " Feature slider added : " <<  camera->featureNameList.at(i);
     col+=2;
   }
-  connect(featureMapper, SIGNAL(mapped(int)),this, SLOT(setFeatureValue(int)));
-  connect(sliderValueMapper, SIGNAL(mapped(int)),this, SLOT(setSliderValue(int)));
-  connect(modeMapper, SIGNAL(mapped(int)),this, SLOT(setModeValue(int)));
+  connect(featureMapper, SIGNAL(mapped(int)),this, SLOT(setFeatureValue(int)),Qt::UniqueConnection);
+  connect(sliderValueMapper, SIGNAL(mapped(int)),this, SLOT(setSliderValue(int)),Qt::UniqueConnection);
+  connect(modeMapper, SIGNAL(mapped(int)),this, SLOT(setModeValue(int)),Qt::UniqueConnection);
 
   QLabel *minPixLabel = new QLabel("min:");
   QLCDNumber *minValue = new  QLCDNumber();
   minValue->setSegmentStyle(QLCDNumber::Flat);
   layout->addWidget(minPixLabel,0,1000,1,1,Qt::AlignCenter);
   layout->addWidget(minValue,0,1000+1,1,1,Qt::AlignCenter);
-  connect(camera,SIGNAL(updateMin(int)),minValue,SLOT(display(int)));
+  connect(camera,SIGNAL(updateMin(int)),minValue,SLOT(display(int)),Qt::UniqueConnection);
    
   QLabel *maxPixLabel = new QLabel("max:");
   QLCDNumber *maxValue = new  QLCDNumber();
   maxValue->setSegmentStyle(QLCDNumber::Flat);
   layout->addWidget(maxPixLabel,1,1000,1,1,Qt::AlignTop | Qt::AlignCenter);
   layout->addWidget(maxValue,1,1000+1,1,1,Qt::AlignTop | Qt::AlignCenter);
-  connect(camera,SIGNAL(updateMax(int)),maxValue,SLOT(display(int)));
+  connect(camera,SIGNAL(updateMax(int)),maxValue,SLOT(display(int)),Qt::UniqueConnection);
 
   snapshotButton = new QPushButton("Snapshot",this);
   snapshotButton->setFixedHeight(30);
   snapshotButton->setFixedWidth(80);
-  QObject::connect(snapshotButton, SIGNAL(clicked()), this, SLOT(snapShot()));
+  QObject::connect(snapshotButton, SIGNAL(clicked()), this, SLOT(snapShot()),Qt::UniqueConnection);
   layout->addWidget(snapshotButton,0,1000+2,1,1,Qt::AlignCenter);
   
   vflipLabel = new QLabel("Flip vertical");
   vflipBox = new QCheckBox();
-  QObject::connect(vflipBox, SIGNAL(stateChanged(int)), camera, SLOT(vflipImage(int)));
+  QObject::connect(vflipBox, SIGNAL(stateChanged(int)), camera, SLOT(vflipImage(int)),Qt::UniqueConnection);
   layout->addWidget(vflipLabel,1,1000+2,1,1,Qt::AlignCenter);
   layout->addWidget(vflipBox,1,1000+3,1,1,Qt::AlignCenter);
 
   hflipLabel = new QLabel("Flip horizontal");
   hflipBox = new QCheckBox();
-  QObject::connect(hflipBox, SIGNAL(stateChanged(int)), camera, SLOT(hflipImage(int)));
+  QObject::connect(hflipBox, SIGNAL(stateChanged(int)), camera, SLOT(hflipImage(int)),Qt::UniqueConnection);
   layout->addWidget(hflipLabel,2,1000+2,1,1,Qt::AlignCenter);
   layout->addWidget(hflipBox,2,1000+3,1,1,Qt::AlignCenter);
 
   colorGroup = new QButtonGroup(this);
-  connect(colorGroup, SIGNAL(buttonClicked(int)), camera, SLOT(setColorTable(int))) ;
+  connect(colorGroup, SIGNAL(buttonClicked(int)), camera, SLOT(setColorTable(int)),Qt::UniqueConnection) ;
   QRadioButton *grayButton = new QRadioButton("gray");
   QRadioButton *hotButton =  new QRadioButton(" hot ");
   colorGroup->addButton(grayButton);
@@ -143,7 +148,7 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   grayButton->setChecked(true);
   setMinimumHeight(DOCK_HEIGHT);
   setLayout(layout);
-  this->setMinimumHeight(150);
+  //this->setMinimumHeight(150);
 }
 CameraControlWidget::~CameraControlWidget()
 {
@@ -156,8 +161,10 @@ CameraControlWidget::snapShot() {
   int *img32 = NULL;
   
   // Take snapshot
-  if ( camera->pixel_encoding == B8 )
+  if ( camera->pixel_encoding == B8 ) {
+     QLOG_INFO() << " Take SNAPSHOT...";
      img8 = camera->getSnapshot();
+  }
   else  
      img32 = camera->getSnapshot32();
   // Save File
@@ -175,12 +182,20 @@ CameraControlWidget::snapShot() {
   }
   // Save data to File
   if ( camera->pixel_encoding == B8 ) {
+    QLOG_INFO () << "Saving image to file - " << filename ;
+    QLOG_INFO () << "width - " << camera->width ;
+    QLOG_INFO () << "height - " << camera->height ;
+    QLOG_INFO () << "min - " << camera->snapShotMin ;
+    QLOG_INFO () << "max - " << camera->snapShotMax ;
+ 
     H5IMmake_image_8bit(file_id,"SNAPSHOT",
                          camera->width,
-		         camera->height,
+                         camera->height,
 		         img8);
+    
     H5LTset_attribute_int(file_id, "SNAPSHOT", "min", &camera->snapShotMin,1);
     H5LTset_attribute_int(file_id, "SNAPSHOT", "max", &camera->snapShotMax,1);
+    
   }
   else  {
      QLOG_INFO() << "CameraControlWidget::snapShot> Take snapshot pixel encoding " 
@@ -258,7 +273,7 @@ void CameraControlWidget::updateFeatures() {
       featureSlider->setMaximum((int)(camera->featureMaxList.at(i) * SLIDER_FACTOR ));
       featureSlider->setValue((int)(camera->featureValueList.at(i) * SLIDER_FACTOR ));
       QLOG_INFO() <<  "CameraControlWidget::updateFeatures> SLIDER " << camera->featureNameList.at(i)
-		<< " value=" << camera->featureValueList.at(i) * SLIDER_FACTOR
+		<< " value=" << camera->featureValueList.at(i) 
                 << " min=" << camera->featureMinList.at(i) * SLIDER_FACTOR
 		<< " max=" << camera->featureMaxList.at(i) * SLIDER_FACTOR;
     }
@@ -266,23 +281,20 @@ void CameraControlWidget::updateFeatures() {
       featureSlider->setMinimum((int) (camera->featureMinList.at(i) ));
       featureSlider->setMaximum((int)(camera->featureMaxList.at(i) ));
       featureSlider->setValue((int)(camera->featureValueList.at(i) ));
-      QLOG_INFO() <<  "CameraControlWidget::updateFeatures> SLIDER " << camera->featureNameList.at(i)
+      QLOG_DEBUG() <<  "CameraControlWidget::updateFeatures> SLIDER " << camera->featureNameList.at(i)
 		<< " value=" << camera->featureValueList.at(i)
                 << " min=" << camera->featureMinList.at(i)
 		<< " max=" << camera->featureMaxList.at(i);
     }
     valueMinList.at(i)->setText(QString::number(camera->featureMinList.at(i)));
     valueMaxList.at(i)->setText(QString::number(camera->featureMaxList.at(i)));
-    QLOG_INFO ( ) << "CameraControlWidget::update features " 
-		   << camera->featureNameList.at(i) << " : "
-		   << camera->featureValueList.at(i);
     QLineEdit *sliderValue = sliderValueList.at(i);
     if ( camera->featureAbsCapableList.at(i) ) {
       QLOG_INFO() << " ABS CAPABLE " << camera->featureNameList.at(i);
       sliderValue->setText(QString::number(camera->featureAbsValueList.at(i),'f',NUM_DIGITS));
     }
     else {
-      QLOG_INFO() << " NOT ABS CAPABLE " << camera->featureNameList.at(i);
+      QLOG_INFO() << "CameraControlWidget::updateFeatures> UPDATE FEATURE " << i <<  " " <<  camera->featureNameList.at(i) << " value : " << (int)camera->featureValueList.at(i);
       sliderValue->setText(QString::number((int)camera->featureValueList.at(i)));
    }
   }

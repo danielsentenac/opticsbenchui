@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DacWindow.h"
 
-DacWindow::DacWindow( QMainWindow* parent, Qt::WFlags fl , Dac *_dac)
+DacWindow::DacWindow( QMainWindow* parent, Qt::WindowFlags fl , Dac *_dac)
   : QMainWindow( parent, fl )
 {
   dac = _dac;

@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QMessageBox>
 #include <QtSql>
-#include <QtGui>
+#include <QtWidgets>
 
 class MotorWindow : public QMainWindow 
 {
@@ -31,7 +31,7 @@ class MotorWindow : public QMainWindow
     
     public:
   
-  MotorWindow( QMainWindow* parent = 0, Qt::WFlags fl = Qt::Window , Motor *_motor = 0);
+  MotorWindow( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window , Motor *_motor = 0);
   virtual ~MotorWindow();
 
   MotorControlWidget *motorWidget;

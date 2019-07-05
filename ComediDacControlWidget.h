@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Comedi.h"
 
 #include <QtSql>
-#include <QtGui>
+#include <QtWidgets>
 #include "QsLog.h"
 
 

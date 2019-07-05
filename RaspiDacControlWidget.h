@@ -14,10 +14,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
-#ifndef DACCONTROLWIDGET_H
-#define DACCONTROLWIDGET_H
+#ifndef DACRASPICONTROLWIDGET_H
+#define DACRASPICONTROLWIDGET_H
 
-#include "Dac.h"
+#include "RaspiDac.h"
 
 #include <QtSql>
 #include <QtWidgets>
@@ -26,40 +26,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 typedef QVector<float> floatVector;
 
-class DacControlWidget : public QWidget
+class RaspiDacControlWidget : public QWidget
 {
   Q_OBJECT
     
     public:
-  DacControlWidget(QVector<QString>  *_dacList = 0);
-  ~DacControlWidget();
+  RaspiDacControlWidget(QVector<QString>  *_raspiList = 0);
+  ~RaspiDacControlWidget();
     
-  void setDac(Dac *_dac);
-  void setDacList(QVector<QString>  *_dacList);
+  void setRaspi(RaspiDac *_raspi);
+  void setRaspiList(QVector<QString>  *_raspiList);
 
   private slots:
-  void connectDac();
-  void resetDac();
-  void setDacValue(int output);
-  void setDacRValue(int output);
+  void connectRaspi();
+  void resetRaspi();
+  void setRaspiValue(int output);
+  void setRaspiRValue(int output);
   void getDescription(QString description);
-  void getOutputs(int outputs, QString mode);
-  void getOutputValues(QVector<float> *dacvalues);
+  void getOutputs(int outputs);
+  void getOutputValues(void *raspivalues);
 
  private:
   QPushButton *connectButton; 
   QPushButton *resetButton; 
-  QLabel      *dacvalueLabel;
+  QLabel      *raspivalueLabel;
   QLabel      *outputLabel;
   QLabel      *descriptionLabel; 
-  QComboBox   *dacCombo;
+  QComboBox   *raspiCombo;
   QVector<QLabel*>  *outputsList;
+  QVector<QLabel*>  *unitsList;
   QVector<QPushButton*> *setButtonList;
   QVector<QPushButton*> *shiftButtonList;
-  QVector<QLineEdit*>   *dacvalueList;
-  QVector<QLineEdit*>   *dacrvalueList;
-  QVector<QString> *dacList;
-  Dac  *dac;
+  QVector<QLineEdit*>   *raspivalueList;
+  QVector<QLineEdit*>   *raspirvalueList;
+  QVector<QString> *raspiList;
+  RaspiDac  *raspi;
   QGridLayout *layout;
   QSignalMapper *signalMapper, *shiftsignalMapper;
 };

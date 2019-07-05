@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "SuperKWindow.h"
 
-SuperKWindow::SuperKWindow( QMainWindow* parent, Qt::WFlags fl , SuperK *_superk)
+SuperKWindow::SuperKWindow( QMainWindow* parent, Qt::WindowFlags fl , SuperK *_superk)
   : QMainWindow( parent, fl )
 {
   superk = _superk;

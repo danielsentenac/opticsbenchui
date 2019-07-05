@@ -14,7 +14,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
-
 #ifndef COMEDIWINDOW_H
 #define COMEDIWINDOW_H
 
@@ -22,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "ComediDacControlWidget.h"
 
 #include <QtSql>
-#include <QtGui>
+#include <QtWidgets>
 
 class ComediWindow : public QMainWindow 
 {
@@ -31,7 +30,7 @@ class ComediWindow : public QMainWindow
     
     public:
   
-  ComediWindow( QMainWindow* parent = 0, Qt::WFlags fl = Qt::Window , Comedi *_comedi = 0);
+  ComediWindow( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window , Comedi *_comedi = 0);
   virtual ~ComediWindow();
 
   ComediCounterControlWidget *comediWidget;

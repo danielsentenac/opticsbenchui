@@ -20,12 +20,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define DEBUG_LEVEL QsLogging::InfoLevel
 
-OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, Qt::WFlags fl)
+OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, Qt::WindowFlags fl)
   : QMainWindow( parent, fl )
 {
   appDirPath = _appDirPath;
   assistant = new Assistant(appDirPath);
   dacwindow = NULL;
+  comedidacwindow = NULL;
+  comedicounterwindow = NULL;
   motorwindow = NULL;
   superkwindow = NULL;
   isopencamerawindow.clear();
@@ -63,6 +65,15 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   connect(this,SIGNAL(setDbPath(QString)),comedidacwindow,SLOT(setDbPath(QString)));
 #endif
 
+#ifdef RASPIDAC
+  //
+  // Create Dac raspi manager
+  //
+  raspidac = new RaspiDac(qdir.currentPath());
+  connect(raspidac,SIGNAL(showWarning(QString)),this,SLOT(showRaspiWarning(QString)));
+  raspidacwindow = new RaspiWindow(this,Qt::Window,raspidac);
+  connect(this,SIGNAL(setDbPath(QString)),raspidacwindow,SLOT(setDbPath(QString)));
+#endif
   //
   // Create Motor manager
   //
@@ -170,6 +181,21 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
     camerawindowList.push_back(NULL);
   }
 #endif
+  //
+  // Create RASPICAM Camera manager
+  //
+#ifdef RASPICAMERA
+  cameraRaspiMgr = new CameraRaspi();
+  cameraRaspiMgr->findCamera();
+  QLOG_INFO() << "Found " <<  cameraRaspiMgr->num << " RASPICAM camera";
+  for (int i = 0 ; i < cameraRaspiMgr->num; i++) {
+    Camera *camera = new CameraRaspi();
+    camera->setCamera(cameraRaspiMgr->cameralist.at(i),i);
+    cameraList.push_back(camera);
+    isopencamerawindow.push_back(false);
+    camerawindowList.push_back(NULL);
+  }
+#endif
 
   analysiswidget = new AnalysisWidget();
   analysiswidget->setObjectName("Analysis");
@@ -194,6 +220,10 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   acquisitionwidget->setComediDac(comedidac);
 #endif
 
+#ifdef RASPIDAC
+  acquisitionwidget->setRaspiDac(raspidac);
+#endif
+
   acquisitionwidget->setMotor(motor);
   acquisitionwidget->setSuperK(superk);
   acquisitionwidget->setCamera(cameraList);
@@ -204,8 +234,8 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   tab->setTabsClosable(true);
   connect(tab, SIGNAL(tabCloseRequested ( int )), this, SLOT(closeTab(int)));
   setCentralWidget(tab);
-  this->setMinimumHeight(600);
-  this->setMinimumWidth(900);
+  //this->setMinimumHeight(600);
+  //this->setMinimumWidth(900);
   
   // Creation of menuBar
   QMenuBar* menuBar = new QMenuBar(this);
@@ -307,6 +337,17 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
     signalMapper->setMapping(action, cameranumber++);
   }
 #endif
+#ifdef RASPICAMERA
+  for (int i = 0 ; i < cameraRaspiMgr->num; i++) {
+    QString selectedCamera = QString(cameraRaspiMgr->vendorlist.at(i)) + " / " +
+      QString(cameraRaspiMgr->modelist.at(i));
+    QAction *action = new QAction(selectedCamera, this);
+    menuInstruments->addAction(action);
+    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(action, cameranumber++);
+  }
+#endif
+
 
 
   connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(openCameraWindow(int)));
@@ -326,7 +367,11 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
 #endif
 
 #ifdef COMEDIDAC
-  menuInstruments->addAction("Dac", this, SLOT(openComediDacWindow()) );
+  menuInstruments->addAction("ComediDac", this, SLOT(openComediDacWindow()) );
+#endif
+
+#ifdef RASPIDAC
+  menuInstruments->addAction("RaspiDac", this, SLOT(openRaspiDacWindow()) );
 #endif
 
   // Then set the menu bar to the main window
@@ -380,8 +425,9 @@ void OpticsBenchUIMain::openanalysis() {
 }
 void OpticsBenchUIMain::openCameraWindow(int cameraNumber) {
   if (isopencamerawindow.at(cameraNumber) == false) {
-    CameraWindow *camerawindow = new CameraWindow(this,Qt::Window, 
-						  cameraList.at(cameraNumber),cameraNumber);
+      Camera *camera =  cameraList.at(cameraNumber);
+      CameraWindow *camerawindow = new CameraWindow(this,Qt::Window, 
+						  camera,cameraNumber);
     camerawindow->show();
     camerawindow->update();
     camerawindowList.replace(cameraNumber,camerawindow);
@@ -407,6 +453,11 @@ void OpticsBenchUIMain::openComediDacWindow() {
   if (comedidacwindow->isHidden())
     comedidacwindow->show();
 }
+void OpticsBenchUIMain::openRaspiDacWindow() {
+  if (raspidacwindow->isHidden())
+    raspidacwindow->show();
+}
+
 OpticsBenchUIMain::~OpticsBenchUIMain()
 {
   delete acquisitionwidget;
@@ -445,31 +496,25 @@ void OpticsBenchUIMain::closeEvent(QCloseEvent* event)
   event->accept();
   delete this;
 }
-void myMessageOutput(QtMsgType type, const char *msg) {
-  switch (type) {
-  case QtDebugMsg:
-    fprintf(stderr, "Debug: %s\n", msg);
-    break;
-  case QtWarningMsg:
-    fprintf(stderr, "Warning: %s\n", msg);
-    break;
-  case QtCriticalMsg:
-    fprintf(stderr, "Critical: %s\n", msg);
-    break;
-  case QtFatalMsg:
-    fprintf(stderr, "Fatal: %s\n", msg);
-    abort();
-  }
+void myMessageOutput(QtMsgType type, const QMessageLogContext &, const QString & str) {
+   const char * msg = str.toStdString().c_str();
 }
 
 void 
 OpticsBenchUIMain::showDacWarning(QString message) {
   QMessageBox::warning(this, "Dac Error:", message);
 }
+
 void
 OpticsBenchUIMain::showComediWarning(QString message) {
   QMessageBox::warning(this, "Comedi Error:", message);
 }
+
+void
+OpticsBenchUIMain::showRaspiWarning(QString message) {
+  QMessageBox::warning(this, "Raspi Error:", message);
+}
+
 void 
 OpticsBenchUIMain::showMotorWarning(QString message) {
   QMessageBox::warning(this, "Motor Error:", message);
@@ -495,7 +540,7 @@ int main(int argc, char *argv[])
 #ifdef GIGECAMERA
   g_type_init ();
 #endif
-  qInstallMsgHandler(myMessageOutput);
+  qInstallMessageHandler(myMessageOutput);
 
   // init the logging mechanism
   QsLogging::Logger& logger = QsLogging::Logger::instance();
@@ -514,7 +559,7 @@ int main(int argc, char *argv[])
   app.addLibraryPath("/usr/local/lib"); 
   QLOG_INFO() << "Built with Qt" << QT_VERSION_STR << "running on" << qVersion();
   QLOG_INFO() << "Qt User Data location : " 
-              << QDesktopServices::storageLocation(QDesktopServices::DataLocation); 
+              << QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation); 
   QLOG_INFO() << "OpticsBenchUI version " << OPTICSBENCHUIVERSION
               << " started : " <<  app.applicationDirPath();
   OpticsBenchUIMain* OpticsBenchUI = new OpticsBenchUIMain(app.applicationDirPath(),NULL,NULL);

@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ANALYSISWIDGET_H
 
 #include <QtSql>
-#include <QtGui>
+#include <QtWidgets>
 #include "QsLog.h"
 
 class AnalysisWidget : public QWidget

@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define COMEDICONTROLWIDGET_H
 
 #include <QtSql>
-#include <QtGui>
+#include <QtWidgets>
 #include "QsLog.h"
 #include <qtconcurrentrun.h>
 #include "ComediCounterPlot.h"

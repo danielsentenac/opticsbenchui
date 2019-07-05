@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "DacControlWidget.h"
 
 #include <QtSql>
-#include <QtGui>
+#include <QtWidgets>
 
 class DacWindow : public QMainWindow 
 {
@@ -30,7 +30,7 @@ class DacWindow : public QMainWindow
     
     public:
   
-  DacWindow( QMainWindow* parent = 0, Qt::WFlags fl = Qt::Window , Dac *_dac = 0);
+  DacWindow( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window , Dac *_dac = 0);
   virtual ~DacWindow();
 
   DacControlWidget *dacWidget;

@@ -14,41 +14,55 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
+#ifdef RASPIDAC
+#ifndef RASPIDAC_H
+#define RASPIDAC_H
 
-#ifndef COMEDI_H
-#define COMEDI_H
-
+//#include <wiringPiSPI.h>
+#include <bcm2835.h>
 #include <QtSql>
 #include <QtWidgets>
 #include "QsLog.h"
 
-class Comedi : public QObject
+class RaspiDac : public QObject
 {
-  Q_OBJECT
-    
+   Q_OBJECT   
     public:
+  RaspiDac(QString dbpath);
+  ~RaspiDac();
 
-  virtual bool connectComedi(QString newcomedi) = 0;
-  virtual bool resetComedi(QString newcomedi) = 0;
-  virtual bool setComediValue(QString newcomedi, int output, void *value) = 0;
-  virtual bool getComediValue(QString newcomedi, int output, double &value) = 0;
-  virtual bool updateDBValues(QString newcomedi) = 0;
-  virtual void setDbPath(QString _path) = 0;
+  bool connectRaspi(QString newraspi);
+  bool resetRaspi(QString newraspi);
+  bool setRaspiValue(QString newraspi, int output, void *value);
+  bool getRaspiValue(QString newraspi, int output, double &value);
+  bool updateDBValues(QString newraspi);
+  void setDbPath(QString _path);
   
-  // parameters
   QString path;
-  QString comeditype;
+  QString raspitype;
 
   public slots:
 
  signals:
   void getDescription(QString description);
   void showWarning(QString message);
-  void getOutputs(int outputs,QString);
-  void getOutputValues(void *comedivalues);
+  void getOutputs(int outputs);
+  void getOutputValues(void *raspivalues);
 
- protected:
-   virtual void dbConnexion() = 0;
+ private:
+  
+  void dbConnexion();
 
+  QVector<int>  device;          /**< The raspi device file descriptor*/
+  QVector<QString> raspiSettings;
+  QVector<int> subdev;
+  QVector<QString> raspi;
+  QVector<QString> mode;
+  QVector<float> min,max;
+  QVector<int> outputs;
+  QVector<QString> fname;
+  QVector<bool>  connectSuccess;
+  QVector< QVector<double>* > raspivalues;
 };
+#endif
 #endif

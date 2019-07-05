@@ -57,3 +57,8 @@ ver. 0.13
      --> remove /etc/rc.d/rc.local module pixci installation (not needed anymore)
    - Update comedi/comedilib 3.11 (from github)
    - Recompile Neo camera from Andor (last SDK3 3-3.11 fails at Bitflow module compilation, waiting for feedback from Andor)
+ver. 1.0
+1- Update OpticsBenchUI with kernel 4.18 (Fedora 29)
+2- Code recompiled with qt5
+3- Add CameraRaspi classes to manage raspberry camera V2
+4- Add RaspiDac classes to manage Texas instrument DAC81416EVM using SPI communication

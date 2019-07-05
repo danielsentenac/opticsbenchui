@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SuperK.h"
 #include "Dac.h"
 #include "Comedi.h"
+#include "RaspiDac.h"
 #include "QsLog.h"
 
 
@@ -41,6 +42,7 @@ class AcquisitionThread : public QThread
   void setDac(Dac* _dac);
   void setComediCounter(Comedi* _comedi);
   void setComediDac(Comedi* _comedi);
+  void setRaspiDac(RaspiDac* _raspidac);
   void setFile(QString _filename, int _filenumber);
 
   QVector<bool> isopencamerawindow;
@@ -84,8 +86,9 @@ class AcquisitionThread : public QThread
   SuperK *superk;
   Dac    *dac;
   Comedi *comedicounter, *comedidac;
+  RaspiDac *raspidac;
   bool   dacsuccess;
-  bool   comedicountersuccess, comedidacsuccess;
+  bool   comedicountersuccess, comedidacsuccess, raspidacsuccess;
   bool   slmsuccess;
   bool   imagesuccess;
   bool   filesuccess;

@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ComediWindow.h"
 
-ComediWindow::ComediWindow( QMainWindow* parent, Qt::WFlags fl , Comedi *_comedi)
+ComediWindow::ComediWindow( QMainWindow* parent, Qt::WindowFlags fl , Comedi *_comedi)
   : QMainWindow( parent, fl )
 {
   comediWidget = NULL;
@@ -26,7 +26,7 @@ ComediWindow::ComediWindow( QMainWindow* parent, Qt::WFlags fl , Comedi *_comedi
   dbPath = comedi->path;
   QLOG_INFO() << "ComediWindow::ComediWindow> get Db path " << dbPath;
   QWidget *centralWidget = new QWidget(this);
- 
+  centralWidget->setMinimumSize(20,20);
   setCentralWidget(centralWidget);
 
   vboxlayout = new QVBoxLayout();

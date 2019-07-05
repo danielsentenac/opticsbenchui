@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SuperK.h"
 
 #include <QtSql>
-#include <QtGui>
+#include <QtWidgets>
 #include "QsLog.h"
 
 class SuperKControlWidget : public QWidget

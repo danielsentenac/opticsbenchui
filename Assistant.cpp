@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore/QLibraryInfo>
 #include <QtCore/QProcess>
 
-#include <QtGui/QMessageBox>
+#include <QMessageBox>
 
 #include "Assistant.h"
 

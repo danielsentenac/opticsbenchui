@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QApplication>
 #include <QtSql>
-#include <QtGui>
+#include <QtWidgets>
 
 #include "CameraWindow.h"
 #include "MotorWindow.h"
@@ -34,6 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Dac.h"
 #include "ComediWindow.h"
 #include "Comedi.h"
+#include "RaspiWindow.h"
 #include "Motor.h"
 #include "SuperK.h"
 #include "QsLog.h"
@@ -45,6 +46,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 #ifdef COMEDIDAC
 #include "ComediDac.h"
+#endif
+#ifdef RASPIDAC
+#include "RaspiDac.h"
 #endif
 #ifdef ADVANTECHDAC
 #include "DacAdvantech.h"
@@ -67,6 +71,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef RAPTORNINOX640CAMERA
 #include "CameraRAPTORNINOX640.h"
 #endif
+#ifdef RASPICAMERA
+#include "CameraRaspi.h"
+#endif
 
 class OpticsBenchUIMain : public QMainWindow
 {
@@ -75,7 +82,7 @@ class OpticsBenchUIMain : public QMainWindow
     
     public:
   
-  OpticsBenchUIMain( QString appDirPath = 0, QMainWindow* parent = 0, Qt::WFlags fl = Qt::Window );
+  OpticsBenchUIMain( QString appDirPath = 0, QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window );
   
   virtual ~OpticsBenchUIMain();
   
@@ -99,8 +106,10 @@ class OpticsBenchUIMain : public QMainWindow
   void openDacWindow();
   void openComediCounterWindow();
   void openComediDacWindow();
+  void openRaspiDacWindow();
   void showDacWarning(QString);
   void showComediWarning(QString);
+  void showRaspiWarning(QString);
   void showMotorWarning(QString);
   void showSuperKWarning(QString);
   void showCameraWarning(QString);
@@ -124,11 +133,13 @@ class OpticsBenchUIMain : public QMainWindow
   SuperKWindow  *superkwindow;
   DacWindow     *dacwindow;
   ComediWindow  *comedicounterwindow, *comedidacwindow;
+  RaspiWindow *raspidacwindow;
   QTabWidget    *tab;
   AcquisitionWidget *acquisitionwidget;
   AnalysisWidget    *analysiswidget;
   Dac      *dac;
   Comedi   *comedicounter, *comedidac;
+  RaspiDac *raspidac;
   Motor    *motor;
   SuperK   *superk;
   Camera   *cameraIEEE1394Mgr;
@@ -137,6 +148,7 @@ class OpticsBenchUIMain : public QMainWindow
   Camera   *cameraZylaMgr;
   Camera   *cameraRAPTORFALCONMgr;
   Camera   *cameraRAPTORNINOX640Mgr;
+  Camera   *cameraRaspiMgr;
   QVector<Camera*> cameraList;
   QVector<CameraWindow*> camerawindowList;
   

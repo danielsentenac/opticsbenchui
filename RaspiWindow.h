@@ -14,48 +14,53 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
+#ifndef RASPIWINDOW_H
+#define RASPIWINDOW_H
 
-#ifndef CAMERAWINDOW_H
-#define CAMERAWINDOW_H
+#include "RaspiDacControlWidget.h"
 
-#include <QMainWindow>
-#include "Camera.h"
-#include "CameraControlWidget.h"
-#include "CameraPropWidget.h"
-#include "VideoPlayer.h"
-#include "QsLog.h"
+#include <QtSql>
+#include <QtWidgets>
 
-class CameraWindow : public QMainWindow
+class RaspiWindow : public QMainWindow 
 {
   
   Q_OBJECT
     
     public:
   
-  CameraWindow( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window, Camera *_camera = 0, 
-		int cameraNumber = 0);
-  virtual ~CameraWindow();
-  
-  void update();
+  RaspiWindow( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window , RaspiDac *_raspi = 0);
+  virtual ~RaspiWindow();
+
+  RaspiDacControlWidget *raspiWidget;
 
  public slots:
-  void set480x320();
-  void set640x480();
-  void set1280x960();
+   void update();
+   void remove();
+   void load();
+   void setDbPath(QString _path);
 
- signals:
-  void setVideoPlayerResolution(int,int);
-  
  protected:
   void closeEvent(QCloseEvent *event);
     
  private:
 
   QMainWindow *parentWindow;
-  CameraControlWidget *cameraWidget;
-  CameraPropWidget *cameraPropWidget;
-  Camera *camera;
-  int cameraNumber;
-  VideoPlayer *player;
+  QString dbPath;
+  QLabel      *raspititle;
+  QSqlTableModel *raspitable;
+  QTableView *raspiview;
+  int raspirow;
+  QVBoxLayout*                vboxlayout;
+   
+  QPushButton*                updateButton;
+  QPushButton*                removeButton;
+  QPushButton*                loadButton;
+  
+  void InitConfig();
+  void InitRun();
+  QVector<QString>      *raspiList;
+  QDockWidget *dockWidget;
+  RaspiDac *raspi;
 };
-#endif // CAMERAWINDOW_H
+#endif // RASPIWINDOW_H

@@ -11,7 +11,7 @@
       the documentation at <a href="http://www.comedi.org"> comedi project web site</a>.
     </>
     <p>
-      <img src="./ComediWindow.jpg" >
+      <img src="./ComediWindow2.jpg" >
     </p>
     <p>
     <TABLE BORDER="1">
@@ -22,10 +22,10 @@
 	</TR>
 	<TR>
 	  <TD> settings </TD>
-	  <TD> The file descriptor address and the mode of operation,
-	   the number of subdevices, the subdevice identifier range value (min to max). 
+	  <TD> The file descriptor address and the mode of operation (DAC or COUNTER),
+	   the subdevice identifier, the number of outputs and the range value (MIN and MAX). 
            Here is an example of configuration setting line:<br>
-	    <li>address=/dev/comedi0 mode=COUNTER subdevices=4 min=2 max=6</li></TD>
+	    <li>address=/dev/comedi0 mode=DAC subdev=4 min=-10 max=10</li></TD>
 	</TR>
 	<TR>
 	  <TD> description </TD>

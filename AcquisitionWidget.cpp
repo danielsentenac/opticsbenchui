@@ -171,6 +171,10 @@ AcquisitionWidget::setComediDac(Comedi* _comedi){
   comedidac = _comedi;
 }
 void
+AcquisitionWidget::setRaspiDac(RaspiDac* _raspidac){
+  raspidac = _raspidac;
+}
+void
 AcquisitionWidget::setDelegates(){
   // Populate types
   QStringList *typeList = new QStringList();
@@ -179,6 +183,7 @@ AcquisitionWidget::setDelegates(){
   typeList->append("DAC");
   typeList->append("COMEDIDAC");
   typeList->append("COMEDICOUNTER");
+  typeList->append("RASPIDAC");
   typeList->append("SUPERK");
   typeList->append("CAMERA");
   typeList->append("SLM");
@@ -323,6 +328,7 @@ AcquisitionWidget::run(){
   acquisition->setDac(dac);
   acquisition->setComediCounter(comedicounter);
   acquisition->setComediDac(comedidac);
+  acquisition->setRaspiDac(raspidac);
   acquisition->setSequenceList(sequenceList);
   acquisition->start();
   QLOG_DEBUG ( ) << "AcquisitionWidget:: run started";

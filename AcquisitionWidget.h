@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ACQUISITIONWIDGET_H
 
 #include <QtSql>
-#include <QtGui>
+#include <QtWidgets>
 
 
 #include "QsLog.h"
@@ -40,6 +40,7 @@ class AcquisitionWidget : public QWidget
   void setDac(Dac* _dac);
   void setComediCounter(Comedi* _comedi);
   void setComediDac(Comedi* _comedi);
+  void setRaspiDac(RaspiDac* _raspi);
   void setDelegates();
 
  signals:
@@ -72,6 +73,7 @@ class AcquisitionWidget : public QWidget
   SuperK *superk;
   Dac    *dac;
   Comedi *comedicounter, *comedidac;
+  RaspiDac *raspidac;
   QLabel *splashLabel;
 
   QString   appDirPath, path;
