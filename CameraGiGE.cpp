@@ -852,7 +852,6 @@ CameraGiGE::acquireImage() {
      buffer32 = fliphorizontal(buffer32,height*width, width);
     }
   
-  image->loadFromData (buffer,width * height);
   
   // emit visualisation image
   QImage imagescaled = image->scaled(imageWidth,imageHeight);

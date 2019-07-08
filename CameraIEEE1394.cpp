@@ -853,7 +853,6 @@ CameraIEEE1394::acquireImage() {
      buffer32 = fliphorizontal(buffer32,height*width, width);
     }
     snapshotMutex->unlock();
-    image->loadFromData (buffer,width * height);
     // emit visualisation image
     QImage imagescaled = image->scaled(imageWidth,imageHeight);
     QImage imagergb32 =  imagescaled.convertToFormat(QImage::Format_ARGB32_Premultiplied);

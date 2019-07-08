@@ -1286,7 +1286,6 @@ CameraNeo::acquireImage() {
     snapshotMutex->unlock();
 
     // Format video image
-    image->loadFromData (buffer,width * height);
     QImage imagescaled = image->scaled(imageWidth,imageHeight);
     QImage imagergb32 =  imagescaled.convertToFormat(QImage::Format_ARGB32_Premultiplied);
     emit getImage(imagergb32);
