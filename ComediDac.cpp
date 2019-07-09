@@ -83,25 +83,45 @@ bool
 ComediDac::connectComedi(QString newcomedi) {
  
   int index;
+  QLOG_INFO () << "NEW COMEDI:" << newcomedi ;
   if (newcomedi == "") return false;
 
-  QLOG_INFO() << "ComediCounter::connectComedi> connecting DAC " << newcomedi;
-  QSqlDatabase db = QSqlDatabase::database(path);
+  QLOG_INFO() << "ComediDac::connectComedi> connecting DAC " << newcomedi;
+  QLOG_INFO() << "PATH:" << path;
+  QSqlDatabase db = connectDb(path);
   QSqlQuery query(db);
   QString description;
   QString comedivaluesString = "";
   QString comediSettings = "";
+
+  query.prepare("select settings,description,comedivalues from comedi_settings where name = ?");
+  query.addBindValue(newcomedi);
+  QLOG_INFO() << query.lastQuery();
+  query.exec();
+  QLOG_INFO ( ) << query.lastError().text();
+
+  while (query.next()) {
+    comediSettings = query.value(0).toString();
+    description = query.value(1).toString();
+    comedivaluesString = query.value(2).toString();
+  }
+  QLOG_INFO () << "comediSettings:" << comediSettings;
+
+  if (comediSettings == "") {
+    emit showWarning(tr("%1 does not exist").arg(newcomedi));
+    return false;
+  }
 
   //
   // Check if comedi already configured
   //
   for (int i = 0 ; i < comedi.size(); i++)  {
     if ( comedi.at(i) == newcomedi ) {
-      QLOG_DEBUG () << newcomedi << " already connected";
+      QLOG_INFO () << newcomedi << " already connected";
       if ( connectSuccess.at(i) == true )
         return true;
       else  {
-        QLOG_DEBUG () << newcomedi << " try to reconnect...";
+        QLOG_INFO () << newcomedi << " try to reconnect...";
         if (comedivalues.at(i)) delete comedivalues.at(i);
         comedivalues.remove(i);
         comediSettings.remove(i);
@@ -118,22 +138,6 @@ ComediDac::connectComedi(QString newcomedi) {
     }
   }
   // First time ComediDac connection
-  //
-  // Configure ComediDac
-  //
-  query.prepare("select settings,description,comedivalues from comedi_settings where name = ?");
-  query.addBindValue(newcomedi);
-  query.exec();
-
-  while (query.next()) {
-    comediSettings = query.value(0).toString();
-    description = query.value(1).toString();
-    comedivaluesString = query.value(2).toString();
-  }
-  if (comediSettings == "") {
-    emit showWarning(tr("%1 does not exist").arg(newcomedi));
-    return false;
-  }
 
   comedi.push_back(newcomedi);
   // Assign index

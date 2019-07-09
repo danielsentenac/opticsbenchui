@@ -87,7 +87,7 @@ ComediCounter::connectComedi(QString newcomedi) {
   if (newcomedi == "") return false;
   
   QLOG_INFO() << "ComediCounter::connectComedi> connecting COUNTER " << newcomedi;
-  QSqlDatabase db = QSqlDatabase::database(path);
+  QSqlDatabase db = connectDb(path);
   QSqlQuery query(db);
   QString description;
   QString comedivaluesString = "";
@@ -194,7 +194,7 @@ ComediCounter::connectComedi(QString newcomedi) {
 }
 bool
 ComediCounter::resetComedi(QString newcomedi) {
-  QSqlDatabase db = QSqlDatabase::database(path);
+  QSqlDatabase db = connectDb(path);
   QSqlQuery query(db);
   for (int index = 0 ; index < comedi.size(); index++)  {
     if ( comedi.at(index) == newcomedi && connectSuccess.at(index) == true) {
@@ -333,7 +333,7 @@ ComediCounter::updateDBValues(QString newcomedi) {
   for (int index = 0 ; index < comedi.size(); index++)  {
     if ( comedi.at(index) == newcomedi ) {
       QLOG_INFO () << " Update DB COUNTER values";
-      QSqlDatabase db = QSqlDatabase::database(path);
+      QSqlDatabase db = connectDb(path);
       QSqlQuery query(db);
       // Set new values in Db
       QString comedivaluesString = "";

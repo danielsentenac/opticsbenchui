@@ -166,6 +166,7 @@ CameraZyla::CameraZyla()
   exposure = 0.01;
   frequency = 0.;
   modeCheckEnabled = false;
+  optimizeAcquisition = false;
 }
 
 CameraZyla::~CameraZyla()
@@ -253,7 +254,7 @@ CameraZyla::setCamera(void* _camera, int _id)
  int aoi_num = 0;
  int aoi_min = 0, aoi_max = AOI_NUMBER - 1;
  if (aoi_top !=  1)
-  QLOG_WARN () << "ameraZyla::setCamera> Wrong AOI type !";
+  QLOG_WARN () << "CameraZyla::setCamera> Wrong AOI type !";
  featureIdList.push_back(++featureCnt);
  featureNameList.push_back(zyla_features[featureCnt]);
  featureValueList.push_back(aoi_num);
@@ -1311,61 +1312,62 @@ CameraZyla::acquireImage() {
   if ( i_err == AT_SUCCESS && BufSize == BufferSize ) {
     // Lock the acquisition
     snapshotMutex->lock();
-    // calculate min,max
-    AT_64 i64_max = 0;
-    AT_64 i64_min = 65535;
     ushort *tmpBuf;
     uchar *tmpBuf_c;
     tmpBuf_c = pBuf;
     tmpBuf = reinterpret_cast<ushort*>(pBuf);
-    // Treat Mono12Packed case
-    if (pixel_encoding == B12P) {
-      for (AT_64 ii = 0; ii < BufferSize; ii+=3) {
-        AT_64 ui_current = EXTRACTLOWPACKED(tmpBuf_c);
-        AT_64 ui_currenth = EXTRACTHIGHPACKED(tmpBuf_c);
-        if (ui_current < i64_min) {
-          i64_min = ui_current;
+    if (optimizeAcquisition == false) {
+      // calculate min,max
+      AT_64 i64_max = 0;
+      AT_64 i64_min = 65535;
+      // Treat Mono12Packed case
+      if (pixel_encoding == B12P) {
+        for (AT_64 ii = 0; ii < BufferSize; ii+=3) {
+          AT_64 ui_current = EXTRACTLOWPACKED(tmpBuf_c);
+          AT_64 ui_currenth = EXTRACTHIGHPACKED(tmpBuf_c);
+          if (ui_current < i64_min) {
+            i64_min = ui_current;
+          }
+          else if (ui_current > i64_max) {
+            i64_max = ui_current;
+          }
+          if (ui_currenth < i64_min) {
+            i64_min = ui_currenth;
+          }
+          else if (ui_currenth > i64_max) {
+            i64_max = ui_currenth;
+          }
+          tmpBuf_c+=3;
         }
-        else if (ui_current > i64_max) {
-          i64_max = ui_current;
-        }
-        if (ui_currenth < i64_min) {
-          i64_min = ui_currenth;
-        }
-        else if (ui_currenth > i64_max) {
-          i64_max = ui_currenth;
-        }
-        tmpBuf_c+=3;
       }
+      // Treat Mono12 case
+      else if (pixel_encoding == B12) {
+        for (AT_64 ii = 0; ii < height * width; ii++) {
+          ushort ui_current = *(tmpBuf++) & 0x07FF;
+          if (ui_current < i64_min) {
+            i64_min = ui_current;
+          }
+          else if (ui_current > i64_max) {
+            i64_max = ui_current;
+          }
+        }
+      }
+      // Treat Mono16 case
+      else if (pixel_encoding == B16) {
+        for (AT_64 ii = 0; ii < height * width; ii++) {
+          ushort ui_current = *(tmpBuf++);
+          if (ui_current < i64_min) {
+            i64_min = ui_current;
+          }
+          else if (ui_current > i64_max) {
+            i64_max = ui_current;
+          }
+        }
+      }
+      // set the raw precision min and max
+      min = (int) i64_min;
+      max = (int) i64_max;
     }
-    // Treat Mono12 case
-    else if (pixel_encoding == B12) {
-     for (AT_64 ii = 0; ii < height * width; ii++) {
-      ushort ui_current = *(tmpBuf++) & 0x07FF;
-      if (ui_current < i64_min) {
-        i64_min = ui_current;
-      }
-      else if (ui_current > i64_max) {
-        i64_max = ui_current;
-      }
-     }
-    }
-    // Treat Mono16 case
-    else if (pixel_encoding == B16) {
-     for (AT_64 ii = 0; ii < height * width; ii++) {
-      ushort ui_current = *(tmpBuf++);
-      if (ui_current < i64_min) {
-        i64_min = ui_current;
-      }
-      else if (ui_current > i64_max) {
-        i64_max = ui_current;
-      }
-     }
-    }
-    // set the raw precision min and max
-    min = (int) i64_min;
-    max = (int) i64_max;
-
     // Convert current buffer to 8-bit buffer (0 - 255 range) & buffer32 (32-bit)
     tmpBuf_c = pBuf;
     tmpBuf = reinterpret_cast<ushort*>(pBuf);
@@ -1429,11 +1431,13 @@ CameraZyla::acquireImage() {
     snapshotMutex->unlock();
 
     // Format video image
-    QImage imagescaled = image->scaled(imageWidth,imageHeight);
-    QImage imagergb32 =  imagescaled.convertToFormat(QImage::Format_ARGB32_Premultiplied);
-    emit getImage(imagergb32);
-    emit updateMin(min);
-    emit updateMax(max);
+    if (optimizeAcquisition == false) {
+       QImage imagescaled = image->scaled(imageWidth,imageHeight);
+       QImage imagergb32 =  imagescaled.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+       emit getImage(imagergb32);
+       emit updateMin(min);
+       emit updateMax(max);
+    }
     /*-----------------------------------------------------------------------
     * release frame
     *-----------------------------------------------------------------------*/

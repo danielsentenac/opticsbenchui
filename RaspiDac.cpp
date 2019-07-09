@@ -91,7 +91,7 @@ RaspiDac::connectRaspi(QString newraspi) {
   if (newraspi == "") return false;
 
   QLOG_INFO() << "RaspiCounter::connectRaspi> connecting DAC " << newraspi;
-  QSqlDatabase db = QSqlDatabase::database(path);
+  QSqlDatabase db = connectDb(path);
   QSqlQuery query(db);
   QString description;
   QString raspivaluesString = "";
@@ -559,7 +559,7 @@ RaspiDac::updateDBValues(QString newraspi) {
   for (int index = 0 ; index < raspi.size(); index++)  {
     if ( raspi.at(index) == newraspi ) {
       QLOG_DEBUG () << " Update DB RASPI DAC Values";
-      QSqlDatabase db = QSqlDatabase::database(path);
+      QSqlDatabase db = connectDb(path);
       QSqlQuery query(db);
       // Set new values in Db
       QString raspivaluesString = "";

@@ -65,6 +65,15 @@ class SuperK : public QObject
 
   // function : create connexion to the database
   void dbConnexion();
+  QSqlDatabase connectDb(QString path) {
+     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
+     QLOG_INFO ( ) << "ComediDac::dbConnexion> Db path : " << path;
+     db.setDatabaseName(path);
+     if ( !db.open() ) {
+       QLOG_WARN ( ) << db.lastError().text();
+     }
+     return db;
+  }
   QVector<ACCom*>   driverCom;
   QVector<DriverSuperK*>  driverSuperK;
   QVector<QString>  driverSettings;

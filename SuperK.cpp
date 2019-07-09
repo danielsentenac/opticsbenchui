@@ -80,8 +80,8 @@ void SuperK::setDbPath(QString _path) {
 void
 SuperK::connectSuperK(QString newdriver) 
 {  
-  QSqlQuery query(QSqlDatabase::database(path));
-  
+  QSqlDatabase db = connectDb(path);
+  QSqlQuery query(db);
   if (newdriver == "") return;
   //
   // Get driver data from Db
@@ -189,7 +189,7 @@ SuperK::connectSuperK(QString newdriver)
     operationcomplete.push_back(0);
   
     // Save new data in Db
-    QSqlQuery query(QSqlDatabase::database(path));
+    QSqlQuery query(db);
     query.prepare("update superk_driver set data = ? "
                         "where name = ?");
     query.addBindValue(drvdata);
@@ -346,7 +346,8 @@ SuperK::operationComplete()
         emit getLwp(lwp);
 	if (success > 0 ) {
 	  // Save last data in Db
-	  QSqlQuery query(QSqlDatabase::database(path));
+          QSqlDatabase db = connectDb(path);
+	  QSqlQuery query(db);
 
 	  query.prepare("update superk_driver set data = ? "
 			"where name = ?");

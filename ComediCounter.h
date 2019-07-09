@@ -56,7 +56,15 @@ class ComediCounter : public Comedi
   long getTime(comedi_t *device);
 
   void dbConnexion();
-
+  QSqlDatabase connectDb(QString path) {
+     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
+     QLOG_INFO ( ) << "ComediDac::dbConnexion> Db path : " << path;
+     db.setDatabaseName(path);
+     if ( !db.open() ) {
+       QLOG_WARN ( ) << db.lastError().text();
+     }
+     return db;
+  }
   QVector<comedi_t*>  device;          /**< The comedi device file descriptor*/
   QVector<QString> comediSettings;
   QVector<QString> comedi;

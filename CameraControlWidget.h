@@ -57,6 +57,7 @@ class CameraControlWidget : public QWidget
   void setModeValue(int);
   void updateFeatures();
   void snapShot();
+  void optimizeAcquisition();
 
  private:
   Camera *camera;
@@ -64,6 +65,8 @@ class CameraControlWidget : public QWidget
   QVector<QLabel*> valueMaxList, valueMinList;
   QVector<QLineEdit*> sliderValueList; 
   QVector<QCheckBox*> modeCheckBoxList;
+  QCheckBox* optimizeAcquisitionBox;
+  QLabel  *optimizeAcquisitionLabel;
   QPushButton *snapshotButton;
   QLabel  *hflipLabel, *vflipLabel;
   QCheckBox *hflipBox, *vflipBox;

@@ -89,7 +89,8 @@ Motor::connectMotor(QString newactuator) {
   
   bool driverexist = false;
   bool comexist = false;
-  QSqlQuery query(QSqlDatabase::database(path));
+  QSqlDatabase db = connectDb(path);
+  QSqlQuery query(db);
   
   if (newactuator == "") return;
   
@@ -349,7 +350,8 @@ Motor::operationComplete() {
           positionQString.setNum (position.at(i), 'f',3);
           QLOG_DEBUG ( ) << "OperationComplete " << success << " position " << position.at(i);
           emit getPosition(position.at(i));
-	  QSqlQuery query(QSqlDatabase::database(path));
+          QSqlDatabase db = connectDb(path);
+	  QSqlQuery query(db);
 	  query.prepare("update motor_actuator set position = ? "
 			"where name = ?");
 	  query.addBindValue(positionQString);

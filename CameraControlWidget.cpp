@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define EXTRACTHIGHPACKED(SourcePtr) ( (SourcePtr[2] << 4) + (SourcePtr[1] >> 4) )
 
 #define NUM_DIGITS 2
-#define SLIDER_FACTOR 1.0
+#define SLIDER_FACTOR 1000
 
 CameraControlWidget::CameraControlWidget(Camera *_camera)
  
@@ -118,6 +118,12 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   layout->addWidget(maxValue,1,1000+1,1,1,Qt::AlignTop | Qt::AlignCenter);
   connect(camera,SIGNAL(updateMax(int)),maxValue,SLOT(display(int)),Qt::UniqueConnection);
 
+  optimizeAcquisitionLabel = new QLabel("Optimize:");
+  optimizeAcquisitionBox = new QCheckBox(); 
+  connect( optimizeAcquisitionBox, SIGNAL(stateChanged(int)), this, SLOT(optimizeAcquisition()),Qt::UniqueConnection);
+  layout->addWidget(optimizeAcquisitionLabel,2,1000,1,1,Qt::AlignTop | Qt::AlignCenter);
+  layout->addWidget(optimizeAcquisitionBox,2,1000+1,1,1,Qt::AlignTop | Qt::AlignCenter);
+
   snapshotButton = new QPushButton("Snapshot",this);
   snapshotButton->setFixedHeight(30);
   snapshotButton->setFixedWidth(80);
@@ -212,6 +218,13 @@ CameraControlWidget::snapShot() {
   // Close file
   H5Fclose(file_id);
 }
+void 
+CameraControlWidget::optimizeAcquisition() {
+  if (camera->optimizeAcquisition == false)
+    camera->optimizeAcquisition = true;
+  else
+    camera->optimizeAcquisition = false;
+}
 void
 CameraControlWidget::setFeatureValue(int position) {
   
@@ -224,6 +237,10 @@ CameraControlWidget::setFeatureValue(int position) {
     value = (double) (featureSlider->value()) / SLIDER_FACTOR; 
   else
     value = (double) (featureSlider->value());
+  QLOG_INFO() << "CameraControlWidget::setFeatureValue> Request "
+              << camera->featureNameList.at(position) << " value "
+              << QString::number(value);
+
   emit setFeature(camera->featureIdList.at(position),value);
 }
 void

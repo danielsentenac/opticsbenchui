@@ -141,7 +141,7 @@ DacAdvantech::connectDac(QString newdac) {
   if (newdac == "") return false;
   
   char err_msg[100];
-  QSqlDatabase db = QSqlDatabase::database(path);
+  QSqlDatabase db = connectDb(path);
   QSqlQuery query(db);
   int status;
   QString description;
@@ -334,7 +334,7 @@ DacAdvantech::connectDac(QString newdac) {
 }
 bool
 DacAdvantech::resetDac(QString newdac) {
-  QSqlDatabase db = QSqlDatabase::database(path);
+  QSqlDatabase db = connectDb(path);
   QSqlQuery query(db);
   int status;
   char err_msg[100];
@@ -558,7 +558,7 @@ DacAdvantech::updateDBValues(QString newdac) {
   for (int index = 0 ; index < dac.size(); index++)  {
     if ( dac.at(index) == newdac ) {
       QLOG_DEBUG () << " Update DB ADVANTECHDAC Values";
-      QSqlDatabase db = QSqlDatabase::database(path);
+      QSqlDatabase db = connectDb(path);
       QSqlQuery query(db);
       // Set new values in Db
       QString dacvaluesString = "";

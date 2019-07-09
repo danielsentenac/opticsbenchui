@@ -324,6 +324,7 @@ class Camera : public QThread
   QWaitCondition *acqstart, *acqend;
   bool has_started;  
   bool suspend;
+  bool optimizeAcquisition;
   unsigned int width;
   unsigned int height;
   unsigned int video_mode;
