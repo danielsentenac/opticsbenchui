@@ -142,6 +142,7 @@ CameraNeo::CameraNeo()
   snapshot = NULL;
   buffer32 = NULL;
   snapshot32 = NULL;
+  snapshot16 = NULL;
   suspend = true;
   has_started = false;
   mutex = new QMutex(QMutex::NonRecursive);
@@ -393,6 +394,11 @@ CameraNeo::setCamera(void* _camera, int _id)
              << featureNameList.at(featureCnt);
  QLOG_INFO() << "CameraNeo::setCamera> value " << neo_electronicshuttering_modes[acq_num];
 
+ // Overlap Readout mode
+ AT_BOOL  overlap = true;
+ i_err = AT_SetBool(*camera, L"Overlap", overlap);
+ i_err = AT_GetBool(*camera, L"Overlap", &overlap);
+
  // Spurious Mode Filter
  AT_BOOL  spurmode;
  int spurmode_min = 0, spurmode_max = 1;
@@ -516,9 +522,22 @@ CameraNeo::getSnapshot() {
   memcpy(snapshot,buffer, width * height * sizeof(uchar));
   snapShotMin = min;
   snapShotMax = max;
+  snapShotAvg = avg;
   snapshotMutex->unlock();
   return snapshot;
 }
+ushort*
+CameraZyla::getSnapshot16() {
+  snapshotMutex->lock();
+  QLOG_DEBUG() << "CameraZyla::getSnapshot> Image pixel size " << width * height;
+  memcpy(snapshot16,buffer16, width * height * sizeof(ushort));
+  snapShotMin = min;
+  snapShotMax = max;
+  snapShotAvg = avg;
+  snapshotMutex->unlock();
+  return snapshot16;
+}
+
 int*
 CameraNeo::getSnapshot32() {
   snapshotMutex->lock();
@@ -526,6 +545,7 @@ CameraNeo::getSnapshot32() {
   memcpy(snapshot32,buffer32, width * height * sizeof(int));
   snapShotMin = min;
   snapShotMax = max;
+  snapShotAvg = avg;
   snapshotMutex->unlock();
   return snapshot32;
 }
@@ -696,9 +716,11 @@ CameraNeo::setFeature(int feature, double value) {
    if (buffer) { free(buffer); buffer = NULL;}
    if (snapshot) { free(snapshot); snapshot = NULL;}
    if (buffer32) { free(buffer32); buffer32 = NULL;}
+   if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
    if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
    buffer = (uchar*)malloc( sizeof(uchar) * width * height);
    snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
+   snapshot16 = (ushort*)malloc( sizeof(ushort) * width * height);
    buffer32 = (int*)malloc( sizeof(int) * width * height);
    snapshot32 = (int*)malloc( sizeof(int) * width * height);
    delete image;
@@ -1094,6 +1116,7 @@ CameraNeo::connectCamera() {
    *-----------------------------------------------------------------------*/
   buffer = (uchar*)malloc( sizeof(uchar) * width * height);
   snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
+  snapshot16 = (ushort*)malloc( sizeof(ushort) * width * height);
   buffer32 = (int*)malloc( sizeof(int) * width * height);
   snapshot32 = (int*)malloc( sizeof(int) * width * height);
 
@@ -1139,6 +1162,7 @@ CameraNeo::cleanup_and_exit()
   if (buffer) { free(buffer); buffer = NULL;}
   if (snapshot) { free(snapshot); snapshot = NULL;}
   if (buffer32) { free(buffer32); buffer32 = NULL;}
+  if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
   if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
   if (image) delete image;
   return;
@@ -1171,6 +1195,7 @@ CameraNeo::acquireImage() {
     // calculate min,max
     AT_64 i64_max = 0;
     AT_64 i64_min = 65535;
+    AT_64 i64_avg = 0;
     ushort *tmpBuf;
     uchar *tmpBuf_c;
     tmpBuf_c = pBuf;
@@ -1192,6 +1217,8 @@ CameraNeo::acquireImage() {
         else if (ui_currenth > i64_max) {
           i64_max = ui_currenth;
         }
+        i64_avg+=ui_current;
+        i64_avg+=ui_currenth;
         tmpBuf_c+=3;
       }
     }
@@ -1205,6 +1232,7 @@ CameraNeo::acquireImage() {
       else if (ui_current > i64_max) {
         i64_max = ui_current;
       }
+      i64_avg+=ui_current;
      }
     }
     // Treat Mono16 case
@@ -1217,11 +1245,13 @@ CameraNeo::acquireImage() {
       else if (ui_current > i64_max) {
         i64_max = ui_current;
       }
+      i64_avg+=ui_current;
      }
     }
     // set the best precision min and max
     min = (int) i64_min;
     max = (int) i64_max;
+    avg = (int) (i64_avg / (width * height));
 
     // Convert current buffer to 8-bit buffer (0 - 255 range) & buffer32 (32-bit)
     tmpBuf_c = pBuf;
@@ -1264,6 +1294,7 @@ CameraNeo::acquireImage() {
     }
     // Treat Mono16 case
     else if (pixel_encoding == B16) {
+     buffer16 = tmpBuf;
      for (AT_64 i = 0; i < height * width; i++) {
       ushort ui_current = *(tmpBuf++);
       buffer32[i] = ui_current;
@@ -1291,6 +1322,7 @@ CameraNeo::acquireImage() {
     emit getImage(imagergb32);
     emit updateMin(min);
     emit updateMax(max);
+    emit updateAvg(avg);
     /*-----------------------------------------------------------------------
     * release frame
     *-----------------------------------------------------------------------*/

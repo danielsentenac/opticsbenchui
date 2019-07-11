@@ -33,7 +33,7 @@ char *zyla_features[]  = {
                         (char*)"Exposure",
                         (char*)"ROI",
                         (char*)"Gain",
-//                        (char*)"Frame Rate",
+ //                       (char*)"Frame Rate",
                         (char*)"Readout Rate",
 			(char*)"Trigger",
                         (char*)"Encoding",
@@ -154,6 +154,8 @@ CameraZyla::CameraZyla()
   buffer = NULL;
   snapshot = NULL;
   buffer32 = NULL;
+  //buffer16 = NULL;
+  snapshot16 = NULL;
   snapshot32 = NULL;
   suspend = true;
   has_started = false;
@@ -233,21 +235,21 @@ CameraZyla::setCamera(void* _camera, int _id)
  i_err = AT_GetIntMax(*camera, L"AOIWidth", &aoiwidth_max);
  aoi_width = aoiwidth_max;
  
- i_err = AT_SetInt(*camera, L"AOIWidth", (AT_64)zyla_aoi_settings[0][0]);
+ i_err = AT_SetInt(*camera, L"AOIWidth", (AT_64)zyla_aoi_settings[4][0]);
  errorOk(i_err, "AT_SetInt 'AOIWidth'");
  i_err = AT_GetInt(*camera, L"AOIWidth", &aoi_width);
  QLOG_INFO() << "CameraZyla::setCamera> SET AOI WIDTH = " << aoi_width;
  
  if (pixel_encoding == B12P)
-    i_err = AT_SetInt(*camera, L"AOILeft", (AT_64)zyla_aoi_settings_packed[0][1]);
+    i_err = AT_SetInt(*camera, L"AOILeft", (AT_64)zyla_aoi_settings_packed[4][1]);
  else
-  i_err = AT_SetInt(*camera, L"AOILeft", (AT_64)zyla_aoi_settings[0][1]);
+  i_err = AT_SetInt(*camera, L"AOILeft", (AT_64)zyla_aoi_settings[4][1]);
  errorOk(i_err, "AT_SetInt 'AOILeft'");
- i_err = AT_SetInt(*camera, L"AOIHeight", (AT_64)zyla_aoi_settings[0][2]);
+ i_err = AT_SetInt(*camera, L"AOIHeight", (AT_64)zyla_aoi_settings[4][2]);
  errorOk(i_err, "AT_SetInt 'AOIHeight'");
  i_err = AT_GetInt(*camera, L"AOIHeight", &aoi_height);
  QLOG_INFO() << "CameraZyla::setCamera> SET AOI HEIGHT = " << aoi_height;
- i_err = AT_SetInt(*camera, L"AOITop", (AT_64)zyla_aoi_settings[0][3]);
+ i_err = AT_SetInt(*camera, L"AOITop", (AT_64)zyla_aoi_settings[4][3]);
  errorOk(i_err, "AT_SetInt 'AOITop'");
  i_err = AT_GetInt(*camera, L"AOITop", &aoi_top);
  
@@ -285,7 +287,7 @@ CameraZyla::setCamera(void* _camera, int _id)
  QLOG_INFO() << "CameraZyla::setCamera> value " << gain_num << "(min "
              << gain_min << " max " << gain_max  << ")";
 
- /* Frame Rate feature
+ /*Frame Rate feature
  double frate_min, frate_max;
  featureIdList.push_back(++featureCnt);
  featureNameList.push_back(zyla_features[featureCnt]);
@@ -320,6 +322,8 @@ CameraZyla::setCamera(void* _camera, int _id)
  featureNameList.push_back(zyla_features[featureCnt]);
  featureMinList.push_back(rrate_min);
  featureMaxList.push_back(rrate_max);
+ rrate = 1;
+ i_err = AT_SetEnumIndex(*camera, L"PixelReadoutRate", rrate);
  i_err = AT_GetEnumIndex(*camera, L"PixelReadoutRate", &rrate);
  errorOk(i_err, "AT_GetEnumIndex 'PixelReadoutRate'");
  featureValueList.push_back(rrate);
@@ -396,6 +400,13 @@ CameraZyla::setCamera(void* _camera, int _id)
  QLOG_INFO() << "CameraNeo::setCamera> get electronic shutter mode feature "
              << featureNameList.at(featureCnt);
  QLOG_INFO() << "CameraNeo::setCamera> value " << zyla_electronicshuttering_modes[acq_num];
+
+ // Overlap Readout mode
+ AT_BOOL  overlap = true;
+ i_err = AT_SetBool(*camera, L"Overlap", overlap);
+ i_err = AT_GetBool(*camera, L"Overlap", &overlap);
+
+ QLOG_INFO() << "CameraNeo::setCamera>  Overlap readout mode : " << overlap;
 
  // Spurious Mode Filter
  AT_BOOL  spurmode;
@@ -543,9 +554,22 @@ CameraZyla::getSnapshot() {
   memcpy(snapshot,buffer, width * height * sizeof(uchar));
   snapShotMin = min;
   snapShotMax = max;
+  snapShotAvg = avg;
   snapshotMutex->unlock();
   return snapshot;
 }
+ushort*
+CameraZyla::getSnapshot16() {
+  snapshotMutex->lock();
+  QLOG_DEBUG() << "CameraZyla::getSnapshot> Image pixel size " << width * height;
+  memcpy(snapshot16,buffer16, width * height * sizeof(ushort));
+  snapShotMin = min;
+  snapShotMax = max;
+  snapShotAvg = avg;
+  snapshotMutex->unlock();
+  return snapshot16;
+}
+
 int*
 CameraZyla::getSnapshot32() {
   snapshotMutex->lock();
@@ -553,6 +577,7 @@ CameraZyla::getSnapshot32() {
   memcpy(snapshot32,buffer32, width * height * sizeof(int));
   snapShotMin = min;
   snapShotMax = max;
+  snapShotAvg = avg;
   snapshotMutex->unlock();
   return snapshot32;
 }
@@ -645,12 +670,12 @@ CameraZyla::setFeature(int feature, double value) {
    i_err = AT_SetEnumIndex(*camera, L"SimplePreAmpGainControl", (int)value);
    errorOk(i_err, "AT_SetEnumIndex 'AOISimplePreAmpGainControl'");
    break;
- /*  case 3:
+   /*case 3:
    QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[3])
                << " value " << value << " Hz";
    i_err = AT_SetFloat(*camera, L"FrameRate", value );
    errorOk(i_err, "AT_SetFloat 'FrameRate'");
-   break;*/
+   break;
    case 3:
    QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[3])
                << " value " << QString(zyla_readout_rates[(int)value]);
@@ -659,6 +684,7 @@ CameraZyla::setFeature(int feature, double value) {
    i_err = AT_GetEnumIndex(*camera, L"PixelReadoutRate", &rrate);
    errorOk(i_err, "AT_GetEnumIndex 'PixelReadoutRate'");
    break;
+   */
    case 4:
    QLOG_INFO() << "CameraZyla::setFeature> Update feature " << QString(zyla_features[4])
                << " value " << QString(zyla_trigger_modes[(int)value]);
@@ -701,7 +727,7 @@ CameraZyla::setFeature(int feature, double value) {
    }
    errorOk(i_err, "AT_SetEnumString 'ElectronicShutteringMode'");
    break;
-      case 7:
+   case 7:
    QLOG_INFO() << "CameraNeo::setFeature> Update feature " << QString(zyla_features[7])
                << " value " << QString(zyla_spurious_modes[(int)value]);
    spurmode = (int) value;
@@ -724,10 +750,14 @@ CameraZyla::setFeature(int feature, double value) {
    QLOG_INFO () << "CameraZyla::setFeature> width " << width << " height " << height;
    if (buffer) { free(buffer); buffer = NULL;}
    if (snapshot) { free(snapshot); snapshot = NULL;}
+   //if (buffer16) { free(buffer16); buffer16 = NULL;}
    if (buffer32) { free(buffer32); buffer32 = NULL;}
+   if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
    if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
    buffer = (uchar*)malloc( sizeof(uchar) * width * height);
    snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
+   //buffer16 = (ushort*)malloc( sizeof(ushort) * width * height);
+   snapshot16 = (ushort*)malloc( sizeof(ushort) * width * height);
    buffer32 = (int*)malloc( sizeof(int) * width * height);
    snapshot32 = (int*)malloc( sizeof(int) * width * height);
    delete image;
@@ -1224,7 +1254,7 @@ CameraZyla::connectCamera() {
      QLOG_INFO () << "CameraZyla::connectCamera> TriggerMode " << i 
                   << " " << QString(citem);
   }
-  i_err = AT_SetEnumString(*camera, L"TriggerMode", L"Software");
+  i_err = AT_SetEnumString(*camera, L"TriggerMode", L"Internal");
   errorOk(i_err, "AT_SetEnumString 'TriggerMode'");
   QLOG_INFO () << "CameraZyla::connectCamera> Set TriggerMode Internal";
   
@@ -1238,6 +1268,8 @@ CameraZyla::connectCamera() {
    *-----------------------------------------------------------------------*/
   buffer = (uchar*)malloc( sizeof(uchar) * width * height);
   snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
+  //buffer16 = (ushort*)malloc( sizeof(ushort) * width * height);
+  snapshot16 = (ushort*)malloc( sizeof(ushort) * width * height);
   buffer32 = (int*)malloc( sizeof(int) * width * height);
   snapshot32 = (int*)malloc( sizeof(int) * width * height);
 
@@ -1282,7 +1314,9 @@ CameraZyla::cleanup_and_exit()
   errorOk(i_err, "AT_FinaliseLibrary");
   if (buffer) { free(buffer); buffer = NULL;}
   if (snapshot) { free(snapshot); snapshot = NULL;}
+  //if (buffer16) { free(buffer16); buffer16 = NULL;}
   if (buffer32) { free(buffer32); buffer32 = NULL;}
+  if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
   if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
   if (image) delete image;
   return;
@@ -1320,6 +1354,7 @@ CameraZyla::acquireImage() {
       // calculate min,max
       AT_64 i64_max = 0;
       AT_64 i64_min = 65535;
+      AT_64 i64_avg = 0;
       // Treat Mono12Packed case
       if (pixel_encoding == B12P) {
         for (AT_64 ii = 0; ii < BufferSize; ii+=3) {
@@ -1337,6 +1372,8 @@ CameraZyla::acquireImage() {
           else if (ui_currenth > i64_max) {
             i64_max = ui_currenth;
           }
+          i64_avg+=ui_current;
+          i64_avg+=ui_currenth;
           tmpBuf_c+=3;
         }
       }
@@ -1350,6 +1387,7 @@ CameraZyla::acquireImage() {
           else if (ui_current > i64_max) {
             i64_max = ui_current;
           }
+          i64_avg+=ui_current;
         }
       }
       // Treat Mono16 case
@@ -1362,11 +1400,18 @@ CameraZyla::acquireImage() {
           else if (ui_current > i64_max) {
             i64_max = ui_current;
           }
+          i64_avg+=ui_current;
         }
       }
-      // set the raw precision min and max
+      // set the raw precision min and max and avg
       min = (int) i64_min;
       max = (int) i64_max;
+      avg = (int) (i64_avg / (width * height));
+    }
+    else {
+      min = 0;
+      max = 0;
+      avg = 0;
     }
     // Convert current buffer to 8-bit buffer (0 - 255 range) & buffer32 (32-bit)
     tmpBuf_c = pBuf;
@@ -1374,6 +1419,8 @@ CameraZyla::acquireImage() {
     
     // Reset video image buffer (8-bit)
     memset(buffer,0,height * width * sizeof(uchar));
+    // Reset 16-bit image buffer
+    //memset(buffer16,0,height * width * sizeof(ushort));
     // Reset 32-bit image buffer 
     memset(buffer32,0,height * width * sizeof(int));
 
@@ -1409,24 +1456,32 @@ CameraZyla::acquireImage() {
     }
     // Treat Mono16 case
     else if (pixel_encoding == B16) {
-     for (AT_64 i = 0; i < height * width; i++) {
-      ushort ui_current = *(tmpBuf++);
-      buffer32[i] = ui_current;
-      if ( (max - min) != 0 )
-       buffer[i] = (uchar) (( 255 * (ui_current - min) ) / (max - min));
-      else
-       buffer[i] = 255;
-     }
+      buffer16 = tmpBuf;
+      if (optimizeAcquisition == false) {
+        for (AT_64 i = 0; i < height * width; i++) {
+          ushort ui_current = *(tmpBuf++);
+          buffer32[i] = ui_current;
+          //buffer16[i] = ui_current;
+          if ( (max - min) != 0 )
+            buffer[i] = (uchar) (( 255 * (ui_current - min) ) / (max - min));
+          else
+            buffer[i] = 255;
+        }
+      }
     }
     if (vflip) {
       buffer = reversebytes(buffer,height * width);
       buffer = fliphorizontal(buffer,height * width, width);
       buffer32 = reversebytes(buffer32,height * width);
       buffer32 = fliphorizontal(buffer32,height * width, width);
+      buffer16 = reversebytes(buffer16,height * width);
+      buffer16 = fliphorizontal(buffer16,height * width, width);
     }
     if (!hflip) {
      buffer = fliphorizontal(buffer,height*width, width);
      buffer32 = fliphorizontal(buffer32,height*width, width);
+     buffer16 = fliphorizontal(buffer16,height*width, width);
+
     }
     snapshotMutex->unlock();
 
@@ -1437,6 +1492,7 @@ CameraZyla::acquireImage() {
        emit getImage(imagergb32);
        emit updateMin(min);
        emit updateMax(max);
+       emit updateAvg(avg);
     }
     /*-----------------------------------------------------------------------
     * release frame
@@ -1444,7 +1500,7 @@ CameraZyla::acquireImage() {
     FrameNumber++;
     //Re-queue the buffers
     AT_QueueBuffer(*camera, reinterpret_cast<AT_U8*>(AlignedBuffers[FrameNumber%NUMBER_OF_BUFFERS]), 
- 		   BufferSize);
+    		   BufferSize);
     QLOG_DEBUG() << "CameraZyla::acquireImage> frame number " << FrameNumber 
                 << " MIN " << min << " MAX " << max;
   }
@@ -1472,10 +1528,14 @@ CameraZyla::acquireImage() {
    QLOG_INFO () << "CameraZyla::acquireImage> width " << width << " height " << height;
    if (buffer) { free(buffer); buffer = NULL;}
    if (snapshot) { free(snapshot); snapshot = NULL;}
+   //if (buffer16) { free(buffer16); buffer16 = NULL;}
+   if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
    if (buffer32) { free(buffer32); buffer32 = NULL;}
    if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
    buffer = (uchar*)malloc( sizeof(uchar) * width * height);
    snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
+  // buffer16 = (ushort*)malloc( sizeof(ushort) * width * height);
+   snapshot16 = (ushort*)malloc( sizeof(ushort) * width * height);
    buffer32 = (int*)malloc( sizeof(int) * width * height);
    snapshot32 = (int*)malloc( sizeof(int) * width * height);
 

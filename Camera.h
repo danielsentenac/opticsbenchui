@@ -318,6 +318,7 @@ class Camera : public QThread
   virtual void getFeatures() = 0;
   virtual void getProps() = 0;
   virtual uchar *getSnapshot() = 0;
+  virtual ushort *getSnapshot16() = 0;
   virtual int *getSnapshot32() = 0;
  
   QMutex *mutex, *snapshotMutex, *acquireMutex;
@@ -330,9 +331,10 @@ class Camera : public QThread
   unsigned int video_mode;
   unsigned int pixel_encoding;
   uchar *buffer,*snapshot;
+  ushort *buffer16,*snapshot16;
   int *buffer32, *snapshot32;
   int BufSize;
-  int snapShotMin, snapShotMax, min, max;
+  int snapShotMin, snapShotMax, snapShotAvg, min, max, avg;
   int camera_err;                     /* Error flag */
   int num;                            /* Camera total number for camera manager*/
   int id;                             /* Camera position id in list for camera manager*/
@@ -361,7 +363,7 @@ class Camera : public QThread
   void  updateProps();
   void  updateMin(int min);
   void  updateMax(int max);
-  
+  void  updateAvg(int avg);
 
   public slots:
   virtual void setImageSize(const int &_imageWidth, const int &_imageHeight) = 0;
@@ -378,6 +380,18 @@ class Camera : public QThread
      uchar swap;
      uchar *lo = buffer;
      uchar *hi = buffer + buffersize - 1;
+     while ( lo < hi ) {
+          swap = *lo;
+          *lo++ = *hi;
+          *hi-- = swap;
+     }
+     return buffer;
+  }
+  virtual ushort* reversebytes(ushort *buffer, int buffersize) {
+     if (buffer == NULL) return NULL;
+     ushort swap;
+     ushort *lo = buffer;
+     ushort *hi = buffer + buffersize - 1;
      while ( lo < hi ) {
           swap = *lo;
           *lo++ = *hi;
@@ -406,6 +420,23 @@ class Camera : public QThread
        uchar swap;
        uchar *lo = buffer + nline*width;
        uchar *hi = buffer + (nline + 1)*width - 1;
+       while ( lo < hi ) {
+          swap = *lo;
+          *lo++ = *hi;
+          *hi-- = swap;
+       }
+     }
+     return buffer;
+  }
+  virtual ushort* fliphorizontal(ushort *buffer, int buffersize, int width) {
+     if (buffer == NULL) return NULL;
+     int ncol = 0;
+     int nline = 0;
+     while ( nline < buffersize / width - 1 ) {
+       nline++;
+       ushort swap;
+       ushort *lo = buffer + nline*width;
+       ushort *hi = buffer + (nline + 1)*width - 1;
        while ( lo < hi ) {
           swap = *lo;
           *lo++ = *hi;

@@ -119,6 +119,7 @@ class AcquisitionSequence
   int data_2D_FLOAT_DIM_X, data_2D_FLOAT_DIM_Y;
   float data_2D_FLOAT_MIN, data_2D_FLOAT_MAX;
   uchar *image;
+  ushort *image16;
   int   *image32;
   int   imageMin;
   int   imageMax;
@@ -134,6 +135,7 @@ class AcquisitionSequence
   QString grpname;
 
   void setImage(uchar* buffer, int width, int height);
+  void setImage16(ushort* buffer16, int width, int height);
   void setImage32(int* buffer32, int width, int height);
   bool setImage(AcquisitionSequence *sequenceLeft);
   void setImageMin(int _imageMin);
@@ -141,6 +143,7 @@ class AcquisitionSequence
   void prepare();
   bool getFileData();
   uchar* getImage();
+  ushort* getImage16();
   int* getImage32();
   uchar* getImageFromFile();
   bool setAvg(AcquisitionSequence *sequenceLeft, AcquisitionSequence *sequenceRight);

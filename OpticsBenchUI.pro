@@ -40,7 +40,7 @@ DEFINES         +=      ZYLACAMERA
 #DEFINES         +=      RASPICAMERA
 
 # SuperK support
-#DEFINES         +=      SUPERK
+DEFINES         +=      SUPERK
 
 # Advantech DAC support
 #DEFINES         +=     ADVANTECHDAC
@@ -54,8 +54,8 @@ DEFINES         +=     COMEDIDAC
 # RASPI Dac support
 DEFINES         +=     RASPIDAC
 
-#QMAKE_CXXFLAGS 	+= 	-g `pkg-config --cflags glib-2.0` -fPIC
-QMAKE_CXXFLAGS         +=      -g  -fPIC
+QMAKE_CXXFLAGS 	+= 	-g `pkg-config --cflags glib-2.0` -fPIC
+#QMAKE_CXXFLAGS         +=      -g  -fPIC
 
 QMAKE_LFLAGS  += -fPIC
 # External packages

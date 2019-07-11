@@ -35,6 +35,7 @@ class CameraGiGE : public Camera
   void setCamera(void *_camera, int _id);
   void getFeatures();
   uchar* getSnapshot();
+  ushort *getSnapshot16();
   int* getSnapshot32();
 
  signals:

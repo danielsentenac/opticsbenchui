@@ -118,12 +118,19 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   layout->addWidget(maxValue,1,1000+1,1,1,Qt::AlignTop | Qt::AlignCenter);
   connect(camera,SIGNAL(updateMax(int)),maxValue,SLOT(display(int)),Qt::UniqueConnection);
 
-  optimizeAcquisitionLabel = new QLabel("Optimize:");
+  QLabel *avgPixLabel = new QLabel("avg:");
+  QLCDNumber *avgValue = new  QLCDNumber();
+  avgValue->setSegmentStyle(QLCDNumber::Flat);
+  layout->addWidget(avgPixLabel,1,1000,1,1,Qt::AlignBottom | Qt::AlignCenter);
+  layout->addWidget(avgValue,1,1000+1,1,1,Qt::AlignBottom | Qt::AlignCenter);
+  connect(camera,SIGNAL(updateAvg(int)),avgValue,SLOT(display(int)),Qt::UniqueConnection);
+
+ /* optimizeAcquisitionLabel = new QLabel("Optimize:");
   optimizeAcquisitionBox = new QCheckBox(); 
   connect( optimizeAcquisitionBox, SIGNAL(stateChanged(int)), this, SLOT(optimizeAcquisition()),Qt::UniqueConnection);
   layout->addWidget(optimizeAcquisitionLabel,2,1000,1,1,Qt::AlignTop | Qt::AlignCenter);
   layout->addWidget(optimizeAcquisitionBox,2,1000+1,1,1,Qt::AlignTop | Qt::AlignCenter);
-
+*/
   snapshotButton = new QPushButton("Snapshot",this);
   snapshotButton->setFixedHeight(30);
   snapshotButton->setFixedWidth(80);
@@ -133,8 +140,8 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   vflipLabel = new QLabel("Flip vertical");
   vflipBox = new QCheckBox();
   QObject::connect(vflipBox, SIGNAL(stateChanged(int)), camera, SLOT(vflipImage(int)),Qt::UniqueConnection);
-  layout->addWidget(vflipLabel,1,1000+2,1,1,Qt::AlignCenter);
-  layout->addWidget(vflipBox,1,1000+3,1,1,Qt::AlignCenter);
+  layout->addWidget(vflipLabel,1,1000+2,1,1,Qt::AlignBottom);
+  layout->addWidget(vflipBox,1,1000+3,1,1,Qt::AlignBottom);
 
   hflipLabel = new QLabel("Flip horizontal");
   hflipBox = new QCheckBox();
@@ -148,7 +155,7 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   QRadioButton *hotButton =  new QRadioButton(" hot ");
   colorGroup->addButton(grayButton);
   colorGroup->addButton(hotButton);
-  layout->addWidget(grayButton,1,2000,1,1,Qt::AlignCenter);
+  layout->addWidget(grayButton,1,2000,1,1,Qt::AlignBottom);
   layout->addWidget(hotButton,2,2000,1,1,Qt::AlignCenter);
   
   grayButton->setChecked(true);
@@ -201,7 +208,6 @@ CameraControlWidget::snapShot() {
     
     H5LTset_attribute_int(file_id, "SNAPSHOT", "min", &camera->snapShotMin,1);
     H5LTset_attribute_int(file_id, "SNAPSHOT", "max", &camera->snapShotMax,1);
-    
   }
   else  {
      QLOG_INFO() << "CameraControlWidget::snapShot> Take snapshot pixel encoding " 

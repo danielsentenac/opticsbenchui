@@ -55,6 +55,7 @@ AcquisitionSequence::AcquisitionSequence( )
   position = 0;
   inc_group = 0;
   image = NULL;
+  image16 = NULL;
   image32 = NULL;
   data_2D_FLOAT = NULL;
   data_2D_FLOAT_DIM_X = 0;
@@ -91,6 +92,7 @@ AcquisitionSequence::~AcquisitionSequence()
   QLOG_DEBUG ( ) <<"Deleting AcquisitionSequence";
  
     if (image) { free(image); image = NULL;}
+    if (image16) { free(image16); image16 = NULL;}
     if (image32) { free(image32); image32 = NULL;}
     if (data_2D_FLOAT) { free(data_2D_FLOAT); data_2D_FLOAT = NULL;}
     if (slmimage)  { free(slmimage);slmimage  = NULL;}
@@ -99,6 +101,7 @@ AcquisitionSequence::~AcquisitionSequence()
 void 
 AcquisitionSequence::setImage(uchar* buffer, int width, int height) {
   if (image) { free(image); image = NULL;}
+  if (image16) { free(image16); image16 = NULL;}
   if (image32) { free(image32); image32 = NULL;}
   if (buffer != NULL) {
     imageWidth = width;
@@ -108,6 +111,20 @@ AcquisitionSequence::setImage(uchar* buffer, int width, int height) {
   }
   else
    QLOG_WARN () << "AcquisitionSequence::setImage> Input buffer is NULL..";
+}
+void
+AcquisitionSequence::setImage16(ushort* buffer16, int width, int height) {
+  if (image16) { free(image16); image16 = NULL;}
+  if (image) { free(image); image = NULL;}
+  if (buffer16 != NULL) {
+    imageWidth = width;
+    imageHeight = height;
+    image16 = (ushort*) malloc (sizeof(ushort) * imageWidth * imageHeight);
+    memcpy(image16,buffer16,sizeof(ushort) * imageWidth * imageHeight);
+   // image16 = buffer16;
+  }
+  else
+   QLOG_WARN () << "AcquisitionSequence::setImage32> Input buffer16 is NULL..";
 }
 void
 AcquisitionSequence::setImage32(int* buffer32, int width, int height) {
@@ -143,6 +160,11 @@ AcquisitionSequence::getImageFromFile() {
   imageHeight = slmimage->height();
   return slmimage->bits();
 }
+ushort*
+AcquisitionSequence::getImage16() {
+ return image16;
+}
+
 int*
 AcquisitionSequence::getImage32() {
  return image32;
