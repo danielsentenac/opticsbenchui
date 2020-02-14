@@ -154,7 +154,7 @@ CameraZyla::CameraZyla()
   buffer = NULL;
   snapshot = NULL;
   buffer32 = NULL;
-  //buffer16 = NULL;
+  buffer16 = NULL;
   snapshot16 = NULL;
   snapshot32 = NULL;
   suspend = true;
@@ -750,13 +750,13 @@ CameraZyla::setFeature(int feature, double value) {
    QLOG_INFO () << "CameraZyla::setFeature> width " << width << " height " << height;
    if (buffer) { free(buffer); buffer = NULL;}
    if (snapshot) { free(snapshot); snapshot = NULL;}
-   //if (buffer16) { free(buffer16); buffer16 = NULL;}
+   if (buffer16) { free(buffer16); buffer16 = NULL;}
    if (buffer32) { free(buffer32); buffer32 = NULL;}
    if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
    if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
    buffer = (uchar*)malloc( sizeof(uchar) * width * height);
    snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
-   //buffer16 = (ushort*)malloc( sizeof(ushort) * width * height);
+   buffer16 = (ushort*)malloc( sizeof(ushort) * width * height);
    snapshot16 = (ushort*)malloc( sizeof(ushort) * width * height);
    buffer32 = (int*)malloc( sizeof(int) * width * height);
    snapshot32 = (int*)malloc( sizeof(int) * width * height);
@@ -1268,7 +1268,7 @@ CameraZyla::connectCamera() {
    *-----------------------------------------------------------------------*/
   buffer = (uchar*)malloc( sizeof(uchar) * width * height);
   snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
-  //buffer16 = (ushort*)malloc( sizeof(ushort) * width * height);
+  buffer16 = (ushort*)malloc( sizeof(ushort) * width * height);
   snapshot16 = (ushort*)malloc( sizeof(ushort) * width * height);
   buffer32 = (int*)malloc( sizeof(int) * width * height);
   snapshot32 = (int*)malloc( sizeof(int) * width * height);
@@ -1314,7 +1314,7 @@ CameraZyla::cleanup_and_exit()
   errorOk(i_err, "AT_FinaliseLibrary");
   if (buffer) { free(buffer); buffer = NULL;}
   if (snapshot) { free(snapshot); snapshot = NULL;}
-  //if (buffer16) { free(buffer16); buffer16 = NULL;}
+  if (buffer16) { free(buffer16); buffer16 = NULL;}
   if (buffer32) { free(buffer32); buffer32 = NULL;}
   if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
   if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
@@ -1420,7 +1420,7 @@ CameraZyla::acquireImage() {
     // Reset video image buffer (8-bit)
     memset(buffer,0,height * width * sizeof(uchar));
     // Reset 16-bit image buffer
-    //memset(buffer16,0,height * width * sizeof(ushort));
+    memset(buffer16,0,height * width * sizeof(ushort));
     // Reset 32-bit image buffer 
     memset(buffer32,0,height * width * sizeof(int));
 
@@ -1456,12 +1456,11 @@ CameraZyla::acquireImage() {
     }
     // Treat Mono16 case
     else if (pixel_encoding == B16) {
-      buffer16 = tmpBuf;
       if (optimizeAcquisition == false) {
         for (AT_64 i = 0; i < height * width; i++) {
           ushort ui_current = *(tmpBuf++);
           buffer32[i] = ui_current;
-          //buffer16[i] = ui_current;
+          buffer16[i] = ui_current;
           if ( (max - min) != 0 )
             buffer[i] = (uchar) (( 255 * (ui_current - min) ) / (max - min));
           else
@@ -1528,13 +1527,13 @@ CameraZyla::acquireImage() {
    QLOG_INFO () << "CameraZyla::acquireImage> width " << width << " height " << height;
    if (buffer) { free(buffer); buffer = NULL;}
    if (snapshot) { free(snapshot); snapshot = NULL;}
-   //if (buffer16) { free(buffer16); buffer16 = NULL;}
+   if (buffer16) { free(buffer16); buffer16 = NULL;}
    if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
    if (buffer32) { free(buffer32); buffer32 = NULL;}
    if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
    buffer = (uchar*)malloc( sizeof(uchar) * width * height);
    snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
-  // buffer16 = (ushort*)malloc( sizeof(ushort) * width * height);
+   buffer16 = (ushort*)malloc( sizeof(ushort) * width * height);
    snapshot16 = (ushort*)malloc( sizeof(ushort) * width * height);
    buffer32 = (int*)malloc( sizeof(int) * width * height);
    snapshot32 = (int*)malloc( sizeof(int) * width * height);
