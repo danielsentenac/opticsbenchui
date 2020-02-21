@@ -142,7 +142,6 @@ CameraNeo::CameraNeo()
   snapshot = NULL;
   buffer32 = NULL;
   snapshot32 = NULL;
-  snapshot16 = NULL;
   suspend = true;
   has_started = false;
   mutex = new QMutex(QMutex::NonRecursive);
@@ -221,16 +220,16 @@ CameraNeo::setCamera(void* _camera, int _id)
  i_err = AT_GetIntMin(*camera, L"AOIWidth", &aoiwidth_min);
  i_err = AT_GetIntMax(*camera, L"AOIWidth", &aoiwidth_max);
  aoi_width = aoiwidth_max;
- i_err = AT_SetInt(*camera, L"AOIWidth", (AT_64)neo_aoi_settings[4][0]);
+ i_err = AT_SetInt(*camera, L"AOIWidth", (AT_64)neo_aoi_settings[0][0]);
  errorOk(i_err, "AT_SetInt 'AOIWidth'");
  if (pixel_encoding == B12P)
-    i_err = AT_SetInt(*camera, L"AOILeft", (AT_64)neo_aoi_settings_packed[4][1]);
+    i_err = AT_SetInt(*camera, L"AOILeft", (AT_64)neo_aoi_settings_packed[0][1]);
  else
-  i_err = AT_SetInt(*camera, L"AOILeft", (AT_64)neo_aoi_settings[4][1]);
+  i_err = AT_SetInt(*camera, L"AOILeft", (AT_64)neo_aoi_settings[0][1]);
  errorOk(i_err, "AT_SetInt 'AOILeft'");
- i_err = AT_SetInt(*camera, L"AOIHeight", (AT_64)neo_aoi_settings[4][2]);
+ i_err = AT_SetInt(*camera, L"AOIHeight", (AT_64)neo_aoi_settings[0][2]);
  errorOk(i_err, "AT_SetInt 'AOIHeight'");
- i_err = AT_SetInt(*camera, L"AOITop", (AT_64)neo_aoi_settings[4][3]);
+ i_err = AT_SetInt(*camera, L"AOITop", (AT_64)neo_aoi_settings[0][3]);
  errorOk(i_err, "AT_SetInt 'AOITop'");
  i_err = AT_GetInt(*camera, L"AOIWidth", &aoi_width);
  errorOk(i_err, "AT_SetInt 'AOIWidth'");
@@ -345,9 +344,9 @@ CameraNeo::setCamera(void* _camera, int _id)
 
  // Pixel encoding feature
  int encoding_min = 0, encoding_max = ENCODING_NUMBER - 1;
- encoding_num = 2;
- i_err = AT_SetEnumIndex(*camera, L"PixelEncoding", encoding_num);
  i_err = AT_GetEnumIndex(*camera, L"PixelEncoding", &encoding_num );
+ errorOk(i_err, "AT_GetEnumIndex 'PixelEncoding'");
+ i_err = AT_SetEnumIndex(*camera, L"PixelEncoding", encoding_num );
  errorOk(i_err, "AT_SetEnumIndex 'PixelEncoding'");
    // Set Pixel encoding
    switch (encoding_num) {
@@ -393,11 +392,6 @@ CameraNeo::setCamera(void* _camera, int _id)
  QLOG_INFO() << "CameraNeo::setCamera> get electronic shutter mode feature "
              << featureNameList.at(featureCnt);
  QLOG_INFO() << "CameraNeo::setCamera> value " << neo_electronicshuttering_modes[acq_num];
-
- // Overlap Readout mode
- AT_BOOL  overlap = true;
- i_err = AT_SetBool(*camera, L"Overlap", overlap);
- i_err = AT_GetBool(*camera, L"Overlap", &overlap);
 
  // Spurious Mode Filter
  AT_BOOL  spurmode;
@@ -451,7 +445,7 @@ CameraNeo::setCamera(void* _camera, int _id)
  propList.push_back(gainStr);
 
  // Encoding prop
- QString encStr = neo_props[++propCnt];
+ QString encStr = neo_props[++propCnt];;
  i_err = AT_GetEnumIndex(*camera, L"PixelEncoding", &encoding_num);
  errorOk(i_err, "AT_GetEnumIndex 'PixelEncoding'");
  encStr.append(" : " + QString(neo_encodings[encoding_num]));
@@ -522,22 +516,9 @@ CameraNeo::getSnapshot() {
   memcpy(snapshot,buffer, width * height * sizeof(uchar));
   snapShotMin = min;
   snapShotMax = max;
-  snapShotAvg = avg;
   snapshotMutex->unlock();
   return snapshot;
 }
-ushort*
-CameraZyla::getSnapshot16() {
-  snapshotMutex->lock();
-  QLOG_DEBUG() << "CameraZyla::getSnapshot> Image pixel size " << width * height;
-  memcpy(snapshot16,buffer16, width * height * sizeof(ushort));
-  snapShotMin = min;
-  snapShotMax = max;
-  snapShotAvg = avg;
-  snapshotMutex->unlock();
-  return snapshot16;
-}
-
 int*
 CameraNeo::getSnapshot32() {
   snapshotMutex->lock();
@@ -545,7 +526,6 @@ CameraNeo::getSnapshot32() {
   memcpy(snapshot32,buffer32, width * height * sizeof(int));
   snapShotMin = min;
   snapShotMax = max;
-  snapShotAvg = avg;
   snapshotMutex->unlock();
   return snapshot32;
 }
@@ -716,11 +696,9 @@ CameraNeo::setFeature(int feature, double value) {
    if (buffer) { free(buffer); buffer = NULL;}
    if (snapshot) { free(snapshot); snapshot = NULL;}
    if (buffer32) { free(buffer32); buffer32 = NULL;}
-   if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
    if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
    buffer = (uchar*)malloc( sizeof(uchar) * width * height);
    snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
-   snapshot16 = (ushort*)malloc( sizeof(ushort) * width * height);
    buffer32 = (int*)malloc( sizeof(int) * width * height);
    snapshot32 = (int*)malloc( sizeof(int) * width * height);
    delete image;
@@ -1107,16 +1085,15 @@ CameraNeo::connectCamera() {
      QLOG_INFO () << "CameraNeo::connectCamera> TriggerMode " << i 
                   << " " << QString(citem);
   }
-  i_err = AT_SetEnumString(*camera, L"TriggerMode", L"Internal");
+  i_err = AT_SetEnumString(*camera, L"TriggerMode", L"Software");
   errorOk(i_err, "AT_SetEnumString 'TriggerMode'");
-  QLOG_INFO () << "CameraNeo::connectCamera> Set TriggerMode Internal";
+  QLOG_INFO () << "CameraNeo::connectCamera> Set TriggerMode Software";
   
   /*-----------------------------------------------------------------------
    *  setup capture
    *-----------------------------------------------------------------------*/
   buffer = (uchar*)malloc( sizeof(uchar) * width * height);
   snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
-  snapshot16 = (ushort*)malloc( sizeof(ushort) * width * height);
   buffer32 = (int*)malloc( sizeof(int) * width * height);
   snapshot32 = (int*)malloc( sizeof(int) * width * height);
 
@@ -1162,7 +1139,6 @@ CameraNeo::cleanup_and_exit()
   if (buffer) { free(buffer); buffer = NULL;}
   if (snapshot) { free(snapshot); snapshot = NULL;}
   if (buffer32) { free(buffer32); buffer32 = NULL;}
-  if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
   if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
   if (image) delete image;
   return;
@@ -1195,7 +1171,6 @@ CameraNeo::acquireImage() {
     // calculate min,max
     AT_64 i64_max = 0;
     AT_64 i64_min = 65535;
-    AT_64 i64_avg = 0;
     ushort *tmpBuf;
     uchar *tmpBuf_c;
     tmpBuf_c = pBuf;
@@ -1217,8 +1192,6 @@ CameraNeo::acquireImage() {
         else if (ui_currenth > i64_max) {
           i64_max = ui_currenth;
         }
-        i64_avg+=ui_current;
-        i64_avg+=ui_currenth;
         tmpBuf_c+=3;
       }
     }
@@ -1232,7 +1205,6 @@ CameraNeo::acquireImage() {
       else if (ui_current > i64_max) {
         i64_max = ui_current;
       }
-      i64_avg+=ui_current;
      }
     }
     // Treat Mono16 case
@@ -1245,13 +1217,11 @@ CameraNeo::acquireImage() {
       else if (ui_current > i64_max) {
         i64_max = ui_current;
       }
-      i64_avg+=ui_current;
      }
     }
     // set the best precision min and max
     min = (int) i64_min;
     max = (int) i64_max;
-    avg = (int) (i64_avg / (width * height));
 
     // Convert current buffer to 8-bit buffer (0 - 255 range) & buffer32 (32-bit)
     tmpBuf_c = pBuf;
@@ -1294,7 +1264,6 @@ CameraNeo::acquireImage() {
     }
     // Treat Mono16 case
     else if (pixel_encoding == B16) {
-     buffer16 = tmpBuf;
      for (AT_64 i = 0; i < height * width; i++) {
       ushort ui_current = *(tmpBuf++);
       buffer32[i] = ui_current;
@@ -1317,12 +1286,12 @@ CameraNeo::acquireImage() {
     snapshotMutex->unlock();
 
     // Format video image
+    image->loadFromData (buffer,width * height);
     QImage imagescaled = image->scaled(imageWidth,imageHeight);
     QImage imagergb32 =  imagescaled.convertToFormat(QImage::Format_ARGB32_Premultiplied);
     emit getImage(imagergb32);
     emit updateMin(min);
     emit updateMax(max);
-    emit updateAvg(avg);
     /*-----------------------------------------------------------------------
     * release frame
     *-----------------------------------------------------------------------*/
