@@ -221,16 +221,16 @@ CameraNeo::setCamera(void* _camera, int _id)
  i_err = AT_GetIntMin(*camera, L"AOIWidth", &aoiwidth_min);
  i_err = AT_GetIntMax(*camera, L"AOIWidth", &aoiwidth_max);
  aoi_width = aoiwidth_max;
- i_err = AT_SetInt(*camera, L"AOIWidth", (AT_64)neo_aoi_settings[0][0]);
+ i_err = AT_SetInt(*camera, L"AOIWidth", (AT_64)neo_aoi_settings[4][0]);
  errorOk(i_err, "AT_SetInt 'AOIWidth'");
  if (pixel_encoding == B12P)
-    i_err = AT_SetInt(*camera, L"AOILeft", (AT_64)neo_aoi_settings_packed[0][1]);
+    i_err = AT_SetInt(*camera, L"AOILeft", (AT_64)neo_aoi_settings_packed[4][1]);
  else
-  i_err = AT_SetInt(*camera, L"AOILeft", (AT_64)neo_aoi_settings[0][1]);
+  i_err = AT_SetInt(*camera, L"AOILeft", (AT_64)neo_aoi_settings[4][1]);
  errorOk(i_err, "AT_SetInt 'AOILeft'");
- i_err = AT_SetInt(*camera, L"AOIHeight", (AT_64)neo_aoi_settings[0][2]);
+ i_err = AT_SetInt(*camera, L"AOIHeight", (AT_64)neo_aoi_settings[4][2]);
  errorOk(i_err, "AT_SetInt 'AOIHeight'");
- i_err = AT_SetInt(*camera, L"AOITop", (AT_64)neo_aoi_settings[0][3]);
+ i_err = AT_SetInt(*camera, L"AOITop", (AT_64)neo_aoi_settings[4][3]);
  errorOk(i_err, "AT_SetInt 'AOITop'");
  i_err = AT_GetInt(*camera, L"AOIWidth", &aoi_width);
  errorOk(i_err, "AT_SetInt 'AOIWidth'");
@@ -345,9 +345,9 @@ CameraNeo::setCamera(void* _camera, int _id)
 
  // Pixel encoding feature
  int encoding_min = 0, encoding_max = ENCODING_NUMBER - 1;
+ encoding_num = 2;
+ i_err = AT_SetEnumIndex(*camera, L"PixelEncoding", encoding_num);
  i_err = AT_GetEnumIndex(*camera, L"PixelEncoding", &encoding_num );
- errorOk(i_err, "AT_GetEnumIndex 'PixelEncoding'");
- i_err = AT_SetEnumIndex(*camera, L"PixelEncoding", encoding_num );
  errorOk(i_err, "AT_SetEnumIndex 'PixelEncoding'");
    // Set Pixel encoding
    switch (encoding_num) {
@@ -451,7 +451,7 @@ CameraNeo::setCamera(void* _camera, int _id)
  propList.push_back(gainStr);
 
  // Encoding prop
- QString encStr = neo_props[++propCnt];;
+ QString encStr = neo_props[++propCnt];
  i_err = AT_GetEnumIndex(*camera, L"PixelEncoding", &encoding_num);
  errorOk(i_err, "AT_GetEnumIndex 'PixelEncoding'");
  encStr.append(" : " + QString(neo_encodings[encoding_num]));
@@ -1107,9 +1107,9 @@ CameraNeo::connectCamera() {
      QLOG_INFO () << "CameraNeo::connectCamera> TriggerMode " << i 
                   << " " << QString(citem);
   }
-  i_err = AT_SetEnumString(*camera, L"TriggerMode", L"Software");
+  i_err = AT_SetEnumString(*camera, L"TriggerMode", L"Internal");
   errorOk(i_err, "AT_SetEnumString 'TriggerMode'");
-  QLOG_INFO () << "CameraNeo::connectCamera> Set TriggerMode Software";
+  QLOG_INFO () << "CameraNeo::connectCamera> Set TriggerMode Internal";
   
   /*-----------------------------------------------------------------------
    *  setup capture

@@ -179,6 +179,11 @@ ComediDac::connectComedi(QString newcomedi) {
   }
   device.push_back(newdevice);
   comedi_set_global_oor_behavior(COMEDI_OOR_NAN);
+  for (int output = 0 ; output < outputs.at(index); output++) {
+    comedi_range *rng = comedi_get_range(device.at(index), subdev.at(index), output, 0);
+    rng->min = min.at(index);
+    rng->max = max.at(index);
+  }
   QLOG_INFO ( ) << "ComediDac configuration success";
   connectSuccess.replace(index, true);
   // Update control widget

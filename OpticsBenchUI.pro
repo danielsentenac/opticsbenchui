@@ -34,7 +34,7 @@ DEFINES         +=      ZYLACAMERA
 #DEFINES         +=      RAPTORFALCONCAMERA
 
 #  Ninox640 Raptor camera support
-#DEFINES         +=      RAPTORNINOX640CAMERA
+DEFINES         +=      RAPTORNINOX640CAMERA
 
 #  RaspiCam camera support
 #DEFINES         +=      RASPICAMERA
@@ -47,7 +47,7 @@ DEFINES         +=      SUPERK
 
 # Comedi Counters support
 DEFINES         +=     COMEDICOUNTER
-
+#
 # Comedi Dac support
 DEFINES         +=     COMEDIDAC
 
