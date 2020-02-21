@@ -248,6 +248,17 @@ CameraRAPTORNINOX640::getSnapshot() {
   return snapshot;
 }
 
+ushort*
+CameraRAPTORNINOX640::getSnapshot16() {
+  snapshotMutex->lock();
+  QLOG_DEBUG() << "CameraRAPTORNINOX640::getSnapshot> Image pixel size " << width * height;
+  memcpy(snapshot16,buffer16, width * height * sizeof(ushort));
+  snapShotMin = min;
+  snapShotMax = max;
+  snapshotMutex->unlock();
+  return snapshot16;
+}
+
 int*
 CameraRAPTORNINOX640::getSnapshot32() {
   snapshotMutex->lock();
@@ -667,7 +678,7 @@ void CameraRAPTORNINOX640::setDGain(int g) {
   QLOG_DEBUG() << "Set Raptor Digital gain";
   char setadrs1[]   = { 0x53, 0xE0, 0x02, 0xC6, 0, 0x50 };
   char setadrs2[]   = { 0x53, 0xE0, 0x02, 0xC7, 0, 0x50 };
-  int dn_gain = round(pow10f((double)(g)/20.0)*256.0);
+  int dn_gain = round(powf(10,(double)(g)/20.0)*256.0);
   setadrs1[4] = (dn_gain>>8);
   setadrs2[4] = (dn_gain&0xFF);
   writeFeature (setadrs1, 6);

@@ -243,7 +243,7 @@ LIBS 		+= 	 \
  			-L$$NEO_LIB_PATH -latcore \
 #                        -L$$RASPI_LIB_PATH -lraspicam \
 #                        -lwiringPi
-#                       -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64_pic.a -Wl,-Bdynamic 
+                        -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64_pic.a -Wl,-Bdynamic \
                         -Wl,-Bstatic $$SPI_LIB_PATH/libbcm2835.a -Wl,-Bdynamic
 
 # make install

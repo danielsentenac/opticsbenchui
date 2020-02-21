@@ -341,9 +341,9 @@ CameraIEEE1394::getSnapshot() {
   return snapshot;
 }
 ushort*
-CameraZyla::getSnapshot16() {
+CameraIEEE1394::getSnapshot16() {
   snapshotMutex->lock();
-  QLOG_DEBUG() << "CameraZyla::getSnapshot> Image pixel size " << width * height;
+  QLOG_DEBUG() << "CameraIEEE1394::getSnapshot> Image pixel size " << width * height;
   memcpy(snapshot16,buffer16, width * height * sizeof(ushort));
   snapShotMin = min;
   snapShotMax = max;

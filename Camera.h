@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#define _GNU_SOURCE
+
 #define FREQUENCY_AVERAGE_COUNT 50
 
 #include <math.h>
