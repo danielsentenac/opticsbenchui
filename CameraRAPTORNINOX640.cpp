@@ -247,16 +247,6 @@ CameraRAPTORNINOX640::getSnapshot() {
   snapshotMutex->unlock();
   return snapshot;
 }
-ushort*
-CameraRAPTORNINOX640::getSnapshot16() {
-  snapshotMutex->lock();
-  QLOG_DEBUG() << "CameraRAPTORNINOX640::getSnapshot> Image pixel size " << width * height;
-  memcpy(snapshot16,buffer16, width * height * sizeof(ushort));
-  snapShotMin = min;
-  snapShotMax = max;
-  snapshotMutex->unlock();
-  return snapshot16;
-}
 
 int*
 CameraRAPTORNINOX640::getSnapshot32() {
@@ -570,6 +560,7 @@ CameraRAPTORNINOX640::acquireImage() {
     }
     snapshotMutex->unlock();
     // Format video image
+    image->loadFromData (buffer,width * height);
     QImage imagescaled = image->scaled(imageWidth,imageHeight);
     QImage imagergb32 =  imagescaled.convertToFormat(QImage::Format_ARGB32_Premultiplied);
     emit getImage(imagergb32);
