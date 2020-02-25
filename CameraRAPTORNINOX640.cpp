@@ -244,6 +244,7 @@ CameraRAPTORNINOX640::getSnapshot() {
   memcpy(snapshot,buffer,width * height * sizeof(uchar));
   snapShotMin = min;
   snapShotMax = max;
+  snapShotAvg = avg;
   snapshotMutex->unlock();
   return snapshot;
 }
@@ -255,6 +256,7 @@ CameraRAPTORNINOX640::getSnapshot16() {
   memcpy(snapshot16,buffer16, width * height * sizeof(ushort));
   snapShotMin = min;
   snapShotMax = max;
+  snapShotAvg = avg;
   snapshotMutex->unlock();
   return snapshot16;
 }
@@ -266,6 +268,7 @@ CameraRAPTORNINOX640::getSnapshot32() {
   memcpy(snapshot32,buffer32, width * height * sizeof(int));
   snapShotMin = min;
   snapShotMax = max;
+  snapShotAvg = avg;
   snapshotMutex->unlock();
   return snapshot32;
 }
@@ -538,9 +541,10 @@ CameraRAPTORNINOX640::acquireImage() {
       QLOG_DEBUG() << "pxd_readushort  missing pixels" << err << "!= " << pxd_imageXdim() * pxd_imageYdim();
     // Copy image buffer
     snapshotMutex->lock();
-    // calculate min,max
+    // calculate min,max,avg
     max = 0;
     min = 65535;
+    avg = 0;
     // Treat Mono16 case
     for (int i = 0; i < height * width; i++) {
      // QLOG_DEBUG() << "CameraRAPTORNINOX640::acquireImage()> image16[" << i << "]=" << image16[i];
@@ -550,8 +554,11 @@ CameraRAPTORNINOX640::acquireImage() {
       else if (image16[i] > max) {
         max = image16[i];
       }
+      avg+=image16[i];
     }
-    // Treat Mono16 case
+    avg/=(width*height);
+
+    // Treat Mono8 case
     for (int i = 0; i < height * width; i++) {
       buffer32[i] = image16[i];
       if ( (max - min) != 0 )
@@ -577,6 +584,7 @@ CameraRAPTORNINOX640::acquireImage() {
     emit getImage(imagergb32);
     emit updateMin(min);
     emit updateMax(max);
+    emit updateAvg(avg);
     acquireMutex->unlock();
     return (1);
 }
