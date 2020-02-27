@@ -77,6 +77,8 @@ CameraRAPTORFALCON::CameraRAPTORFALCON()
   image = NULL;
   buffer = NULL;
   snapshot = NULL;
+  buffer16 = NULL;
+  snapshot16 = NULL;
   buffer32 = NULL;
   snapshot32 = NULL;
   suspend = true;
@@ -415,11 +417,15 @@ CameraRAPTORFALCON::setFeature(int feature, double value) {
        QLOG_INFO() << "CameraRAPTORFALCON::setFeature> Updated height " << height;
        if (buffer) { free(buffer); buffer = NULL;}
        if (snapshot) { free(snapshot); snapshot = NULL;}
+       if (buffer16) { free(buffer16); buffer16 = NULL;}
+       if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
        if (buffer32) { free(buffer32); buffer32 = NULL;}
        if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
        delete image;
        buffer = (uchar*)malloc( sizeof(uchar) * width * height);
        snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
+       buffer16 = (ushort*)malloc( sizeof(ushort) * width * height);
+       snapshot16 = (uhort)malloc( sizeof(ushort) * width * height);
        buffer32 = (int*)malloc( sizeof(int) * width * height);
        snapshot32 = (int*)malloc( sizeof(int) * width * height);
        image16 = (ushort*)malloc( sizeof(ushort) * width * height);
@@ -589,6 +595,8 @@ CameraRAPTORFALCON::connectCamera() {
   QLOG_DEBUG() << "CameraRAPTORFALCON::connectCamera> Updated height " << height;
   buffer = (uchar*)malloc( sizeof(uchar) * width * height);
   snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
+  buffer16 = (ushort*)malloc( sizeof(ushort) * width * height);
+  snapshot16 = (ushort*)malloc( sizeof(ushort) * width * height);
   buffer32 = (int*)malloc( sizeof(int) * width * height);
   snapshot32 = (int*)malloc( sizeof(int) * width * height);
   image16 = (ushort*)malloc( sizeof(ushort) * width * height);
@@ -609,6 +617,8 @@ CameraRAPTORFALCON::cleanup_and_exit()
   QLOG_DEBUG() << "Close Raptor" << err;
   if (buffer) { free(buffer); buffer = NULL;}
   if (snapshot) { free(snapshot); snapshot = NULL;}
+  if (buffer16) { free(buffer16); buffer16 = NULL;}
+  if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
   if (buffer32) { free(buffer32); buffer32 = NULL;}
   if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
   if (image16) { free(image16); image16 = NULL;}
@@ -644,8 +654,16 @@ CameraRAPTORFALCON::acquireImage() {
         max = image16[i];
       }
     }
+    // Reset video image buffer (8-bit)
+    memset(buffer,0,height * width * sizeof(uchar));
+    // Reset 16-bit image buffer
+    memset(buffer16,0,height * width * sizeof(ushort));
+    // Reset 32-bit image buffer
+    memset(buffer32,0,height * width * sizeof(int));
+
     // Treat Mono16 case
     for (int i = 0; i < height * width; i++) {
+      buffer16[i] = image16[i];
       buffer32[i] = image16[i];
       if ( (max - min) != 0 )
        buffer[i] = (uchar) (( 255 * (image16[i] - min) ) / (max - min));
@@ -655,11 +673,14 @@ CameraRAPTORFALCON::acquireImage() {
     if (vflip) {
       buffer = reversebytes(buffer,height * width);
       buffer = fliphorizontal(buffer,height * width, width);
+      buffer16 = reversebytes(buffer16,height * width);
+      buffer16 = fliphorizontal(buffer16,height * width, width);
       buffer32 = reversebytes(buffer32,height * width);
       buffer32 = fliphorizontal(buffer32,height * width, width);
     }
     if (hflip) {
      buffer = fliphorizontal(buffer,height*width, width);
+     buffer16 = fliphorizontal(buffer16,height*width, width);
      buffer32 = fliphorizontal(buffer32,height*width, width);
     }
     snapshotMutex->unlock();
