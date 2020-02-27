@@ -543,7 +543,7 @@ CameraRAPTORNINOX640::acquireImage() {
     snapshotMutex->lock();
     // calculate min,max,avg
     max = 0;
-    min = 65535;
+    min = 16383; // Camera is 14bit
     avg = 0;
     // Treat Mono16 case
     for (int i = 0; i < height * width; i++) {
