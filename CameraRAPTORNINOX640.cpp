@@ -535,7 +535,6 @@ CameraRAPTORNINOX640::acquireImage() {
     while (acquireMutex->tryLock() == false) {
        usleep(100);
     }
-      
     int err = pxd_doSnap(1,1,2000);
     if (err < 0)
       QLOG_WARN() << "pxd_doSnap:" <<  pxd_mesgErrorCode(err) ;
@@ -552,7 +551,7 @@ CameraRAPTORNINOX640::acquireImage() {
     avg = 0;
     // Treat Mono16 case
     for (int i = 0; i < height * width; i++) {
-     // QLOG_DEBUG() << "CameraRAPTORNINOX640::acquireImage()> image16[" << i << "]=" << image16[i];
+      //QLOG_INFO() << "CameraRAPTORNINOX640::acquireImage()> image16[" << i << "]=" << image16[i];
       if (image16[i] < min) {
         min = image16[i];
       }
@@ -594,7 +593,6 @@ CameraRAPTORNINOX640::acquireImage() {
     }
     snapshotMutex->unlock();
     // Format video image
-    image->loadFromData (buffer,width * height);
     QImage imagescaled = image->scaled(imageWidth,imageHeight);
     QImage imagergb32 =  imagescaled.convertToFormat(QImage::Format_ARGB32_Premultiplied);
     emit getImage(imagergb32);
