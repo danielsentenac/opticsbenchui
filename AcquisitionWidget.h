@@ -40,7 +40,7 @@ class AcquisitionWidget : public QWidget
   void setDac(Dac* _dac);
   void setComediCounter(Comedi* _comedi);
   void setComediDac(Comedi* _comedi);
-  void setRaspiDac(RaspiDac* _raspi);
+  void setRaspiDac(Raspi* _raspi);
   void setDelegates();
 
  signals:
@@ -73,7 +73,7 @@ class AcquisitionWidget : public QWidget
   SuperK *superk;
   Dac    *dac;
   Comedi *comedicounter, *comedidac;
-  RaspiDac *raspidac;
+  Raspi *raspidac;
   QLabel *splashLabel;
 
   QString   appDirPath, path;

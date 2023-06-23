@@ -4,7 +4,7 @@
 
 TEMPLATE 	= 	app
 
-VERSION         =       1.0
+VERSION         =       1.1
 
 TARGET          =       OpticsBenchUI
 
@@ -18,6 +18,9 @@ DEFINES 	+=      OPTICSBENCHUIVERSION=\\\"$$VERSION\\\"
 
 DEFINES 	+= 	QT_NO_DEBUG_OUTPUT
 
+# USB camera support
+#DEFINES        +=      USBCAMERA
+
 # Firewire camera support
 #DEFINES 	+= 	IEEE1394CAMERA
 
@@ -28,31 +31,31 @@ DEFINES 	+= 	QT_NO_DEBUG_OUTPUT
 #DEFINES         +=      NEOCAMERA
 
 # Andor Zyla camera support
-DEFINES         +=      ZYLACAMERA
+#DEFINES         +=      ZYLACAMERA
 
 #  Falcon Raptor camera support
 #DEFINES         +=      RAPTORFALCONCAMERA
 
 #  Ninox640 Raptor camera support
-DEFINES         +=      RAPTORNINOX640CAMERA
+#DEFINES         +=      RAPTORNINOX640CAMERA
 
 #  RaspiCam camera support
 #DEFINES         +=      RASPICAMERA
 
 # SuperK support
-DEFINES         +=      SUPERK
+#DEFINES         +=      SUPERK
 
 # Advantech DAC support
 #DEFINES         +=     ADVANTECHDAC
 
 # Comedi Counters support
-DEFINES         +=     COMEDICOUNTER
+#DEFINES         +=     COMEDICOUNTER
 #
 # Comedi Dac support
-DEFINES         +=     COMEDIDAC
+#DEFINES         +=     COMEDIDAC
 
 # RASPI Dac support
-DEFINES         +=     RASPIDAC
+#DEFINES         +=     RASPIDAC
 
 QMAKE_CXXFLAGS 	+= 	-g `pkg-config --cflags glib-2.0` -fPIC
 #QMAKE_CXXFLAGS         +=      -g  -fPIC
@@ -64,6 +67,7 @@ COMEDI_LIB_PATH  =      /usr/local/lib
 QWTPLOT_LIB_PATH =      /usr/lib
 ADVDAQ_LIB_PATH  =	/usr/lib
 DC1394_LIB_PATH  =      /usr/local/lib
+V4L2_LIB_PATH    =      /usr/lib64
 RAW1394_LIB_PATH =	/usr/local/lib
 ARAVIS_LIB_PATH  =      /usr/local/lib
 STANDA_LIB_PATH  =      /usr/local/lib
@@ -80,6 +84,7 @@ COMEDI_INC_PATH  =      /usr/local/include
 QWTPLOT_INC_PATH =      /usr/include/qwt
 ADVDAQ_INC_PATH  =	/usr/local/include/Advantech
 DC1394_INC_PATH  =      /usr/local/include/dc1394
+V4L2_INC_PATH    =      /usr/include
 RAW1394_INC_PATH =	/usr/local/include/libraw1394/src
 ARAVIS_INC_PATH  =      /usr/local/include/aravis-0.2
 STANDA_INC_PATH  =      /usr/local/include
@@ -93,6 +98,7 @@ SPI_INC_PATH  =         /usr/local/include
 
 HEADERS 	+= 	OpticsBenchUIMain.h \
 			Camera.h \
+                        CameraUSB.h \
 			CameraIEEE1394.h \
 			CameraGiGE.h \
            		CameraNeo.h \
@@ -106,9 +112,10 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			VideoPlayer.h \
 			VideoWidget.h \
 			VideoWidgetSurface.h \
-                        RaspiWindow.h \
+                        Raspi.h \
                         RaspiDac.h \
                         RaspiDacControlWidget.h \
+                        RaspiWindow.h \
                         Comedi.h \
                         ComediCounter.h \
                         ComediCounterControlWidget.h \
@@ -154,6 +161,7 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			Assistant.h 
 
 SOURCES		+= 	OpticsBenchUIMain.cpp \
+                        CameraUSB.cpp \
 			CameraIEEE1394.cpp \
 			CameraGiGE.cpp \
 			CameraNeo.cpp \
@@ -217,6 +225,7 @@ INCLUDEPATH 	+=	\
 			$$ADVDAQ_INC_PATH \
 			$$STANDA_INC_PATH \
                         $$XIMC_INC_PATH \
+                        $$V4L2_INC_PATH \
 			$$RAW1394_INC_PATH \
 			$$DC1394_INC_PATH \
 			$$ARAVIS_INC_PATH \
@@ -228,23 +237,24 @@ INCLUDEPATH 	+=	\
                         $$SPI_INC_PATH
 
 LIBS 		+= 	 \
-			-L$$COMEDI_LIB_PATH -lcomedi \
-#                        -L$$SPI_LIB_PATH -lbcm2835 \
+#                       -L$$COMEDI_LIB_PATH -lcomedi \
+#                       -L$$SPI_LIB_PATH -lbcm2835 \
                         -L$$QWTPLOT_LIB_PATH -lqwt-qt5 \
 #                       -L$$ADVDAQ_LIB_PATH -ladvdaq \
 			-L$$USB_LIB_PATH -lusb-1.0 \
 #                       -L$$GLIB_LIB_PATH -lgobject-2.0 \
 #                       -L$$DC1394_LIB_PATH -ldc1394 \
+                        -L$$V4L2_LIB_PATH -lv4l2 \
 #                       -L$$RAW1394_LIB_PATH -lraw1394 \
 #                       -L$$ARAVIS_LIB_PATH -laravis-0.2 \
 #			-L$$STANDA_LIB_PATH -lusmc \
                         -L$$XIMC_LIB_PATH -lximc \
-                        -L$$HDF5_LIB_PATH -lhdf5_hl -lhdf5  \
- 			-L$$NEO_LIB_PATH -latcore \
-#                        -L$$RASPI_LIB_PATH -lraspicam \
-#                        -lwiringPi
-                        -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64_pic.a -Wl,-Bdynamic \
-                        -Wl,-Bstatic $$SPI_LIB_PATH/libbcm2835.a -Wl,-Bdynamic
+                        -L$$HDF5_LIB_PATH -lhdf5_hl -lhdf5  
+# 			-L$$NEO_LIB_PATH -latcore \
+#                       -L$$RASPI_LIB_PATH -lraspicam \
+#                       -lwiringPi
+#                       -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64_pic.a -Wl,-Bdynamic \
+#                       -Wl,-Bstatic $$SPI_LIB_PATH/libbcm2835.a -Wl,-Bdynamic
 
 # make install
 documentation.extra = ./make_doc.run

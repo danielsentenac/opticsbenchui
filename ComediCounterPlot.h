@@ -1,4 +1,4 @@
-#include <ComediCounter.h>
+#include <Comedi.h>
 #include <qwt_plot.h>
 #include <QTime>
 
@@ -17,7 +17,7 @@ public:
         NComediCounterData
     };
 
-    ComediCounterPlot( QWidget * = 0, ComediCounter * = 0, int = 0 );
+    ComediCounterPlot( QWidget * = 0, Comedi * = 0, int = 0 );
     const QwtPlotCurve *comedicounterCurve( int id ) const
     {
         return data[id].curve;
@@ -43,6 +43,6 @@ private:
     double timeData[HISTORY];
     double curValue;
     int dataCount;
-    Comedi  *comedi;
+    Comedi  *comedicounter;
     int output;
 };

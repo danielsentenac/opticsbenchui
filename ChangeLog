@@ -62,3 +62,7 @@ ver. 1.0
 2- Code recompiled with qt5
 3- Add CameraRaspi classes to manage raspberry camera V2
 4- Add RaspiDac classes to manage Texas instrument DAC81416EVM using SPI communication
+
+ver 1.1
+1- Arrange code to compile correctly without comedi and raspi
+2- Add USB Camera support using v4l2 driver

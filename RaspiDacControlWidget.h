@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef DACRASPICONTROLWIDGET_H
 #define DACRASPICONTROLWIDGET_H
 
-#include "RaspiDac.h"
+#include "Raspi.h"
 
 #include <QtSql>
 #include <QtWidgets>
@@ -34,7 +34,7 @@ class RaspiDacControlWidget : public QWidget
   RaspiDacControlWidget(QVector<QString>  *_raspiList = 0);
   ~RaspiDacControlWidget();
     
-  void setRaspi(RaspiDac *_raspi);
+  void setRaspi(Raspi *_raspi);
   void setRaspiList(QVector<QString>  *_raspiList);
 
   private slots:
@@ -60,7 +60,7 @@ class RaspiDacControlWidget : public QWidget
   QVector<QLineEdit*>   *raspivalueList;
   QVector<QLineEdit*>   *raspirvalueList;
   QVector<QString> *raspiList;
-  RaspiDac  *raspi;
+  Raspi  *raspi;
   QGridLayout *layout;
   QSignalMapper *signalMapper, *shiftsignalMapper;
 };

@@ -35,6 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "ComediWindow.h"
 #include "Comedi.h"
 #include "RaspiWindow.h"
+#include "Raspi.h"
 #include "Motor.h"
 #include "SuperK.h"
 #include "QsLog.h"
@@ -52,6 +53,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 #ifdef ADVANTECHDAC
 #include "DacAdvantech.h"
+#endif
+#ifdef USBCAMERA
+#include "CameraUSB.h"
 #endif
 #ifdef IEEE1394CAMERA
 #include "CameraIEEE1394.h"
@@ -133,15 +137,16 @@ class OpticsBenchUIMain : public QMainWindow
   SuperKWindow  *superkwindow;
   DacWindow     *dacwindow;
   ComediWindow  *comedicounterwindow, *comedidacwindow;
-  RaspiWindow *raspidacwindow;
+  RaspiWindow   *raspidacwindow;
   QTabWidget    *tab;
   AcquisitionWidget *acquisitionwidget;
   AnalysisWidget    *analysiswidget;
   Dac      *dac;
   Comedi   *comedicounter, *comedidac;
-  RaspiDac *raspidac;
+  Raspi    *raspidac;
   Motor    *motor;
   SuperK   *superk;
+  Camera   *cameraUSBMgr;
   Camera   *cameraIEEE1394Mgr;
   Camera   *cameraGiGEMgr;
   Camera   *cameraNeoMgr;

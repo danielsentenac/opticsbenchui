@@ -1,20 +1,11 @@
-/*
-This file is part of OpticsBenchUI.
+/// &file ACRSCom.hpp
+/// Class ACRSCom
+/// This class provides a set of operations to perform communications
+/// via a serial port.
 
-OpticsBenchUI is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-********************************************************************/
-
+// who      when     what
+// ----------------------------------------------------------------
+// C.MOINS  20/07/06  created
 
 #if !defined(_ACRSCOM_H)
 #define _ACRSCOM_H
@@ -31,7 +22,8 @@ public:
   /** Constructor
    */
   ACRSCom (string device, string settings):
-    ACCom (device, settings)
+    ACCom (device, settings),
+    _readDelay (DEFAULT_READ_DELAY)
   {
   }
   
@@ -40,7 +32,8 @@ public:
   ACRSCom (const ACRSCom & channel):
     ACCom (channel),
     _hCom (channel._hCom),
-    _commSetup (channel._commSetup)
+    _commSetup (channel._commSetup),
+    _commOldSetup (channel._commOldSetup), _readDelay (channel._readDelay)
   {
   }
 
@@ -56,10 +49,9 @@ public:
      @param ...
      The parametrization must be either of the following:\n
      - NULL : default mode\n
-     - "BYTE" : reads one byte message
   */
   virtual int Read (string & message, ...);
-
+  
   /**
      The Write method allows to write in the channel
      @param message
@@ -70,7 +62,6 @@ public:
      - "ECHO" : echo mode writes character by character, each write 
      followed by a single character read.\n 
      The message string must be finished with "\r" character
-     - "SIZE=XX" : writes the exact number of character determined by SIZE
   */
   virtual int Write (string & message, ...);
   
@@ -88,17 +79,10 @@ private:
   */
   virtual int WriteEcho (string message);
   
-  /** The ReadByte methods reads one byte message,
-      @param message
-      The one byte message string
+  /**
+     The default read delay
   */
-  virtual int ReadByte (string & message);
-
-  /** The ReadStream methods reads a stream byte message terminated with a carriage return/line feed
-      @param message
-      The one byte message string
-  */
-  virtual int ReadStream (string & message);
+  static const int DEFAULT_READ_DELAY;
 
   /**
      The Setup method initialize the RS232 properties
@@ -115,41 +99,28 @@ private:
   */
   struct termios _commSetup;
 
+  /**
+     former communication setup
+  */
+  struct termios _commOldSetup;
+
   /** 
       The internal baud rate (can be set by the server configuration)
   */
   int _ispeed;
 
   /**
-     The parity:
-     - ODD
-     - EVEN
-     - NONE 
+     The internal read delay known as vtime parameter 
+     (can be set by the server configuration)
   */
-  QString _parity;
-
-  /**
-     The bits number   
-  */
-  int _numBits;
-
-  /**
-     The stop bits 
-  */
-  int _stopBits;
-
-  /**
-     The character read delay 
-  */
-  int _vtime;
+  int _readDelay;
 
   /**
      The internal flow type can be : \n
      - NONE : default flow control\n
-     - XON/XOFF
-     - RTSCTS
+     - XONXOFF
   */
-  QString _flow;
+  char _flow[32];
 
 };
 

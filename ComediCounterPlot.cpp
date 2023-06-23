@@ -77,15 +77,15 @@ public:
     }
 };
 
-ComediCounterPlot::ComediCounterPlot( QWidget *parent, ComediCounter *_comedi, int _output ):
+ComediCounterPlot::ComediCounterPlot( QWidget *parent, Comedi *_comedi, int _output ):
     QwtPlot( parent ),
     dataCount( 0 )
     
 {
     output = _output;
-    comedi = _comedi;
+    comedicounter = _comedi;
     curValue = 0;
-    connect(comedi,SIGNAL(getOutputValues(void*)),this,SLOT(getOutputValues(void*)));
+    connect(comedicounter,SIGNAL(getOutputValues(void*)),this,SLOT(getOutputValues(void*)));
     setAutoReplot( false );
 
     QwtPlotCanvas *canvas = new QwtPlotCanvas();

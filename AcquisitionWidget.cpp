@@ -171,8 +171,8 @@ AcquisitionWidget::setComediDac(Comedi* _comedi){
   comedidac = _comedi;
 }
 void
-AcquisitionWidget::setRaspiDac(RaspiDac* _raspidac){
-  raspidac = _raspidac;
+AcquisitionWidget::setRaspiDac(Raspi* _raspi) {
+  raspidac = _raspi;
 }
 void
 AcquisitionWidget::setDelegates(){

@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "RaspiWindow.h"
 
-RaspiWindow::RaspiWindow( QMainWindow* parent, Qt::WindowFlags fl , RaspiDac *_raspi)
+RaspiWindow::RaspiWindow( QMainWindow* parent, Qt::WindowFlags fl , Raspi *_raspi)
   : QMainWindow( parent, fl )
 {
   raspiWidget = NULL;

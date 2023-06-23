@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets>
 #include "QsLog.h"
 #include <qtconcurrentrun.h>
+#include "Comedi.h"
 #include "ComediCounterPlot.h"
 
 using namespace QtConcurrent;

@@ -332,7 +332,7 @@ int DriverPI_C862::MoveAbs(string actuatorSetting,
 //
 // Stop implementation
 //
-// 1. send "ST<CR>" (stop smoothly) to stop the
+// 1. send "ST,AB<CR>" (stop smoothly) to stop the
 //    current movement
 //
 int DriverPI_C862::Stop(string actuatorSetting) const 
@@ -344,8 +344,8 @@ int DriverPI_C862::Stop(string actuatorSetting) const
   string command = "";
   char buffer[BUFFER_SIZE];
     
-  // create buffer with command AB1<CR>
-  sprintf(buffer, "ST\r");
+  // create buffer with command ST,AB<CR>
+  sprintf(buffer, "ST,AB\r");
     
   // first send the address code
   if (SendAddressCode() != 0) {
@@ -397,7 +397,7 @@ int DriverPI_C862::OperationComplete(string& rstateData,
   unsigned int status = 0;
   unsigned int switchStatus = 0;
   
-  // create buffer with command TP<CR>
+  // create buffer with command TS<CR>
   sprintf(buffer, "TS\r");
     
   // first send the address code
@@ -406,7 +406,6 @@ int DriverPI_C862::OperationComplete(string& rstateData,
     retStatus = -1;
     return retStatus;
   }
-    
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
@@ -473,7 +472,7 @@ int DriverPI_C862::OperationComplete(string& rstateData,
   {
     rlimitSwitch = IN_BETWEEN;
   }
- 
+  QLOG_DEBUG () << " rlimitSwitch = " << rlimitSwitch << endl;
   return retStatus;
 }
 
@@ -566,8 +565,9 @@ int DriverPI_C862::ConvertUnit(int unit,
 {
   QLOG_DEBUG() << "DriverPI_C862::ConvertUnit";
 
+  unit = 0;
   int retStatus = 0;
-  const float STEPS_FOR_ONE_MM = 145636;
+  const float STEPS_FOR_ONE_MM = 16690;
 
   if (unit == CUSTOM_UNIT)
   {

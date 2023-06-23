@@ -186,7 +186,7 @@ ComediCounterControlWidget::startCounting(int output) {
 }
 void 
 ComediCounterControlWidget::startPlot(int output) {
-  plot = new ComediCounterPlot(vBox, (ComediCounter*)comedi, output );
+  plot = new ComediCounterPlot(vBox, comedi, output );
   plot->setTitle( tr("Comedi Counter"));
   const int margin = 5;
   plot->setContentsMargins( margin, margin, margin, margin );

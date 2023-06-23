@@ -29,7 +29,7 @@ class RaspiWindow : public QMainWindow
     
     public:
   
-  RaspiWindow( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window , RaspiDac *_raspi = 0);
+  RaspiWindow( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window , Raspi *_raspi = 0);
   virtual ~RaspiWindow();
 
   RaspiDacControlWidget *raspiWidget;
@@ -61,6 +61,6 @@ class RaspiWindow : public QMainWindow
   void InitRun();
   QVector<QString>      *raspiList;
   QDockWidget *dockWidget;
-  RaspiDac *raspi;
+  Raspi *raspi;
 };
 #endif // RASPIWINDOW_H

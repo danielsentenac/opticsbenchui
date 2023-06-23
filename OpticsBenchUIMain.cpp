@@ -91,6 +91,22 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   connect(this,SIGNAL(setDbPath(QString)),superkwindow,SLOT(setDbPath(QString)));
 
   //
+  // Create USB Camera manager
+  //
+#ifdef USBCAMERA
+  cameraUSBMgr = new CameraUSB();
+  cameraUSBMgr->findCamera();
+  QLOG_INFO() << "Found " <<  cameraUSBMgr->num << " USB camera";
+  
+  for (int i = 0 ; i < cameraUSBMgr->num; i++) {
+    Camera *camera = new CameraUSB();
+    camera->setCamera(cameraUSBMgr->cameralist.at(i),i);
+    cameraList.push_back(camera);
+    isopencamerawindow.push_back(false);
+    camerawindowList.push_back(NULL);
+  }
+#endif
+  //
   // Create IEEE1394 Camera manager
   //
 #ifdef IEEE1394CAMERA
@@ -277,6 +293,16 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   menuOperations->addAction("Acquisition", this, SLOT(openacquisition()));
   menuOperations->addAction("Analysis", this, SLOT(openanalysis()) );
   int cameranumber = 0;
+#ifdef USBCAMERA
+  for (int i = 0 ; i < cameraUSBMgr->num; i++) {
+    QString selectedCamera = QString(cameraUSBMgr->vendorlist.at(i)) + " / " + 
+      QString(cameraUSBMgr->modelist.at(i));
+    QAction *action = new QAction(selectedCamera, this);
+    menuInstruments->addAction(action);
+    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(action, cameranumber++);
+  }
+#endif
  #ifdef IEEE1394CAMERA
   for (int i = 0 ; i < cameraIEEE1394Mgr->num; i++) {
     QString selectedCamera = QString(cameraIEEE1394Mgr->vendorlist.at(i)) + " / " + 

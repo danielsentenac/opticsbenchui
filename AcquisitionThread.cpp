@@ -69,8 +69,8 @@ AcquisitionThread::setComediDac(Comedi* _comedi){
   comedidac = _comedi;
 }
 void
-AcquisitionThread::setRaspiDac(RaspiDac* _raspidac){
-  raspidac = _raspidac;
+AcquisitionThread::setRaspiDac(Raspi* _raspi){
+  raspidac = _raspi;
 }
 void 
 AcquisitionThread::setFile(QString _filename, int _filenumber) {

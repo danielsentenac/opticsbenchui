@@ -24,9 +24,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets>
 #include "QsLog.h"
 
-class RaspiDac : public QObject
+class RaspiDac : public Raspi
 {
-   Q_OBJECT   
+   Q_OBJECT 
+     
     public:
   RaspiDac(QString dbpath);
   ~RaspiDac();

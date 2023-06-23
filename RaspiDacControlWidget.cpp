@@ -54,7 +54,7 @@ RaspiDacControlWidget::~RaspiDacControlWidget()
   QLOG_DEBUG ( ) << "Deleting RaspiDacControlWidget";
 }
 void
-RaspiDacControlWidget::setRaspi(RaspiDac *_raspi) {
+RaspiDacControlWidget::setRaspi(Raspi *_raspi) {
   raspi = _raspi;
   connect(raspi,SIGNAL(getDescription(QString)),this,SLOT(getDescription(QString)));
   connect(raspi,SIGNAL(getOutputs(int)),this,SLOT(getOutputs(int)));
