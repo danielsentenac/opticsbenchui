@@ -1,0 +1,187 @@
+#include <QCoreApplication>
+#include <QCamera>
+#include <QCameraImageCapture>
+#include <QImage>
+#include <QDebug>
+#include "CameraUSB.h"
+
+CameraUSB::CameraUSB()
+    : Camera(),
+      camera(nullptr),
+      imageCapture(nullptr),
+      cameraIndex(-1),
+      imageWidth(0),
+      imageHeight(0)
+{
+    cameras = QCameraInfo::availableCameras();
+    viewfinder = new QCameraViewfinder();
+}
+
+CameraUSB::~CameraUSB()
+{
+    stop();
+}
+
+void CameraUSB::stop()
+{
+    if (camera) {
+        camera->stop();
+        delete camera;
+        camera = nullptr;
+    }
+    
+    if (imageCapture) {
+        delete imageCapture;
+        imageCapture = nullptr;
+    }
+}
+
+int CameraUSB::findCamera()
+{
+    if (cameras.isEmpty()) {
+        emit showWarning("No cameras found.");
+        return -1;
+    }
+    
+    // Choose the first available camera
+    cameraIndex = 0;
+    
+    return cameraIndex;
+}
+
+void CameraUSB::setCamera(void *_camera, int _id)
+{
+    stop();
+    
+    if (_id < 0 || _id >= cameras.size()) {
+        emit showWarning("Invalid camera ID.");
+        return;
+    }
+    
+    camera = (QCamera*)_camera;
+    cameraIndex = _id;
+    
+    imageCapture = new QCameraImageCapture(camera);
+    
+    
+}
+
+void CameraUSB::getFeatures()
+{
+    // Not implemented
+}
+
+uchar* CameraUSB::getSnapshot()
+{
+    // Not implemented
+    return nullptr;
+}
+
+ushort* CameraUSB::getSnapshot16()
+{
+    // Not implemented
+    return nullptr;
+}
+
+int* CameraUSB::getSnapshot32()
+{
+    // Not implemented
+    return nullptr;
+}
+
+void CameraUSB::setImageSize(const int &_imageWidth, const int &_imageHeight)
+{
+    imageWidth = _imageWidth;
+    imageHeight = _imageHeight;
+    
+    // Set the image capture's capture destination format to QImage
+    imageCapture->setCaptureDestination(QCameraImageCapture::CaptureToBuffer);
+    
+    // Set the image capture's capture resolution
+    QSize resolution(imageWidth, imageHeight);
+    viewfinderSettings.setResolution(imageWidth, imageHeight);
+    viewfinderSettings.setMaximumFrameRate(5.0);
+    viewfinderSettings.setPixelFormat(QVideoFrame::Format_YUYV);
+    camera->setViewfinderSettings(viewfinderSettings);
+}
+
+void CameraUSB::setFeature(int feature, double value)
+{
+    // Not implemented
+}
+
+void CameraUSB::setMode(int feature, bool value)
+{
+    // Not implemented
+}
+
+void CameraUSB::getProps()
+{
+    // Not implemented
+}
+
+void CameraUSB::run()
+{
+    
+    // Find the camera
+    int cameraId = findCamera();
+    if (cameraId == -1) {
+        return;
+    }
+    
+    // Create a QCamera object for the chosen camera
+    QCamera *camera = new QCamera(cameras[cameraId]);
+    
+    // Set the camera
+    setCamera(camera, cameraId);
+    
+    camera->setViewfinder(viewfinder);
+    // Start the camera
+    camera->start();
+    
+    
+    // Cleanup and exit
+    cleanup_and_exit();
+}
+
+int CameraUSB::connectCamera()
+{
+    // Not implemented
+    return -1;
+}
+
+int CameraUSB::acquireImage()
+{
+   
+        
+     if (!camera || !imageCapture)
+    {
+        emit showWarning("Camera or image capture is not initialized.");
+        return -1;
+    }
+
+    // Capture an image
+    imageCapture->capture();
+
+    // Connect a slot to handle the captured image
+    QObject::connect(imageCapture, &QCameraImageCapture::imageCaptured, [this](int id, const QImage& image)
+    {
+        // Emit the captured image
+        emit getImage(image);
+
+        // Disconnect the slot
+        QObject::disconnect(imageCapture, &QCameraImageCapture::imageCaptured, nullptr, nullptr);
+    });
+    
+    
+    return 0;
+}
+
+void CameraUSB::cleanup_and_exit()
+{
+    stop();
+    
+    // Clean up any resources
+    
+}
+
