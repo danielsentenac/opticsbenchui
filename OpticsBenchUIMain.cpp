@@ -34,6 +34,8 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   isopenanalysiswidget = false; 
   isopenacquisitionwidget = false;
   QDir qdir;
+
+  resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
    
 #ifdef ADVANTECHDAC
   //
@@ -213,6 +215,22 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   }
 #endif
 
+  //
+  // Create ALLIEDVISION Camera manager
+  //
+#ifdef ALLIEDVISIONCAMERA
+  cameraAlliedVisionMgr = new CameraAlliedVision();
+  cameraAlliedVisionMgr->findCamera();
+  QLOG_INFO() << "Found " <<  cameraAlliedVisionMgr->num << " ALLIED VISION camera";
+  for (int i = 0 ; i < cameraAlliedVisionMgr->num; i++) {
+    Camera *camera = new CameraAlliedVision();
+    camera->setCamera(cameraAlliedVisionMgr->cameralist.at(i),i);
+    cameraList.push_back(camera);
+    isopencamerawindow.push_back(false);
+    camerawindowList.push_back(NULL);
+  }
+#endif
+
   analysiswidget = new AnalysisWidget();
   analysiswidget->setObjectName("Analysis");
   acquisitionwidget = new AcquisitionWidget(qdir.currentPath());
@@ -373,8 +391,16 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
     signalMapper->setMapping(action, cameranumber++);
   }
 #endif
-
-
+#ifdef ALLIEDVISIONCAMERA
+  for (int i = 0 ; i < cameraAlliedVisionMgr->num; i++) {
+    QString selectedCamera = QString(cameraAlliedVisionMgr->vendorlist.at(i)) + " / " +
+      QString(cameraAlliedVisionMgr->modelist.at(i));
+    QAction *action = new QAction(selectedCamera, this);
+    menuInstruments->addAction(action);
+    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(action, cameranumber++);
+  }
+#endif
 
   connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(openCameraWindow(int)));
 

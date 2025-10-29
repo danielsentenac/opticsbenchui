@@ -78,6 +78,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef RASPICAMERA
 #include "CameraRaspi.h"
 #endif
+#ifdef ALLIEDVISIONCAMERA
+#include "CameraAlliedVision.h"
+#endif
 
 class OpticsBenchUIMain : public QMainWindow
 {
@@ -154,6 +157,7 @@ class OpticsBenchUIMain : public QMainWindow
   Camera   *cameraRAPTORFALCONMgr;
   Camera   *cameraRAPTORNINOX640Mgr;
   Camera   *cameraRaspiMgr;
+  Camera   *cameraAlliedVisionMgr;
   QVector<Camera*> cameraList;
   QVector<CameraWindow*> camerawindowList;
   

@@ -12,7 +12,7 @@ CONFIG          += 	qt thread warn_off release
 
 DEPENDPATH 	+= .
 
-QT      	+= 	widgets multimedia multimediawidgets sql concurrent
+QT      	+= 	svg widgets multimedia multimediawidgets sql concurrent 
 
 DEFINES 	+=      OPTICSBENCHUIVERSION=\\\"$$VERSION\\\"
 
@@ -42,6 +42,9 @@ DEFINES 	+= 	QT_NO_DEBUG_OUTPUT
 #  RaspiCam camera support
 #DEFINES         +=      RASPICAMERA
 
+#  ALLIED VISION camera support
+DEFINES         +=      ALLIEDVISIONCAMERA
+
 # SuperK support
 #DEFINES         +=      SUPERK
 
@@ -62,39 +65,41 @@ QMAKE_CXXFLAGS 	+= 	-g `pkg-config --cflags glib-2.0` -fPIC
 
 QMAKE_LFLAGS  += -fPIC
 # External packages
-HDF5_LIB_PATH 	 =  	/usr/lib/arm-linux-gnueabihf/hdf5/serial/lib
+HDF5_LIB_PATH 	 =  	/usr/lib/aarch64-linux-gnu/hdf5/serial/lib
 COMEDI_LIB_PATH  =      /usr/local/lib
-QWTPLOT_LIB_PATH =      /usr/lib
+QWTPLOT_LIB_PATH =      /usr/local/qwt-6.1.5/lib
 ADVDAQ_LIB_PATH  =	/usr/lib
 DC1394_LIB_PATH  =      /usr/local/lib
-V4L2_LIB_PATH    =      /usr/lib64
+V4L2_LIB_PATH    =      /usr/lib
 RAW1394_LIB_PATH =	/usr/local/lib
 ARAVIS_LIB_PATH  =      /usr/local/lib
 STANDA_LIB_PATH  =      /usr/local/lib
-XIMC_LIB_PATH    =      /usr/lib64
 USB_LIB_PATH     =      /usr/lib
 GLIB_LIB_PATH	 =      /usr/lib
 NEO_LIB_PATH     =	/usr/local/lib
 RAPTOR_LIB_PATH  =      /usr/local/xclib/lib
 RASPI_LIB_PATH   =      /usr/local/lib
+ALLIEDVISION_LIB_PATH = /home/pi/Downloads/VimbaX_2025-1/api/lib
 SPI_LIB_PATH     =      /usr/local/lib
 
-HDF5_INC_PATH 	 =  	/usr/lib/arm-linux-gnueabihf/hdf5/serial/include
+
+HDF5_INC_PATH 	 =  	/usr/lib/aarch64-linux-gnu/hdf5/serial/include
 COMEDI_INC_PATH  =      /usr/local/include
-QWTPLOT_INC_PATH =      /usr/include/qwt
+QWTPLOT_INC_PATH =      /usr/local/qwt-6.1.5/include
 ADVDAQ_INC_PATH  =	/usr/local/include/Advantech
 DC1394_INC_PATH  =      /usr/local/include/dc1394
 V4L2_INC_PATH    =      /usr/include
 RAW1394_INC_PATH =	/usr/local/include/libraw1394/src
 ARAVIS_INC_PATH  =      /usr/local/include/aravis-0.2
 STANDA_INC_PATH  =      /usr/local/include
-XIMC_INC_PATH    =      /usr/local/include
 USB_INC_PATH     =      /usr/local/include
 GLIB_INC_PATH	 =      /usr/include/glib-2.0 /usr/lib/glib-2.0/include
 NEO_INC_PATH	 =	/usr/local/include
 RAPTOR_INC_PATH  =      /usr/local/xclib/inc
 RASPI_INC_PATH   =      /usr/local/include/raspicam
+ALLIEDVISION_INC_PATH = /home/pi/Downloads/VimbaX_2025-1/api/include
 SPI_INC_PATH  =         /usr/local/include
+
 
 HEADERS 	+= 	OpticsBenchUIMain.h \
 			Camera.h \
@@ -106,6 +111,7 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
                         CameraRAPTORFALCON.h \
                         CameraRAPTORNINOX640.h \
                         CameraRASPI.h \
+                        CameraAlliedVision.h \
 			CameraWindow.h \
 			CameraControlWidget.h \
 			CameraPropWidget.h \
@@ -139,7 +145,6 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			DriverPI_C509.h \
 			DriverMicos_Pollux.h \
 			DriverPI_C862.h \
-			DriverStanda_uSMC2.h \
 			DriverNewPort_AGUC2.h \
                         SuperK.h \
                         DriverSuperK.h \
@@ -169,6 +174,7 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
                         CameraRAPTORFALCON.cpp \
                         CameraRAPTORNINOX640.cpp \
                         CameraRASPI.cpp \
+                        CameraAlliedVision.cpp \
 			CameraWindow.cpp \
 			CameraControlWidget.cpp \
 			CameraPropWidget.cpp \
@@ -197,7 +203,6 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			DriverPI_C509.cpp \
 			DriverMicos_Pollux.cpp \
 			DriverPI_C862.cpp \
-			DriverStanda_uSMC2.cpp \
 			DriverNewPort_AGUC2.cpp \
 			DriverPI_E725.cpp \
                         SuperK.cpp \
@@ -224,7 +229,6 @@ INCLUDEPATH 	+=	\
                         $$QWTPLOT_INC_PATH \
 			$$ADVDAQ_INC_PATH \
 			$$STANDA_INC_PATH \
-                        $$XIMC_INC_PATH \
                         $$V4L2_INC_PATH \
 			$$RAW1394_INC_PATH \
 			$$DC1394_INC_PATH \
@@ -234,25 +238,26 @@ INCLUDEPATH 	+=	\
 			$$NEO_INC_PATH \
                         $$RAPTOR_INC_PATH \
                         $$RASPI_INC_PATH \
-                        $$SPI_INC_PATH
+                        $$ALLIEDVISION_INC_PATH \
+                        $$SPI_INC_PATH 
 
 LIBS 		+= 	 \
 #                       -L$$COMEDI_LIB_PATH -lcomedi \
 #                       -L$$SPI_LIB_PATH -lbcm2835 \
-                        -L$$QWTPLOT_LIB_PATH -lqwt-qt5 \
+                        -L$$QWTPLOT_LIB_PATH -lqwt \
 #                       -L$$ADVDAQ_LIB_PATH -ladvdaq \
 			-L$$USB_LIB_PATH -lusb-1.0 \
 #                       -L$$GLIB_LIB_PATH -lgobject-2.0 \
 #                       -L$$DC1394_LIB_PATH -ldc1394 \
-                        -L$$V4L2_LIB_PATH -lv4l2 \
+#                       -L$$V4L2_LIB_PATH -lv4l2 \
 #                       -L$$RAW1394_LIB_PATH -lraw1394 \
 #                       -L$$ARAVIS_LIB_PATH -laravis-0.2 \
 #			-L$$STANDA_LIB_PATH -lusmc \
-                        -L$$XIMC_LIB_PATH -lximc \
-                        -L$$HDF5_LIB_PATH -lhdf5_hl -lhdf5  
+                        -L$$HDF5_LIB_PATH -lhdf5_hl -lhdf5 \ 
 # 			-L$$NEO_LIB_PATH -latcore \
 #                       -L$$RASPI_LIB_PATH -lraspicam \
-#                       -lwiringPi
+                        -L$$ALLIEDVISION_LIB_PATH -lVmbCPP 
+#                       -lwiringPi 
 #                       -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64_pic.a -Wl,-Bdynamic \
 #                       -Wl,-Bstatic $$SPI_LIB_PATH/libbcm2835.a -Wl,-Bdynamic
 
