@@ -1,10 +1,10 @@
-                         INSTALLING OpticsBenchUI 0.1
+                         INSTALLING OpticsBenchUI 1.1
 
 External packages needed prior to installation:
 
-1) Graphical user interface is based on Qt 4.7.2 for Linux. Install it 
-in dynamic linking mode (see documentation)
-http://doc.qt.nokia.com/4.7/
+1) Graphical user interface is based on Qt5 for Linux. 
+Install it using 
+git clone git://code.qt.io/qt/qt5.git
 
 2) Firewire Camera compliant with DCAM (IIDC) standard is based on libdc1394
 http://damien.douxchamps.net/ieee1394/libdc1394/
@@ -18,9 +18,9 @@ http://www.comedi.org
 5) HDF5 data library to manage data collection
 http://www.hdfgroup.org/HDF5/
 
-OpticsBenchUI is compiled within the Qt framework, using a requirement file called
+OpticsBenchUI is compiled within the Qt5 framework, using a requirement file called
 OpticsBenchUI.pro. First you need to update OpticsBenchUI.pro according to 
-libdc1394,advdaq,comedi,hdf5 libraries and include path installations (INCLUDEPATH, LIBS tags)
+libdc1394,advdaq,comedi,hdf5 libraries and modify it with your personal path installations (INCLUDEPATH, LIBS tags)
 
 OpticsBenchUI installation steps:
 
