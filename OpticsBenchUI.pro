@@ -65,7 +65,7 @@ QMAKE_CXXFLAGS 	+= 	-g `pkg-config --cflags glib-2.0` -fPIC
 
 QMAKE_LFLAGS  += -fPIC
 # External packages
-HDF5_LIB_PATH 	 =  	/usr/lib/aarch64-linux-gnu/hdf5/serial/lib
+HDF5_LIB_PATH 	 =  	/home/pi/miniforge3/lib
 COMEDI_LIB_PATH  =      /usr/local/lib
 QWTPLOT_LIB_PATH =      /usr/local/qwt-6.1.5/lib
 ADVDAQ_LIB_PATH  =	/usr/lib
@@ -83,7 +83,7 @@ ALLIEDVISION_LIB_PATH = /home/pi/Downloads/VimbaX_2025-1/api/lib
 SPI_LIB_PATH     =      /usr/local/lib
 
 
-HDF5_INC_PATH 	 =  	/usr/lib/aarch64-linux-gnu/hdf5/serial/include
+HDF5_INC_PATH 	 =  	/home/pi/miniforge3/include
 COMEDI_INC_PATH  =      /usr/local/include
 QWTPLOT_INC_PATH =      /usr/local/qwt-6.1.5/include
 ADVDAQ_INC_PATH  =	/usr/local/include/Advantech
