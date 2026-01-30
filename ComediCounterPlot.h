@@ -1,6 +1,10 @@
-#include <Comedi.h>
-#include <qwt_plot.h>
+#ifndef COMEDICOUNTERPLOT_H
+#define COMEDICOUNTERPLOT_H
+
+#include "Comedi.h"
+
 #include <QTime>
+#include <qwt_plot.h>
 
 #define HISTORY 1200 // 1/10 seconds
 
@@ -17,14 +21,16 @@ public:
         NComediCounterData
     };
 
-    ComediCounterPlot( QWidget * = 0, Comedi * = 0, int = 0 );
+    explicit ComediCounterPlot(QWidget *parent = nullptr,
+                               Comedi *comedi = nullptr,
+                               int output = 0);
     const QwtPlotCurve *comedicounterCurve( int id ) const
     {
         return data[id].curve;
     }
 
 protected:
-    void timerEvent( QTimerEvent *e );
+    void timerEvent( QTimerEvent *e ) override;
     QTime upTime() const;
 
 private slots:
@@ -46,3 +52,5 @@ private:
     Comedi  *comedicounter;
     int output;
 };
+
+#endif

@@ -17,10 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef COMEDICOUNTER
 #include "ComediCounter.h"
 #include <unistd.h>
-ComediCounter::ComediCounter(QString _appDirPath)
-  : Comedi()				       
-{ 
-  path = _appDirPath;
+ComediCounter::ComediCounter(QString appDirPath)
+    : Comedi() {
+  path = appDirPath;
   comeditype = "COMEDICOUNTER";
   
   // Connect comedi db
@@ -29,12 +28,18 @@ ComediCounter::ComediCounter(QString _appDirPath)
 
 ComediCounter::~ComediCounter()
 {
-  QLOG_DEBUG ( ) <<"Deleting ComediCounter";
- 
-  for (int i = 0 ; i < comedivalues.size(); i++)
-    if (comedivalues.at(i)) delete comedivalues.at(i);
-  for (int i = 0 ; i < device.size(); i++)
-    if (device.at(i))  comedi_close(device.at(i));
+  QLOG_DEBUG() << "Deleting ComediCounter";
+
+  for (int i = 0; i < comedivalues.size(); i++) {
+    if (comedivalues.at(i)) {
+      delete comedivalues.at(i);
+    }
+  }
+  for (int i = 0; i < device.size(); i++) {
+    if (device.at(i)) {
+      comedi_close(device.at(i));
+    }
+  }
   device.clear();
   comedivalues.clear();
   comediSettings.clear();
@@ -52,12 +57,17 @@ ComediCounter::~ComediCounter()
   QSqlDatabase::removeDatabase(path);
 }
 void 
-ComediCounter::setDbPath(QString _path){
-
-  for (int i = 0 ; i < comedivalues.size(); i++)
-    if (comedivalues.at(i)) delete comedivalues.at(i); 
-  for (int i = 0 ; i < device.size(); i++)
-    if (device.at(i))  comedi_close(device.at(i));
+ComediCounter::setDbPath(QString path) {
+  for (int i = 0; i < comedivalues.size(); i++) {
+    if (comedivalues.at(i)) {
+      delete comedivalues.at(i);
+    }
+  }
+  for (int i = 0; i < device.size(); i++) {
+    if (device.at(i)) {
+      comedi_close(device.at(i));
+    }
+  }
   device.clear();
   comedivalues.clear();
   comediSettings.clear();
@@ -75,7 +85,7 @@ ComediCounter::setDbPath(QString _path){
     db.close();
   }
   QSqlDatabase::removeDatabase(path);
-  path = _path;
+  this->path = path;
   // Connect comedi db
   dbConnexion();
 }

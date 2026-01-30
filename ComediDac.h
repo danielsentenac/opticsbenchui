@@ -29,28 +29,28 @@ class ComediDac : public Comedi
 {
   Q_OBJECT
     
-    public:
-  ComediDac(QString dbpath);
-  ~ComediDac();
+public:
+  explicit ComediDac(QString dbpath);
+  ~ComediDac() override;
 
-  bool connectComedi(QString newcomedi);
-  bool resetComedi(QString newcomedi);
-  bool setComediValue(QString newcomedi, int output, void *value);
-  bool getComediValue(QString newcomedi, int output, double &value);
-  bool updateDBValues(QString newcomedi);
-  void setDbPath(QString _path);
+  bool connectComedi(QString newcomedi) override;
+  bool resetComedi(QString newcomedi) override;
+  bool setComediValue(QString newcomedi, int output, void *value) override;
+  bool getComediValue(QString newcomedi, int output, double &value) override;
+  bool updateDBValues(QString newcomedi) override;
+  void setDbPath(QString path) override;
   
-  public slots:
+public slots:
 
- signals:
+signals:
   void getDescription(QString description);
   void showWarning(QString message);
   void getOutputs(int outputs,QString);
   void getOutputValues(void *comedivalues);
 
- private:
+private:
 
-  void dbConnexion();
+  void dbConnexion() override;
   QSqlDatabase connectDb(QString path) {
      QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
      QLOG_INFO ( ) << "ComediDac::dbConnexion> Db path : " << path;

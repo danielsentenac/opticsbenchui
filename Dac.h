@@ -26,7 +26,8 @@ class Dac : public QObject
 {
   Q_OBJECT
     
-    public:
+public:
+  ~Dac() override = default;
 
   virtual bool connectDac(QString newdac) = 0;
   virtual bool resetDac(QString newdac) = 0;
@@ -34,20 +35,20 @@ class Dac : public QObject
   virtual bool setDacRValue(QString newdac, int output, double rvalue) = 0;
   virtual float getDacValue(QString newdac,int output) = 0;
   virtual bool updateDBValues(QString newdac) = 0;
-  virtual void setDbPath(QString _path) = 0;
+  virtual void setDbPath(QString path) = 0;
   
   // parameters
   QString path;
 
-  public slots:
+public slots:
 
- signals:
+signals:
   void getDescription(QString description);
   void showWarning(QString message);
   void getOutputs(int outputs,QString);
   void getOutputValues(QVector<float> *dacvalues);
 
- protected:
+protected:
    virtual void dbConnexion() = 0;
 
 };

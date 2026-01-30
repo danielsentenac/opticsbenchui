@@ -17,106 +17,126 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "AcquisitionSequence.h"
 
-AcquisitionSequence::AcquisitionSequence( )
-{
-  reset = true;
-  instrumentName = "";
-  instrumentType = "";
-  settings = "";
-  motorAction = "";
-  motorValue = 0;
-  superkAction = "";
-  superkPowerValue = -99999;
-  superkNdValue = -99999;
-  superkSwpValue = -99999;
-  superkLwpValue = -99999;
-  superkCwValue = -99999;
-  superkBwValue = -99999;
-  superkRPowerValue = -99999;
-  superkRNdValue = -99999;
-  superkRSwpValue = -99999;
-  superkRLwpValue = -99999;
-  superkRCwValue = -99999;
-  superkRBwValue = -99999;
-  dacValue = 0;
-  dacRValue = 0;
-  dacOutput = 0;
-  comediValue = 0;
-  comediData = 0;
-  comediOutput = 0;
-  scanplan = "";
-  loop = -1;
-  loopends = -1;
-  loopNumber = -1;
-  remainingLoops = -1;
-  datagroup = "";
-  dataname = "";
-  group = "";
-  position = 0;
-  inc_group = 0;
-  image = NULL;
-  image16 = NULL;
-  image32 = NULL;
-  data_2D_FLOAT = NULL;
-  data_2D_FLOAT_DIM_X = 0;
-  data_2D_FLOAT_DIM_Y = 0;
-  refgrp = 0;
-  grp = 0;
-  tmpgrp = 0;
-  grpname = "";
-  avg = "";
-  slmimage = NULL;
-  fullpath="";
-  imagepath = "";
-  imagetype = "";
-  imgnum = 0;
-  keepzero = "";
-  startnum = 0;
-  stepnum = 0;
-  slmwidth = 0;
-  slmheight = 0;
-  screen_x = 0;
-  screen_y = 0;
-  treatment = "";
-  avgOp = "";
-  avgSuccess = -1;
-  avgLeft = -1;
-  avgRight = -1;
-  instrumentRef = "";
-  sleep = 0;
-  fileParser  = new FileParser();
+namespace {
+template <typename T>
+void ReleaseBuffer(T*& buffer) {
+  if (buffer) {
+    free(buffer);
+    buffer = nullptr;
+  }
 }
+}  // namespace
 
-AcquisitionSequence::~AcquisitionSequence()
-{
-  QLOG_DEBUG ( ) <<"Deleting AcquisitionSequence";
- 
-    if (image) { free(image); image = NULL;}
-    if (image16) { free(image16); image16 = NULL;}
-    if (image32) { free(image32); image32 = NULL;}
-    if (data_2D_FLOAT) { free(data_2D_FLOAT); data_2D_FLOAT = NULL;}
-    if (slmimage)  { free(slmimage);slmimage  = NULL;}
-    delete fileParser;
+AcquisitionSequence::AcquisitionSequence()
+    : etime(0.0),
+      record(0),
+      seq_record(0),
+      status(false),
+      instrumentName(""),
+      instrumentType(""),
+      settings(""),
+      scanplan(""),
+      loop(-1),
+      loopends(-1),
+      loopNumber(-1),
+      remainingLoops(-1),
+      loopSnake(false),
+      loopReverse(false),
+      fileParser(new FileParser()),
+      avg(""),
+      reset(true),
+      treatment(""),
+      avgOp(""),
+      avgSuccess(-1),
+      avgRight(-1),
+      avgLeft(-1),
+      instrumentRef(""),
+      sleep(0),
+      motorAction(""),
+      superkAction(""),
+      motorValue(0.0f),
+      position(0.0f),
+      superkPowerValue(-99999),
+      superkNdValue(-99999),
+      superkSwpValue(-99999),
+      superkLwpValue(-99999),
+      superkCwValue(-99999),
+      superkBwValue(-99999),
+      superkRPowerValue(-99999),
+      superkRNdValue(-99999),
+      superkRSwpValue(-99999),
+      superkRLwpValue(-99999),
+      superkRCwValue(-99999),
+      superkRBwValue(-99999),
+      dacValue(0.0),
+      dacRValue(0.0),
+      dacOutput(0),
+      comediValue(0),
+      comediData(0.0),
+      comediOutput(0),
+      fullpath(""),
+      imagepath(""),
+      imagetype(""),
+      keepzero(""),
+      slmimage(nullptr),
+      imgnum(0),
+      startnum(0),
+      stepnum(0),
+      slmwidth(0),
+      slmheight(0),
+      screen_x(0),
+      screen_y(0),
+      slmLabel(nullptr),
+      data_2D_FLOAT(nullptr),
+      data_2D_FLOAT_DIM_X(0),
+      data_2D_FLOAT_DIM_Y(0),
+      data_2D_FLOAT_MIN(0.0f),
+      data_2D_FLOAT_MAX(0.0f),
+      image(nullptr),
+      image16(nullptr),
+      image32(nullptr),
+      imageMin(0),
+      imageMax(0),
+      imageWidth(0),
+      imageHeight(0),
+      group(""),
+      datagroup(""),
+      dataname(""),
+      inc_group(0),
+      refgrp(0),
+      grp(0),
+      tmpgrp(0),
+      grpname("") {}
+
+AcquisitionSequence::~AcquisitionSequence() {
+  QLOG_DEBUG() << "Deleting AcquisitionSequence";
+
+  ReleaseBuffer(image);
+  ReleaseBuffer(image16);
+  ReleaseBuffer(image32);
+  ReleaseBuffer(data_2D_FLOAT);
+  delete slmimage;
+  delete fileParser;
 }
 void 
 AcquisitionSequence::setImage(uchar* buffer, int width, int height) {
-  if (image) { free(image); image = NULL;}
-  if (image16) { free(image16); image16 = NULL;}
-  if (image32) { free(image32); image32 = NULL;}
-  if (buffer != NULL) {
+  ReleaseBuffer(image);
+  ReleaseBuffer(image16);
+  ReleaseBuffer(image32);
+  if (buffer != nullptr) {
     imageWidth = width;
     imageHeight = height;
     image = (uchar*) malloc (sizeof(uchar) * imageWidth * imageHeight);
     memcpy(image,buffer,sizeof(uchar) * imageWidth * imageHeight);
   }
   else
-   QLOG_WARN () << "AcquisitionSequence::setImage> Input buffer is NULL..";
+    QLOG_WARN() << "AcquisitionSequence::setImage> Input buffer is NULL..";
 }
 void
 AcquisitionSequence::setImage16(ushort* buffer16, int width, int height) {
-  if (image16) { free(image16); image16 = NULL;}
-  if (image) { free(image); image = NULL;}
-  if (buffer16 != NULL) {
+  ReleaseBuffer(image16);
+  ReleaseBuffer(image);
+  if (buffer16 != nullptr) {
     imageWidth = width;
     imageHeight = height;
     image16 = (ushort*) malloc (sizeof(ushort) * imageWidth * imageHeight);
@@ -124,20 +144,20 @@ AcquisitionSequence::setImage16(ushort* buffer16, int width, int height) {
    // image16 = buffer16;
   }
   else
-   QLOG_WARN () << "AcquisitionSequence::setImage32> Input buffer16 is NULL..";
+    QLOG_WARN() << "AcquisitionSequence::setImage32> Input buffer16 is NULL..";
 }
 void
 AcquisitionSequence::setImage32(int* buffer32, int width, int height) {
-  if (image32) { free(image32); image32 = NULL;}
-  if (image) { free(image); image = NULL;}
-  if (buffer32 != NULL) {
+  ReleaseBuffer(image32);
+  ReleaseBuffer(image);
+  if (buffer32 != nullptr) {
     imageWidth = width;
     imageHeight = height;
     image32 = (int*) malloc (sizeof(int) * imageWidth * imageHeight);
     memcpy(image32,buffer32,sizeof(int) * imageWidth * imageHeight);
   }
   else
-   QLOG_WARN () << "AcquisitionSequence::setImage32> Input buffer32 is NULL..";
+    QLOG_WARN() << "AcquisitionSequence::setImage32> Input buffer32 is NULL..";
 }
 
 void AcquisitionSequence::setImageMin(int _imageMin)
@@ -155,6 +175,7 @@ AcquisitionSequence::getImage() {
 }
 uchar*
 AcquisitionSequence::getImageFromFile() {
+  delete slmimage;
   slmimage = new QImage(fullpath);
   imageWidth = slmimage->width();
   imageHeight = slmimage->height();
@@ -172,7 +193,7 @@ AcquisitionSequence::getImage32() {
 
 bool 
 AcquisitionSequence::getFileData() {
-  fileParser->getFileData();
+  return fileParser->getFileData();
 }
 void 
 AcquisitionSequence::prepare() {
@@ -196,6 +217,10 @@ AcquisitionSequence::prepare() {
         if (loopNumber == 0)
           loopends = LOOP_END;
         remainingLoops = loopNumber;
+      }
+      else if (subscanplanList.at(j) == "LOOPMODE" &&
+               subscanplanList.size() > j + 1) {
+        loopSnake = (subscanplanList.at(j + 1) == "SNAKE");
       }
     }
   } 

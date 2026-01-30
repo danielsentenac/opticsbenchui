@@ -26,28 +26,29 @@ class Comedi : public QObject
 {
   Q_OBJECT
     
-    public:
+public:
+  ~Comedi() override = default;
 
   virtual bool connectComedi(QString newcomedi) = 0;
   virtual bool resetComedi(QString newcomedi) = 0;
   virtual bool setComediValue(QString newcomedi, int output, void *value) = 0;
   virtual bool getComediValue(QString newcomedi, int output, double &value) = 0;
   virtual bool updateDBValues(QString newcomedi) = 0;
-  virtual void setDbPath(QString _path) = 0;
+  virtual void setDbPath(QString path) = 0;
   
   // parameters
   QString path;
   QString comeditype;
 
-  public slots:
+public slots:
 
- signals:
+signals:
   void getDescription(QString description);
   void showWarning(QString message);
   void getOutputs(int outputs,QString);
   void getOutputValues(void *comedivalues);
 
- protected:
+protected:
    virtual void dbConnexion() = 0;
 
 };

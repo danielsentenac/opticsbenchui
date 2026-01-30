@@ -31,33 +31,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 class AcquisitionThread : public QThread
 {
   Q_OBJECT
-    
-    public:
-  AcquisitionThread(QObject* parent = 0);
-  ~AcquisitionThread();
 
-  void setCamera(QVector<Camera*> _cameraList);
-  void setMotor(Motor* _motor);
-  void setSuperK(SuperK* _superk);
-  void setDac(Dac* _dac);
-  void setComediCounter(Comedi* _comedi);
-  void setComediDac(Comedi* _comedi);
-  void setRaspiDac(Raspi* _raspi);
-  void setFile(QString _filename, int _filenumber);
+public:
+  explicit AcquisitionThread(QObject* parent = nullptr);
+  ~AcquisitionThread() override;
 
-  QVector<bool> isopencamerawindow;
-  QMutex *mutex;
-  QWaitCondition *splashScreenOk;
-
-  QVector<AcquisitionSequence*> sequenceList;
-  void execute(AcquisitionSequence *sequence);
-  void nextRecord(AcquisitionSequence *sequence, int cur_record);
-  void saveData(AcquisitionSequence *sequence, int cur_record);
-  void setSequenceList(QVector<AcquisitionSequence*> _sequenceList);
+  void setCamera(const QVector<Camera*>& cameraList);
+  void setMotor(Motor* motor);
+  void setSuperK(SuperK* superk);
+  void setDac(Dac* dac);
+  void setComediCounter(Comedi* comedi);
+  void setComediDac(Comedi* comedi);
+  void setRaspiDac(Raspi* raspi);
+  void setFile(const QString& filename, int filenumber);
+  void setSequenceList(const QVector<AcquisitionSequence*>& sequenceList);
+  void setIsOpenCameraWindow(const QVector<bool>& isOpenCameraWindow);
+  void wakeSplashScreen();
   void stop();
-  
 
- signals:
+signals:
   void getPosition(QString positionQString);
   void getSuperKData(QString dataStr);
   void getPower(int power);
@@ -74,33 +66,44 @@ class AcquisitionThread : public QThread
   void showWarning(QString message);
   void splashScreen(QString imagepath, int screen_x, int screen_y);	
 
- protected:
-  virtual void run();
+protected:
+  void run() override;
 
- private:
+private:
+  void execute(AcquisitionSequence *sequence);
+  void nextRecord(AcquisitionSequence *sequence, int cur_record);
+  void saveData(AcquisitionSequence *sequence, int cur_record);
   void setImageFromCamera(uchar*, int, int, int);
 
   QVector<Camera*> cameraList;
-  int    record;
-  Motor  *motor;
-  SuperK *superk;
-  Dac    *dac;
-  Comedi *comedicounter, *comedidac;
-  Raspi  *raspidac;
-  bool   dacsuccess;
-  bool   comedicountersuccess, comedidacsuccess, raspidacsuccess;
-  bool   slmsuccess;
-  bool   imagesuccess;
-  bool   filesuccess;
-  bool   treatmentsuccess;  
-  bool   suspend;
+  QVector<AcquisitionSequence*> sequenceList;
+  QVector<bool> isopencamerawindow;
+  QMutex* mutex;
+  QWaitCondition* splashScreenOk;
+
+  int record;
+  Motor* motor;
+  SuperK* superk;
+  Dac* dac;
+  Comedi* comedicounter;
+  Comedi* comedidac;
+  Raspi* raspidac;
+  bool dacsuccess;
+  bool comedicountersuccess;
+  bool comedidacsuccess;
+  bool raspidacsuccess;
+  bool slmsuccess;
+  bool imagesuccess;
+  bool filesuccess;
+  bool treatmentsuccess;
+  bool suspend;
 
   // Data File
-  hid_t   file_id;
+  hid_t file_id;
   QVector<hid_t> ids;
-  herr_t  status;
+  herr_t status;
   QString filename;
-  int     filenumber;
+  int filenumber;
  
 };
 

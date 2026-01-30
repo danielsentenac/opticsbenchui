@@ -160,6 +160,7 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			AcquisitionSequence.h \
 			FileParser.h \
 			AnalysisWidget.h \
+			Utils.h \
 			QsLog.h \
 			QsDebugOutput.h \
 			QsLogDest.h \
@@ -219,6 +220,7 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			AcquisitionSequence.cpp \
  			FileParser.cpp \
 			AnalysisWidget.cpp \
+			Utils.cpp \
 			QsLog.cpp \
 			QsDebugOutput.cpp \
 			QsLogDest.cpp \

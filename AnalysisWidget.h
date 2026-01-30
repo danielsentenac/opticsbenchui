@@ -26,9 +26,9 @@ class AnalysisWidget : public QWidget
 {
   Q_OBJECT
     
-    public:
+public:
   AnalysisWidget();
-  ~AnalysisWidget();
+  ~AnalysisWidget() override;
 
 };
 #endif

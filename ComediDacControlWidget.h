@@ -30,14 +30,14 @@ class ComediDacControlWidget : public QWidget
 {
   Q_OBJECT
     
-    public:
-  ComediDacControlWidget(QVector<QString>  *_comediList = 0);
-  ~ComediDacControlWidget();
+public:
+  explicit ComediDacControlWidget(QVector<QString>* comediList = nullptr);
+  ~ComediDacControlWidget() override;
     
-  void setComedi(Comedi *_comedi);
-  void setComediList(QVector<QString>  *_comediList);
+  void setComedi(Comedi* comedi);
+  void setComediList(QVector<QString>* comediList);
 
-  private slots:
+private slots:
   void connectComedi();
   void resetComedi();
   void setComediValue(int output);
@@ -46,7 +46,9 @@ class ComediDacControlWidget : public QWidget
   void getOutputs(int outputs, QString mode);
   void getOutputValues(void *comedivalues);
 
- private:
+private:
+  void clearOutputs();
+
   QPushButton *connectButton; 
   QPushButton *resetButton; 
   QLabel      *comedivalueLabel;

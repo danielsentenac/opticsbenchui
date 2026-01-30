@@ -28,24 +28,28 @@ class ComediWindow : public QMainWindow
   
   Q_OBJECT
     
-    public:
+public:
+  ComediWindow(QMainWindow* parent = nullptr, Qt::WindowFlags fl = Qt::Window,
+               Comedi *comedi = nullptr);
+  ~ComediWindow() override;
   
-  ComediWindow( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window , Comedi *_comedi = 0);
-  virtual ~ComediWindow();
-
   ComediCounterControlWidget *comediWidget;
   ComediDacControlWidget *daccomediWidget;
 
- public slots:
-   void update();
-   void remove();
-   void load();
-   void setDbPath(QString _path);
+public slots:
+  void update();
+  void remove();
+  void load();
+  void setDbPath(QString path);
 
- protected:
-  void closeEvent(QCloseEvent *event);
+protected:
+  void closeEvent(QCloseEvent *event) override;
     
- private:
+private:
+  void InitConfig();
+  void InitRun();
+  void setupTableModel();
+  void setupDockWidget();
 
   QMainWindow *parentWindow;
   QString dbPath;
@@ -53,15 +57,13 @@ class ComediWindow : public QMainWindow
   QSqlTableModel *comeditable;
   QTableView *comediview;
   int comedirow;
-  QVBoxLayout*                vboxlayout;
+  QVBoxLayout* vboxlayout;
    
-  QPushButton*                updateButton;
-  QPushButton*                removeButton;
-  QPushButton*                loadButton;
-  
-  void InitConfig();
-  void InitRun();
-  QVector<QString>      *comediList;
+  QPushButton* updateButton;
+  QPushButton* removeButton;
+  QPushButton* loadButton;
+
+  QVector<QString>* comediList;
   QDockWidget *dockWidget;
   Comedi *comedi;
 };

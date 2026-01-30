@@ -24,26 +24,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Comedi.h"
 #include "ComediCounterPlot.h"
 
-using namespace QtConcurrent;
-
-
 typedef QVector<float> floatVector;
 
 class ComediCounterControlWidget : public QWidget
 {
   Q_OBJECT
     
-    public:
-  ComediCounterControlWidget(QVector<QString>  *_comediList = 0);
-  ~ComediCounterControlWidget();
+public:
+  explicit ComediCounterControlWidget(QVector<QString>* comediList = nullptr);
+  ~ComediCounterControlWidget() override;
     
-  void setComedi(Comedi *_comedi);
-  void setComediList(QVector<QString>  *_comediList);
+  void setComedi(Comedi* comedi);
+  void setComediList(QVector<QString>* comediList);
 
   bool stopFuture;
   QVector<QPushButton*> *setButtonList;
 
-  private slots:
+private slots:
   void connectComedi();
   void resetComedi();
   void setComediValue(int output);
@@ -54,7 +51,10 @@ class ComediCounterControlWidget : public QWidget
   void getOutputs(int outputs, QString mode);
   void getOutputValues(void *comedivalues);
 
- private:
+private:
+  void clearOutputs();
+  void clearPlot();
+
   QPushButton *connectButton; 
   QPushButton *resetButton; 
   QLabel      *comedivalueLabel;

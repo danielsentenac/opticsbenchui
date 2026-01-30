@@ -15,25 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
-#ifndef ASSISTANT_H
-#define ASSISTANT_H
+#ifndef UTILS_H
+#define UTILS_H
 
-#include <QtCore/QString>
-#include "QsLog.h"
-
-class QProcess;
-
-class Assistant
-{
-public:
-  explicit Assistant(QString appDirPath = QString());
-  ~Assistant();
-  void showDocumentation(const QString &file);
-  
-private:
-  bool startAssistant();
-  QProcess *proc;
-  QString appDirPath;
-};
+namespace Utils {
+double GetTimeMicroseconds();
+}  // namespace Utils
 
 #endif

@@ -30,14 +30,14 @@ class DacControlWidget : public QWidget
 {
   Q_OBJECT
     
-    public:
-  DacControlWidget(QVector<QString>  *_dacList = 0);
-  ~DacControlWidget();
+public:
+  explicit DacControlWidget(QVector<QString>* dacList = nullptr);
+  ~DacControlWidget() override;
     
-  void setDac(Dac *_dac);
-  void setDacList(QVector<QString>  *_dacList);
+  void setDac(Dac* dac);
+  void setDacList(QVector<QString>* dacList);
 
-  private slots:
+private slots:
   void connectDac();
   void resetDac();
   void setDacValue(int output);
@@ -46,7 +46,9 @@ class DacControlWidget : public QWidget
   void getOutputs(int outputs, QString mode);
   void getOutputValues(QVector<float> *dacvalues);
 
- private:
+private:
+  void clearOutputs();
+
   QPushButton *connectButton; 
   QPushButton *resetButton; 
   QLabel      *dacvalueLabel;
@@ -59,7 +61,7 @@ class DacControlWidget : public QWidget
   QVector<QLineEdit*>   *dacvalueList;
   QVector<QLineEdit*>   *dacrvalueList;
   QVector<QString> *dacList;
-  Dac  *dac;
+  Dac* dac;
   QGridLayout *layout;
   QSignalMapper *signalMapper, *shiftsignalMapper;
 };

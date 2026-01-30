@@ -28,23 +28,26 @@ class DacWindow : public QMainWindow
   
   Q_OBJECT
     
-    public:
+public:
+  DacWindow(QMainWindow* parent = nullptr, Qt::WindowFlags fl = Qt::Window,
+            Dac *dac = nullptr);
+  ~DacWindow() override;
   
-  DacWindow( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window , Dac *_dac = 0);
-  virtual ~DacWindow();
-
   DacControlWidget *dacWidget;
 
- public slots:
-   void update();
-   void remove();
-   void load();
-   void setDbPath(QString _path);
+public slots:
+  void update();
+  void remove();
+  void load();
+  void setDbPath(QString path);
 
- protected:
-  void closeEvent(QCloseEvent *event);
+protected:
+  void closeEvent(QCloseEvent *event) override;
     
- private:
+private:
+  void InitConfig();
+  void InitRun();
+  void setupTableModel();
 
   QMainWindow *parentWindow;
   QString dbPath;
@@ -52,15 +55,13 @@ class DacWindow : public QMainWindow
   QSqlTableModel *dactable;
   QTableView *dacview;
   int dacrow;
-  QVBoxLayout*                vboxlayout;
+  QVBoxLayout* vboxlayout;
    
-  QPushButton*                updateButton;
-  QPushButton*                removeButton;
-  QPushButton*                loadButton;
-  
-  void InitConfig();
-  void InitRun();
-  QVector<QString>      *dacList;
+  QPushButton* updateButton;
+  QPushButton* removeButton;
+  QPushButton* loadButton;
+
+  QVector<QString>* dacList;
   QDockWidget *dockWidget;
   Dac *dac;
 };

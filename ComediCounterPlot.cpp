@@ -1,6 +1,3 @@
-#include <qapplication.h>
-#include <qlayout.h>
-#include <qlabel.h>
 #include <qpainter.h>
 #include <qwt_plot_layout.h>
 #include <qwt_plot_curve.h>
@@ -18,7 +15,7 @@ public:
         baseTime( base )
     {
     }
-    virtual QwtText label( double v ) const
+    QwtText label( double v ) const override
     {
         QTime upTime = baseTime.addSecs( static_cast<int>( v ) );
         return upTime.toString();
@@ -35,14 +32,14 @@ public:
         setZ( 0.0 );
     }
 
-    virtual int rtti() const
+    int rtti() const override
     {
         return QwtPlotItem::Rtti_PlotUserItem;
     }
 
-    virtual void draw( QPainter *painter,
+    void draw( QPainter *painter,
         const QwtScaleMap &, const QwtScaleMap &yMap,
-        const QRectF &canvasRect ) const
+        const QRectF &canvasRect ) const override
     {
         QColor c( Qt::white );
         QRectF r = canvasRect;
@@ -77,15 +74,16 @@ public:
     }
 };
 
-ComediCounterPlot::ComediCounterPlot( QWidget *parent, Comedi *_comedi, int _output ):
-    QwtPlot( parent ),
-    dataCount( 0 )
-    
-{
-    output = _output;
-    comedicounter = _comedi;
-    curValue = 0;
-    connect(comedicounter,SIGNAL(getOutputValues(void*)),this,SLOT(getOutputValues(void*)));
+ComediCounterPlot::ComediCounterPlot(QWidget *parent, Comedi *comedi, int output)
+    : QwtPlot(parent),
+      curValue(0.0),
+      dataCount(0),
+      comedicounter(comedi),
+      output(output) {
+    if (comedicounter) {
+        connect(comedicounter, SIGNAL(getOutputValues(void*)),
+                this, SLOT(getOutputValues(void*)));
+    }
     setAutoReplot( false );
 
     QwtPlotCanvas *canvas = new QwtPlotCanvas();

@@ -21,26 +21,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 #include <QtWidgets>
 
-#include "QsLog.h"
-
 class ComboBoxDelegate : public QItemDelegate
 {
    Q_OBJECT
 
-   public:
-   ComboBoxDelegate(QObject *parent = 0, QStringList *_itemlist = 0);
-   ~ComboBoxDelegate();
-   QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
-                         const QModelIndex &index) const;
+public:
+  ComboBoxDelegate(QObject *parent = nullptr, QStringList *itemlist = nullptr);
+  ~ComboBoxDelegate() override;
+  QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
+                        const QModelIndex &index) const override;
 
-   void setEditorData(QWidget *editor, const QModelIndex &index) const;
-   void setModelData(QWidget *editor, QAbstractItemModel *model,
-                     const QModelIndex &index) const;
+  void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+  void setModelData(QWidget *editor, QAbstractItemModel *model,
+                    const QModelIndex &index) const override;
 
-   void updateEditorGeometry(QWidget *editor,
-       const QStyleOptionViewItem &option, const QModelIndex &index) const;
+  void updateEditorGeometry(QWidget *editor,
+                            const QStyleOptionViewItem &option,
+                            const QModelIndex &index) const override;
 
-   private:
-    QStringList *itemlist;
+private:
+  QStringList *itemlist;
 };
 #endif

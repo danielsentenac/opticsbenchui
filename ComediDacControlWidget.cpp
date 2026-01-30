@@ -16,71 +16,90 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #include "ComediDacControlWidget.h"
 
-ComediDacControlWidget::ComediDacControlWidget(QVector<QString>  *_comediList)
-{
-
-  comediList = _comediList;
- 
-  layout = new QGridLayout(this);
-  connectButton = new  QPushButton("Connect");
+ComediDacControlWidget::ComediDacControlWidget(QVector<QString>* comediList)
+    : connectButton(new QPushButton("Connect")),
+      resetButton(new QPushButton("Reset")),
+      comedivalueLabel(nullptr),
+      outputLabel(nullptr),
+      descriptionLabel(new QLabel()),
+      comediCombo(new QComboBox()),
+      outputsList(new QVector<QLabel*>()),
+      unitsList(new QVector<QLabel*>()),
+      setButtonList(new QVector<QPushButton*>()),
+      shiftButtonList(new QVector<QPushButton*>()),
+      comedivalueList(new QVector<QLineEdit*>()),
+      comedirvalueList(new QVector<QLineEdit*>()),
+      comediList(comediList),
+      comedi(nullptr),
+      layout(new QGridLayout(this)),
+      signalMapper(nullptr),
+      shiftsignalMapper(nullptr) {
   connectButton->setFixedWidth(100);
-  connect( connectButton, SIGNAL(clicked()), this, SLOT(connectComedi()));
-  
-  resetButton = new  QPushButton("Reset");
+  connect(connectButton, SIGNAL(clicked()), this, SLOT(connectComedi()));
+
   resetButton->setFixedWidth(100);
-  connect( resetButton, SIGNAL(clicked()), this, SLOT(resetComedi()));
+  connect(resetButton, SIGNAL(clicked()), this, SLOT(resetComedi()));
 
-  comediCombo = new QComboBox();
   comediCombo->setFixedWidth(100);
-  descriptionLabel = new QLabel();
 
-  layout->addWidget(connectButton,0,0,1,1);
-  layout->addWidget(comediCombo,0,1,1,1);
-  layout->addWidget(descriptionLabel,0,2,1,5);
-  layout->addWidget(resetButton,1,0,1,1);
-  
+  layout->addWidget(connectButton, 0, 0, 1, 1);
+  layout->addWidget(comediCombo, 0, 1, 1, 1);
+  layout->addWidget(descriptionLabel, 0, 2, 1, 5);
+  layout->addWidget(resetButton, 1, 0, 1, 1);
+
   setLayout(layout);
-  signalMapper = NULL;
-  shiftsignalMapper = NULL;
-  outputsList = new QVector<QLabel*>();
-  unitsList = new QVector<QLabel*>();
-  setButtonList = new QVector<QPushButton*>();
-  comedivalueList = new QVector<QLineEdit*>();
-  shiftButtonList = new QVector<QPushButton*>();
-  comedirvalueList = new QVector<QLineEdit*>();
 }
-ComediDacControlWidget::~ComediDacControlWidget()
-{
-  QLOG_DEBUG ( ) << "Deleting ComediDacControlWidget";
+
+ComediDacControlWidget::~ComediDacControlWidget() {
+  QLOG_DEBUG() << "Deleting ComediDacControlWidget";
+  delete signalMapper;
+  delete shiftsignalMapper;
+  delete outputsList;
+  delete unitsList;
+  delete setButtonList;
+  delete shiftButtonList;
+  delete comedivalueList;
+  delete comedirvalueList;
 }
-void
-ComediDacControlWidget::setComedi(Comedi *_comedi) {
-  comedi = _comedi;
-  connect(comedi,SIGNAL(getDescription(QString)),this,SLOT(getDescription(QString)));
-  connect(comedi,SIGNAL(getOutputs(int,QString)),this,SLOT(getOutputs(int,QString)));
-  connect(comedi,SIGNAL(getOutputValues(void*)),this,SLOT(getOutputValues(void*)));
+
+void ComediDacControlWidget::setComedi(Comedi* comedi) {
+  this->comedi = comedi;
+  connect(comedi, SIGNAL(getDescription(QString)), this,
+          SLOT(getDescription(QString)));
+  connect(comedi, SIGNAL(getOutputs(int,QString)), this,
+          SLOT(getOutputs(int,QString)));
+  connect(comedi, SIGNAL(getOutputValues(void*)), this,
+          SLOT(getOutputValues(void*)));
 }
-void
-ComediDacControlWidget::setComediList(QVector<QString>  *_comediList) {
-  comediList = _comediList;
+
+void ComediDacControlWidget::setComediList(QVector<QString>* comediList) {
+  this->comediList = comediList;
   comediCombo->clear();
-  for (int i = 0 ; i < comediList->size(); i++)
+  if (!comediList) {
+    return;
+  }
+  for (int i = 0; i < comediList->size(); i++) {
     comediCombo->addItem(comediList->at(i));
+  }
 }
-void
-ComediDacControlWidget::getOutputs(int outputs, QString mode) {
+
+void ComediDacControlWidget::clearOutputs() {
   outputsList->clear();
   comedivalueList->clear();
   setButtonList->clear();
   comedirvalueList->clear();
   shiftButtonList->clear();
+  unitsList->clear();
+}
 
-  // Create a signal mapper for buttons
-  if (signalMapper != NULL) delete signalMapper;
-  if (shiftsignalMapper != NULL) delete shiftsignalMapper;
+void ComediDacControlWidget::getOutputs(int outputs, QString mode) {
+  clearOutputs();
+
+  delete signalMapper;
+  delete shiftsignalMapper;
   shiftsignalMapper = new QSignalMapper(this);
   signalMapper = new QSignalMapper(this);
-  for (int i = 0 ; i < outputs; i++) {
+  for (int i = 0; i < outputs; i++) {
     QLabel *outputLabel = new QLabel(tr("Channel %1").arg(i));
     outputLabel->setFixedWidth(100);
     QLabel *unitsLabel = new QLabel("volts");
@@ -95,74 +114,63 @@ ComediDacControlWidget::getOutputs(int outputs, QString mode) {
     comedirvalueList->push_back(comedirvalue);
     QPushButton *button = new QPushButton(tr("Set %1").arg(mode));
     button->setFixedWidth(150);
-    connect( button, SIGNAL(clicked()), signalMapper, SLOT(map()));
+    connect(button, SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(button, i);
     setButtonList->push_back(button);
     QPushButton *shiftbutton = new QPushButton(tr("SHIFT %1").arg(mode));
     shiftbutton->setFixedWidth(150);
-    connect( shiftbutton, SIGNAL(clicked()), shiftsignalMapper, SLOT(map()));
+    connect(shiftbutton, SIGNAL(clicked()), shiftsignalMapper, SLOT(map()));
     shiftsignalMapper->setMapping(shiftbutton, i);
     shiftButtonList->push_back(shiftbutton);
 
-    layout->addWidget(outputLabel,i + 2,0,1,1);
-    layout->addWidget(comedivalue,i + 2,1,1,1);
-    layout->addWidget(unitsLabel,i + 2,2,1,1);
-    layout->addWidget(button,i + 2,3,1,1);
-    layout->addWidget(comedirvalue,i + 2,4,1,1);
-    layout->addWidget(shiftbutton,i + 2,5,1,1);
+    layout->addWidget(outputLabel, i + 2, 0, 1, 1);
+    layout->addWidget(comedivalue, i + 2, 1, 1, 1);
+    layout->addWidget(unitsLabel, i + 2, 2, 1, 1);
+    layout->addWidget(button, i + 2, 3, 1, 1);
+    layout->addWidget(comedirvalue, i + 2, 4, 1, 1);
+    layout->addWidget(shiftbutton, i + 2, 5, 1, 1);
   }
-   connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(setComediValue(int)));
-   connect(shiftsignalMapper, SIGNAL(mapped(int)),this, SLOT(setComediRValue(int)));
+  connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(setComediValue(int)));
+  connect(shiftsignalMapper, SIGNAL(mapped(int)), this, SLOT(setComediRValue(int)));
 }
-void 
-ComediDacControlWidget::getDescription(QString description){
+
+void ComediDacControlWidget::getDescription(QString description) {
   descriptionLabel->setText(tr("Connected to : %1").arg(description));
 }
-void
-ComediDacControlWidget::connectComedi() {
-  QString newcomedi;
-  newcomedi = comediCombo->itemText(comediCombo->currentIndex());
+
+void ComediDacControlWidget::connectComedi() {
+  QString newcomedi = comediCombo->itemText(comediCombo->currentIndex());
   comedi->connectComedi(newcomedi);
 }
-void
-ComediDacControlWidget::resetComedi() {
-  QString newcomedi;
-  newcomedi = comediCombo->itemText(comediCombo->currentIndex());
+
+void ComediDacControlWidget::resetComedi() {
+  QString newcomedi = comediCombo->itemText(comediCombo->currentIndex());
   comedi->resetComedi(newcomedi);
 }
 
-void 
-ComediDacControlWidget::getOutputValues(void *comedivalues) {
-  // Cast in expected type
-  QVector<double>* vfcomedivalues;
-  vfcomedivalues = (QVector<double>*) comedivalues;
+void ComediDacControlWidget::getOutputValues(void *comedivalues) {
+  QVector<double>* vfcomedivalues = (QVector<double>*) comedivalues;
 
-  QLOG_DEBUG ( ) << "ComediCounterControlWidget::getOutputValues";
-  for (int i = 0 ; i < comedivalueList->size(); i++) {
+  QLOG_DEBUG() << "ComediCounterControlWidget::getOutputValues";
+  for (int i = 0; i < comedivalueList->size(); i++) {
     QString valueString;
-    valueString.setNum (vfcomedivalues->at(i), 'f',4);
+    valueString.setNum(vfcomedivalues->at(i), 'f', 4);
     QLineEdit *comedivalue = comedivalueList->at(i);
     comedivalue->setText(valueString);
   }
 }
-void
-ComediDacControlWidget::setComediValue(int output) {
-  // Get value to be set
-  QString newcomedi;
-  double value;
-  value = comedivalueList->at(output)->text().toDouble();
-  newcomedi = comediCombo->itemText(comediCombo->currentIndex());
-  comedi->setComediValue(newcomedi,output, (void*)&value);
-  comedi->updateDBValues(newcomedi);
-}
-void
-ComediDacControlWidget::setComediRValue(int output) {
-  // Get value to be set
-  QString newcomedi;
-  double value;
-  value = comedivalueList->at(output)->text().toDouble() + comedirvalueList->at(output)->text().toDouble();
-  newcomedi = comediCombo->itemText(comediCombo->currentIndex());
-  comedi->setComediValue(newcomedi,output, (void*)&value);
+
+void ComediDacControlWidget::setComediValue(int output) {
+  double value = comedivalueList->at(output)->text().toDouble();
+  QString newcomedi = comediCombo->itemText(comediCombo->currentIndex());
+  comedi->setComediValue(newcomedi, output, (void*)&value);
   comedi->updateDBValues(newcomedi);
 }
 
+void ComediDacControlWidget::setComediRValue(int output) {
+  double value = comedivalueList->at(output)->text().toDouble() +
+                 comedirvalueList->at(output)->text().toDouble();
+  QString newcomedi = comediCombo->itemText(comediCombo->currentIndex());
+  comedi->setComediValue(newcomedi, output, (void*)&value);
+  comedi->updateDBValues(newcomedi);
+}

@@ -28,8 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class AcquisitionSequence
 {  
- public:
- 
+public:
   enum {
    IS_LOOP = 0,
    LOOP_START = 1,
@@ -52,6 +51,8 @@ class AcquisitionSequence
   int loopends;
   int loopNumber;
   int remainingLoops;
+  bool loopSnake;
+  bool loopReverse;
   
   // File attributes
   FileParser *fileParser;
