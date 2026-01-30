@@ -26,15 +26,15 @@ class CameraIEEE1394 : public Camera
     
     public:
   CameraIEEE1394();
-  ~CameraIEEE1394();
+  ~CameraIEEE1394() override;
  
-  void stop();
-  int  findCamera();
-  void setCamera(void *_camera, int _id);
-  void getFeatures();
-  uchar* getSnapshot();
-  ushort *getSnapshot16();
-  int* getSnapshot32();
+  void stop() override;
+  int  findCamera() override;
+  void setCamera(void *_camera, int _id) override;
+  void getFeatures() override;
+  uchar* getSnapshot() override;
+  ushort *getSnapshot16() override;
+  int* getSnapshot32() override;
 
  signals:
   void  getImage(const QImage &image);
@@ -45,30 +45,31 @@ class CameraIEEE1394 : public Camera
   
   
   public slots:
-  void setImageSize(const int &_imageWidth, const int &_imageHeight);
-  void setFeature(int feature, double value);
-  void setMode(int feature, bool value);
-  void getProps();
+  void setImageSize(const int &_imageWidth, const int &_imageHeight) override;
+  void setFeature(int feature, double value) override;
+  void setMode(int feature, bool value) override;
+  void getProps() override;
 
  private:
-  void run();
-  int  connectCamera();
-  int  acquireImage();
-  void cleanup_and_exit();
-  dc1394camera_t         *camera;
-  dc1394_t               *d;
-  dc1394camera_list_t *  list;
-  dc1394error_t          err;
-  dc1394framerates_t     framerates;
-  dc1394video_modes_t    video_modes;
-  dc1394framerate_t      framerate;
-  dc1394color_coding_t   encoding_num;
-  dc1394video_frame_t    *frame;
-  dc1394featureset_t     features;
-  dc1394video_mode_t     video_mode;
-  int                    video_mode_feature, color_coding_feature;
-  int imageWidth;
-  int imageHeight;
+  void run() override;
+  int  connectCamera() override;
+  int  acquireImage() override;
+  void cleanup_and_exit() override;
+  dc1394camera_t         *camera = nullptr;
+  dc1394_t               *d = nullptr;
+  dc1394camera_list_t    *list = nullptr;
+  dc1394error_t          err = DC1394_SUCCESS;
+  dc1394framerates_t     framerates = {};
+  dc1394video_modes_t    video_modes = {};
+  dc1394framerate_t      framerate = DC1394_FRAMERATE_7_5;
+  dc1394color_coding_t   encoding_num = DC1394_COLOR_CODING_MONO8;
+  dc1394video_frame_t    *frame = nullptr;
+  dc1394featureset_t     features = {};
+  dc1394video_mode_t     video_mode = DC1394_VIDEO_MODE_MIN;
+  int                    video_mode_feature = 0;
+  int                    color_coding_feature = 0;
+  int imageWidth = 0;
+  int imageHeight = 0;
 };
 
 #endif // CAMERAIEEE1394_H
