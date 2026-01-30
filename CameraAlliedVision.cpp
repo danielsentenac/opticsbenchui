@@ -90,7 +90,7 @@ int alliedvision_aoi_settings[][2] = {
 static double GetTime( void ) {
  struct timeval tp;
 /*--------------------------------------------------------------------------*/
- gettimeofday( &tp, NULL );
+ gettimeofday( &tp, nullptr );
 /*--------------------------------------------------------------------------*/
  return( tp.tv_sec*1e6 + tp.tv_usec );
 }
@@ -100,12 +100,12 @@ CameraAlliedVision::CameraAlliedVision()
 {
   vflip = 0;
   hflip = 0;
-  image = NULL;
-  data = NULL;
-  buffer = NULL;
-  snapshot = NULL;
-  buffer32 = NULL;
-  snapshot32 = NULL;
+  image = nullptr;
+  data = nullptr;
+  buffer = nullptr;
+  snapshot = nullptr;
+  buffer32 = nullptr;
+  snapshot32 = nullptr;
   suspend = true;
   has_started = false;
   mutex = new QMutex(QMutex::NonRecursive);
@@ -571,7 +571,7 @@ CameraAlliedVision::connectCamera() {
   snapshot32 = (int*)malloc( sizeof(int) * width * height);
 
   image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-  buffer = NULL;
+  buffer = nullptr;
   image->setColorTable(*table);
   
   // Setup camera frames and start capture
@@ -608,11 +608,11 @@ void
 CameraAlliedVision::cleanup_and_exit()
 {
   QLOG_DEBUG() << "Cleanup camera AlliedVision connection";
-  if (data) { free(data); data = NULL;}
-  if (buffer) { free(buffer); buffer = NULL;}
-  if (snapshot) { free(snapshot); snapshot = NULL;}
-  if (buffer32) { free(buffer32); buffer32 = NULL;}
-  if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+  if (data) { free(data); data = nullptr;}
+  if (buffer) { free(buffer); buffer = nullptr;}
+  if (snapshot) { free(snapshot); snapshot = nullptr;}
+  if (buffer32) { free(buffer32); buffer32 = nullptr;}
+  if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
   if (image) delete image;
 
   return;
@@ -632,8 +632,8 @@ CameraAlliedVision::acquireImage() {
   snapshotMutex->lock();
   usleep(10000);
   buffer = frameObs->GetImage();
-  while ( buffer == NULL) {
-      QLOG_DEBUG() << "BUFFER IS NULL...ACQUIRE ";
+  while ( buffer == nullptr) {
+      QLOG_DEBUG() << "BUFFER IS nullptr...ACQUIRE ";
       usleep(10000);
       buffer = frameObs->GetImage();
   }

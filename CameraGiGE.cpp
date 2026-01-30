@@ -100,7 +100,7 @@ char *gige_props_units[] = {
 static double GetTime( void ) {
  struct timeval tp;
 /*--------------------------------------------------------------------------*/
- gettimeofday( &tp, NULL );
+ gettimeofday( &tp, nullptr );
 /*--------------------------------------------------------------------------*/
  return( tp.tv_sec*1e6 + tp.tv_usec );
 }
@@ -110,12 +110,12 @@ CameraGiGE::CameraGiGE()
 {
   vflip = 0;
   hflip = 0;
-  image = NULL;
-  buffer = NULL;
-  snapshot = NULL;
-  buffer32 = NULL;
-  snapshot32 = NULL;
-  arvbuffer_last = NULL;
+  image = nullptr;
+  buffer = nullptr;
+  snapshot = nullptr;
+  buffer32 = nullptr;
+  snapshot32 = nullptr;
+  arvbuffer_last = nullptr;
   suspend = true;
   has_started = false;
   mutex = new QMutex(QMutex::NonRecursive);
@@ -148,9 +148,9 @@ CameraGiGE::setCamera(void* _camera, int _id)
  gint64 feature_min_i, feature_max_i;
  int featureCnt = 0;
  for ( int i = 0; i < FEATURES_NUMBER; i++) {
-   ArvGcNode *feature = NULL;
+   ArvGcNode *feature = nullptr;
    feature = arv_device_get_feature (device, gige_features[i]);
-   if (feature == NULL) {
+   if (feature == nullptr) {
      QLOG_WARN() << "CameraGiGE::setCamera> Feature "
                  << gige_features[featureCnt] 
                	 <<  " not exists !";
@@ -221,7 +221,7 @@ CameraGiGE::setCamera(void* _camera, int _id)
      const GSList *iter;
      childs = arv_gc_node_get_childs (feature);
      int feature_choicecnt = 0;
-     for (iter = childs; iter != NULL; iter = iter->next) {
+     for (iter = childs; iter != nullptr; iter = iter->next) {
        QLOG_INFO() << "ENUMERATION FEATURE " << arv_gc_node_get_node_name ((ArvGcNode *)iter->data)
                    << " " << arv_gc_node_get_name ((ArvGcNode *)iter->data);
        feature_string_choice.push_back(arv_gc_node_get_name ((ArvGcNode *)iter->data));
@@ -254,9 +254,9 @@ CameraGiGE::setCamera(void* _camera, int _id)
   }
   int propCnt = 0;
   for ( int i = 0; i < PROPS_NUMBER; i++ ) {
-    ArvGcNode *feature = NULL;
+    ArvGcNode *feature = nullptr;
     feature = arv_device_get_feature (device, gige_props[i]);
-    if ( feature == NULL && gige_props[i] != "PC Rate" && gige_props[i] != "Frame Rate" ) continue;
+    if ( feature == nullptr && gige_props[i] != "PC Rate" && gige_props[i] != "Frame Rate" ) continue;
     QString propStr = gige_props[i];
     QLOG_INFO () << "CameraGiGE::setCamera> " << propStr << " property added ";
     propList.push_back(propStr);
@@ -354,13 +354,13 @@ CameraGiGE::setFeature(int feature, double value) {
   
    device = arv_camera_get_device(camera);
 
-   ArvGcNode *node = NULL;
+   ArvGcNode *node = nullptr;
    node = arv_device_get_feature (device, featureNameList.at(feature).toStdString().c_str());
    QLOG_INFO() << "CameraGiGE::setFeature> Updating feature " 
 	       << featureNameList.at(feature)
                << " New Value " << QString::number(value);
-   if ( node == NULL ) {
-       QLOG_ERROR() << "CameraGiGE::setFeature> node NULL ";
+   if ( node == nullptr ) {
+       QLOG_ERROR() << "CameraGiGE::setFeature> node nullptr ";
        return;
    }
    if ( ARV_IS_GC_FLOAT (node) ) {
@@ -393,10 +393,10 @@ CameraGiGE::setFeature(int feature, double value) {
                    << " " << gwidth << " " << gheight;
        width = gwidth;
        height = gheight;
-       if (buffer) { free(buffer); buffer = NULL;}
-       if (buffer32) { free(buffer32); buffer32 = NULL;}
-       if (snapshot) { free(snapshot); snapshot = NULL;}
-       if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+       if (buffer) { free(buffer); buffer = nullptr;}
+       if (buffer32) { free(buffer32); buffer32 = nullptr;}
+       if (snapshot) { free(snapshot); snapshot = nullptr;}
+       if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
        buffer = (uchar*)malloc( sizeof(uchar) * width * height);
        snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
        buffer32 = (int*)malloc( sizeof(int) * width * height);
@@ -413,26 +413,26 @@ CameraGiGE::setFeature(int feature, double value) {
 		   << " Updated Width " << width << " Height " << height
 		   << " New payload " << payload;
 
-       stream = arv_camera_create_stream (camera, NULL, NULL);
-       if (stream != NULL) {
+       stream = arv_camera_create_stream (camera, nullptr, nullptr);
+       if (stream != nullptr) {
          if (ARV_IS_GV_STREAM (stream)) {
  //           g_object_set (stream,
  //                     "socket-buffer", ARV_GV_STREAM_SOCKET_BUFFER_AUTO,
  //                     "socket-buffer-size", 0,
- //                     NULL);
+ //                     nullptr);
  //           g_object_set (stream,
  //                     "packet-resend", ARV_GV_STREAM_PACKET_RESEND_NEVER,
- //                     NULL);
+ //                     nullptr);
             g_object_set (stream,
                       "packet-timeout", 20 * 1000,
                       "frame-retention", 100 * 1000,
-                      NULL);
+                      nullptr);
         }
        }
        else
          QLOG_ERROR() << "CameraGiGE::setFeature> cannot create new stream !";
        for (int i = 0; i < GIGE_FRAME_NUMBER; i++)
-         arv_stream_push_buffer (stream, arv_buffer_new (payload, NULL));
+         arv_stream_push_buffer (stream, arv_buffer_new (payload, nullptr));
        arv_camera_set_acquisition_mode (camera, ARV_ACQUISITION_MODE_CONTINUOUS);
        arv_camera_start_acquisition (camera);
        this->start();
@@ -480,27 +480,27 @@ CameraGiGE::setFeature(int feature, double value) {
                    << " New value " << feature_string_value;
 
 
-         stream = arv_camera_create_stream (camera, NULL, NULL);
-         if (stream != NULL) {
+         stream = arv_camera_create_stream (camera, nullptr, nullptr);
+         if (stream != nullptr) {
            if (ARV_IS_GV_STREAM (stream)) {
  //           g_object_set (stream,
  //                     "socket-buffer", ARV_GV_STREAM_SOCKET_BUFFER_AUTO,
  //                     "socket-buffer-size", 0,
- //                     NULL);
+ //                     nullptr);
  //           g_object_set (stream,
  //                     "packet-resend", ARV_GV_STREAM_PACKET_RESEND_NEVER,
- //                     NULL);
+ //                     nullptr);
             g_object_set (stream,
                       "packet-timeout", 20 * 1000,
                       "frame-retention", 100 * 1000,
-                      NULL);
+                      nullptr);
           }
        }
        else
          QLOG_ERROR() << "CameraGiGE::setFeature> cannot create new stream !";
 
        for (int i = 0; i < GIGE_FRAME_NUMBER; i++)
-         arv_stream_push_buffer (stream, arv_buffer_new (payload, NULL));
+         arv_stream_push_buffer (stream, arv_buffer_new (payload, nullptr));
        arv_camera_set_acquisition_mode (camera, ARV_ACQUISITION_MODE_CONTINUOUS);
        arv_camera_start_acquisition (camera);
        this->start();
@@ -533,9 +533,9 @@ CameraGiGE::getFeatures() {
   gint64 feature_min_i, feature_max_i;
   int featureCnt = 0;
   for ( int i = 0; i < FEATURES_NUMBER; i++) {
-   ArvGcNode *feature = NULL;
+   ArvGcNode *feature = nullptr;
    feature = arv_device_get_feature (device, gige_features[i]);
-   if ( feature == NULL ) continue;
+   if ( feature == nullptr ) continue;
    if ( ARV_IS_GC_FLOAT (feature) ) {
      QLOG_INFO() << "CameraGiGE::getFeature> get feature "
                  << gige_features[featureCnt];
@@ -582,7 +582,7 @@ CameraGiGE::getFeatures() {
      const GSList *iter;
      childs = arv_gc_node_get_childs (feature);
      int feature_choicecnt = 0;
-     for (iter = childs; iter != NULL; iter = iter->next) {
+     for (iter = childs; iter != nullptr; iter = iter->next) {
        if ( arv_gc_node_get_name ((ArvGcNode *)iter->data) == arv_gc_node_get_value_as_string (feature)) {
          QLOG_INFO() << "CameraGiGE::setCamera> get feature "
                      << featureNameList.at(featureCnt) << " value " << QString(arv_gc_node_get_value_as_string (feature));
@@ -605,9 +605,9 @@ CameraGiGE::getProps()  {
   QString propStr;
   
   for ( i = 0; i < PROPS_NUMBER - 2; i++) {
-   ArvGcNode *feature = NULL;
+   ArvGcNode *feature = nullptr;
    feature = arv_device_get_feature (device, gige_props[i]);
-   if ( feature == NULL ) continue;
+   if ( feature == nullptr ) continue;
    QString feature_string_value;
    feature_string_value = QString(arv_gc_node_get_value_as_string (feature));
    propStr = gige_props[i];
@@ -686,31 +686,31 @@ CameraGiGE::connectCamera() {
   arv_camera_get_binning (camera, &dx, &dy);
   payload = arv_camera_get_payload (camera);
    
-  stream = arv_camera_create_stream (camera, NULL, NULL);
-  if (stream != NULL) {
+  stream = arv_camera_create_stream (camera, nullptr, nullptr);
+  if (stream != nullptr) {
     if (ARV_IS_GV_STREAM (stream)) {
        	//g_object_set (stream,
         //  	      "socket-buffer", ARV_GV_STREAM_SOCKET_BUFFER_AUTO,
 //		      "socket-buffer-size", 0,
-//		      NULL);
+//		      nullptr);
 	//g_object_set (stream,
 //		      "packet-resend", ARV_GV_STREAM_PACKET_RESEND_NEVER,
-//		      NULL);
+//		      nullptr);
 	g_object_set (stream,
 	              "packet-timeout", 20 * 1000,
 	              "frame-retention", 100 * 1000,
-	              NULL);
+	              nullptr);
     
    }
    else  {
 	g_object_unref (camera);
-	camera = NULL;
+	camera = nullptr;
 	return camera_err;
    }
    arv_stream_set_emit_signals (stream, TRUE);
    
    for (int i = 0; i < GIGE_FRAME_NUMBER; i++)
-      arv_stream_push_buffer (stream, arv_buffer_new (payload, NULL));
+      arv_stream_push_buffer (stream, arv_buffer_new (payload, nullptr));
 
   /*-----------------------------------------------------------------------
    *  setup capture
@@ -748,10 +748,10 @@ CameraGiGE::cleanup_and_exit()
   g_object_unref (stream);
   g_object_unref (camera); 
   arv_shutdown ();
-  if (buffer) { free(buffer); buffer = NULL;}
-  if (snapshot) { free(snapshot); snapshot = NULL;}
-  if (buffer32) { free(buffer32); buffer32 = NULL;}
-  if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+  if (buffer) { free(buffer); buffer = nullptr;}
+  if (snapshot) { free(snapshot); snapshot = nullptr;}
+  if (buffer32) { free(buffer32); buffer32 = nullptr;}
+  if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
   if (image) delete image;
   return;
 }
@@ -770,15 +770,15 @@ CameraGiGE::acquireImage() {
   uchar *pBuf;
   /* copy captured image */
   
-  arvbuffer = NULL;
-  while (arvbuffer == NULL) {
+  arvbuffer = nullptr;
+  while (arvbuffer == nullptr) {
     usleep(100);
     arvbuffer = arv_stream_pop_buffer (stream);
   }
   /*-----------------------------------------------------------------------
    * release frame
    *-----------------------------------------------------------------------*/
-  if (arvbuffer_last != NULL)
+  if (arvbuffer_last != nullptr)
       arv_stream_push_buffer (stream, arvbuffer_last);
   
   arvbuffer_last = arvbuffer;

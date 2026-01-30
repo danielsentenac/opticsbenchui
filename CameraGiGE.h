@@ -28,15 +28,15 @@ class CameraGiGE : public Camera
     
     public:
   CameraGiGE();
-  ~CameraGiGE();
+  ~CameraGiGE() override;
  
-  void stop();
-  int  findCamera();
-  void setCamera(void *_camera, int _id);
-  void getFeatures();
-  uchar* getSnapshot();
-  ushort *getSnapshot16();
-  int* getSnapshot32();
+  void stop() override;
+  int  findCamera() override;
+  void setCamera(void *_camera, int _id) override;
+  void getFeatures() override;
+  uchar* getSnapshot() override;
+  ushort *getSnapshot16() override;
+  int* getSnapshot32() override;
 
  signals:
   void  getImage(const QImage &image);
@@ -47,38 +47,43 @@ class CameraGiGE : public Camera
   
   
   public slots:
-  void setImageSize(const int &_imageWidth, const int &_imageHeight);
-  void setFeature(int feature, double value);
-  void setMode(int feature, bool value);
-  void getProps();
+  void setImageSize(const int &_imageWidth, const int &_imageHeight) override;
+  void setFeature(int feature, double value) override;
+  void setMode(int feature, bool value) override;
+  void getProps() override;
 
  private:
-  void run();
-  int  connectCamera();
-  int  acquireImage();
-  void cleanup_and_exit();
+  void run() override;
+  int  connectCamera() override;
+  int  acquireImage() override;
+  void cleanup_and_exit() override;
 
-  int imageWidth;
-  int imageHeight;
+  int imageWidth = 0;
+  int imageHeight = 0;
   // Aravis
-  ArvCamera *camera;
-  ArvDevice *device;
-  ArvGc *genicam;
-  ArvStream *stream;
-  ArvBuffer *arvbuffer;
-  ArvBuffer *arvbuffer_last;
+  ArvCamera *camera = nullptr;
+  ArvDevice *device = nullptr;
+  ArvGc *genicam = nullptr;
+  ArvStream *stream = nullptr;
+  ArvBuffer *arvbuffer = nullptr;
+  ArvBuffer *arvbuffer_last = nullptr;
   static const int arv_option_width = -1;
   static const int arv_option_height = -1;
   static const int arv_option_horizontal_binning = -1;
   static const int arv_option_vertical_binning = -1;
   static const double arv_option_exposure_time_us = -1;
   static const int arv_option_gain = -1;
-  gint x, y,gwidth,gheight;
-  gint dx, dy, payload;
-  const char *digital_gain;
+  gint x = 0;
+  gint y = 0;
+  gint gwidth = 0;
+  gint gheight = 0;
+  gint dx = 0;
+  gint dy = 0;
+  gint payload = 0;
+  const char *digital_gain = nullptr;
   static const int gain_values [];
-  int gain;
-  double exposure;
+  int gain = 0;
+  double exposure = 0.0;
   QVector<QVector<QString> > featureChoiceList;
 };
 

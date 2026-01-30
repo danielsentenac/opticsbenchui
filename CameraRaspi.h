@@ -28,15 +28,15 @@ class CameraRaspi : public Camera
     
     public:
   CameraRaspi();
-  ~CameraRaspi();
+  ~CameraRaspi() override;
  
-  void stop();
-  int  findCamera();
-  void setCamera(void *_camera, int _id);
-  void getFeatures();
-  uchar* getSnapshot();
-  ushort *getSnapshot16();
-  int* getSnapshot32();
+  void stop() override;
+  int  findCamera() override;
+  void setCamera(void *_camera, int _id) override;
+  void getFeatures() override;
+  uchar* getSnapshot() override;
+  ushort *getSnapshot16() override;
+  int* getSnapshot32() override;
   
  signals:
   void  getImage(const QImage &image);
@@ -48,26 +48,38 @@ class CameraRaspi : public Camera
   
   
   public slots:
-  void setImageSize(const int &_imageWidth, const int &_imageHeight);
-  void setFeature(int feature, double value);
-  void setMode(int feature, bool value);
-  void getProps();
+  void setImageSize(const int &_imageWidth, const int &_imageHeight) override;
+  void setFeature(int feature, double value) override;
+  void setMode(int feature, bool value) override;
+  void getProps() override;
 
  private:
-  void run();
-  int  connectCamera();
-  int  acquireImage();
-  void cleanup_and_exit();
-  int imageWidth;
-  int imageHeight;
+  void run() override;
+  int  connectCamera() override;
+  int  acquireImage() override;
+  void cleanup_and_exit() override;
+  int imageWidth = 0;
+  int imageHeight = 0;
   // Raspi Camera
-  RaspiCam *camera;
-  double brightness, sharpness, iso, saturation, contrast, frate;
-  double exposure_compensation, shutterspeed;
-  unsigned char *data;
-  int encoding_num, awb_num, exposure_num, aoi_num, acq_num;
-  int videostabilization_num, resolution_num;
-  double eTimeTotal, frequency;
+  RaspiCam *camera = nullptr;
+  double brightness = 0.0;
+  double sharpness = 0.0;
+  double iso = 0.0;
+  double saturation = 0.0;
+  double contrast = 0.0;
+  double frate = 0.0;
+  double exposure_compensation = 0.0;
+  double shutterspeed = 0.0;
+  unsigned char *data = nullptr;
+  int encoding_num = 0;
+  int awb_num = 0;
+  int exposure_num = 0;
+  int aoi_num = 0;
+  int acq_num = 0;
+  int videostabilization_num = 0;
+  int resolution_num = 0;
+  double eTimeTotal = 0.0;
+  double frequency = 0.0;
 };
 
 #endif // CAMERARASPI_H

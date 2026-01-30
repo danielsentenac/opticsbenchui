@@ -127,7 +127,7 @@ int neo_aoi_settings_packed[][4] = {
 static double GetTime( void ) {
  struct timeval tp;
 /*--------------------------------------------------------------------------*/
- gettimeofday( &tp, NULL );
+ gettimeofday( &tp, nullptr );
 /*--------------------------------------------------------------------------*/
  return( tp.tv_sec*1e6 + tp.tv_usec );
 }
@@ -137,12 +137,12 @@ CameraNeo::CameraNeo()
 {
   hflip = 0;
   vflip = 0;
-  image = NULL;
-  buffer = NULL;
-  snapshot = NULL;
-  buffer32 = NULL;
-  snapshot32 = NULL;
-  snapshot16 = NULL;
+  image = nullptr;
+  buffer = nullptr;
+  snapshot = nullptr;
+  buffer32 = nullptr;
+  snapshot32 = nullptr;
+  snapshot16 = nullptr;
   suspend = true;
   has_started = false;
   mutex = new QMutex(QMutex::NonRecursive);
@@ -713,11 +713,11 @@ CameraNeo::setFeature(int feature, double value) {
    width  = static_cast<int>(aoi_width);
    QLOG_INFO () << "CameraNeo::setFeature> Updated internal buffer " << BufferSize;
    QLOG_INFO () << "CameraNeo::setFeature> width " << width << " height " << height;
-   if (buffer) { free(buffer); buffer = NULL;}
-   if (snapshot) { free(snapshot); snapshot = NULL;}
-   if (buffer32) { free(buffer32); buffer32 = NULL;}
-   if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
-   if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+   if (buffer) { free(buffer); buffer = nullptr;}
+   if (snapshot) { free(snapshot); snapshot = nullptr;}
+   if (buffer32) { free(buffer32); buffer32 = nullptr;}
+   if (snapshot16) { free(snapshot16); snapshot16 = nullptr;}
+   if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
    buffer = (uchar*)malloc( sizeof(uchar) * width * height);
    snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
    snapshot16 = (ushort*)malloc( sizeof(ushort) * width * height);
@@ -1159,11 +1159,11 @@ CameraNeo::cleanup_and_exit()
   errorOk(i_err, "AT_Close");
   i_err = AT_FinaliseLibrary();
   errorOk(i_err, "AT_FinaliseLibrary");
-  if (buffer) { free(buffer); buffer = NULL;}
-  if (snapshot) { free(snapshot); snapshot = NULL;}
-  if (buffer32) { free(buffer32); buffer32 = NULL;}
-  if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
-  if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+  if (buffer) { free(buffer); buffer = nullptr;}
+  if (snapshot) { free(snapshot); snapshot = nullptr;}
+  if (buffer32) { free(buffer32); buffer32 = nullptr;}
+  if (snapshot16) { free(snapshot16); snapshot16 = nullptr;}
+  if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
   if (image) delete image;
   return;
 }
@@ -1178,7 +1178,7 @@ CameraNeo::acquireImage() {
    * acquire frame
    *-----------------------------------------------------------------------*/
   double eTime = GetTime();
-  uchar* pBuf = NULL;
+  uchar* pBuf = nullptr;
   BufSize = 0;
   QLOG_DEBUG() << "CameraNeo::acquireImage> Trigger " 
                << QString(neo_trigger_modes[trigger_num]);
@@ -1355,10 +1355,10 @@ CameraNeo::acquireImage() {
    width  = static_cast<int>(aoi_width);
    QLOG_INFO () << "CameraNeo::acquireImage> Updated internal buffer " << BufferSize;
    QLOG_INFO () << "CameraNeo::acquireImage> width " << width << " height " << height;
-   if (buffer) { free(buffer); buffer = NULL;}
-   if (snapshot) { free(snapshot); snapshot = NULL;}
-   if (buffer32) { free(buffer32); buffer32 = NULL;}
-   if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+   if (buffer) { free(buffer); buffer = nullptr;}
+   if (snapshot) { free(snapshot); snapshot = nullptr;}
+   if (buffer32) { free(buffer32); buffer32 = nullptr;}
+   if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
    buffer = (uchar*)malloc( sizeof(uchar) * width * height);
    snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
    buffer32 = (int*)malloc( sizeof(int) * width * height);
@@ -1394,7 +1394,7 @@ void CameraNeo::setImageSize(const int &_imageWidth, const int &_imageHeight){
 
 const char * CameraNeo::sdkErrorString(int _i_errorCode)
 {
-        const char * sz_ret = NULL;
+        const char * sz_ret = nullptr;
         switch (_i_errorCode) {
                 case AT_SUCCESS:
                         sz_ret = "AT_SUCCESS";

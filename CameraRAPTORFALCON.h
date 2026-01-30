@@ -26,15 +26,15 @@ class CameraRAPTORFALCON : public Camera
     
     public:
   CameraRAPTORFALCON();
-  ~CameraRAPTORFALCON();
+  ~CameraRAPTORFALCON() override;
  
-  void stop();
-  int  findCamera();
-  void setCamera(void *_camera, int _id);
-  void getFeatures();
-  uchar* getSnapshot();
-  ushort *getSnapshot16();
-  int* getSnapshot32();
+  void stop() override;
+  int  findCamera() override;
+  void setCamera(void *_camera, int _id) override;
+  void getFeatures() override;
+  uchar* getSnapshot() override;
+  ushort *getSnapshot16() override;
+  int* getSnapshot32() override;
 
  signals:
   void  getImage(const QImage &image);
@@ -45,16 +45,16 @@ class CameraRAPTORFALCON : public Camera
   
   
   public slots:
-  void setImageSize(const int &_imageWidth, const int &_imageHeight);
-  void setFeature(int feature, double value);
-  void setMode(int feature, bool value);
-  void getProps();
+  void setImageSize(const int &_imageWidth, const int &_imageHeight) override;
+  void setFeature(int feature, double value) override;
+  void setMode(int feature, bool value) override;
+  void getProps() override;
 
  private:
-  void run();
-  int  connectCamera();
-  int  acquireImage();
-  void cleanup_and_exit();
+  void run() override;
+  int  connectCamera() override;
+  int  acquireImage() override;
+  void cleanup_and_exit() override;
   int  readFeature(char* sendreg, int size_sreg, char* readreg, int size_rreg, uchar* data, int size_data);
   int  writeFeature(char* sendreg, int size_sreg);
   double getPCBtemperature();
@@ -69,14 +69,16 @@ class CameraRAPTORFALCON : public Camera
   void   setExposure(double e);
   QString getBloomState();
   void   setBloomState(int value);
-  struct xclibs *xc;
-  struct pxvidstate   *vidstate;
-  pxbuffer_t framenum;
-  ushort *image16;
-  int imageWidth;
-  int imageHeight;
-  double frate, frameTotal;
-  bool binning_changed, aoi_changed;
+  struct xclibs *xc = nullptr;
+  struct pxvidstate   *vidstate = nullptr;
+  pxbuffer_t framenum = 0;
+  ushort *image16 = nullptr;
+  int imageWidth = 0;
+  int imageHeight = 0;
+  double frate = 0.0;
+  double frameTotal = 0.0;
+  bool binning_changed = false;
+  bool aoi_changed = false;
 };
 
 #endif // CAMERARAPTORFALCON_H

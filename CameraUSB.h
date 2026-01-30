@@ -26,19 +26,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class CameraUSB : public Camera
 {
-  Q_OBJECT
+ Q_OBJECT
     
     public:
   CameraUSB();
-  ~CameraUSB();
+  ~CameraUSB() override;
  
-  void stop();
-  int  findCamera();
-  void setCamera(void *_camera, int _id);
-  void getFeatures();
-  uchar* getSnapshot();
-  ushort *getSnapshot16();
-  int* getSnapshot32();
+  void stop() override;
+  int  findCamera() override;
+  void setCamera(void *_camera, int _id) override;
+  void getFeatures() override;
+  uchar* getSnapshot() override;
+  ushort *getSnapshot16() override;
+  int* getSnapshot32() override;
 
  signals:
   void  getImage(const QImage &image);
@@ -49,26 +49,26 @@ class CameraUSB : public Camera
   
   
   public slots:
-  void setImageSize(const int &_imageWidth, const int &_imageHeight);
-  void setFeature(int feature, double value);
-  void setMode(int feature, bool value);
-  void getProps();
+  void setImageSize(const int &_imageWidth, const int &_imageHeight) override;
+  void setFeature(int feature, double value) override;
+  void setMode(int feature, bool value) override;
+  void getProps() override;
 
  private:
-  void run();
-  int  connectCamera();
-  int  acquireImage();
-  void cleanup_and_exit();
+  void run() override;
+  int  connectCamera() override;
+  int  acquireImage() override;
+  void cleanup_and_exit() override;
   
-  QCamera *camera;
-  QCameraImageCapture *imageCapture;
+  QCamera *camera = nullptr;
+  QCameraImageCapture *imageCapture = nullptr;
   QList<QCameraInfo> cameras;
-  QCameraViewfinder *viewfinder;
+  QCameraViewfinder *viewfinder = nullptr;
   QCameraViewfinderSettings viewfinderSettings;
   
-  int cameraIndex;
-  int imageWidth;
-  int imageHeight;
+  int cameraIndex = 0;
+  int imageWidth = 0;
+  int imageHeight = 0;
 };
 
 #endif // CAMERAUSB_H

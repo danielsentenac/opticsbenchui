@@ -101,7 +101,7 @@ int raspi_aoi_settings[][2] = {
 static double GetTime( void ) {
  struct timeval tp;
 /*--------------------------------------------------------------------------*/
- gettimeofday( &tp, NULL );
+ gettimeofday( &tp, nullptr );
 /*--------------------------------------------------------------------------*/
  return( tp.tv_sec*1e6 + tp.tv_usec );
 }
@@ -111,12 +111,12 @@ CameraRaspi::CameraRaspi()
 {
   vflip = 0;
   hflip = 0;
-  image = NULL;
-  data = NULL;
-  buffer = NULL;
-  snapshot = NULL;
-  buffer32 = NULL;
-  snapshot32 = NULL;
+  image = nullptr;
+  data = nullptr;
+  buffer = nullptr;
+  snapshot = nullptr;
+  buffer32 = nullptr;
+  snapshot32 = nullptr;
   suspend = true;
   has_started = false;
   mutex = new QMutex(QMutex::NonRecursive);
@@ -612,11 +612,11 @@ CameraRaspi::setFeature(int feature, double value) {
    QLOG_INFO() << " NEW WIDTH = " << width;
    QLOG_INFO() << " NEW HEIGHT = " << height;
    // Allocation data buffer
-   if (buffer) { free(buffer); buffer = NULL;}
-   if (snapshot) { free(snapshot); snapshot = NULL;}
-   if (buffer32) { free(buffer32); buffer32 = NULL;}
-   if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
-   if (data) { free(data); data = NULL;}
+   if (buffer) { free(buffer); buffer = nullptr;}
+   if (snapshot) { free(snapshot); snapshot = nullptr;}
+   if (buffer32) { free(buffer32); buffer32 = nullptr;}
+   if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
+   if (data) { free(data); data = nullptr;}
    if (image) delete image;
     // Init Format to B8 pixel depth
    camera->setFormat(RASPICAM_FORMAT_GRAY);
@@ -900,11 +900,11 @@ CameraRaspi::cleanup_and_exit()
 {
   QLOG_DEBUG() << "Cleanup camera Raspi connection";
   camera->release();
-  if (data) { free(data); data = NULL;}
-  if (buffer) { free(buffer); buffer = NULL;}
-  if (snapshot) { free(snapshot); snapshot = NULL;}
-  if (buffer32) { free(buffer32); buffer32 = NULL;}
-  if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+  if (data) { free(data); data = nullptr;}
+  if (buffer) { free(buffer); buffer = nullptr;}
+  if (snapshot) { free(snapshot); snapshot = nullptr;}
+  if (buffer32) { free(buffer32); buffer32 = nullptr;}
+  if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
   if (image) delete image;
   return;
 }
@@ -921,7 +921,7 @@ CameraRaspi::acquireImage() {
   double eTime = GetTime();
   camera->grab();
   camera->retrieve ( data );
-  if (data == NULL) {
+  if (data == nullptr) {
     QLOG_ERROR() << "ACQUISITION ERROR";
     return (-1);
   }

@@ -26,15 +26,15 @@ class CameraNeo : public Camera
     
     public:
   CameraNeo();
-  ~CameraNeo();
+  ~CameraNeo() override;
  
-  void stop();
-  int  findCamera();
-  void setCamera(void *_camera, int _id);
-  void getFeatures();
-  uchar* getSnapshot();
-  ushort *getSnapshot16();
-  int* getSnapshot32();
+  void stop() override;
+  int  findCamera() override;
+  void setCamera(void *_camera, int _id) override;
+  void getFeatures() override;
+  uchar* getSnapshot() override;
+  ushort *getSnapshot16() override;
+  int* getSnapshot32() override;
   
  signals:
   void  getImage(const QImage &image);
@@ -46,31 +46,42 @@ class CameraNeo : public Camera
   
   
   public slots:
-  void setImageSize(const int &_imageWidth, const int &_imageHeight);
-  void setFeature(int feature, double value);
-  void setMode(int feature, bool value);
-  void getProps();
+  void setImageSize(const int &_imageWidth, const int &_imageHeight) override;
+  void setFeature(int feature, double value) override;
+  void setMode(int feature, bool value) override;
+  void getProps() override;
 
  private:
-  void run();
-  int  connectCamera();
-  int  acquireImage();
-  void cleanup_and_exit();
+  void run() override;
+  int  connectCamera() override;
+  int  acquireImage() override;
+  void cleanup_and_exit() override;
   const char * sdkErrorString(int _i_errorCode);
   bool errorOk(int _i_err, const char * _sz_caller);
 
-  int imageWidth;
-  int imageHeight;
+  int imageWidth = 0;
+  int imageHeight = 0;
   // Neo Andor
-  int i_err;
-  int i_available;
-  AT_H *camera;
-  double exposure, frate, temp;
-  int rrate;
-  AT_64 BufferSize, aoi_height, aoi_width, aoi_left, aoi_top; 
-  ushort** AlignedBuffers;
-  int FrameNumber, encoding_num, gain_num, trigger_num, acq_num;
-  double eTimeTotal, frequency;
+  int i_err = 0;
+  int i_available = 0;
+  AT_H *camera = nullptr;
+  double exposure = 0.0;
+  double frate = 0.0;
+  double temp = 0.0;
+  int rrate = 0;
+  AT_64 BufferSize = 0;
+  AT_64 aoi_height = 0;
+  AT_64 aoi_width = 0;
+  AT_64 aoi_left = 0;
+  AT_64 aoi_top = 0;
+  ushort** AlignedBuffers = nullptr;
+  int FrameNumber = 0;
+  int encoding_num = 0;
+  int gain_num = 0;
+  int trigger_num = 0;
+  int acq_num = 0;
+  double eTimeTotal = 0.0;
+  double frequency = 0.0;
 };
 
 #endif // CAMERANEO_H

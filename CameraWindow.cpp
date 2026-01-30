@@ -30,7 +30,7 @@ CameraWindow::CameraWindow( QMainWindow* parent, Qt::WindowFlags fl , Camera *_c
   OpticsBenchUIMain *OpticsBenchui = (OpticsBenchUIMain*) parentWindow;
   OpticsBenchui->setOpenCameraWindow(true,cameraNumber);
   player = new VideoPlayer(this,camera);
-  cameraPropWidget = NULL;
+  cameraPropWidget = nullptr;
  
   if (camera->camera_err == 0) { 
     connect(this,SIGNAL(setVideoPlayerResolution(int,int)),player,
@@ -96,7 +96,7 @@ void CameraWindow::closeEvent(QCloseEvent* event)
 }
 void CameraWindow::set480x320() {
   emit setVideoPlayerResolution(480,320);
-  if (cameraPropWidget != NULL) {
+  if (cameraPropWidget != nullptr) {
     this->setMaximumSize(QSize(480 + OFFSET_X, 320 + OFFSET_Y));
     //this->setMinimumSize(QSize(480 + OFFSET_X, 320 + OFFSET_Y));  
   }
@@ -107,7 +107,7 @@ void CameraWindow::set480x320() {
 }
 void CameraWindow::set640x480() {
   emit setVideoPlayerResolution(640,480); 
-  if (cameraPropWidget != NULL) {
+  if (cameraPropWidget != nullptr) {
     this->setMaximumSize(QSize(640 + OFFSET_X, 480 + OFFSET_Y));
     //this->setMinimumSize(QSize(640 + OFFSET_X, 480 + OFFSET_Y));
   }
@@ -118,7 +118,7 @@ void CameraWindow::set640x480() {
 }
 void CameraWindow::set1280x960() {
   emit setVideoPlayerResolution(1280,960);
-  if (cameraPropWidget != NULL) {
+  if (cameraPropWidget != nullptr) {
     this->setMaximumSize(QSize(1280 + OFFSET_X, 960 + OFFSET_Y));
     //this->setMinimumSize(QSize(1280 + OFFSET_X, 960 + OFFSET_Y));
   }

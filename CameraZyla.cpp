@@ -140,7 +140,7 @@ int zyla_aoi_settings_packed[][4] = {
 static double GetTime( void ) {
  struct timeval tp;
 /*--------------------------------------------------------------------------*/
- gettimeofday( &tp, NULL );
+ gettimeofday( &tp, nullptr );
 /*--------------------------------------------------------------------------*/
  return( tp.tv_sec*1e6 + tp.tv_usec );
 }
@@ -150,13 +150,13 @@ CameraZyla::CameraZyla()
 {
   vflip = 0;
   hflip = 0;
-  image = NULL;
-  buffer = NULL;
-  snapshot = NULL;
-  buffer32 = NULL;
-  buffer16 = NULL;
-  snapshot16 = NULL;
-  snapshot32 = NULL;
+  image = nullptr;
+  buffer = nullptr;
+  snapshot = nullptr;
+  buffer32 = nullptr;
+  buffer16 = nullptr;
+  snapshot16 = nullptr;
+  snapshot32 = nullptr;
   suspend = true;
   has_started = false;
   mutex = new QMutex(QMutex::NonRecursive);
@@ -748,12 +748,12 @@ CameraZyla::setFeature(int feature, double value) {
    width  = static_cast<int>(aoi_width);
    QLOG_INFO () << "CameraZyla::setFeature> Updated internal buffer " << BufferSize;
    QLOG_INFO () << "CameraZyla::setFeature> width " << width << " height " << height;
-   if (buffer) { free(buffer); buffer = NULL;}
-   if (snapshot) { free(snapshot); snapshot = NULL;}
-   if (buffer16) { free(buffer16); buffer16 = NULL;}
-   if (buffer32) { free(buffer32); buffer32 = NULL;}
-   if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
-   if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+   if (buffer) { free(buffer); buffer = nullptr;}
+   if (snapshot) { free(snapshot); snapshot = nullptr;}
+   if (buffer16) { free(buffer16); buffer16 = nullptr;}
+   if (buffer32) { free(buffer32); buffer32 = nullptr;}
+   if (snapshot16) { free(snapshot16); snapshot16 = nullptr;}
+   if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
    buffer = (uchar*)malloc( sizeof(uchar) * width * height);
    snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
    buffer16 = (ushort*)malloc( sizeof(ushort) * width * height);
@@ -1312,12 +1312,12 @@ CameraZyla::cleanup_and_exit()
   errorOk(i_err, "AT_Close");
   i_err = AT_FinaliseLibrary();
   errorOk(i_err, "AT_FinaliseLibrary");
-  if (buffer) { free(buffer); buffer = NULL;}
-  if (snapshot) { free(snapshot); snapshot = NULL;}
-  if (buffer16) { free(buffer16); buffer16 = NULL;}
-  if (buffer32) { free(buffer32); buffer32 = NULL;}
-  if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
-  if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+  if (buffer) { free(buffer); buffer = nullptr;}
+  if (snapshot) { free(snapshot); snapshot = nullptr;}
+  if (buffer16) { free(buffer16); buffer16 = nullptr;}
+  if (buffer32) { free(buffer32); buffer32 = nullptr;}
+  if (snapshot16) { free(snapshot16); snapshot16 = nullptr;}
+  if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
   if (image) delete image;
   return;
 }
@@ -1332,7 +1332,7 @@ CameraZyla::acquireImage() {
    * acquire frame
    *-----------------------------------------------------------------------*/
   double eTime = GetTime();
-  uchar* pBuf = NULL;
+  uchar* pBuf = nullptr;
   BufSize = 0;
   QLOG_DEBUG() << "CameraZyla::acquireImage> Trigger " 
                << QString(zyla_trigger_modes[trigger_num]);
@@ -1525,12 +1525,12 @@ CameraZyla::acquireImage() {
    width  = static_cast<int>(aoi_width);
    QLOG_INFO () << "CameraZyla::acquireImage> Updated internal buffer " << BufferSize;
    QLOG_INFO () << "CameraZyla::acquireImage> width " << width << " height " << height;
-   if (buffer) { free(buffer); buffer = NULL;}
-   if (snapshot) { free(snapshot); snapshot = NULL;}
-   if (buffer16) { free(buffer16); buffer16 = NULL;}
-   if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
-   if (buffer32) { free(buffer32); buffer32 = NULL;}
-   if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+   if (buffer) { free(buffer); buffer = nullptr;}
+   if (snapshot) { free(snapshot); snapshot = nullptr;}
+   if (buffer16) { free(buffer16); buffer16 = nullptr;}
+   if (snapshot16) { free(snapshot16); snapshot16 = nullptr;}
+   if (buffer32) { free(buffer32); buffer32 = nullptr;}
+   if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
    buffer = (uchar*)malloc( sizeof(uchar) * width * height);
    snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
    buffer16 = (ushort*)malloc( sizeof(ushort) * width * height);
@@ -1568,7 +1568,7 @@ void CameraZyla::setImageSize(const int &_imageWidth, const int &_imageHeight){
 
 const char * CameraZyla::sdkErrorString(int _i_errorCode)
 {
-        const char * sz_ret = NULL;
+        const char * sz_ret = nullptr;
         switch (_i_errorCode) {
                 case AT_SUCCESS:
                         sz_ret = "AT_SUCCESS";

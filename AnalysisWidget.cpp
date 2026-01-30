@@ -17,11 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "AnalysisWidget.h"
 
+AnalysisWidget::AnalysisWidget() = default;
 
-AnalysisWidget::AnalysisWidget()
-{
-}
-AnalysisWidget::~AnalysisWidget()
-{
-  QLOG_DEBUG ( ) << "Deleting AnalysisWidget"; 
+AnalysisWidget::~AnalysisWidget() {
+  QLOG_DEBUG() << "Deleting AnalysisWidget";
 }

@@ -170,8 +170,8 @@ CameraControlWidget::~CameraControlWidget()
 void
 CameraControlWidget::snapShot() {
   
-  uchar *img8 = NULL;
-  int *img32 = NULL;
+  uchar *img8 = nullptr;
+  int *img32 = nullptr;
   
   // Take snapshot
   if ( camera->pixel_encoding == B8 ) {

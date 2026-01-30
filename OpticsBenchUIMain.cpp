@@ -17,6 +17,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "OpticsBenchUIMain.h"
 #include <QDesktopServices>
+#include <functional>
+
+namespace {
+template <typename CameraType>
+void setupCameraManager(Camera *&manager,
+                        const QString &label,
+                        QVector<Camera *> &cameraList,
+                        QVector<bool> &isOpenCameraWindow,
+                        QVector<CameraWindow *> &cameraWindowList)
+{
+  manager = new CameraType();
+  manager->findCamera();
+  QLOG_INFO() << "Found " << manager->num << " " << label << " camera";
+
+  for (int i = 0; i < manager->num; i++) {
+    Camera *camera = new CameraType();
+    camera->setCamera(manager->cameralist.at(i), i);
+    cameraList.push_back(camera);
+    isOpenCameraWindow.push_back(false);
+    cameraWindowList.push_back(NULL);
+  }
+}
+} // namespace
 
 #define DEBUG_LEVEL QsLogging::InfoLevel
 
@@ -96,139 +119,88 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   // Create USB Camera manager
   //
 #ifdef USBCAMERA
-  cameraUSBMgr = new CameraUSB();
-  cameraUSBMgr->findCamera();
-  QLOG_INFO() << "Found " <<  cameraUSBMgr->num << " USB camera";
-  
-  for (int i = 0 ; i < cameraUSBMgr->num; i++) {
-    Camera *camera = new CameraUSB();
-    camera->setCamera(cameraUSBMgr->cameralist.at(i),i);
-    cameraList.push_back(camera);
-    isopencamerawindow.push_back(false);
-    camerawindowList.push_back(NULL);
-  }
+  setupCameraManager<CameraUSB>(cameraUSBMgr, "USB", cameraList, isopencamerawindow, camerawindowList);
 #endif
   //
   // Create IEEE1394 Camera manager
   //
 #ifdef IEEE1394CAMERA
-  cameraIEEE1394Mgr = new CameraIEEE1394();
-  cameraIEEE1394Mgr->findCamera();
-  QLOG_INFO() << "Found " <<  cameraIEEE1394Mgr->num << " IEEE1394 camera";
-  
-  for (int i = 0 ; i < cameraIEEE1394Mgr->num; i++) {
-    Camera *camera = new CameraIEEE1394();
-    camera->setCamera(cameraIEEE1394Mgr->cameralist.at(i),i);
-    cameraList.push_back(camera);
-    isopencamerawindow.push_back(false);
-    camerawindowList.push_back(NULL);
-  }
+  setupCameraManager<CameraIEEE1394>(cameraIEEE1394Mgr,
+                                     "IEEE1394",
+                                     cameraList,
+                                     isopencamerawindow,
+                                     camerawindowList);
 #endif
   //
   // Create GiGEVision Camera manager
   //
 #ifdef GIGECAMERA
-  cameraGiGEMgr = new CameraGiGE();
-  cameraGiGEMgr->findCamera();
-  QLOG_INFO() << "Found " <<  cameraGiGEMgr->num << " GIGE camera";
-  for (int i = 0 ; i < cameraGiGEMgr->num; i++) {
-    Camera *camera = new CameraGiGE();
-    camera->setCamera(cameraGiGEMgr->cameralist.at(i),i);
-    cameraList.push_back(camera);
-    isopencamerawindow.push_back(false);
-    camerawindowList.push_back(NULL);
-  }
+  setupCameraManager<CameraGiGE>(cameraGiGEMgr,
+                                 "GIGE",
+                                 cameraList,
+                                 isopencamerawindow,
+                                 camerawindowList);
 #endif
   //
   // Create Neo Andor Camera manager
   //
 #ifdef NEOCAMERA
-  cameraNeoMgr = new CameraNeo();
-  cameraNeoMgr->findCamera();
-  QLOG_INFO() << "Found " <<  cameraNeoMgr->num << " NEO Andor camera";
-  for (int i = 0 ; i < cameraNeoMgr->num; i++) {
-    Camera *camera = new CameraNeo();
-    camera->setCamera(cameraNeoMgr->cameralist.at(i),i);
-    cameraList.push_back(camera);
-    isopencamerawindow.push_back(false);
-    camerawindowList.push_back(NULL);
-  }
+  setupCameraManager<CameraNeo>(cameraNeoMgr,
+                                "NEO Andor",
+                                cameraList,
+                                isopencamerawindow,
+                                camerawindowList);
 #endif
   //
   // Create Zyla Andor Camera manager
   //
 #ifdef ZYLACAMERA
-  cameraZylaMgr = new CameraZyla();
-  cameraZylaMgr->findCamera();
-  QLOG_INFO() << "Found " <<  cameraZylaMgr->num << " ZYLA Andor camera";
-  for (int i = 0 ; i < cameraZylaMgr->num; i++) {
-    Camera *camera = new CameraZyla();
-    camera->setCamera(cameraZylaMgr->cameralist.at(i),i);
-    cameraList.push_back(camera);
-    isopencamerawindow.push_back(false);
-    camerawindowList.push_back(NULL);
-  }
+  setupCameraManager<CameraZyla>(cameraZylaMgr,
+                                 "ZYLA Andor",
+                                 cameraList,
+                                 isopencamerawindow,
+                                 camerawindowList);
 #endif
   //
   // Create RAPTOR Falcon Camera manager
   //
 #ifdef RAPTORFALCONCAMERA
-  cameraRAPTORFALCONMgr = new CameraRAPTORFALCON();
-  cameraRAPTORFALCONMgr->findCamera();
-  QLOG_INFO() << "Found " <<  cameraRAPTORFALCONMgr->num << " RAPTOR Falcon camera";
-  for (int i = 0 ; i < cameraRAPTORFALCONMgr->num; i++) {
-    Camera *camera = new CameraRAPTORFALCON();
-    camera->setCamera(cameraRAPTORFALCONMgr->cameralist.at(i),i);
-    cameraList.push_back(camera);
-    isopencamerawindow.push_back(false);
-    camerawindowList.push_back(NULL);
-  }
+  setupCameraManager<CameraRAPTORFALCON>(cameraRAPTORFALCONMgr,
+                                        "RAPTOR Falcon",
+                                        cameraList,
+                                        isopencamerawindow,
+                                        camerawindowList);
 #endif
   //
   // Create RAPTOR Ninox640 Camera manager
   //
 #ifdef RAPTORNINOX640CAMERA
-  cameraRAPTORNINOX640Mgr = new CameraRAPTORNINOX640();
-  cameraRAPTORNINOX640Mgr->findCamera();
-  QLOG_INFO() << "Found " <<  cameraRAPTORNINOX640Mgr->num << " RAPTOR Ninox640 camera";
-  for (int i = 0 ; i < cameraRAPTORNINOX640Mgr->num; i++) {
-    Camera *camera = new CameraRAPTORNINOX640();
-    camera->setCamera(cameraRAPTORNINOX640Mgr->cameralist.at(i),i);
-    cameraList.push_back(camera);
-    isopencamerawindow.push_back(false);
-    camerawindowList.push_back(NULL);
-  }
+  setupCameraManager<CameraRAPTORNINOX640>(cameraRAPTORNINOX640Mgr,
+                                          "RAPTOR Ninox640",
+                                          cameraList,
+                                          isopencamerawindow,
+                                          camerawindowList);
 #endif
   //
   // Create RASPICAM Camera manager
   //
 #ifdef RASPICAMERA
-  cameraRaspiMgr = new CameraRaspi();
-  cameraRaspiMgr->findCamera();
-  QLOG_INFO() << "Found " <<  cameraRaspiMgr->num << " RASPICAM camera";
-  for (int i = 0 ; i < cameraRaspiMgr->num; i++) {
-    Camera *camera = new CameraRaspi();
-    camera->setCamera(cameraRaspiMgr->cameralist.at(i),i);
-    cameraList.push_back(camera);
-    isopencamerawindow.push_back(false);
-    camerawindowList.push_back(NULL);
-  }
+  setupCameraManager<CameraRaspi>(cameraRaspiMgr,
+                                  "RASPICAM",
+                                  cameraList,
+                                  isopencamerawindow,
+                                  camerawindowList);
 #endif
 
   //
   // Create ALLIEDVISION Camera manager
   //
 #ifdef ALLIEDVISIONCAMERA
-  cameraAlliedVisionMgr = new CameraAlliedVision();
-  cameraAlliedVisionMgr->findCamera();
-  QLOG_INFO() << "Found " <<  cameraAlliedVisionMgr->num << " ALLIED VISION camera";
-  for (int i = 0 ; i < cameraAlliedVisionMgr->num; i++) {
-    Camera *camera = new CameraAlliedVision();
-    camera->setCamera(cameraAlliedVisionMgr->cameralist.at(i),i);
-    cameraList.push_back(camera);
-    isopencamerawindow.push_back(false);
-    camerawindowList.push_back(NULL);
-  }
+  setupCameraManager<CameraAlliedVision>(cameraAlliedVisionMgr,
+                                         "ALLIED VISION",
+                                         cameraList,
+                                         isopencamerawindow,
+                                         camerawindowList);
 #endif
 
   analysiswidget = new AnalysisWidget();

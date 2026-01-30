@@ -107,7 +107,7 @@ char *iidc_video_modes[] = {(char*)"160x120_YUV444",
 static double GetTime( void ) {
  struct timeval tp;
 /*--------------------------------------------------------------------------*/
- gettimeofday( &tp, NULL );
+ gettimeofday( &tp, nullptr );
 /*--------------------------------------------------------------------------*/
  return( tp.tv_sec*1e6 + tp.tv_usec );
 }
@@ -117,12 +117,12 @@ CameraIEEE1394::CameraIEEE1394()
 {
   hflip = 0;
   vflip = 0;
-  image = NULL;
-  buffer = NULL;
-  snapshot = NULL;
-  buffer32 = NULL;
-  snapshot32 = NULL;
-  d = NULL;
+  image = nullptr;
+  buffer = nullptr;
+  snapshot = nullptr;
+  buffer32 = nullptr;
+  snapshot32 = nullptr;
+  d = nullptr;
   suspend = true;
   has_started = false;
   mutex = new QMutex(QMutex::NonRecursive);
@@ -480,10 +480,10 @@ CameraIEEE1394::setFeature(int feature, double value) {
                                         &width, &height);
     QLOG_INFO () << "CameraNeo::setFeature> Reallocating the image buffer "
                  << " width " << width << " height " << height;
-    if (buffer) { free(buffer); buffer = NULL;}
-    if (snapshot) { free(snapshot); snapshot = NULL;}
-    if (buffer32) { free(buffer32); buffer32 = NULL;}
-    if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+    if (buffer) { free(buffer); buffer = nullptr;}
+    if (snapshot) { free(snapshot); snapshot = nullptr;}
+    if (buffer32) { free(buffer32); buffer32 = nullptr;}
+    if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
     buffer = (uchar*)malloc( sizeof(uchar) * width * height);
     snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
     buffer32 = (int*)malloc( sizeof(int) * width * height);
@@ -542,10 +542,10 @@ CameraIEEE1394::setFeature(int feature, double value) {
                                         &width, &height);
     QLOG_INFO () << "CameraNeo::setFeature> Reallocating the image buffer "
                  << " width " << width << " height " << height;
-    if (buffer) { free(buffer); buffer = NULL;}
-    if (snapshot) { free(snapshot); snapshot = NULL;}
-    if (buffer32) { free(buffer32); buffer32 = NULL;}
-    if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+    if (buffer) { free(buffer); buffer = nullptr;}
+    if (snapshot) { free(snapshot); snapshot = nullptr;}
+    if (buffer32) { free(buffer32); buffer32 = nullptr;}
+    if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
     buffer = (uchar*)malloc( sizeof(uchar) * width * height);
     snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
     buffer32 = (int*)malloc( sizeof(int) * width * height);
@@ -784,12 +784,12 @@ CameraIEEE1394::cleanup_and_exit()
   dc1394_video_set_transmission(camera, DC1394_OFF);
   dc1394_capture_stop(camera);
   dc1394_camera_free(camera);
-  camera = NULL;
+  camera = nullptr;
   if (d) dc1394_free (d);
-  if (buffer) { free(buffer); buffer = NULL;}
-  if (snapshot) { free(snapshot); snapshot = NULL;}
-  if (buffer32) { free(buffer32); buffer32 = NULL;}
-  if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
+  if (buffer) { free(buffer); buffer = nullptr;}
+  if (snapshot) { free(snapshot); snapshot = nullptr;}
+  if (buffer32) { free(buffer32); buffer32 = nullptr;}
+  if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
   if (image) delete image;
   return;
 }
@@ -798,8 +798,8 @@ int
 CameraIEEE1394::acquireImage() {
    
      acquireMutex->lock();
-     /*Init frame to NULL*/
-     frame = NULL;
+     /*Init frame to nullptr*/
+     frame = nullptr;
     /*-----------------------------------------------------------------------
      *  capture one frame
      *-----------------------------------------------------------------------*/

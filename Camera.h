@@ -49,10 +49,12 @@ class Camera : public QThread
     
     public:
   
-  Camera() {
-  
-   for (int i = 0; i < 255; i++) 
+  Camera()
+    : QThread()
+  {
+   for (int i = 0; i < 255; i++) {
      gray.append(qRgb(i, i, i));
+   }
 
    hot <<
     qRgb( 8,   0,   0)<<
@@ -313,7 +315,8 @@ class Camera : public QThread
     qRgb(255, 255, 255);
 
     table = &gray;
-  };
+  }
+  ~Camera() override = default;
   virtual void stop() = 0;
   virtual int  findCamera() = 0;
   virtual void setCamera(void *_camera, int _id) = 0;
@@ -323,38 +326,49 @@ class Camera : public QThread
   virtual ushort *getSnapshot16() = 0;
   virtual int *getSnapshot32() = 0;
  
-  QMutex *mutex, *snapshotMutex, *acquireMutex;
-  QWaitCondition *acqstart, *acqend;
-  bool has_started;  
-  bool suspend;
-  bool optimizeAcquisition;
-  unsigned int width;
-  unsigned int height;
-  unsigned int video_mode;
-  unsigned int pixel_encoding;
-  uchar *buffer,*snapshot;
-  ushort *buffer16,*snapshot16;
-  int *buffer32, *snapshot32;
-  int BufSize;
-  int snapShotMin, snapShotMax, snapShotAvg, min, max, avg;
-  int camera_err;                     /* Error flag */
-  int num;                            /* Camera total number for camera manager*/
-  int id;                             /* Camera position id in list for camera manager*/
-  QVector<void *> cameralist;         /* Available camera list for camera manager*/
-  QVector<QString> vendorlist;        /* Available vendor list for camera manager*/
-  QVector<QString> modelist;          /* Available model list for camera manager*/
-  QString vendor;                     /* Current vendor*/
-  QString model;                      /* Current model*/
-  bool modeCheckEnabled;              /* AUTO/MANUAL modeCheck enabled */
-  QVector<QString> featureNameList;   /* Available feature list*/
-  QVector<int> featureIdList;         /* Available feature id list*/
-  QVector<double> featureValueList;   /* Available feature value list*/
-  QVector<double> featureMinList;        /* Available feature min list*/
-  QVector<double> featureMaxList;        /* Available feature max list*/
-  QVector<bool> featureModeAutoList;  /* Available feature mode list*/
-  QVector<bool> featureAutoCapableList; /* Available feature mode auto capable list*/
-  QVector<double> featureAbsValueList; /* Available feature abs value list*/
-  QVector<int> featureAbsCapableList; /* Available feature abs capable list*/
+  QMutex *mutex = nullptr;
+  QMutex *snapshotMutex = nullptr;
+  QMutex *acquireMutex = nullptr;
+  QWaitCondition *acqstart = nullptr;
+  QWaitCondition *acqend = nullptr;
+  bool has_started = false;
+  bool suspend = false;
+  bool optimizeAcquisition = false;
+  unsigned int width = 0;
+  unsigned int height = 0;
+  unsigned int video_mode = 0;
+  unsigned int pixel_encoding = 0;
+  uchar *buffer = nullptr;
+  uchar *snapshot = nullptr;
+  ushort *buffer16 = nullptr;
+  ushort *snapshot16 = nullptr;
+  int *buffer32 = nullptr;
+  int *snapshot32 = nullptr;
+  int BufSize = 0;
+  int snapShotMin = 0;
+  int snapShotMax = 0;
+  int snapShotAvg = 0;
+  int min = 0;
+  int max = 0;
+  int avg = 0;
+  int camera_err = 0;                     /* Error flag */
+  int num = 0;                            /* Camera total number for camera manager*/
+  int id = 0;                             /* Camera position id in list for camera manager*/
+  QVector<void *> cameralist;             /* Available camera list for camera manager*/
+  QVector<QString> vendorlist;            /* Available vendor list for camera manager*/
+  QVector<QString> modelist;              /* Available model list for camera manager*/
+  QString vendor;                         /* Current vendor*/
+  QString model;                          /* Current model*/
+  bool modeCheckEnabled = false;          /* AUTO/MANUAL modeCheck enabled */
+  QVector<QString> featureNameList;       /* Available feature list*/
+  QVector<int> featureIdList;             /* Available feature id list*/
+  QVector<double> featureValueList;       /* Available feature value list*/
+  QVector<double> featureMinList;         /* Available feature min list*/
+  QVector<double> featureMaxList;         /* Available feature max list*/
+  QVector<bool> featureModeAutoList;      /* Available feature mode list*/
+  QVector<bool> featureAutoCapableList;   /* Available feature mode auto capable list*/
+  QVector<double> featureAbsValueList;    /* Available feature abs value list*/
+  QVector<int> featureAbsCapableList;     /* Available feature abs capable list*/
   
   QVector<QString> propList;          /* Available properties list*/
 
@@ -378,7 +392,7 @@ class Camera : public QThread
       hflip = state;
   }
   virtual uchar* reversebytes(uchar *buffer, int buffersize) {
-     if (buffer == NULL) return NULL;
+     if (buffer == nullptr) return nullptr;
      uchar swap;
      uchar *lo = buffer;
      uchar *hi = buffer + buffersize - 1;
@@ -390,7 +404,7 @@ class Camera : public QThread
      return buffer;
   }
   virtual ushort* reversebytes(ushort *buffer, int buffersize) {
-     if (buffer == NULL) return NULL;
+     if (buffer == nullptr) return nullptr;
      ushort swap;
      ushort *lo = buffer;
      ushort *hi = buffer + buffersize - 1;
@@ -402,7 +416,7 @@ class Camera : public QThread
      return buffer;
   }
   virtual int* reversebytes(int *buffer, int buffersize) {
-     if (buffer == NULL) return NULL;
+     if (buffer == nullptr) return nullptr;
      int swap;
      int *lo = buffer;
      int *hi = buffer + buffersize - 1;
@@ -414,8 +428,7 @@ class Camera : public QThread
      return buffer;
   }
   virtual uchar* fliphorizontal(uchar *buffer, int buffersize, int width) {
-     if (buffer == NULL) return NULL;
-     int ncol = 0;
+     if (buffer == nullptr) return nullptr;
      int nline = 0;
      while ( nline < buffersize / width - 1 ) {
        nline++;
@@ -431,8 +444,7 @@ class Camera : public QThread
      return buffer;
   }
   virtual ushort* fliphorizontal(ushort *buffer, int buffersize, int width) {
-     if (buffer == NULL) return NULL;
-     int ncol = 0;
+     if (buffer == nullptr) return nullptr;
      int nline = 0;
      while ( nline < buffersize / width - 1 ) {
        nline++;
@@ -448,8 +460,7 @@ class Camera : public QThread
      return buffer;
   }
   virtual int* fliphorizontal(int *buffer, int buffersize, int width) {
-     if (buffer == NULL) return NULL;
-     int ncol = 0;
+     if (buffer == nullptr) return nullptr;
      int nline = 0;
      while ( nline < buffersize / width - 1 ) {
        nline++;
@@ -486,12 +497,14 @@ class Camera : public QThread
   virtual int  connectCamera() = 0;
   virtual int  acquireImage() = 0;
   virtual void cleanup_and_exit() = 0;
-  int vflip, hflip;
-  double eTimeTotal, frequency;
+  int vflip = 0;
+  int hflip = 0;
+  double eTimeTotal = 0.0;
+  double frequency = 0.0;
   QVector<QRgb> hot;
   QVector<QRgb> gray;
-  QVector<QRgb> *table;
-  QImage *image;
+  QVector<QRgb> *table = nullptr;
+  QImage *image = nullptr;
 };
 
 

@@ -30,28 +30,31 @@ class AcquisitionWidget : public QWidget
 {
   Q_OBJECT
   
-  public:
-  AcquisitionWidget(QString _appDirPath = 0);
-  ~AcquisitionWidget();
- 
-  void setCamera(QVector<Camera*> _cameraList);
-  void setMotor(Motor* _motor);
-  void setSuperK(SuperK* _superk);
-  void setDac(Dac* _dac);
-  void setComediCounter(Comedi* _comedi);
-  void setComediDac(Comedi* _comedi);
-  void setRaspiDac(Raspi* _raspi);
+public:
+  explicit AcquisitionWidget(QString appDirPath = QString());
+  ~AcquisitionWidget() override;
+  
+  void setCamera(QVector<Camera*> cameraList);
+  void setMotor(Motor* motor);
+  void setSuperK(SuperK* superk);
+  void setDac(Dac* dac);
+  void setComediCounter(Comedi* comedi);
+  void setComediDac(Comedi* comedi);
+  void setRaspiDac(Raspi* raspi);
   void setDelegates();
+  void setDbPath(QString path);
+  void setAcqFile(QString acqfile);
 
- signals:
+signals:
   void showWarning(QString message);
   
-  public slots:
+public slots:
   void update();
   void reload();
   void remove();
   void run();
   void stop();
+  void splashScreen(QString imagepath, int screen_x, int screen_y);
   void getPosition(QString positionQString);
   void getSuperKData(QString dataStr);
   void getCameraStatus(bool imagesuccess);
@@ -62,52 +65,43 @@ class AcquisitionWidget : public QWidget
   void getAcquiring(int record);
   void getFilenumber(int number);
   void isopenCameraWindow(QVector<bool> isopencamerawindow);
-  void setDbPath(QString _path);
-  void setAcqFile(QString _acqfile);
-  void showAcquisitionWarning(QString);
-  void splashScreen(QString imagepath, int screen_x, int screen_y);
+  void showAcquisitionWarning(QString message);
  
- private:
-  QVector<Camera*> cameraList;
-  Motor  *motor;
-  SuperK *superk;
-  Dac    *dac;
-  Comedi *comedicounter, *comedidac;
-  Raspi *raspidac;
-  QLabel *splashLabel;
-
-  QString   appDirPath, path;
-  QString         acqfile;
-  QString        filenumber;
-  QLabel         *statusLabel;
-  QLabel         *acquisitiontitle;
-  QSqlTableModel *acquisitiontable;
-  QTableView     *acquisitionview;
-  int             acquisitionrow;
-  QPushButton    *reloadButton;
-  QPushButton    *updateButton;
-  QPushButton    *removeButton;
-  QPushButton    *runButton;
-  QPushButton    *stopButton;
-  
-
-  QGridLayout    *gridlayout;
-
+private:
   void InitConfig();
   void dbConnexion();
-  QSqlDatabase connectDb(QString path) {
-     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
-     QLOG_INFO ( ) << "ComediDac::dbConnexion> Db path : " << path;
-     db.setDatabaseName(path);
-     if ( !db.open() ) {
-       QLOG_WARN ( ) << db.lastError().text();
-     }
-     return db;
-  }
+  void setupAcquisitionTable();
+  void updateStatusForRecord(const QString& status, int record);
+  QString statusFromSuccess(bool success) const;
 
-  AcquisitionThread *acquisition;
-  QVector<AcquisitionSequence*> sequenceList;
+  QString appDirPath;
+  QString path;
+  QString acqfile;
+  QString filenumber;
+  int acquisitionrow;
   int cur_record;
+
+  QVector<Camera*> cameraList;
+  Motor* motor;
+  SuperK* superk;
+  Dac* dac;
+  Comedi* comedicounter;
+  Comedi* comedidac;
+  Raspi* raspidac;
+
+  QLabel* splashLabel;
+  QLabel* acquisitiontitle;
+  QSqlTableModel* acquisitiontable;
+  QTableView* acquisitionview;
+  QPushButton* reloadButton;
+  QPushButton* updateButton;
+  QPushButton* removeButton;
+  QPushButton* runButton;
+  QPushButton* stopButton;
+  QGridLayout* gridlayout;
+
+  AcquisitionThread* acquisition;
+  QVector<AcquisitionSequence*> sequenceList;
 
 };
 #endif
