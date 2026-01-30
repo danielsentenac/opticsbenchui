@@ -60,7 +60,7 @@ int raptorninox640_aoi_settings[][4] = {
 static double GetTime( void ) {
  struct timeval tp;
 /*--------------------------------------------------------------------------*/
- gettimeofday( &tp, NULL );
+ gettimeofday( &tp, nullptr );
 /*--------------------------------------------------------------------------*/
  return( tp.tv_sec*1e6 + tp.tv_usec );
 }
@@ -70,13 +70,13 @@ CameraRAPTORNINOX640::CameraRAPTORNINOX640()
 {
   hflip = 0;
   vflip = 0;
-  image = NULL;
-  buffer = NULL;
-  snapshot = NULL;
-  buffer16 = NULL;
-  snapshot16 = NULL;
-  buffer32 = NULL;
-  snapshot32 = NULL;
+  image = nullptr;
+  buffer = nullptr;
+  snapshot = nullptr;
+  buffer16 = nullptr;
+  snapshot16 = nullptr;
+  buffer32 = nullptr;
+  snapshot32 = nullptr;
   suspend = true;
   has_started = false;
   mutex = new QMutex(QMutex::NonRecursive);
@@ -516,13 +516,13 @@ CameraRAPTORNINOX640::cleanup_and_exit()
   int err;
   err = pxd_PIXCIclose();
   QLOG_DEBUG() << "Close Raptor" << err;
-  if (buffer) { free(buffer); buffer = NULL;}
-  if (snapshot) { free(snapshot); snapshot = NULL;}
-  if (buffer16) { free(buffer16); buffer16 = NULL;}
-  if (snapshot16) { free(snapshot16); snapshot16 = NULL;}
-  if (buffer32) { free(buffer32); buffer32 = NULL;}
-  if (snapshot32) { free(snapshot32); snapshot32 = NULL;}
-  if (image16) { free(image16); image16 = NULL;}
+  if (buffer) { free(buffer); buffer = nullptr;}
+  if (snapshot) { free(snapshot); snapshot = nullptr;}
+  if (buffer16) { free(buffer16); buffer16 = nullptr;}
+  if (snapshot16) { free(snapshot16); snapshot16 = nullptr;}
+  if (buffer32) { free(buffer32); buffer32 = nullptr;}
+  if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
+  if (image16) { free(image16); image16 = nullptr;}
   if (image) delete image;
 
   return;
