@@ -100,7 +100,7 @@ int DriverNewFocus_8750_Ol::InitActuator(string actuatorSetting,
   if (sscanf(actuatorSetting.c_str(),"motor=%d type=%d frequency=%f",
 	     &motor,&type,&frequency) != NB_ITEM_INIT_SETTING)
     {
-      QLOG_ERROR () << "Bad Actuator setting";
+      ReportSettingError("Bad actuator setting");
     }
   setFrequencyCommandstream  << "VEL A" << _setting  
 			     <<   " "   << motor << "=" << frequency << "\n";
@@ -195,7 +195,7 @@ int DriverNewFocus_8750_Ol::Move(string actuatorSetting,
       if (sscanf(actuatorSetting.c_str(),"motor=%d type=%*d frequency=%*f",
 		 &motor) != NB_ITEM_SETTING)
 	{
-	  QLOG_ERROR () << "Bad Actuator setting";
+	  ReportSettingError("Bad actuator setting");
 	}
       selectChannelCommandstream << "CHL A" << _setting << "=" << motor << "\n";
       moveCommandstream << "REL A" << _setting << "=" << (int)motion << "\n";
@@ -355,14 +355,14 @@ int DriverNewFocus_8750_Ol::SendCommand(string command,
   int retStatus = 0;
   if (_pcommChannel->Write(command,NULL) < (int)command.length())
     {
-      QLOG_DEBUG() << "Unable to write to port";
+      ReportCommError("Unable to write to port");
    
       _lastError = COMMUNICATION_ERROR; 
       retStatus = WRITE_ERROR;
     }
   else if (!_pcommChannel->Read(answer,NULL))
     {
-      QLOG_DEBUG() << "Unable to read from port";
+      ReportCommError("Unable to read from port");
       _lastError = COMMUNICATION_ERROR; 
       retStatus = READ_ERROR;
     }

@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 #include "DriverNewPort_AGUC2.h"
 #include "DriverPI_E725.h"
+#include "Utils.h"
 
 
 const string Driver::PI_C862              = "PI_C862";
@@ -207,6 +208,37 @@ int Driver::GetLastError(ADErrorCode &lastError)
   lastError = _lastError;
   return 0;   
 }
+
+void Driver::ReportWarning(ADErrorCode code, const QString& message) const
+{
+  if (code != NO_ERROR) {
+    _lastError = code;
+  }
+  Utils::ReportWarning(NULL, message);
+}
+
+void Driver::ReportError(ADErrorCode code, const QString& message) const
+{
+  if (code != NO_ERROR) {
+    _lastError = code;
+  }
+  Utils::ReportError(NULL, message);
+}
+
+void Driver::ReportSettingError(const QString& message) const
+{
+  ReportWarning(OTHER_ERROR, message);
+}
+
+void Driver::ReportCommError(const QString& message) const
+{
+  ReportError(COMMUNICATION_ERROR, message);
+}
+
+void Driver::ReportRangeError(const QString& message) const
+{
+  ReportWarning(OUT_OF_RANGE_ERROR, message);
+}
 //------------------------------------------------------------------------------
 /// Operation : SendCommand
 ///    Sends a command to the motor driver interface
@@ -236,8 +268,8 @@ Driver::SendGeneralCommand(char *buffer,string& rply) const
     // Apply Command
     //////////////////////////////////////////////////////////////////////////
     if (_pcommChannel->Write(command) < (int)command.length()) { 
-      QLOG_DEBUG ( ) <<"Driver> Unable to write to port";
-      return (-1);
+      ReportCommError("Driver> Unable to write to port");
+      return -1;
     }
     usleep(100000);
   }
@@ -245,8 +277,8 @@ Driver::SendGeneralCommand(char *buffer,string& rply) const
   // Read reply
   ////////////////////////////////////////////////////////////////////////////////////
   if (!_pcommChannel->Read(answer)) {
-    QLOG_DEBUG ( ) << "Driver> Unable to read from port";
-    return(-2);
+    ReportCommError("Driver> Unable to read from port");
+    return -2;
   }
   QLOG_DEBUG ( ) << "Driver> Reply to Command is :" << QString(answer.c_str());
   rply = answer;
@@ -274,4 +306,3 @@ Driver::Tokenize(const string& str,
         pos = str.find_first_of(delimiters, lastPos);
       }
 }
-

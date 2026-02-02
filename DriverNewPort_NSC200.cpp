@@ -50,7 +50,7 @@ int DriverNewPort_NSC200::Init(string& rstateData) const
   // parse driverSetting string for axis number
   if (sscanf(_setting.c_str(),"axisNumber=%d delay=%d",
 	     &_axisNumber, &_delay) != NB_ITEM_DRV_SETTING) {
-    QLOG_DEBUG() << "DriverNewPort_NSC200> driverSetting string incorrect";
+    ReportSettingError("DriverNewPort_NSC200> driverSetting string incorrect");
     retStatus = -1;
     return retStatus;
   }
@@ -60,7 +60,7 @@ int DriverNewPort_NSC200::Init(string& rstateData) const
   QLOG_DEBUG() << "axis number = " << _axisNumber;
   
   if ((_axisNumber < 1) || (_axisNumber > MAX_DEVICES)) {
-    QLOG_DEBUG() << "DriverNewPort_NSC200> axis number out of range";
+    ReportRangeError("DriverNewPort_NSC200> axis number out of range");
     retStatus = -1;
     return retStatus;
   }  
@@ -121,11 +121,11 @@ int DriverNewPort_NSC200::InitActuator(string actuatorSetting,
   // Select switch box channel NOT NECESSARY IN PRINCIPLE !
   ////////////////////////////////////////////////////////////////////////////////////
   if (!SelectedSwitchBoxChannel(actuatorSetting)) {
-    QLOG_DEBUG() << "DriverNewPort_NSC200> No motor connected !";
+    ReportWarning(OTHER_ERROR, "DriverNewPort_NSC200> No motor connected !");
     return (-1);
   }
   if ((_vel < 1 ) || (_vel > MAX_VEL)) {
-    QLOG_DEBUG() << "DriverNewPort_NSC200> vel setting out of range";
+    ReportRangeError("DriverNewPort_NSC200> vel setting out of range");
     retStatus = -1;
     return retStatus;
   }
@@ -137,7 +137,8 @@ int DriverNewPort_NSC200::InitActuator(string actuatorSetting,
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG() << "DriverNewPort_NSC200> Unable to write to port, command = " << QString(command.c_str());
+    ReportCommError(QString("DriverNewPort_NSC200> Unable to write to port, command = %1")
+                    .arg(QString(command.c_str())));
     retStatus = -1;
   }
   usleep(_delay);
@@ -146,7 +147,8 @@ int DriverNewPort_NSC200::InitActuator(string actuatorSetting,
   sprintf(buffer, "%dSM\r", _axisNumber);
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG() << "DriverNewPort_NSC200> Unable to write to port, command = " << QString(command.c_str());
+    ReportCommError(QString("DriverNewPort_NSC200> Unable to write to port, command = %1")
+                    .arg(QString(command.c_str())));
     retStatus = -1;
   }
   sleep(3);
@@ -384,7 +386,7 @@ int DriverNewPort_NSC200::OperationComplete(string& rstateData,
   // parse driverSetting string for axis number
    if (sscanf(_setting.c_str(),"axisNumber=%d delay=%d",
              &_axisNumber, &_delay) != NB_ITEM_DRV_SETTING) {
-    QLOG_DEBUG() << "DriverNewPort_NSC200> driverSetting string incorrect";
+    ReportSettingError("DriverNewPort_NSC200> driverSetting string incorrect");
     retStatus = -1;
     return retStatus;
   }
@@ -435,9 +437,9 @@ int DriverNewPort_NSC200::OperationComplete(string& rstateData,
                << error;
 
   if ( error == PARAMETER_OUT_OF_RANGE ) {
-    QLOG_DEBUG() << "DriverNewPort_NSC200> axisNumber " <<  QString(axisStr.str().c_str())
-                 << " channel " << QString(channelStr.str().c_str())
-                 << ": Parameter out of range!";
+    ReportRangeError(QString("DriverNewPort_NSC200> axisNumber %1 channel %2: Parameter out of range!")
+                     .arg(QString(axisStr.str().c_str()))
+                     .arg(QString(channelStr.str().c_str())));
 
     rstateData = "axisNumber=" + axisStr.str() + " channel=" + channelStr.str() +
                  ": Parameter out of range";
@@ -604,7 +606,7 @@ int DriverNewPort_NSC200::SelectedSwitchBoxChannel(string actuatorSetting) const
   // parse driverSetting string for axis number
   if (sscanf(_setting.c_str(),"axisNumber=%d delay=%d",
              &_axisNumber, &_delay) != NB_ITEM_DRV_SETTING) {
-    QLOG_DEBUG() <<"DriverNewPort_NSC200> driverSetting string incorrect";
+    ReportSettingError("DriverNewPort_NSC200> driverSetting string incorrect");
     retStatus = -1;
     return retStatus;
   }
@@ -614,7 +616,7 @@ int DriverNewPort_NSC200::SelectedSwitchBoxChannel(string actuatorSetting) const
   if (sscanf(actuatorSetting.c_str(),
 	     "channel=%d vel=%f",
 	     &_channel,&_vel) != NB_ITEM_INIT_SETTING) {
-    QLOG_DEBUG() <<"DriverNewPort_NSC200> Actuator setting string format incorrect";
+    ReportSettingError("DriverNewPort_NSC200> Actuator setting string format incorrect");
     retStatus = -1;
     return retStatus;
   }

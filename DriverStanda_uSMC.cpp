@@ -56,7 +56,7 @@ int DriverStanda_uSMC::InitActuator(string actuatorSetting,
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%u rotator=%d speed=%f divisor=%d",
              &_cur_dev, &_rotator, &_speed, &_divisor) != NB_ITEM_INIT_SETTING)
     {
-      QLOG_ERROR () << "Bad Actuator setting";
+      ReportSettingError("Bad actuator setting");
       return -1;
     }
    // Update controller mode respect to rotator case
@@ -117,7 +117,7 @@ int DriverStanda_uSMC::GetPos(string  actuatorSetting,
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%u rotator=%d speed=%f divisor=%d",
              &_cur_dev, &_rotator, &_speed, &_divisor) != NB_ITEM_INIT_SETTING)
     {
-      QLOG_ERROR () << "Bad Actuator setting";
+      ReportSettingError("Bad actuator setting");
       return -1;
     }
   if ( USMC_GetState ( _cur_dev, &_state ) )
@@ -147,7 +147,7 @@ int DriverStanda_uSMC::Move(string actuatorSetting,
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%u rotator=%d speed=%f divisor=%d",
              &_cur_dev, &_rotator, &_speed, &_divisor) != NB_ITEM_INIT_SETTING)
     {
-      QLOG_ERROR () << "Bad Actuator setting";
+      ReportSettingError("Bad actuator setting");
       return -1;
     }
    // Get current position
@@ -188,7 +188,7 @@ int DriverStanda_uSMC::MoveAbs(string actuatorSetting,
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%u rotator=%d speed=%f divisor=%d",
              &_cur_dev, &_rotator, &_speed, &_divisor) != NB_ITEM_INIT_SETTING)
     {
-      QLOG_ERROR () << "Bad Actuator setting";
+      ReportSettingError("Bad actuator setting");
       return -1;
     }
    // Get current position
@@ -230,7 +230,7 @@ int DriverStanda_uSMC::Stop(string actuatorSetting) const
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%u rotator=%d speed=%f divisor=%d",
              &_cur_dev, &_rotator, &_speed, &_divisor) != NB_ITEM_INIT_SETTING)
     {
-      QLOG_ERROR () << "Bad Actuator setting";
+      ReportSettingError("Bad actuator setting");
       return -1;
     }
 
@@ -263,7 +263,7 @@ int DriverStanda_uSMC::OperationComplete(string& rstateData,
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%u rotator=%d speed=%f divisor=%d",
              &_cur_dev, &_rotator, &_speed, &_divisor) != NB_ITEM_INIT_SETTING)
     {
-      QLOG_ERROR () << "Bad Actuator setting";
+      ReportSettingError("Bad actuator setting");
       return -1;
     }
 
@@ -338,7 +338,7 @@ int DriverStanda_uSMC::Exit(string actuatorSetting)
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%u rotator=%d speed=%f divisor=%d",
              &_cur_dev, &_rotator, &_speed, &_divisor) != NB_ITEM_INIT_SETTING)
     {
-      QLOG_ERROR () << "Bad Actuator setting";
+      ReportSettingError("Bad actuator setting");
       return -1;
     }
 

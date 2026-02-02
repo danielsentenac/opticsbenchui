@@ -39,21 +39,21 @@ int DriverPI_E725::Init(string& rstateData) const
   string commandLine;
   string answer;
 
-   if (sscanf(_setting.c_str(),"delay=%d",
+  if (sscanf(_setting.c_str(),"delay=%d",
              &_delay) != NB_ITEM_DRV_SETTING) {
-    QLOG_DEBUG() << "DriverPI_E725::Init> driverSetting string incorrect";
+    ReportSettingError("DriverPI_E725::Init> driverSetting string incorrect");
     retStatus = -1;
     return retStatus;
   }
   commandLine = "\n*IDN?\n";
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
-    QLOG_WARN() << "Unable to write to port";
+    ReportCommError("Unable to write to port");
     retStatus = -1;
   }
   else if (!_pcommChannel->Read(answer,NULL))
   {
-    QLOG_WARN() << "Unable to read from port";
+    ReportCommError("Unable to read from port");
     retStatus = -1;
   }
   else
@@ -85,14 +85,14 @@ int DriverPI_E725::InitActuator(string actuatorSetting,
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%s",(char*)&axisNumber) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("DriverPI_E725::InitActuator> Bad actuator setting");
   }
   usleep(_delay);
   commandLine = "\nSVO " + string(axisNumber) + " 1\n";
 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
-    QLOG_DEBUG() << "Cannot put " << axisNumber << " in ServoMode";
+    ReportCommError(QString("DriverPI_E725::InitActuator> Cannot put %1 in ServoMode").arg(axisNumber));
     retStatus = -1;
   }
   GetPos(actuatorSetting,position);
@@ -123,19 +123,19 @@ int DriverPI_E725::GetPos(string  actuatorSetting,
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%s",(char*)&axisNumber) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("DriverPI_E725::GetPos> Bad actuator setting");
   }
   usleep(_delay);
   commandLine = "\nPOS? " + string(axisNumber)  + "\n";
 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
-    QLOG_DEBUG() << "Unable to write to port";
+    ReportCommError("DriverPI_E725::GetPos> Unable to write to port");
     retStatus = -1;
   }
   if (!_pcommChannel->Read(answer,NULL))
   {
-    QLOG_DEBUG() << "Unable to read from port";
+    ReportCommError("DriverPI_E725::GetPos> Unable to read from port");
     retStatus = -1;
   }
   else 
@@ -144,7 +144,9 @@ int DriverPI_E725::GetPos(string  actuatorSetting,
    vector<string>  tokens;
    Tokenize(answer,tokens,"=");
    if (tokens.size() > 0 && tokens.at(0) != axisNumber) {
-    QLOG_DEBUG() << "Position reply expected, but got reply = " << answer.c_str();
+    ReportWarning(OTHER_ERROR,
+                  QString("DriverPI_E725::GetPos> Position reply expected, but got reply = %1")
+                  .arg(answer.c_str()));
     retStatus = -1;
     return retStatus;
    }
@@ -183,7 +185,7 @@ int DriverPI_E725::Move(string actuatorSetting,
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%s",(char*)&axisNumber) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("DriverPI_E725::Move> Bad actuator setting");
   }
   usleep(_delay);
   oss << "\nMVR " << string(axisNumber) << " " << nbSteps; 
@@ -191,7 +193,7 @@ int DriverPI_E725::Move(string actuatorSetting,
   QLOG_DEBUG () << "commandLine " << commandLine.c_str(); 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
-    QLOG_DEBUG() << "Unable to write to port";
+    ReportCommError("DriverPI_E725::Move> Unable to write to port");
     retStatus = -1;
   }
   return retStatus;
@@ -224,7 +226,7 @@ int DriverPI_E725::MoveAbs(string actuatorSetting,
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%s",(char*)&axisNumber) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("DriverPI_E725::MoveAbs> Bad actuator setting");
   }
   usleep(_delay);
   oss << "\nMOV " << string(axisNumber) << " " << absPos;
@@ -232,7 +234,7 @@ int DriverPI_E725::MoveAbs(string actuatorSetting,
   QLOG_DEBUG () << "commandLine " << commandLine.c_str();
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
-    QLOG_DEBUG() << "Unable to write to port";
+    ReportCommError("DriverPI_E725::MoveAbs> Unable to write to port");
     retStatus = -1;
   }
   return retStatus;
@@ -256,14 +258,14 @@ int DriverPI_E725::Stop(string actuatorSetting) const
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%s",(char*)&axisNumber) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("DriverPI_E725::Stop> Bad actuator setting");
   }
   usleep(_delay);
   commandLine = "\nSTP\n";
 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
-    QLOG_DEBUG() << "Unable to write to port";
+    ReportCommError("DriverPI_E725::Stop> Unable to write to port");
     retStatus = -1;
   }
   return retStatus;
@@ -296,19 +298,19 @@ int DriverPI_E725::OperationComplete(string& rstateData,
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%s",(char*)&axisNumber) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("DriverPI_E725::OperationComplete> Bad actuator setting");
   }
   usleep(_delay);
   commandLine = "\n#5\n";
 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
-    QLOG_DEBUG() << "Unable to write to port";
+    ReportCommError("DriverPI_E725::OperationComplete> Unable to write to port");
     retStatus = -1;
   }
   else if (!_pcommChannel->Read(answer,NULL))
   {
-    QLOG_DEBUG() << "Unable to read from port";
+    ReportCommError("DriverPI_E725::OperationComplete> Unable to read from port");
     retStatus = -1;
   }
   else 

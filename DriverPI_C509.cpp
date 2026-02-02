@@ -43,7 +43,7 @@ int DriverPI_C509::Init(string& rstateData) const
 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
-    QLOG_DEBUG() << "Unable to write to port";
+    ReportCommError("Unable to write to port");
     retStatus = -1;
   }
   else 
@@ -51,12 +51,12 @@ int DriverPI_C509::Init(string& rstateData) const
     commandLine = "*IDN?\n";
     if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
     {
-      QLOG_DEBUG() << "Unable to write to port";
+      ReportCommError("Unable to write to port");
       retStatus = -1;
     }
     else if (!_pcommChannel->Read(answer,NULL))
     {
-      QLOG_DEBUG() << "Unable to read from port";
+      ReportCommError("Unable to read from port");
       retStatus = -1;
     }
     else
@@ -89,7 +89,7 @@ int DriverPI_C509::InitActuator(string actuatorSetting,
 
   if (VALID_ACTUATOR_LIST.find(actuatorSetting,0) == string::npos)
   {
-    QLOG_ERROR () << "Bad actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
 
   commandLine = "SVO " + actuatorSetting + "0" + "\n";
@@ -124,19 +124,19 @@ int DriverPI_C509::GetPos(string  actuatorSetting,
 
   if (VALID_ACTUATOR_LIST.find(actuatorSetting,0) == string::npos)
   {
-    QLOG_ERROR () << "Bad actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
 
   commandLine = "VOL? " + actuatorSetting  + "\n";
 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
-    QLOG_DEBUG() << "Unable to write to port";
+    ReportCommError("Unable to write to port");
     retStatus = -1;
   }
   else if (!_pcommChannel->Read(answer,NULL))
   {
-    QLOG_DEBUG() << "Unable to read from port";
+    ReportCommError("Unable to read from port");
     retStatus = -1;
   }
   else 
@@ -179,7 +179,7 @@ int DriverPI_C509::Move(string actuatorSetting,
 
   if (VALID_ACTUATOR_LIST.find(actuatorSetting,0) == string::npos)
   {
-    QLOG_ERROR () << "Bad actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
 
   if (ConvertUnit(unit,nbSteps,motion,range) ||
@@ -195,7 +195,7 @@ int DriverPI_C509::Move(string actuatorSetting,
    
     if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
     {
-      QLOG_DEBUG() << "Unable to write to port";
+      ReportCommError("Unable to write to port");
       retStatus = -1;
     }
   }
@@ -229,7 +229,7 @@ int DriverPI_C509::MoveAbs(string actuatorSetting,
 
   if (VALID_ACTUATOR_LIST.find(actuatorSetting,0) == string::npos)
   {
-    QLOG_ERROR () << "Bad actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
 
   if (!ConvertUnit(unit,absPos,convertedAbsPos,range))
@@ -239,7 +239,7 @@ int DriverPI_C509::MoveAbs(string actuatorSetting,
    
     if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
     {
-      QLOG_DEBUG() << "Unable to write to port";
+      ReportCommError("Unable to write to port");
     }
     else
     {
@@ -265,14 +265,14 @@ int DriverPI_C509::Stop(string actuatorSetting) const
 
   if (VALID_ACTUATOR_LIST.find(actuatorSetting,0) == string::npos)
   {
-    QLOG_ERROR () << "Bad actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
 
   commandLine = "STP " + actuatorSetting + "\n";
 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
-    QLOG_DEBUG() << "Unable to write to port";
+    ReportCommError("Unable to write to port");
     retStatus = -1;
   }
  
@@ -306,19 +306,19 @@ int DriverPI_C509::OperationComplete(string& rstateData,
 
   if (VALID_ACTUATOR_LIST.find(actuatorSetting,0) == string::npos)
   {
-    QLOG_ERROR () << "Bad actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
 
   commandLine = "ONT? " + actuatorSetting + "\n";
 
   if (_pcommChannel->Write(commandLine,NULL) < (int)commandLine.length())
   {
-    QLOG_DEBUG() << "Unable to write to port";
+    ReportCommError("Unable to write to port");
     retStatus = -1;
   }
   else if (!_pcommChannel->Read(answer,NULL))
   {
-    QLOG_DEBUG() << "Unable to read from port";
+    ReportCommError("Unable to read from port");
     retStatus = -1;
   }
   else 

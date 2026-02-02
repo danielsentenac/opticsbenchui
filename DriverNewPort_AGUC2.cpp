@@ -43,25 +43,25 @@ int DriverNewPort_AGUC2::Init(string& rstateData) const
     // Send initialization message to AG-UC2 device (USB port)
   if (_pcommChannel->Write(command,"CONTROL",0xC0,0x00,0x00,0x00,0x00,1,0) < 1)
     {
-      QLOG_ERROR () << "DriverNewPort_AGUC2::Init> Unable to write to port";
+      ReportCommError("DriverNewPort_AGUC2::Init> Unable to write to port");
       _lastError = COMMUNICATION_ERROR;
       retStatus = -1;
     }
   if (_pcommChannel->Write(command,"CONTROL",0xC0,0x04,0x08,0x00,0x00,1,0) < 1)
     {
-      QLOG_ERROR () << "DriverNewPort_AGUC2::Init> Unable to write to port";
+      ReportCommError("DriverNewPort_AGUC2::Init> Unable to write to port");
       _lastError = COMMUNICATION_ERROR;
       retStatus = -1;
     }
   if (_pcommChannel->Write(command,"CONTROL",0xC0,0x03,0x8003,0x00,0x00,1,0) < 1)
     {
-      QLOG_ERROR () << "DriverNewPort_AGUC2::Init> Unable to write to port";
+      ReportCommError("DriverNewPort_AGUC2::Init> Unable to write to port");
       _lastError = COMMUNICATION_ERROR;
       retStatus = -1;
     }
   if (_pcommChannel->Write(command,"CONTROL",0xC0,0x02,0x00,0x00,0x00,1,0) < 1)
     {
-      QLOG_ERROR () << "DriverNewPort_AGUC2::Init> Unable to write to port";
+      ReportCommError("DriverNewPort_AGUC2::Init> Unable to write to port");
       _lastError = COMMUNICATION_ERROR;
       retStatus = -1;
     }
@@ -75,7 +75,7 @@ int DriverNewPort_AGUC2::Init(string& rstateData) const
     usleep(10000);
     if (_pcommChannel->Write(command,"BULK",0x02,&transferred,100) < (int)command.length())
       {
-	QLOG_ERROR () << "DriverNewPort_AGUC2::Init> Unable to write to port";
+	ReportCommError("DriverNewPort_AGUC2::Init> Unable to write to port");
 	_lastError = COMMUNICATION_ERROR;
 	retStatus = -1;
       }
@@ -83,7 +83,7 @@ int DriverNewPort_AGUC2::Init(string& rstateData) const
     usleep(10000);
     if (_pcommChannel->Read(answer,"BULK",0x81,&atransferred,100) < MIN_BYTES_TRANS)
       {
-	QLOG_ERROR () << "DriverNewPort_AGUC2::Init> Unable to read from port";
+	ReportCommError("DriverNewPort_AGUC2::Init> Unable to read from port");
 	QLOG_ERROR () << "DriverNewPort_AGUC2::Init> answer = " << answer.c_str() << " bytes transferred "
 		      << atransferred;
 	_lastError = COMMUNICATION_ERROR;
@@ -97,7 +97,7 @@ int DriverNewPort_AGUC2::Init(string& rstateData) const
   command = "MR\r\n";
   if (_pcommChannel->Write(command,"BULK",0x02,&transferred,100) < (int)command.length())
     {
-      QLOG_ERROR () << "DriverNewPort_AGUC2::Init> Unable to write to port";
+      ReportCommError("DriverNewPort_AGUC2::Init> Unable to write to port");
       _lastError = COMMUNICATION_ERROR;
       retStatus = -1;
     }
@@ -141,7 +141,7 @@ int DriverNewPort_AGUC2::GetPos(string  actuatorSetting,
   int cnt = 0;
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%d",&axisNumber) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
   sprintf(commandC,"%dTP\r\n",axisNumber);
   command = commandC;
@@ -154,14 +154,14 @@ int DriverNewPort_AGUC2::GetPos(string  actuatorSetting,
     usleep(10000);
     if (_pcommChannel->Write(command,"BULK",0x02,&transferred,100) < (int)command.length())
       {
-	QLOG_ERROR () << "DriverNewPort_AGUC2::GetPos> Unable to write to port";
+	ReportCommError("DriverNewPort_AGUC2::GetPos> Unable to write to port");
 	_lastError = COMMUNICATION_ERROR;
 	retStatus = -1;
       }
     usleep(10000);
     if (_pcommChannel->Read(answer,"BULK",0x81,&atransferred,100) < MIN_BYTES_TRANS)
       {
-	QLOG_ERROR () << "DriverNewPort_AGUC2::GetPos> Unable to read from port";
+	ReportCommError("DriverNewPort_AGUC2::GetPos> Unable to read from port");
 	_lastError = COMMUNICATION_ERROR;
 	position  = 0;
       retStatus = -1;
@@ -197,7 +197,7 @@ int DriverNewPort_AGUC2::Move(string actuatorSetting,
   usleep(10000);
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%d",&axisNumber) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
  
   numberOfSteps = (int) nbSteps;
@@ -208,7 +208,7 @@ int DriverNewPort_AGUC2::Move(string actuatorSetting,
 	       "DriverNewPort_AGUC2::Move> command " << command.c_str();
   if (_pcommChannel->Write(command,"BULK",0x02,&transferred,100) < (int)command.length())
     {
-      QLOG_ERROR () << "DriverNewPort_AGUC2::Move> Unable to write to port";
+      ReportCommError("DriverNewPort_AGUC2::Move> Unable to write to port");
       _lastError = COMMUNICATION_ERROR;
       retStatus = -1;
     }
@@ -249,7 +249,7 @@ int DriverNewPort_AGUC2::Stop(string actuatorSetting) const
   usleep(10000);
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%d",&axisNumber) != NB_ITEM_INIT_SETTING)
     {
-      QLOG_ERROR () << "Bad Actuator setting";
+      ReportSettingError("Bad actuator setting");
     }
   else 
     {
@@ -260,7 +260,7 @@ int DriverNewPort_AGUC2::Stop(string actuatorSetting) const
 		    << command.c_str();
       if (_pcommChannel->Write(command,"BULK",0x02,&transferred,100) < (int)command.length())
 	{
-	  QLOG_ERROR () << "DriverNewPort_AGUC2::Stop> Unable to write to port";
+	  ReportCommError("DriverNewPort_AGUC2::Stop> Unable to write to port");
 	  _lastError = COMMUNICATION_ERROR;
 	  retStatus = -1;
 	} 
@@ -295,7 +295,7 @@ int DriverNewPort_AGUC2::OperationComplete(string& rstateData,
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%d",&axisNumber) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
   else 
   {
@@ -310,14 +310,14 @@ int DriverNewPort_AGUC2::OperationComplete(string& rstateData,
 		    << command.c_str();
       if (_pcommChannel->Write(command,"BULK",0x02,&transferred,100) < (int)command.length())
 	{
-	  QLOG_ERROR () << "DriverNewPort_AGUC2::OperationComplete> Unable to write to port";
+	  ReportCommError("DriverNewPort_AGUC2::OperationComplete> Unable to write to port");
 	  _lastError = COMMUNICATION_ERROR;
 	  retStatus = -1;
 	}
       usleep(10000);
       if (_pcommChannel->Read(answer,"BULK",0x81,&atransferred,100) < MIN_BYTES_TRANS)
 	{
-	  QLOG_ERROR () << "DriverNewPort_AGUC2::OperationComplete> Unable to read from port";
+	  ReportCommError("DriverNewPort_AGUC2::OperationComplete> Unable to read from port");
 	  _lastError = COMMUNICATION_ERROR;
 	  retStatus = -1;
 	}
@@ -419,8 +419,7 @@ DriverNewPort_AGUC2::SendGeneralCommand(char *buffer,string& rply) const
     // Apply Command
     //////////////////////////////////////////////////////////////////////////
     if (_pcommChannel->Write(command,"BULK",0x02,&transferred,100) < (int)command.length()) { 
-      QLOG_DEBUG () <<  
-		   "DriverNewPort_AGUC2::SendGeneralCommand> Unable to write to port";
+      ReportCommError("DriverNewPort_AGUC2::SendGeneralCommand> Unable to write to port");
       retStatus = (1 << 0);
       QLOG_DEBUG () <<  "DriverNewPort_AGUC2::SendGeneralCommand> reSttatus " << retStatus;
     }
@@ -431,8 +430,7 @@ DriverNewPort_AGUC2::SendGeneralCommand(char *buffer,string& rply) const
   // Read reply
   ////////////////////////////////////////////////////////////////////////////////////
   if (!_pcommChannel->Read(answer,"BULK",0x81,&atransferred,100)) {
-    QLOG_DEBUG () <<  
-		 "Driver> Unable to read from port";
+    ReportCommError("DriverNewPort_AGUC2::SendGeneralCommand> Unable to read from port");
     retStatus |= (1 << 1);
     QLOG_DEBUG () <<  "DriverNewPort_AGUC2::SendGeneralCommand> retStatus " << retStatus;
   }
@@ -443,4 +441,3 @@ DriverNewPort_AGUC2::SendGeneralCommand(char *buffer,string& rply) const
 	       "DriverNewPort_AGUC2::SendGeneralCommand> returning retStatus " << retStatus;
   return retStatus;
 }
-

@@ -85,7 +85,7 @@ int DriverPI_C862::InitActuator(string actuatorSetting,
 	     &integralLimit,
 	     &acc, 
 	     &vel) != NB_ITEM_INIT_SETTING) {
-    QLOG_DEBUG() << "Actuator setting string format incorrect";
+    ReportSettingError("Actuator setting string format incorrect");
     retStatus = -1;
     return retStatus;
   }
@@ -102,7 +102,8 @@ int DriverPI_C862::InitActuator(string actuatorSetting,
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG() << "Unable to write to port, command " << QString(command.c_str());
+    ReportCommError(QString("Unable to write to port, command %1")
+                    .arg(QString(command.c_str())));
     retStatus = -1;
     return retStatus;
   }
@@ -112,7 +113,8 @@ int DriverPI_C862::InitActuator(string actuatorSetting,
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG() << "Unable to write to port, command " <<  QString(command.c_str());
+    ReportCommError(QString("Unable to write to port, command %1")
+                    .arg(QString(command.c_str())));
     retStatus = -1;
     return retStatus;
   }
@@ -122,7 +124,8 @@ int DriverPI_C862::InitActuator(string actuatorSetting,
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG() << "Unable to write to port, command " << QString(command.c_str());     
+    ReportCommError(QString("Unable to write to port, command %1")
+                    .arg(QString(command.c_str())));
     retStatus = -1;
     return retStatus;
   }
@@ -132,7 +135,8 @@ int DriverPI_C862::InitActuator(string actuatorSetting,
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG() << "Unable to write to port, command " <<  QString(command.c_str()); 
+    ReportCommError(QString("Unable to write to port, command %1")
+                    .arg(QString(command.c_str())));
     retStatus = -1;
     return retStatus;
   }
@@ -142,7 +146,8 @@ int DriverPI_C862::InitActuator(string actuatorSetting,
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG() << "Unable to write to port, command " <<  QString(command.c_str());
+    ReportCommError(QString("Unable to write to port, command %1")
+                    .arg(QString(command.c_str())));
     retStatus = -1;
     return retStatus;
   }
@@ -152,7 +157,8 @@ int DriverPI_C862::InitActuator(string actuatorSetting,
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG() << "Unable to write to port, command " <<  QString(command.c_str());
+    ReportCommError(QString("Unable to write to port, command %1")
+                    .arg(QString(command.c_str())));
     retStatus = -1;
     return retStatus;
   }
@@ -161,7 +167,8 @@ int DriverPI_C862::InitActuator(string actuatorSetting,
   sprintf(buffer, "MN\r");
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-    QLOG_DEBUG() << "Unable to write to port, command " <<  QString(command.c_str());
+    ReportCommError(QString("Unable to write to port, command %1")
+                    .arg(QString(command.c_str())));
     retStatus = -1;
     return retStatus;
   }
@@ -209,14 +216,15 @@ int DriverPI_C862::GetPos(string  actuatorSetting,
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG() << "Unable to write to port, command " <<  QString(command.c_str());
+    ReportCommError(QString("Unable to write to port, command %1")
+                    .arg(QString(command.c_str())));
     retStatus = -1;
     return retStatus;
   }
 
   // read reply
   if (!_pcommChannel->Read(answer,NULL)) {
-    QLOG_DEBUG() << "Unable to read from port";
+    ReportCommError("Unable to read from port");
     retStatus = -1;
     return retStatus;
   }
@@ -279,7 +287,7 @@ int DriverPI_C862::Move(string actuatorSetting,
     // send command
     command = buffer;
     if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-      QLOG_DEBUG() << "Unable to write to port";
+      ReportCommError("Unable to write to port");
       retStatus = -1;
     }
   }
@@ -318,7 +326,7 @@ int DriverPI_C862::MoveAbs(string actuatorSetting,
     // send command
     command = buffer;
     if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-      QLOG_DEBUG() << "Unable to write to port";
+      ReportCommError("Unable to write to port");
     }
     else 
     {
@@ -357,7 +365,7 @@ int DriverPI_C862::Stop(string actuatorSetting) const
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-    QLOG_DEBUG() << "Unable to write to port";
+    ReportCommError("Unable to write to port");
     retStatus = -1;
   }
 
@@ -409,13 +417,13 @@ int DriverPI_C862::OperationComplete(string& rstateData,
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-    QLOG_DEBUG() <<"Unable to write to port";
+    ReportCommError("Unable to write to port");
     retStatus = -1;
     return retStatus;
   }
   // read reply
   if (!_pcommChannel->Read(answer,NULL)) {
-    QLOG_DEBUG() << "Unable to read from port";
+    ReportCommError("Unable to read from port");
     retStatus = -1;
     return retStatus;
   }
@@ -511,14 +519,14 @@ int DriverPI_C862::SendAddressCode() const
   // parse driverSetting string for device number
   if (sscanf(_setting.c_str(),"deviceNumber=%d",
 	     &deviceNumber) != NB_ITEM_DRV_SETTING) {
-    QLOG_DEBUG() << "driverSetting string incorrect";
+    ReportSettingError("driverSetting string incorrect");
     retStatus = -1;
     return retStatus;
   }
 
   // check for range
   if ((deviceNumber < 1) || (deviceNumber > MAX_DEVICES)) {
-    QLOG_DEBUG() << "driverNumber out of range";
+    ReportRangeError("driverNumber out of range");
     retStatus = -1;
     return retStatus;
   }
@@ -534,7 +542,7 @@ int DriverPI_C862::SendAddressCode() const
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length())
   {
-    QLOG_DEBUG() << "Unable to write to port";
+    ReportCommError("Unable to write to port");
     retStatus = -1;
   }
   

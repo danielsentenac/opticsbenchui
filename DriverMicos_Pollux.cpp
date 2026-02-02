@@ -69,7 +69,7 @@ int DriverMicos_Pollux::InitActuator(string actuatorSetting,
   if (sscanf(actuatorSetting.c_str(),
 	     "vel=%lf",
 	     &vel) != NB_ITEM_INIT_SETTING) {
-    QLOG_DEBUG ( ) << "Actuator setting string format incorrect";
+    ReportSettingError("Actuator setting string format incorrect");
     retStatus = -1;
     return retStatus;
   }
@@ -86,7 +86,8 @@ int DriverMicos_Pollux::InitActuator(string actuatorSetting,
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG ( ) << "Unable to write to port, command " << QString (command.c_str());
+    ReportCommError(QString("Unable to write to port, command %1")
+                    .arg(QString(command.c_str())));
     retStatus = -1;
     return retStatus;
   }
@@ -129,14 +130,14 @@ int DriverMicos_Pollux::GetPos(string  actuatorSetting,
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-    QLOG_DEBUG ( ) << "Unable to write to port";
+    ReportCommError("Unable to write to port");
     retStatus = -1;
     return retStatus;
   }
 
   // read reply
   if (!_pcommChannel->Read(answer,NULL)) {
-    QLOG_DEBUG ( ) << "Unable to read from port";
+    ReportCommError("Unable to read from port");
     retStatus = -1;
     return retStatus;
   }
@@ -187,7 +188,7 @@ int DriverMicos_Pollux::Move(string actuatorSetting,
       // send command
       command = buffer;
       if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
-	QLOG_DEBUG ( ) << "Unable to write to port";
+	ReportCommError("Unable to write to port");
 	retStatus = -1;
       }
     }
@@ -226,7 +227,7 @@ int DriverMicos_Pollux::MoveAbs(string actuatorSetting,
       // send command
       command = buffer;
       if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-	QLOG_DEBUG ( ) << "Unable to write to port";
+	ReportCommError("Unable to write to port");
       }
       else 
 	{
@@ -264,7 +265,7 @@ int DriverMicos_Pollux::Stop(string actuatorSetting) const
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-    QLOG_DEBUG ( ) << "Unable to write to port";
+    ReportCommError("Unable to write to port");
     retStatus = -1;
   }
 
@@ -308,14 +309,14 @@ int DriverMicos_Pollux::OperationComplete(string& rstateData,
   // send command
   command = buffer;
   if (_pcommChannel->Write(command,NULL) < (int)command.length()) { 
-    QLOG_DEBUG ( ) <<"Unable to write to port";
+    ReportCommError("Unable to write to port");
     retStatus = -1;
     return retStatus;
   }
 
   // read reply
   if (!_pcommChannel->Read(answer,NULL)) {
-    QLOG_DEBUG ( ) <<"Unable to read from port";
+    ReportCommError("Unable to read from port");
     retStatus = -1;
     QLOG_DEBUG ( ) << "Status reply expected, but got reply " << QString(answer.c_str());
     return retStatus;
@@ -369,7 +370,7 @@ int DriverMicos_Pollux::SendAddressCode() const
   // parse driverSetting string for axis number
   if (!sscanf(_setting.c_str(),"axisNumber=%d",
 	      &_axisNumber)) {
-    QLOG_DEBUG ( ) << "driverSetting string incorrect";
+    ReportSettingError("driverSetting string incorrect");
     retStatus = -1;
     return retStatus;
   }
@@ -377,7 +378,7 @@ int DriverMicos_Pollux::SendAddressCode() const
   // check for range
   QLOG_DEBUG ( ) << "axis number " << _axisNumber;
   if ((_axisNumber < 1) || (_axisNumber > MAX_DEVICES)) {
-    QLOG_DEBUG ( ) << "axis number out of range";
+    ReportRangeError("axis number out of range");
     retStatus = -1;
     return retStatus;
   }

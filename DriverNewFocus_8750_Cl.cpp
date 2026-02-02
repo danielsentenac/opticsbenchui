@@ -99,7 +99,7 @@ int DriverNewFocus_8750_Cl::InitActuator(string actuatorSetting,
   if (sscanf(actuatorSetting.c_str(),"motor=%d type=%*d frequency=%f",
 	     &motor,&frequency) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
   setFrequencyCommandstream << "VEL A" << _setting  
 			    <<   " "   << motor << "=" << frequency << "\n";
@@ -392,13 +392,13 @@ int DriverNewFocus_8750_Cl::SendCommand(string command,
   int retStatus = 0;
   if (_pcommChannel->Write(command,NULL) < (int)command.length())
   {
-    QLOG_DEBUG() << "Unable to write to port";
+    ReportCommError("Unable to write to port");
     _lastError = COMMUNICATION_ERROR;
     retStatus = WRITE_ERROR;
   }
   else if (!_pcommChannel->Read(answer,NULL))
   {
-    QLOG_DEBUG() << "Unable to read from port";
+    ReportCommError("Unable to read from port");
     _lastError = COMMUNICATION_ERROR;
     retStatus = READ_ERROR;
   }

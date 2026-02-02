@@ -80,7 +80,7 @@ int DriverStanda_uSMC2::InitActuator(string actuatorSetting,
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%d speed=%d",&axisNumber,&speed) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
 // Open device
   device_t dev = open_device(get_device_name(_devenum,axisNumber-1));
@@ -118,7 +118,7 @@ int DriverStanda_uSMC2::GetPos(string  actuatorSetting,
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%d speed=%d",&axisNumber,&speed) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
   retStatus = (int) get_status( _device.find(axisNumber)->second, &status);
   
@@ -146,7 +146,7 @@ int DriverStanda_uSMC2::Move(string actuatorSetting,
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%d speed=%d",&axisNumber,&speed) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
   retStatus = (int) command_movr(_device.find(axisNumber)->second, (int) nbSteps, 0);
   usleep(500000);
@@ -169,7 +169,7 @@ int DriverStanda_uSMC2::MoveAbs(string actuatorSetting,
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%d speed=%d",&axisNumber,&speed) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
   retStatus = (int) command_move(_device.find(axisNumber)->second, (int) absPos, 0);
   usleep(500000);
@@ -192,7 +192,7 @@ int DriverStanda_uSMC2::Stop(string actuatorSetting) const
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%d speed=%d",&axisNumber,&speed) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
   retStatus = (int) command_stop(_device.find(axisNumber)->second);
 
@@ -220,7 +220,7 @@ int DriverStanda_uSMC2::OperationComplete(string& rstateData,
 
   if (sscanf(actuatorSetting.c_str(),"axisNumber=%d speed=%d",&axisNumber,&speed) != NB_ITEM_INIT_SETTING)
   {
-    QLOG_ERROR () << "Bad Actuator setting";
+    ReportSettingError("Bad actuator setting");
   }
   retStatus = (int) get_status(_device.find(axisNumber)->second, &_status);
   

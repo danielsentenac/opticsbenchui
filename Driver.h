@@ -209,5 +209,13 @@ class Driver
     void Tokenize(const string& str,
 		  vector<string>& tokens,
 		  const string& delimiters = " ") const;
+
+    void ReportWarning(DriverDefinition::ADErrorCode code,
+                       const QString& message) const;
+    void ReportError(DriverDefinition::ADErrorCode code,
+                     const QString& message) const;
+    void ReportSettingError(const QString& message) const;
+    void ReportCommError(const QString& message) const;
+    void ReportRangeError(const QString& message) const;
 };
 #endif //_DRIVER_H_
