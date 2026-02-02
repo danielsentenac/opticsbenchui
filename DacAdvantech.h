@@ -15,8 +15,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef ADVANTECHDAC
-#ifndef ADVANTECHDAC_H
-#define ADVANTECHDAC_H
+#ifndef DACADVANTECH_H
+#define DACADVANTECH_H
 
 #include <Advantech/advdevice.h>
 #include <Advantech/advdaq.h>

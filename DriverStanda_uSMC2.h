@@ -10,8 +10,8 @@
 // sentenac   06/10/08 created
 
 
-#ifndef _DRIVERNEWPORTUSMC_H_
-#define _DRIVERNEWPORTUSMC_H_
+#ifndef DRIVERSTANDA_USMC2_H
+#define DRIVERSTANDA_USMC2_H
 
 
 #include "Driver.h"

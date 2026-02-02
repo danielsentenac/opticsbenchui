@@ -10,8 +10,8 @@
 // sentenac   06/10/08 created
 
 
-#ifndef _DRIVERNEWPORTAGUC2_H_
-#define _DRIVERNEWPORTAGUC2_H_
+#ifndef DRIVERNEWPORT_AGUC2_H
+#define DRIVERNEWPORT_AGUC2_H
 
 
 #include "Driver.h"

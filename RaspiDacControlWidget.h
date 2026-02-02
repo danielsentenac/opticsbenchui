@@ -14,8 +14,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
-#ifndef DACRASPICONTROLWIDGET_H
-#define DACRASPICONTROLWIDGET_H
+#ifndef RASPIDACCONTROLWIDGET_H
+#define RASPIDACCONTROLWIDGET_H
 
 #include "Raspi.h"
 

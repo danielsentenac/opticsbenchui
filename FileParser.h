@@ -15,8 +15,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
-#ifndef FILEPROPERTIES_H
-#define FILEPROPERTIES_H
+#ifndef FILEPARSER_H
+#define FILEPARSER_H
 
 #include <unistd.h>
 

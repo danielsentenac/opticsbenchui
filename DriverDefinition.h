@@ -15,8 +15,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
-#ifndef _ADGLOBALDEFINITION_H_
-#define _ADGLOBALDEFINITION_H_
+#ifndef DRIVERDEFINITION_H
+#define DRIVERDEFINITION_H
 
 #include <string>
 

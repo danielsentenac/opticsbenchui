@@ -15,8 +15,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
-#ifndef COMBOITEMDELEGATE_H
-#define COMBOITEMDELEGATE_H
+#ifndef COMBOBOXDELEGATE_H
+#define COMBOBOXDELEGATE_H
 
 #include <QtSql>
 #include <QtWidgets>

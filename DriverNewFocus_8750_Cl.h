@@ -15,8 +15,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
-#ifndef _DRIVERETHNEWFOCUS_8750_CL_H_
-#define _DRIVERETHNEWFOCUS_8750_CL_H_
+#ifndef DRIVERNEWFOCUS_8750_CL_H
+#define DRIVERNEWFOCUS_8750_CL_H
 
 #include <string>
 #include <vector>

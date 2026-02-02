@@ -15,8 +15,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
-#ifndef _DRIVERPI_E725_H_
-#define _DRIVERPI_E725_H_
+#ifndef DRIVERPI_E725_H
+#define DRIVERPI_E725_H
 
 #include "Driver.h"
 
