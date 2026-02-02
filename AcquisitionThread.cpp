@@ -128,9 +128,9 @@ void AcquisitionThread::run() {
     // run acquisition sequence
     QLOG_INFO() << "AcquisitionThread::run> start Acquisition : "
                 << Utils::CurrentTimestampString();
-    emit getAcquiring(record);
     while (record < lastrecord) {
       AcquisitionSequence *sequence = sequenceList.at(record);
+      emit getAcquiring(sequence->record);
       sequence->etime = Utils::GetTimeMicroseconds();
       int cur_record = record;
       this->execute(sequence);
