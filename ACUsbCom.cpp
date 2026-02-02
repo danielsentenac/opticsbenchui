@@ -38,34 +38,34 @@ if ( _device_vendor_id == 0x10c4 && _device_product_id == 0x0230 )
 
   r = libusb_init(NULL);
   
-  if (r < 0) QLOG_ERROR () <<"ACUsbCom::Open> Usb Error Init" << r;
+  if (r < 0) ReportError(QString("ACUsbCom::Open> Usb Error Init %1").arg(r));
   
   libusb_set_debug(NULL,3);
 
   cnt = libusb_get_device_list(NULL, &_device_list);
   
-  if (cnt < 0) QLOG_ERROR () <<"ACUsbCom::Open> No Usb device list found " << cnt;
+  if (cnt < 0) ReportError(QString("ACUsbCom::Open> No Usb device list found %1").arg(cnt));
   
   r = Check_Device();
  
-  if (r < 0)  QLOG_ERROR () <<"ACUsbCom::Open> Check Device Error " << r;
+  if (r < 0)  ReportError(QString("ACUsbCom::Open> Check Device Error %1").arg(r));
   
   r = libusb_open(_device_list[_device_number],&_device_handle);
   
-  if (r < 0) QLOG_ERROR () <<"ACUsbCom::Open> Usb Open Error " << r;
+  if (r < 0) ReportError(QString("ACUsbCom::Open> Usb Open Error %1").arg(r));
  
   r = libusb_get_configuration (_device_handle,&configuration_value);
  
-  if (r < 0) QLOG_ERROR () <<"ACUsbCom::Open> Get configuration Error " << r;
+  if (r < 0) ReportError(QString("ACUsbCom::Open> Get configuration Error %1").arg(r));
 
   r = libusb_set_configuration( _device_handle, configuration_value);
  
-  if (r < 0) QLOG_ERROR () <<"ACUsbCom::Open> Set configuration Error " << r;
+  if (r < 0) ReportError(QString("ACUsbCom::Open> Set configuration Error %1").arg(r));
 
   r = libusb_get_active_config_descriptor(_device_list[_device_number],&config);
 
   if (r < 0 )  {
-     QLOG_ERROR () <<"ACUsbCom::Open> Configuration descriptor error " << r;
+     ReportError(QString("ACUsbCom::Open> Configuration descriptor error %1").arg(r));
      QLOG_INFO () << "ACUsbCom::Open> Configuration extra " << config->extra;
      _interface_number = 0;
   }
@@ -76,16 +76,16 @@ if ( _device_vendor_id == 0x10c4 && _device_product_id == 0x0230 )
 
   r = libusb_kernel_driver_active(_device_handle,_interface_number);
   
-  if (r < 0) QLOG_ERROR () <<"ACUsbCom::Open> Usb kernel Error " << r;
+  if (r < 0) ReportError(QString("ACUsbCom::Open> Usb kernel Error %1").arg(r));
   
   if (r == 1) {
     r = libusb_detach_kernel_driver(_device_handle, _interface_number); 
-    if (r < 0) QLOG_ERROR () <<"ACUsbCom::Open> Usb detach kernel Error " << r;
+    if (r < 0) ReportError(QString("ACUsbCom::Open> Usb detach kernel Error %1").arg(r));
   }
   r = libusb_claim_interface(_device_handle, _interface_number);
   
   if (r < 0) 
-    QLOG_ERROR () <<"ACUsbCom::Open> Claim interface Error " << r;
+    ReportError(QString("ACUsbCom::Open> Claim interface Error %1").arg(r));
   else {
     QLOG_DEBUG () <<"ACUsbCom::Open> USB device open ";
     status = 0;
@@ -164,7 +164,7 @@ ACUsbCom::WriteControlTransfer (string & message,uint8_t bmRequestType,uint8_t  
 
   if (libusb_control_transfer(_device_handle, bmRequestType, bRequest, wValue, wIndex, 
 			      data, wLength,timeout) < 0 ) {
-    QLOG_WARN () <<"ACUsbCom::WriteControlTransfer> libusb_control_transfer failed ";
+    ReportWarning("ACUsbCom::WriteControlTransfer> libusb_control_transfer failed");
     return 0;
   }
   return wLength;
@@ -184,7 +184,7 @@ ACUsbCom::WriteBulkTransfer (string & message,unsigned char endpoint,int *transf
   QLOG_DEBUG () << "ACUsbCom::WriteBulkTransfer> message = " << message.c_str() << " endpoint " << endpoint
 	       << " timeout " << timeout;
   if (libusb_bulk_transfer(_device_handle, endpoint, command,sizeof(command), transferred, timeout) < 0 ) {
-    QLOG_WARN () <<"ACUsbCom::WriteBulkTransfer> libusb_bulk_transfer failed ";
+    ReportWarning("ACUsbCom::WriteBulkTransfer> libusb_bulk_transfer failed");
     return 0;
   }
   message = (char*)command;
@@ -204,7 +204,7 @@ ACUsbCom::WriteInterruptTransfer (string & message,unsigned char endpoint,int *t
   sprintf((char*)command,message.c_str());
   if (libusb_interrupt_transfer(_device_handle, endpoint, command,sizeof(command), 
 				transferred, timeout) < 0 ) {
-    QLOG_WARN () <<"ACUsbCom::WriteInterruptTransfer> libusb_interrupt_transfer failed ";
+    ReportWarning("ACUsbCom::WriteInterruptTransfer> libusb_interrupt_transfer failed");
     return 0;
   }
   message = (char*)command;
@@ -264,7 +264,7 @@ ACUsbCom::ReadBulkTransfer (string & message,unsigned char endpoint,int *transfe
   unsigned char answer[64];
   QLOG_DEBUG () <<"ACUsbCom::ReadBulkTransfer> endpoint " << endpoint << " timeout " << timeout;
   if (libusb_bulk_transfer(_device_handle, endpoint, answer,sizeof(answer), transferred, timeout) < 0 ) {
-    QLOG_WARN () <<"ACUsbCom::ReadBulkTransfer> libusb_bulk_transfer failed ";
+    ReportWarning("ACUsbCom::ReadBulkTransfer> libusb_bulk_transfer failed");
     return 0;
   }
   message = (char*)answer;
@@ -282,7 +282,7 @@ ACUsbCom::ReadInterruptTransfer (string & message,unsigned char endpoint,int *tr
 {
   unsigned char answer[64];
   if (libusb_interrupt_transfer(_device_handle, endpoint, answer,sizeof(answer), transferred, timeout) < 0 ) {
-    QLOG_WARN () <<"ACUsbCom::ReadInterruptTransfer> libusb_interrupt_transfer failed ";
+    ReportWarning("ACUsbCom::ReadInterruptTransfer> libusb_interrupt_transfer failed");
     return 0;
   }
   message = (char*)answer;
@@ -299,7 +299,7 @@ ACUsbCom::Close ()
   if (_device_handle) {
     r = libusb_release_interface(_device_handle, _interface_number);
     if (r < 0)
-      QLOG_ERROR () <<"ACUsbCom::Close> Usb release interface Error " <<  r;
+      ReportError(QString("ACUsbCom::Close> Usb release interface Error %1").arg(r));
     
     libusb_close(_device_handle);
     
@@ -321,7 +321,7 @@ ACUsbCom::Check_Device()
     struct libusb_device_descriptor desc;
     status = libusb_get_device_descriptor(dev, &desc);
     if (status < 0) {
-      QLOG_ERROR () <<"ACUsbCom::Check_Device> Failed to get device descriptor";
+      ReportError("ACUsbCom::Check_Device> Failed to get device descriptor");
       return status ;
     }
     if (desc.idVendor == _device_vendor_id && desc.idProduct == _device_product_id) {
@@ -336,7 +336,7 @@ ACUsbCom::Check_Device()
 		
   }
   if (_device_number == -1) {
-    QLOG_ERROR () <<"ACUsbCom::Check_Device> Requested device not found";
+    ReportError("ACUsbCom::Check_Device> Requested device not found");
     status = -1;
   }
   return status;

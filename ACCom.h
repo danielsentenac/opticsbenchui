@@ -152,5 +152,8 @@ protected:
      The internal settings of the channel communication
   */
   string _settings;
+
+  void ReportWarning(const QString& message) const;
+  void ReportError(const QString& message) const;
 };
 #endif                                            // ACCom_H

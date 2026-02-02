@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "ACRSCom.h"
 #include "ACEthCom.h"
 #include "ACUsbCom.h"
+#include "Utils.h"
 
 
 const string ACCom::RS_COM  = "SERIAL_PORT";
@@ -31,6 +32,16 @@ const string ACCom::NULL_COM = "NULL_COM";
 ACCom::ACCom (string device, string settings): _device (device), _settings (settings)
 {
     _state = CLOSED;
+}
+
+void ACCom::ReportWarning(const QString& message) const
+{
+    Utils::ReportWarning(NULL, message);
+}
+
+void ACCom::ReportError(const QString& message) const
+{
+    Utils::ReportError(NULL, message);
 }
 
 
@@ -61,6 +72,11 @@ ACCom *ACCom::Create (string channelType, string device, string settings)
     else if (channelType == NULL_COM)
     {
         channel = (ACCom*)(-1);
+    }
+    else
+    {
+        Utils::ReportWarning(NULL, QString("ACCom::Create> Unknown channel type %1")
+                                   .arg(QString(channelType.c_str())));
     }
 
     return channel;

@@ -84,14 +84,15 @@ ACEthCom::Open ()
 	if (_sock > 0) {
 	  /* Setup the socket option to reuse */
 	  error = setsockopt( _sock, SOL_SOCKET, SO_REUSEADDR, &on,sizeof(on));
-	  if ( error == -1 ) 
-           QLOG_DEBUG ( ) << "ACEthCom::Open> %s" << QString(strerror (errno));
-           QLOG_DEBUG ( ) << "Connecting to " << QString(inet_ntoa (*addr)) << " on port "
+	  if ( error == -1 ) {
+           ReportWarning(QString("ACEthCom::Open> %1").arg(QString(strerror(errno))));
+          }
+          QLOG_DEBUG ( ) << "Connecting to " << QString(inet_ntoa (*addr)) << " on port "
 			 <<  port;
 	  error = connect (_sock, (struct sockaddr *) &address, sizeof (address));
 	  if ( error ) {
-	    QLOG_ERROR ( ) << "ACEthCom::Open> " << QString(strerror (errno));
-	    QLOG_ERROR ( ) << "Connect failed";
+	    ReportError(QString("ACEthCom::Open> %1").arg(QString(strerror(errno))));
+	    ReportError("ACEthCom::Open> Connect failed");
 	    close (_sock);
 	  }
 	  else {
@@ -100,7 +101,7 @@ ACEthCom::Open ()
 	    _state = OPEN;
 	  }
 	}
-	else  QLOG_DEBUG ( ) << "ACEthCom::Open> " << QString(strerror (errno));
+	else  ReportWarning(QString("ACEthCom::Open> %1").arg(QString(strerror(errno))));
       }
     }
   if (_state == OPEN) {
@@ -181,7 +182,7 @@ ACEthCom::Write (string & message, ...)
 	      nwritten = write (_sock, buf, messageLength - bytes_sent);
 	      if (nwritten < 0)
 		{
-		  QLOG_DEBUG ( ) <<  "ACEthCom::Write> " << QString(strerror (errno));
+		  ReportWarning(QString("ACEthCom::Write> %1").arg(QString(strerror(errno))));
 		  bytes_sent = 0;
 		  break;
 		}
@@ -223,7 +224,7 @@ ACEthCom::WriteRaw (string message)
 	      nwritten = write (_sock, buf, messageLength - bytes_sent);
 	      if (nwritten < 0)
 		{
-		  QLOG_DEBUG ( ) << "ACEthCom::WriteRaw> " << QString(strerror (errno));
+		  ReportWarning(QString("ACEthCom::WriteRaw> %1").arg(QString(strerror(errno))));
 		  bytes_sent = 0;
 		  break;
 		}

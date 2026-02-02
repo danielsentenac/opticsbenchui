@@ -13,6 +13,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <errno.h>
 #include "ACRSCom.h"
 
 
@@ -34,6 +35,9 @@ ACRSCom::Open ()
   _hCom = open (_device.c_str (), O_RDWR);
   if (_hCom == -1)
     {
+      ReportError(QString("ACRSCom::Open> Unable to open %1: %2")
+                  .arg(QString(_device.c_str()))
+                  .arg(QString(strerror(errno))));
       _state = CLOSED;
     }
   else
@@ -136,6 +140,7 @@ ACRSCom::Close ()
     }
   if (close (_hCom))
     {
+      ReportWarning("ACRSCom::Close> Unable to close device");
       status = -1;
     }
   else
@@ -179,7 +184,8 @@ ACRSCom::Setup ()
       speed = B115200;
       break;
     default:
-      throw "Bad speed!";
+      ReportError("ACRSCom::Setup> Bad speed");
+      return -1;
     }
   tcgetattr (_hCom, &_commOldSetup);	/* save current port settings */
   _commSetup = _commOldSetup;
@@ -187,6 +193,7 @@ ACRSCom::Setup ()
   if (cfsetispeed (&_commSetup, speed) == -1 ||
       cfsetospeed (&_commSetup, speed) == -1)
     {
+      ReportError("ACRSCom::Setup> Unable to set baud rate");
       Close ();
       status = -1;
     }
@@ -256,6 +263,7 @@ ACRSCom::Setup ()
       tcflush (_hCom, TCIFLUSH);
       if (tcsetattr (_hCom, TCSANOW, &_commSetup) == -1)
 	{
+	  ReportError("ACRSCom::Setup> Unable to apply serial settings");
 	  Close ();
 	  status = -1;
 	}
