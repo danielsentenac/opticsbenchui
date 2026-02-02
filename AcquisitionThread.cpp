@@ -238,8 +238,7 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     motor->connectMotor(sequence->instrumentName);
     
     float motorValue = sequence->motorValue;
-    if (sequence->loopSnake && sequence->loopReverse &&
-        sequence->motorAction == "MOVEREL") {
+    if (sequence->motorAction == "MOVEREL" && isSnakeReverseForRecord(record)) {
       motorValue = -motorValue;
     }
 
@@ -615,6 +614,29 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     filesuccess = sequence->getFileData();
     QLOG_INFO() << "AcquisitionThread::execute()> type=FILE " << filesuccess;
   }
+}
+bool AcquisitionThread::isSnakeReverseForRecord(int cur_record) const {
+  int loopDepth = 0;
+  for (int i = cur_record; i >= 0; --i) {
+    AcquisitionSequence *tmpSequence = sequenceList.at(i);
+    if (tmpSequence->loop != AcquisitionSequence::IS_LOOP) {
+      continue;
+    }
+    if (tmpSequence->loopends == AcquisitionSequence::LOOP_END) {
+      loopDepth++;
+      continue;
+    }
+    if (tmpSequence->loopends == AcquisitionSequence::LOOP_START) {
+      if (loopDepth > 0) {
+        loopDepth--;
+        continue;
+      }
+      if (tmpSequence->loopSnake) {
+        return tmpSequence->loopReverse;
+      }
+    }
+  }
+  return false;
 }
 void AcquisitionThread::nextRecord(AcquisitionSequence *sequence, int cur_record) {
   if (sequence->loop == AcquisitionSequence::IS_LOOP &&
