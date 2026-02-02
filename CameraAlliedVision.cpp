@@ -16,6 +16,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef ALLIEDVISIONCAMERA
 #include "CameraAlliedVision.h"
+
+#include <sstream>
 #include "Utils.h"
 #include <exception>
 #include <iostream>
@@ -183,6 +185,25 @@ CameraAlliedVision::setCamera(void* _camera, int _id)
 
  // Exposure Auto feature
  camera->GetFeatureByName("ExposureAuto",feature);
+ {
+   VmbCPP::FeatureEnumEntryVector entries;
+   if (VmbErrorSuccess == feature->GetEntries(entries)) {
+     std::ostringstream oss;
+     for (size_t i = 0; i < entries.size(); ++i) {
+       std::string name;
+       if (VmbErrorSuccess == entries[i]->GetName(name)) {
+         if (i > 0) {
+           oss << ", ";
+         }
+         oss << name;
+       }
+     }
+     QLOG_INFO() << "CameraAlliedVision::setCamera> ExposureAuto entries: "
+                 << QString::fromStdString(oss.str());
+   } else {
+     QLOG_WARN() << "CameraAlliedVision::setCamera> Failed to get ExposureAuto entries";
+   }
+ }
  featureIdList.push_back(++featureCnt);
  featureNameList.push_back(alliedvision_features[featureCnt]);
  double expauto_min = 0, expauto_max = 1;
@@ -208,6 +229,25 @@ CameraAlliedVision::setCamera(void* _camera, int _id)
              
  // Gain Auto feature
  camera->GetFeatureByName("GainAuto",feature);
+ {
+   VmbCPP::FeatureEnumEntryVector entries;
+   if (VmbErrorSuccess == feature->GetEntries(entries)) {
+     std::ostringstream oss;
+     for (size_t i = 0; i < entries.size(); ++i) {
+       std::string name;
+       if (VmbErrorSuccess == entries[i]->GetName(name)) {
+         if (i > 0) {
+           oss << ", ";
+         }
+         oss << name;
+       }
+     }
+     QLOG_INFO() << "CameraAlliedVision::setCamera> GainAuto entries: "
+                 << QString::fromStdString(oss.str());
+   } else {
+     QLOG_WARN() << "CameraAlliedVision::setCamera> Failed to get GainAuto entries";
+   }
+ }
  featureIdList.push_back(++featureCnt);
  featureNameList.push_back(alliedvision_features[featureCnt]);
  double gainauto_min = 0, gainauto_max = 1;
