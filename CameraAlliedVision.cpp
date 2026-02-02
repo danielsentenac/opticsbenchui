@@ -19,6 +19,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <sstream>
 #include "Utils.h"
+
+static QString AutoEnumToLabel(const std::string &value) {
+  if (value == "On") {
+    return QStringLiteral("Continuous");
+  }
+  if (value == "Once") {
+    return QStringLiteral("Once");
+  }
+  if (value == "Continuous") {
+    return QStringLiteral("Continuous");
+  }
+  return QStringLiteral("Off");
+}
 #include <exception>
 #include <iostream>
 #define ENCODING_NUMBER 4
@@ -186,12 +199,12 @@ CameraAlliedVision::setCamera(void* _camera, int _id)
  // Exposure Auto feature
  camera->GetFeatureByName("ExposureAuto",feature);
  {
-   VmbCPP::FeatureEnumEntryVector entries;
+   VmbCPP::EnumEntryVector entries;
    if (VmbErrorSuccess == feature->GetEntries(entries)) {
      std::ostringstream oss;
      for (size_t i = 0; i < entries.size(); ++i) {
        std::string name;
-       if (VmbErrorSuccess == entries[i]->GetName(name)) {
+       if (VmbErrorSuccess == entries[i].GetName(name)) {
          if (i > 0) {
            oss << ", ";
          }
@@ -206,18 +219,20 @@ CameraAlliedVision::setCamera(void* _camera, int _id)
  }
  featureIdList.push_back(++featureCnt);
  featureNameList.push_back(alliedvision_features[featureCnt]);
- double expauto_min = 0, expauto_max = 1;
+ double expauto_min = 0, expauto_max = 2;
  featureMinList.push_back(expauto_min);
  featureMaxList.push_back(expauto_max);
  string exposureauto;
  double exposureautoNum = 0;
  feature->GetValue(exposureauto);
- if (exposureauto.compare("On") == 0 ||
-     exposureauto.compare("Continuous") == 0 ||
-     exposureauto.compare("Once") == 0)
+ if (exposureauto.compare("Once") == 0) {
     exposureautoNum = 1;
- else if (exposureauto.compare("Off") == 0)
+ } else if (exposureauto.compare("Continuous") == 0 ||
+            exposureauto.compare("On") == 0) {
+    exposureautoNum = 2;
+ } else if (exposureauto.compare("Off") == 0) {
     exposureautoNum = 0;
+ }
  featureValueList.push_back( exposureautoNum );
  featureAbsCapableList.push_back(false);
  featureAbsValueList.push_back( exposureautoNum );
@@ -230,12 +245,12 @@ CameraAlliedVision::setCamera(void* _camera, int _id)
  // Gain Auto feature
  camera->GetFeatureByName("GainAuto",feature);
  {
-   VmbCPP::FeatureEnumEntryVector entries;
+   VmbCPP::EnumEntryVector entries;
    if (VmbErrorSuccess == feature->GetEntries(entries)) {
      std::ostringstream oss;
      for (size_t i = 0; i < entries.size(); ++i) {
        std::string name;
-       if (VmbErrorSuccess == entries[i]->GetName(name)) {
+       if (VmbErrorSuccess == entries[i].GetName(name)) {
          if (i > 0) {
            oss << ", ";
          }
@@ -250,18 +265,20 @@ CameraAlliedVision::setCamera(void* _camera, int _id)
  }
  featureIdList.push_back(++featureCnt);
  featureNameList.push_back(alliedvision_features[featureCnt]);
- double gainauto_min = 0, gainauto_max = 1;
+ double gainauto_min = 0, gainauto_max = 2;
  featureMinList.push_back(gainauto_min);
  featureMaxList.push_back(gainauto_max);
  string gainauto;
  double gainautoNum = 0;
  feature->GetValue(gainauto);
- if (gainauto.compare("On") == 0 ||
-     gainauto.compare("Continuous") == 0 ||
-     gainauto.compare("Once") == 0)
+ if (gainauto.compare("Once") == 0) {
     gainautoNum = 1;
- else if (gainauto.compare("Off") == 0)
+ } else if (gainauto.compare("Continuous") == 0 ||
+            gainauto.compare("On") == 0) {
+    gainautoNum = 2;
+ } else if (gainauto.compare("Off") == 0) {
     gainautoNum = 0;
+ }
  featureValueList.push_back( gainautoNum );
  featureAbsCapableList.push_back(false);
  featureAbsValueList.push_back( gainautoNum );
@@ -292,14 +309,14 @@ CameraAlliedVision::setCamera(void* _camera, int _id)
  QString expautoStr = alliedvision_props[++propCnt];
  QLOG_INFO () << "CameraAlliedVision::setCamera> exposure auto "
               << exposureautoNum;
- expautoStr.append(" : " + QString::number(exposureautoNum));
+ expautoStr.append(" : " + AutoEnumToLabel(exposureauto));
  propList.push_back(expautoStr);
  
  // GainAuto prop
  QString gainautoStr = alliedvision_props[++propCnt];
- QLOG_INFO () << "CameraAlliedVision::setCamera> gainosure auto "
+ QLOG_INFO () << "CameraAlliedVision::setCamera> gain auto "
               << gainautoNum;
- gainautoStr.append(" : " + QString::number(gainautoNum));
+ gainautoStr.append(" : " + AutoEnumToLabel(gainauto));
  propList.push_back(gainautoStr);
 
  // Start Camera acquisition 
@@ -409,37 +426,77 @@ CameraAlliedVision::setFeature(int feature, double value) {
     QLOG_INFO() << "CameraAlliedVision::setFeature> Update feature auto " << QString(alliedvision_features[2])
 	       << " value " << QString::number(value);
     camera->GetFeatureByName("ExposureAuto",featurec);
-    if ( value == 0 ) {
+    if ( value < 0.5 ) {
        valueStr = "Off";
-    }
-    else if ( value == 1 ) {
-       valueStr = "Continuous";
-    }
-    err = featurec->SetValue(valueStr.c_str());
-    if (err != VmbErrorSuccess && value == 1) {
-       valueStr = "On";
        err = featurec->SetValue(valueStr.c_str());
     }
-    if (err != VmbErrorSuccess)
+    else {
+       if (value < 1.5) {
+         valueStr = "Once";
+         err = featurec->SetValue(valueStr.c_str());
+         if (err != VmbErrorSuccess) {
+           valueStr = "Continuous";
+           err = featurec->SetValue(valueStr.c_str());
+         }
+       } else {
+         valueStr = "Continuous";
+         err = featurec->SetValue(valueStr.c_str());
+         if (err != VmbErrorSuccess) {
+           valueStr = "Once";
+           err = featurec->SetValue(valueStr.c_str());
+         }
+       }
+       if (err != VmbErrorSuccess) {
+         valueStr = "On";
+         err = featurec->SetValue(valueStr.c_str());
+       }
+    }
+    if (err != VmbErrorSuccess) {
        QLOG_ERROR() << "CameraAlliedVision::setFeature> Could not set Exposure Auto value; error = " << QString::number(err);
+    } else {
+       std::string current;
+       if (VmbErrorSuccess == featurec->GetValue(current)) {
+         QLOG_INFO() << "CameraAlliedVision::setFeature> ExposureAuto now " << QString::fromStdString(current);
+       }
+    }
     break;
     case 3:
     QLOG_INFO() << "CameraAlliedVision::setFeature> Update feature " << QString(alliedvision_features[3])
 	       << " value " << QString::number(value);
     camera->GetFeatureByName("GainAuto",featurec);
-    if ( value == 0 ) {
+    if ( value < 0.5 ) {
        valueStr = "Off";
-    }
-    else if ( value == 1 ) {
-       valueStr = "Continuous";
-    }
-    err = featurec->SetValue(valueStr.c_str());
-    if (err != VmbErrorSuccess && value == 1) {
-       valueStr = "On";
        err = featurec->SetValue(valueStr.c_str());
     }
-    if (err != VmbErrorSuccess)
+    else {
+       if (value < 1.5) {
+         valueStr = "Once";
+         err = featurec->SetValue(valueStr.c_str());
+         if (err != VmbErrorSuccess) {
+           valueStr = "Continuous";
+           err = featurec->SetValue(valueStr.c_str());
+         }
+       } else {
+         valueStr = "Continuous";
+         err = featurec->SetValue(valueStr.c_str());
+         if (err != VmbErrorSuccess) {
+           valueStr = "Once";
+           err = featurec->SetValue(valueStr.c_str());
+         }
+       }
+       if (err != VmbErrorSuccess) {
+         valueStr = "On";
+         err = featurec->SetValue(valueStr.c_str());
+       }
+    }
+    if (err != VmbErrorSuccess) {
        QLOG_ERROR() << "CameraAlliedVision::setFeature> Could not set Gain Auto value; error = " << QString::number(err);
+    } else {
+       std::string current;
+       if (VmbErrorSuccess == featurec->GetValue(current)) {
+         QLOG_INFO() << "CameraAlliedVision::setFeature> GainAuto now " << QString::fromStdString(current);
+       }
+    }
     break;
     default:
     break;
@@ -480,6 +537,22 @@ CameraAlliedVision::getProps() {
  gainStr.append(" : " + QString::number(gain));
  propList.replace(propCnt, gainStr);
 
+ // ExposureAuto prop
+ QString expautoStr = alliedvision_props[++propCnt];
+ camera->GetFeatureByName("ExposureAuto",feature);
+ std::string exposureauto;
+ feature->GetValue(exposureauto);
+ expautoStr.append(" : " + AutoEnumToLabel(exposureauto));
+ propList.replace(propCnt, expautoStr);
+
+ // GainAuto prop
+ QString gainautoStr = alliedvision_props[++propCnt];
+ camera->GetFeatureByName("GainAuto",feature);
+ std::string gainauto;
+ feature->GetValue(gainauto);
+ gainautoStr.append(" : " + AutoEnumToLabel(gainauto));
+ propList.replace(propCnt, gainautoStr);
+
  
  
  QLOG_DEBUG() << "CameraAlliedVision::getProps> Properties updated";
@@ -513,10 +586,11 @@ CameraAlliedVision::getFeatures() {
   string exposureauto;
   double exposureautoNum = 0;
   feature->GetValue(exposureauto);
-  if (exposureauto.compare("On") == 0 ||
-      exposureauto.compare("Continuous") == 0 ||
-      exposureauto.compare("Once") == 0) {
+  if (exposureauto.compare("Once") == 0) {
     exposureautoNum = 1;
+  } else if (exposureauto.compare("Continuous") == 0 ||
+             exposureauto.compare("On") == 0) {
+    exposureautoNum = 2;
   }
   featureValueList.replace(++featureCnt, exposureautoNum);
   featureAbsValueList.replace(featureCnt, exposureautoNum);
@@ -526,10 +600,11 @@ CameraAlliedVision::getFeatures() {
   string gainauto;
   double gainautoNum = 0;
   feature->GetValue(gainauto);
-  if (gainauto.compare("On") == 0 ||
-      gainauto.compare("Continuous") == 0 ||
-      gainauto.compare("Once") == 0) {
+  if (gainauto.compare("Once") == 0) {
     gainautoNum = 1;
+  } else if (gainauto.compare("Continuous") == 0 ||
+             gainauto.compare("On") == 0) {
+    gainautoNum = 2;
   }
   featureValueList.replace(++featureCnt, gainautoNum);
   featureAbsValueList.replace(featureCnt, gainautoNum);

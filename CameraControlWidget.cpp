@@ -42,6 +42,54 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define NUM_DIGITS 2
 #define SLIDER_FACTOR 1000
 
+static bool IsAutoEnumFeature(const Camera *camera, int index) {
+  if (camera == nullptr) {
+    return false;
+  }
+  const QString name = camera->featureNameList.at(index);
+  return name == "ExposureAuto" || name == "GainAuto";
+}
+
+static QString AutoEnumToText(int value) {
+  switch (value) {
+    case 1:
+      return "Once";
+    case 2:
+      return "Continuous";
+    default:
+      return "Off";
+  }
+}
+
+static int AutoEnumFromText(const QString &text, bool *ok) {
+  const QString trimmed = text.trimmed();
+  const QString lower = trimmed.toLower();
+  if (lower == "off") {
+    if (ok) {
+      *ok = true;
+    }
+    return 0;
+  }
+  if (lower == "once") {
+    if (ok) {
+      *ok = true;
+    }
+    return 1;
+  }
+  if (lower == "continuous" || lower == "on") {
+    if (ok) {
+      *ok = true;
+    }
+    return 2;
+  }
+  bool localOk = false;
+  const int numeric = trimmed.toInt(&localOk);
+  if (ok) {
+    *ok = localOk;
+  }
+  return numeric;
+}
+
 CameraControlWidget::CameraControlWidget(Camera *_camera)
  
 {
@@ -76,11 +124,19 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
       featureSlider->setMinimum((int) (camera->featureMinList.at(i) ));
       featureSlider->setMaximum((int)(camera->featureMaxList.at(i) ));
       featureSlider->setValue((int)(camera->featureValueList.at(i) ));
-      sliderValue->setText(QString::number((int)camera->featureValueList.at(i)));
+      if (IsAutoEnumFeature(camera, i)) {
+        sliderValue->setText(AutoEnumToText((int)camera->featureValueList.at(i)));
+      } else {
+        sliderValue->setText(QString::number((int)camera->featureValueList.at(i)));
+      }
     }
     
     QLabel *valueMin = new QLabel(QString::number(camera->featureMinList.at(i)));
     QLabel *valueMax = new QLabel(QString::number(camera->featureMaxList.at(i)));
+    if (IsAutoEnumFeature(camera, i)) {
+      valueMin->setText("Off");
+      valueMax->setText("Continuous");
+    }
     featureSliderList.push_back(featureSlider);
     sliderValueList.push_back(sliderValue);
     valueMinList.push_back(valueMin);
@@ -283,8 +339,17 @@ CameraControlWidget::setSliderValue(int position) {
               << " SLIDER_FACTOR " << QString::number(SLIDER_FACTOR);
  if ( camera->featureAbsCapableList.at(position) ) 
    featureSlider->setValue(value * SLIDER_FACTOR);
- else 
-   featureSlider->setValue(value);
+ else {
+   if (IsAutoEnumFeature(camera, position)) {
+     bool ok = false;
+     const int enumValue = AutoEnumFromText(slidervalueStr, &ok);
+     if (ok) {
+       featureSlider->setValue(enumValue);
+     }
+   } else {
+     featureSlider->setValue(value);
+   }
+ }
 }
 
 void
@@ -337,7 +402,13 @@ void CameraControlWidget::updateFeatures() {
     }
     else {
       QLOG_INFO() << "CameraControlWidget::updateFeatures> UPDATE FEATURE " << i <<  " " <<  camera->featureNameList.at(i) << " value : " << (int)camera->featureValueList.at(i);
-      sliderValue->setText(QString::number((int)camera->featureValueList.at(i)));
+      if (IsAutoEnumFeature(camera, i)) {
+        sliderValue->setText(AutoEnumToText((int)camera->featureValueList.at(i)));
+        valueMinList.at(i)->setText("Off");
+        valueMaxList.at(i)->setText("Continuous");
+      } else {
+        sliderValue->setText(QString::number((int)camera->featureValueList.at(i)));
+      }
    }
   }
 }
