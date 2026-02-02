@@ -16,7 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include <QtCore/QDir>
+#include <QtCore/QFile>
 #include <QtCore/QLibraryInfo>
+#include <QtCore/QStandardPaths>
 #include <QtCore/QProcess>
 
 #include <QMessageBox>
@@ -55,6 +57,18 @@ bool Assistant::startAssistant() {
 #else
     app += QLatin1String("Assistant.app/Contents/MacOS/Assistant");
 #endif
+    if (!QFile::exists(app)) {
+      const QString fallback = QStandardPaths::findExecutable("assistant");
+      const QString fallbackQt5 = QStandardPaths::findExecutable("assistant-qt5");
+      const QString fallbackQt = QStandardPaths::findExecutable("qtassistant");
+      if (!fallback.isEmpty()) {
+        app = fallback;
+      } else if (!fallbackQt5.isEmpty()) {
+        app = fallbackQt5;
+      } else if (!fallbackQt.isEmpty()) {
+        app = fallbackQt;
+      }
+    }
     QStringList args;
     args << QLatin1String("-collectionFile")
          << appDirPath + QLatin1String("/doc/OpticsBenchUIColl.qhc")

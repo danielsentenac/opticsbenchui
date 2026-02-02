@@ -1,0 +1,5 @@
+*.db3
+*.o
+moc_*.cpp
+moc_*.o
+.qmake.stash
