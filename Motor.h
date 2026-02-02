@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 #include <QtWidgets>
 #include "QsLog.h"
+#include "Utils.h"
 
 class Motor : public QObject
 {
@@ -61,13 +62,7 @@ class Motor : public QObject
   // function : create connexion to the database
   void dbConnexion();
   QSqlDatabase connectDb(QString path) {
-     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
-     QLOG_DEBUG ( ) << "Motor::dbConnexion> Db path : " << path;
-     db.setDatabaseName(path);
-     if ( !db.open() ) {
-       QLOG_WARN ( ) << db.lastError().text();
-     }
-     return db;
+     return Utils::ConnectSqliteDb(path, "Motor::dbConnexion>");
   }
 
   QVector<ACCom*>   actuatorCom;

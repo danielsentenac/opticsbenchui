@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef IEEE1394CAMERA
 #include "CameraIEEE1394.h"
+#include "Utils.h"
  
 #define VIDEO_MODES_OFFSET  64
 #define FRAMERATES_OFFSET 32
@@ -100,17 +101,6 @@ char *iidc_video_modes[] = {(char*)"160x120_YUV444",
 			    (char*)"FORMAT7_6",
 			    (char*)"FORMAT7_7"};
 
-#include <sys/time.h>
-/*----------------------------------------------------------------------------*/
-/*------------------------------------------------------------------- GetTime */
-/*----------------------------------------------------------------------------*/
-static double GetTime( void ) {
- struct timeval tp;
-/*--------------------------------------------------------------------------*/
- gettimeofday( &tp, nullptr );
-/*--------------------------------------------------------------------------*/
- return( tp.tv_sec*1e6 + tp.tv_usec );
-}
 
 CameraIEEE1394::CameraIEEE1394()
   :Camera()
@@ -377,13 +367,13 @@ CameraIEEE1394::run() {
     eTimeTotal = 0;
     while (suspend == false) {
       QLOG_DEBUG () << "CameraIEEE1394::run> " << id << " : start new Acquisition";
-      double eTime = GetTime();
+      double eTime = Utils::GetTimeMicroseconds();
       acqstart->wakeAll();
       acq_err = acquireImage();
       QLOG_DEBUG () << "CameraIEEE1394::run> " << id << " : done";
       acqend->wakeAll();
       if (acq_err == 1)
-       eTimeTotal+= (GetTime() - eTime);
+       eTimeTotal+= (Utils::GetTimeMicroseconds() - eTime);
       acq_cnt++;
       if (acq_cnt == FREQUENCY_AVERAGE_COUNT) {
        eTimeTotal/=1e6;

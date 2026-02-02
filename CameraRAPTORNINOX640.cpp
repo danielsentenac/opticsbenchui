@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef RAPTORNINOX640CAMERA
 #include "CameraRAPTORNINOX640.h"
-#include <sys/time.h>
+#include "Utils.h"
 
 char *raptorninox640_features[]  = {
                         (char*)"Frame Rate (Hz)",
@@ -54,16 +54,6 @@ int raptorninox640_aoi_settings[][4] = {
                        {0,640,0,512}
                        };
 
-/*----------------------------------------------------------------------------*/
-/*------------------------------------------------------------------- GetTime */
-/*----------------------------------------------------------------------------*/
-static double GetTime( void ) {
- struct timeval tp;
-/*--------------------------------------------------------------------------*/
- gettimeofday( &tp, nullptr );
-/*--------------------------------------------------------------------------*/
- return( tp.tv_sec*1e6 + tp.tv_usec );
-}
 
 CameraRAPTORNINOX640::CameraRAPTORNINOX640()
   :Camera()
@@ -292,13 +282,13 @@ CameraRAPTORNINOX640::run() {
     frameTotal = pxd_videoFieldCount(1);
     while (suspend == false) {
       QLOG_DEBUG () << "CameraRAPTORNINOX640::run> " << id << " : start new Acquisition";
-      double eTime = GetTime();
+      double eTime = Utils::GetTimeMicroseconds();
       acqstart->wakeAll();
       acq_err = acquireImage();
       QLOG_DEBUG () << "CameraRAPTORNINOX640::run> " << id << " : done";
       acqend->wakeAll();
       if (acq_err == 1)
-       eTimeTotal+= (GetTime() - eTime);
+       eTimeTotal+= (Utils::GetTimeMicroseconds() - eTime);
       acq_cnt++;
       if (acq_cnt == FREQUENCY_AVERAGE_COUNT) {
        eTimeTotal/=1e6;

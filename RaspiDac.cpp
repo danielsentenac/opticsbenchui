@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef RASPIDAC
 #include "RaspiDac.h"
+#include "Utils.h"
 #include <unistd.h>
 
 #define LSB(a)    *((unsigned char *)&a)
@@ -135,7 +136,7 @@ RaspiDac::connectRaspi(QString newraspi) {
     raspivaluesString = query.value(2).toString();
   }
   if (raspiSettings == "") {
-    emit showWarning(tr("%1 does not exist").arg(newraspi));
+    Utils::EmitWarning(this, __FUNCTION__, tr("%1 does not exist").arg(newraspi));
     return false;
   }
 
@@ -408,7 +409,7 @@ RaspiDac::setRaspiValue(QString newraspi, int output, void *value) {
   for (int index = 0 ; index < raspi.size(); index++)  {
     if ( raspi.at(index) == newraspi && connectSuccess.at(index) == true) {
         if ( *dvalue < min.at(index) || *dvalue > max.at(index)) {
-          emit showWarning(tr("%1: channel %2:value out of range").arg(newraspi,
+          Utils::EmitWarning(this, __FUNCTION__, tr("%1: channel %2:value out of range").arg(newraspi,
    				QString::number(output)));
           return false;
         }
@@ -473,7 +474,7 @@ RaspiDac::setRaspiValue(QString newraspi, int output, void *value) {
          return true;
     }
   }
-  emit showWarning(tr("Check connection to %1").arg(newraspi));
+  Utils::EmitWarning(this, __FUNCTION__, tr("Check connection to %1").arg(newraspi));
   return false; 
 }
 bool
@@ -578,30 +579,29 @@ RaspiDac::updateDBValues(QString newraspi) {
       return  true;
     }
   }
-  emit showWarning(tr("Cannot find raspi %1").arg(newraspi));
+  Utils::EmitWarning(this, __FUNCTION__, tr("Cannot find raspi %1").arg(newraspi));
   return false; 
 }
 // function : create connexion to the database
 void 
 RaspiDac::dbConnexion() {
 
-  path.append(QDir::separator()).append("raspidac.db3");
-  path = QDir::toNativeSeparators(path);
-  QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
-  QLOG_INFO ( ) << "RaspiDac::dbConnexion> Db path : " << path;
-  db.setDatabaseName(path);  
-  if ( !db.open() ) {
-    QLOG_WARN ( ) << db.lastError().text();
-    emit showWarning(db.lastError().text());
+  path = Utils::BuildDbPath(path, "raspidac.db3");
+  QSqlDatabase db = Utils::ConnectSqliteDb(path, "RaspiDac::dbConnexion>");
+  if (!db.isOpen()) {
+    Utils::EmitWarning(this, __FUNCTION__,
+                       db.lastError().text());
   }
   // Create raspi tables
   QSqlQuery query(db);
-  query.exec("create table raspi_settings "
-	     "(name varchar(128) not null primary key, "
-	     "settings varchar(255), "
-	     "description varchar(128), "
-	     "raspivalues varchar(255))");
-  QLOG_DEBUG ( ) << query.lastError().text();      
+  Utils::ExecSql(
+      query,
+      "create table if not exists raspi_settings "
+      "(name varchar(128) not null primary key, "
+      "settings varchar(255), "
+      "description varchar(128), "
+      "raspivalues varchar(255))",
+      "RaspiDac::dbConnexion>");
   
 }
 #endif

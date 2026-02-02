@@ -117,8 +117,9 @@ void AcquisitionThread::run() {
     file_id = H5Fcreate(filename.toStdString().c_str(), H5F_ACC_TRUNC,
                         H5P_DEFAULT, H5P_DEFAULT);
     if (file_id < 0) {
-      QLOG_WARN() << "Unable to open file - " << filename << " - Aborting scan";
-      emit showWarning("Unable to open file - " + filename + " - Aborting scan");
+      const QString message =
+          "Unable to open file - " + filename + " - Aborting scan";
+      Utils::EmitWarning(this, __FUNCTION__, message);
       return;
     }
     record = 0;
@@ -126,7 +127,7 @@ void AcquisitionThread::run() {
     QLOG_DEBUG() << "AcquisitionThread::run> Number of sequences " << lastrecord;
     // run acquisition sequence
     QLOG_INFO() << "AcquisitionThread::run> start Acquisition : "
-                << QDateTime::currentDateTime().toString("MMMdd,yy-hh:mm:ss");
+                << Utils::CurrentTimestampString();
     emit getAcquiring(record);
     while (record < lastrecord) {
       AcquisitionSequence *sequence = sequenceList.at(record);
@@ -151,7 +152,7 @@ void AcquisitionThread::run() {
                   << ": etime = " << (int)sequence->etime;
     }
     QLOG_INFO() << "AcquisitionThread::run> stop Acquisition : "
-                << QDateTime::currentDateTime().toString("MMMdd,yy-hh:mm:ss");
+                << Utils::CurrentTimestampString();
     emit getAcquiring(record);
     filenumber++;
     emit getFilenumber(filenumber);

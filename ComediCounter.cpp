@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef COMEDICOUNTER
 #include "ComediCounter.h"
+#include "Utils.h"
 #include <unistd.h>
 ComediCounter::ComediCounter(QString appDirPath)
     : Comedi() {
@@ -141,7 +142,7 @@ ComediCounter::connectComedi(QString newcomedi) {
     comedivaluesString = query.value(2).toString();
   }
   if (comediSettings == "") {
-    emit showWarning(tr("%1 does not exist").arg(newcomedi));
+    Utils::EmitWarning(this, __FUNCTION__, tr("%1 does not exist").arg(newcomedi));
     return false;
   }
 
@@ -176,7 +177,7 @@ ComediCounter::connectComedi(QString newcomedi) {
   newdevice = comedi_open(fname.at(index).toStdString().c_str());
   if (newdevice == NULL)
    {
-    emit showWarning(tr("comedi_open:%1 (%2)").arg(fname.at(index).toStdString().c_str(),
+    Utils::EmitWarning(this, __FUNCTION__, tr("comedi_open:%1 (%2)").arg(fname.at(index).toStdString().c_str(),
 						comedi_strerror(comedi_errno())));
     connectSuccess.replace(index, false);
     return false;
@@ -282,7 +283,7 @@ ComediCounter::resetComedi(QString newcomedi) {
       return true;
     }
   }
-  emit showWarning(tr("Check connection to %1").arg(newcomedi));
+  Utils::EmitWarning(this, __FUNCTION__, tr("Check connection to %1").arg(newcomedi));
   return false; 
 }
 bool
@@ -362,7 +363,7 @@ ComediCounter::updateDBValues(QString newcomedi) {
       return  true;
     }
   }
-  emit showWarning(tr("Cannot find comedi %1").arg(newcomedi));
+  Utils::EmitWarning(this, __FUNCTION__, tr("Cannot find comedi %1").arg(newcomedi));
   return false; 
 }
 // This resets the count to zero and disarms the counter.  The counter output is set low.
@@ -559,23 +560,22 @@ ComediCounter::getTime(comedi_t *device)
 void 
 ComediCounter::dbConnexion() {
 
-  path.append(QDir::separator()).append("comedicounter.db3");
-  path = QDir::toNativeSeparators(path);
-  QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
-  QLOG_INFO ( ) << "ComediCounter::dbConnexion> Db path : " << path;
-  db.setDatabaseName(path);  
-  if ( !db.open() ) {
-    QLOG_WARN ( ) << db.lastError().text();
-    emit showWarning(db.lastError().text());
+  path = Utils::BuildDbPath(path, "comedicounter.db3");
+  QSqlDatabase db = Utils::ConnectSqliteDb(path, "ComediCounter::dbConnexion>");
+  if (!db.isOpen()) {
+    Utils::EmitWarning(this, __FUNCTION__,
+                       db.lastError().text());
   }
   // Create comedi tables
   QSqlQuery query(db);
-  query.exec("create table comedi_settings "
-	     "(name varchar(128) not null primary key, "
-	     "settings varchar(255), "
-	     "description varchar(128), "
-	     "comedivalues varchar(255))");
-  QLOG_DEBUG ( ) << query.lastError().text();      
+  Utils::ExecSql(
+      query,
+      "create table if not exists comedi_settings "
+      "(name varchar(128) not null primary key, "
+      "settings varchar(255), "
+      "description varchar(128), "
+      "comedivalues varchar(255))",
+      "ComediCounter::dbConnexion>");
   
 }
 #endif

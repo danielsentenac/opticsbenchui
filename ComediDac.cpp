@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef COMEDIDAC
 #include "ComediDac.h"
+#include "Utils.h"
 #include <unistd.h>
 
 ComediDac::ComediDac(QString appDirPath)
@@ -118,7 +119,7 @@ ComediDac::connectComedi(QString newcomedi) {
   QLOG_INFO () << "comediSettings:" << comediSettings;
 
   if (comediSettings == "") {
-    emit showWarning(tr("%1 does not exist").arg(newcomedi));
+    Utils::EmitWarning(this, __FUNCTION__, tr("%1 does not exist").arg(newcomedi));
     return false;
   }
 
@@ -182,7 +183,7 @@ ComediDac::connectComedi(QString newcomedi) {
   comedi_t *newdevice;
   newdevice = comedi_open(fname.at(index).toStdString().c_str());
   if (newdevice == NULL) {
-    emit showWarning(tr("comedi_open:%1 (%2)").arg(fname.at(index).toStdString().c_str(),
+    Utils::EmitWarning(this, __FUNCTION__, tr("comedi_open:%1 (%2)").arg(fname.at(index).toStdString().c_str(),
                                                 comedi_strerror(comedi_errno())));
     connectSuccess.replace(index, false);
     return false;
@@ -235,7 +236,7 @@ ComediDac::resetComedi(QString newcomedi) {
       return true;
     }
   }
-  emit showWarning(tr("Check connection to %1").arg(newcomedi));
+  Utils::EmitWarning(this, __FUNCTION__, tr("Check connection to %1").arg(newcomedi));
   return false;
 }
 bool
@@ -253,7 +254,7 @@ ComediDac::setComediValue(QString newcomedi, int output, void *value) {
   for (int index = 0 ; index < comedi.size(); index++)  {
     if ( comedi.at(index) == newcomedi && connectSuccess.at(index) == true) {
         if ( *dvalue < min.at(index) || *dvalue > max.at(index)) {
-          emit showWarning(tr("%1: channel %2:value out of range").arg(newcomedi,
+          Utils::EmitWarning(this, __FUNCTION__, tr("%1: channel %2:value out of range").arg(newcomedi,
    				QString::number(output)));
           return false;
         }
@@ -274,7 +275,7 @@ ComediDac::setComediValue(QString newcomedi, int output, void *value) {
         return true;
     }
   }
-  emit showWarning(tr("Check connection to %1").arg(newcomedi));
+  Utils::EmitWarning(this, __FUNCTION__, tr("Check connection to %1").arg(newcomedi));
   return false; 
 }
 bool
@@ -328,30 +329,29 @@ ComediDac::updateDBValues(QString newcomedi) {
       return  true;
     }
   }
-  emit showWarning(tr("Cannot find comedi %1").arg(newcomedi));
+  Utils::EmitWarning(this, __FUNCTION__, tr("Cannot find comedi %1").arg(newcomedi));
   return false; 
 }
 // function : create connexion to the database
 void 
 ComediDac::dbConnexion() {
 
-  path.append(QDir::separator()).append("comedidac.db3");
-  path = QDir::toNativeSeparators(path);
-  QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
-  QLOG_INFO ( ) << "ComediDac::dbConnexion> Db path : " << path;
-  db.setDatabaseName(path);  
-  if ( !db.open() ) {
-    QLOG_WARN ( ) << db.lastError().text();
-    emit showWarning(db.lastError().text());
+  path = Utils::BuildDbPath(path, "comedidac.db3");
+  QSqlDatabase db = Utils::ConnectSqliteDb(path, "ComediDac::dbConnexion>");
+  if (!db.isOpen()) {
+    Utils::EmitWarning(this, __FUNCTION__,
+                       db.lastError().text());
   }
   // Create comedi tables
   QSqlQuery query(db);
-  query.exec("create table comedi_settings "
-	     "(name varchar(128) not null primary key, "
-	     "settings varchar(255), "
-	     "description varchar(128), "
-	     "comedivalues varchar(255))");
-  QLOG_DEBUG ( ) << query.lastError().text();      
+  Utils::ExecSql(
+      query,
+      "create table if not exists comedi_settings "
+      "(name varchar(128) not null primary key, "
+      "settings varchar(255), "
+      "description varchar(128), "
+      "comedivalues varchar(255))",
+      "ComediDac::dbConnexion>");
   
 }
 #endif

@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QImage>
 #include <QDebug>
 #include "CameraUSB.h"
+#include "Utils.h"
 
 CameraUSB::CameraUSB()
     : Camera(),
@@ -57,7 +58,7 @@ void CameraUSB::stop()
 int CameraUSB::findCamera()
 {
     if (cameras.isEmpty()) {
-        emit showWarning("No cameras found.");
+        Utils::EmitWarning(this, __FUNCTION__, "No cameras found.");
         return -1;
     }
     
@@ -72,7 +73,7 @@ void CameraUSB::setCamera(void *_camera, int _id)
     stop();
     
     if (_id < 0 || _id >= cameras.size()) {
-        emit showWarning("Invalid camera ID.");
+        Utils::EmitWarning(this, __FUNCTION__, "Invalid camera ID.");
         return;
     }
     
@@ -174,7 +175,7 @@ int CameraUSB::acquireImage()
         
      if (!camera || !imageCapture)
     {
-        emit showWarning("Camera or image capture is not initialized.");
+        Utils::EmitWarning(this, __FUNCTION__, "Camera or image capture is not initialized.");
         return -1;
     }
 

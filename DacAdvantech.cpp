@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef ADVANTECHDAC
 #include "DacAdvantech.h"
+#include "Utils.h"
 
 DacAdvantech::DacAdvantech(QString _appDirPath)
   : Dac()				       
@@ -160,7 +161,7 @@ DacAdvantech::connectDac(QString newdac) {
     dacvaluesString = query.value(2).toString();
   }
   if (dacSettings == "") {
-    emit showWarning(tr("%1 does not exist").arg(newdac));
+    Utils::EmitWarning(this, __FUNCTION__, tr("%1 does not exist").arg(newdac));
     return false;
   }
  
@@ -252,7 +253,7 @@ DacAdvantech::connectDac(QString newdac) {
   status = DRV_DeviceOpen((char*)fname.at(index).toStdString().c_str(), fd.at(index));
   if (status) {
     DRV_GetErrorMessage(status, err_msg);
-    emit showWarning(tr("DRV_DeviceOpen:%1").arg(err_msg));
+    Utils::EmitWarning(this, __FUNCTION__, tr("DRV_DeviceOpen:%1").arg(err_msg));
     connectSuccess.replace(index, false);
     return false;
   }
@@ -269,7 +270,7 @@ DacAdvantech::connectDac(QString newdac) {
       status = DRV_AOConfig(*(fd.at(index)), config.at(index));
       if (status) {
 	DRV_GetErrorMessage(status, err_msg);
-	emit showWarning(tr("DRV_AOConfig:%1").arg(err_msg));
+	Utils::EmitWarning(this, __FUNCTION__, tr("DRV_AOConfig:%1").arg(err_msg));
 	connectSuccess.replace(index, false);
 	return false;
       }
@@ -294,7 +295,7 @@ DacAdvantech::connectDac(QString newdac) {
 				     sizeof(aorange));
       if (status) {
 	DRV_GetErrorMessage(status, err_msg);
-	emit showWarning(tr("DRV_DeviceSetProperty:%1").arg(err_msg));
+	Utils::EmitWarning(this, __FUNCTION__, tr("DRV_DeviceSetProperty:%1").arg(err_msg));
 	connectSuccess.replace(index, false);
 	return false;
       }
@@ -304,7 +305,7 @@ DacAdvantech::connectDac(QString newdac) {
 				     ao_chan_range.at(index),&size);
       if (status) {
 	DRV_GetErrorMessage(status, err_msg);
-	emit showWarning(tr("DRV_DeviceGetProperty:%1").arg(err_msg));
+	Utils::EmitWarning(this, __FUNCTION__, tr("DRV_DeviceGetProperty:%1").arg(err_msg));
 	connectSuccess.replace(index, false);
 	return false;
       }
@@ -345,7 +346,7 @@ DacAdvantech::resetDac(QString newdac) {
       status = DRV_EnableSyncAO(*(fd.at(index)), 1);
       if (status) {
 	DRV_GetErrorMessage(status, err_msg);
-	emit showWarning(tr("DRV_EnableSyncAO:%1").arg(err_msg));
+	Utils::EmitWarning(this, __FUNCTION__, tr("DRV_EnableSyncAO:%1").arg(err_msg));
 	return false;
       }
       dacvalues.at(index)->clear();
@@ -369,7 +370,7 @@ DacAdvantech::resetDac(QString newdac) {
 	
 	if (status) {
 	  DRV_GetErrorMessage(status, err_msg);
-	  emit showWarning(tr("DRV_AO/Current/Voltage/Out%1").arg(err_msg));
+	  Utils::EmitWarning(this, __FUNCTION__, tr("DRV_AO/Current/Voltage/Out%1").arg(err_msg));
 	  return false;
 	}
 	dacvalues.at(index)->push_back(value);
@@ -378,14 +379,14 @@ DacAdvantech::resetDac(QString newdac) {
       status = DRV_WriteSyncAO(*(fd.at(index)));
       if (status) {
 	DRV_GetErrorMessage(status, err_msg);
-	emit showWarning(tr("DRV_WriteSyncAO:%1").arg(err_msg));
+	Utils::EmitWarning(this, __FUNCTION__, tr("DRV_WriteSyncAO:%1").arg(err_msg));
 	return false;
       } 
       /* disable sync*/
       status = DRV_EnableSyncAO(*(fd.at(index)), 0);
       if (status) {
 	DRV_GetErrorMessage(status, err_msg);
-	emit showWarning(tr("DRV_EnableSyncAO:%1").arg(err_msg));
+	Utils::EmitWarning(this, __FUNCTION__, tr("DRV_EnableSyncAO:%1").arg(err_msg));
 	return false;
       }
       // Set new values in Db
@@ -404,7 +405,7 @@ DacAdvantech::resetDac(QString newdac) {
       return true;
     }
   }
-  emit showWarning(tr("Check connection to %1").arg(newdac));
+  Utils::EmitWarning(this, __FUNCTION__, tr("Check connection to %1").arg(newdac));
   return false; 
 }
 bool
@@ -422,7 +423,7 @@ DacAdvantech::setDacRValue(QString newdac, int output, double rvalue) {
       status = DRV_EnableSyncAO(*(fd.at(index)), 1);
       if (status) {
         DRV_GetErrorMessage(status, err_msg);
-        emit showWarning(tr("%1").arg(err_msg));
+        Utils::EmitWarning(this, __FUNCTION__, tr("%1").arg(err_msg));
         return false;
       }
       // check value in range
@@ -445,32 +446,32 @@ DacAdvantech::setDacRValue(QString newdac, int output, double rvalue) {
           status = DRV_AOCurrentOut(*(fd.at(index)), chOutC.at(index));
         if (status) {
           DRV_GetErrorMessage(status, err_msg);
-          emit showWarning(tr("%1").arg(err_msg));
+          Utils::EmitWarning(this, __FUNCTION__, tr("%1").arg(err_msg));
           return false;
         }
         dacvalues.at(index)->replace(output,value);
       }
       else
-        emit showWarning(tr("DacAdvantech value %1 out of range !").arg(value));
+        Utils::EmitWarning(this, __FUNCTION__, tr("DacAdvantech value %1 out of range !").arg(value));
 
       /* write sync*/
       status = DRV_WriteSyncAO(*(fd.at(index)));
       if (status) {
         DRV_GetErrorMessage(status, err_msg);
-        emit showWarning(tr("%1").arg(err_msg));
+        Utils::EmitWarning(this, __FUNCTION__, tr("%1").arg(err_msg));
         return false;
       }
       /* disable sync*/
       status = DRV_EnableSyncAO(*(fd.at(index)), 0);
       if (status) {
         DRV_GetErrorMessage(status, err_msg);
-        emit showWarning(tr("%1").arg(err_msg));
+        Utils::EmitWarning(this, __FUNCTION__, tr("%1").arg(err_msg));
         return false;
       }
       return true;
     }
   }
-  emit showWarning(tr("Check connection to %1").arg(newdac));
+  Utils::EmitWarning(this, __FUNCTION__, tr("Check connection to %1").arg(newdac));
   return false;
 }
 bool
@@ -486,7 +487,7 @@ DacAdvantech::setDacValue(QString newdac, int output, double value) {
       status = DRV_EnableSyncAO(*(fd.at(index)), 1);
       if (status) {
 	DRV_GetErrorMessage(status, err_msg);
-	emit showWarning(tr("%1").arg(err_msg));
+	Utils::EmitWarning(this, __FUNCTION__, tr("%1").arg(err_msg));
 	return false;
       }
       // check value in range
@@ -509,32 +510,32 @@ DacAdvantech::setDacValue(QString newdac, int output, double value) {
 	  status = DRV_AOCurrentOut(*(fd.at(index)), chOutC.at(index));
 	if (status) {
 	  DRV_GetErrorMessage(status, err_msg);
-	  emit showWarning(tr("%1").arg(err_msg));
+	  Utils::EmitWarning(this, __FUNCTION__, tr("%1").arg(err_msg));
 	  return false;
 	}
 	dacvalues.at(index)->replace(output,value);
       }
       else 
-	emit showWarning(tr("DacAdvantech value %1 out of range !").arg(value));
+	Utils::EmitWarning(this, __FUNCTION__, tr("DacAdvantech value %1 out of range !").arg(value));
       
       /* write sync*/
       status = DRV_WriteSyncAO(*(fd.at(index)));
       if (status) {
 	DRV_GetErrorMessage(status, err_msg);
-	emit showWarning(tr("%1").arg(err_msg));
+	Utils::EmitWarning(this, __FUNCTION__, tr("%1").arg(err_msg));
 	return false;
       } 
       /* disable sync*/
       status = DRV_EnableSyncAO(*(fd.at(index)), 0);
       if (status) {
 	DRV_GetErrorMessage(status, err_msg);
-	emit showWarning(tr("%1").arg(err_msg));
+	Utils::EmitWarning(this, __FUNCTION__, tr("%1").arg(err_msg));
 	return false;
       }
       return true;
     }
   }
-  emit showWarning(tr("Check connection to %1").arg(newdac));
+  Utils::EmitWarning(this, __FUNCTION__, tr("Check connection to %1").arg(newdac));
   return false; 
 }
 float 
@@ -548,7 +549,7 @@ DacAdvantech::getDacValue(QString newdac, int output) {
     }
   }
   QLOG_ERROR ( ) << "DacAdvantech::getDacValue> " << newdac << " connection problem";
-  emit showWarning(tr("Check connection to %1").arg(newdac));
+  Utils::EmitWarning(this, __FUNCTION__, tr("Check connection to %1").arg(newdac));
   return 0;
 }
 // function : update DB with ADVANTECHDAC value
@@ -577,30 +578,29 @@ DacAdvantech::updateDBValues(QString newdac) {
       return  true;
     }
   }
-  emit showWarning(tr("Cannot find dac %1").arg(newdac));
+  Utils::EmitWarning(this, __FUNCTION__, tr("Cannot find dac %1").arg(newdac));
   return false; 
 }
 // function : create connexion to the database
 void 
 DacAdvantech::dbConnexion() {
 
-  path.append(QDir::separator()).append("dac.db3");
-  path = QDir::toNativeSeparators(path);
-  QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
-  QLOG_INFO ( ) << "DacAdvantech::dbConnexion> Db path : " << path;
-  db.setDatabaseName(path);  
-  if ( !db.open() ) {
-    QLOG_WARN ( ) << db.lastError().text();
-    emit showWarning(db.lastError().text());
+  path = Utils::BuildDbPath(path, "dac.db3");
+  QSqlDatabase db = Utils::ConnectSqliteDb(path, "DacAdvantech::dbConnexion>");
+  if (!db.isOpen()) {
+    Utils::EmitWarning(this, __FUNCTION__,
+                       db.lastError().text());
   }
   // Create dac tables
   QSqlQuery query(db);
-  query.exec("create table dac_settings "
-	     "(name varchar(128) not null primary key, "
-	     "settings varchar(255), "
-	     "description varchar(128), "
-	     "dacvalues varchar(255))");
-  QLOG_DEBUG ( ) << query.lastError().text();      
+  Utils::ExecSql(
+      query,
+      "create table if not exists dac_settings "
+      "(name varchar(128) not null primary key, "
+      "settings varchar(255), "
+      "description varchar(128), "
+      "dacvalues varchar(255))",
+      "DacAdvantech::dbConnexion>");
   
 }
 #endif

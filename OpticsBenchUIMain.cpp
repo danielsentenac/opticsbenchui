@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "OpticsBenchUIMain.h"
+#include "Utils.h"
 #include <QDesktopServices>
 #include <functional>
 
@@ -420,12 +421,14 @@ void OpticsBenchUIMain::openConfiguration() {
 }
 void OpticsBenchUIMain::saveAcqFile() {
   QString acqfile = "";
-  acqfile = QFileDialog::getSaveFileName(this, tr("Save Acquisition File in HDF5 format"),
-					  QDir::currentPath ()+ 
-					  QDir::separator() + "Scan",
-					  tr("HDF5 (*.hf5)"));
-  if (acqfile != "")
+  acqfile = QFileDialog::getSaveFileName(
+      this, tr("Save Acquisition File in HDF5 format"),
+      Utils::DefaultHdf5Path("Scan"),
+      Utils::Hdf5FileDialogFilter());
+  if (acqfile != "") {
+    acqfile = Utils::EnsureHdf5Extension(acqfile);
     emit setAcqFile(acqfile);
+  }
 }
 void OpticsBenchUIMain::showDocumentation()
 {
@@ -569,9 +572,8 @@ int main(int argc, char *argv[])
   // init the logging mechanism
   QsLogging::Logger& logger = QsLogging::Logger::instance();
   QDir qdir;
-  const QString sLogPath(qdir.currentPath() +  QDir::separator() +
-                        "OpticsBenchUI_" +
-                         QDateTime::currentDateTime().toString("MMMdd,yy-hh:mm:ss") +
+  const QString sLogPath(qdir.currentPath() + QDir::separator() +
+                         "OpticsBenchUI_" + Utils::CurrentTimestampString() +
                          ".log");
   QsLogging::DestinationPtr fileDestination(QsLogging::DestinationFactory::MakeFileDestination(sLogPath) );
   QsLogging::DestinationPtr debugDestination(QsLogging::DestinationFactory::MakeDebugOutputDestination() );

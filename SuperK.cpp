@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "SuperK.h"
+#include "Utils.h"
 
 SuperK::SuperK(QObject* parent, QString _appDirPath)
   : QObject(parent)
@@ -150,11 +151,11 @@ SuperK::connectSuperK(QString newdriver)
 			       comaddress.toStdString(),
 			       comsettings.toStdString());
   if (!accom) {
-    emit showWarning("Could not create Communication channel");
+    Utils::EmitWarning(this, __FUNCTION__, "Could not create Communication channel");
     return;
   }
   else if (accom->Open()) {
-    emit showWarning("Could not open communication with device");
+    Utils::EmitWarning(this, __FUNCTION__, "Could not open communication with device");
     delete accom;
     return;
   }
@@ -164,12 +165,12 @@ SuperK::connectSuperK(QString newdriver)
   QLOG_INFO() << " Create new Driver with settings " << drvsettings;
   DriverSuperK *drv = new DriverSuperK(accom);
   if (!drv) {
-    emit showWarning("Could not create Driver");
+    Utils::EmitWarning(this, __FUNCTION__, "Could not create Driver");
     return;
   }
   else {
     if (drv->Init()) {
-       emit showWarning("Could not init driver");
+       Utils::EmitWarning(this, __FUNCTION__, "Could not init driver");
       delete drv;
       return;
     }
@@ -367,24 +368,24 @@ SuperK::operationComplete()
 void
 SuperK::dbConnexion() {
 
-  path.append(QDir::separator()).append("superk.db3");
-  path = QDir::toNativeSeparators(path);
-  QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
-  db.setDatabaseName(path);
-  if ( !db.open() ) {
-    emit showWarning(db.lastError().text());
+  path = Utils::BuildDbPath(path, "superk.db3");
+  QSqlDatabase db = Utils::ConnectSqliteDb(path, "SuperK::dbConnexion>");
+  if (!db.isOpen()) {
+    Utils::EmitWarning(this, __FUNCTION__, db.lastError().text());
   }
   //
   // Create superk table
   //
   QSqlQuery query(QSqlDatabase::database(path));
-  query.exec("create table superk_driver "
-     "(name varchar(128) not null primary key, "
-     "comtype varchar(30), "
-     "comaddress varchar(30), "
-     "comsettings varchar(255), "
-     "drvsettings varchar(255), "
-     "description varchar(255), "
-     "data varchar(255))");
+  Utils::ExecSql(
+      query,
+      "create table if not exists superk_driver "
+      "(name varchar(128) not null primary key, "
+      "comtype varchar(30), "
+      "comaddress varchar(30), "
+      "comsettings varchar(255), "
+      "drvsettings varchar(255), "
+      "description varchar(255), "
+      "data varchar(255))",
+      "SuperK::dbConnexion>");
 }
-

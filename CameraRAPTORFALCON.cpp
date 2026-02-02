@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef RAPTORFALCONCAMERA
 #include "CameraRAPTORFALCON.h"
-#include <sys/time.h>
+#include "Utils.h"
 
 #define RAPTORFALCON_AOI_NUMBER 5
 #define BINNING_NUMBER 5
@@ -58,16 +58,6 @@ char* raptorfalcon_binning_settings[] = {"5x5",
 				   "1x1"};
                         
 
-/*----------------------------------------------------------------------------*/
-/*------------------------------------------------------------------- GetTime */
-/*----------------------------------------------------------------------------*/
-static double GetTime( void ) {
- struct timeval tp;
-/*--------------------------------------------------------------------------*/
- gettimeofday( &tp, nullptr );
-/*--------------------------------------------------------------------------*/
- return( tp.tv_sec*1e6 + tp.tv_usec );
-}
 
 CameraRAPTORFALCON::CameraRAPTORFALCON()
   :Camera()
@@ -295,13 +285,13 @@ CameraRAPTORFALCON::run() {
     frameTotal = pxd_videoFieldCount(1);
     while (suspend == false) {
       QLOG_DEBUG () << "CameraRAPTORFALCON::run> " << id << " : start new Acquisition";
-      double eTime = GetTime();
+      double eTime = Utils::GetTimeMicroseconds();
       acqstart->wakeAll();
       acq_err = acquireImage();
       QLOG_DEBUG () << "CameraRAPTORFALCON::run> " << id << " : done";
       acqend->wakeAll();
       if (acq_err == 1)
-       eTimeTotal+= (GetTime() - eTime);
+       eTimeTotal+= (Utils::GetTimeMicroseconds() - eTime);
       acq_cnt++;
       if (acq_cnt == FREQUENCY_AVERAGE_COUNT) {
        eTimeTotal/=1e6;

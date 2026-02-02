@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef RASPICAMERA
 #include "CameraRaspi.h"
+#include "Utils.h"
 
 #define EXPOSURE_NUMBER 13
 #define ENCODING_NUMBER 4
@@ -94,17 +95,6 @@ int raspi_aoi_settings[][2] = {
 			  {2880,1920}
                           };
 
-#include <sys/time.h>
-/*----------------------------------------------------------------------------*/
-/*------------------------------------------------------------------- GetTime */
-/*----------------------------------------------------------------------------*/
-static double GetTime( void ) {
- struct timeval tp;
-/*--------------------------------------------------------------------------*/
- gettimeofday( &tp, nullptr );
-/*--------------------------------------------------------------------------*/
- return( tp.tv_sec*1e6 + tp.tv_usec );
-}
 
 CameraRaspi::CameraRaspi()
   :Camera()
@@ -505,13 +495,13 @@ CameraRaspi::run() {
     eTimeTotal = 0;
     while (suspend == false) {
       QLOG_DEBUG () << "CameraRaspi::run> " << id << " : start new Acquisition";
-      double eTime = GetTime();
+      double eTime = Utils::GetTimeMicroseconds();
       acqstart->wakeAll();
       acq_err = acquireImage();
       QLOG_DEBUG () << "CameraRaspi::run> " << id << " : done";
       acqend->wakeAll();
       if (acq_err == 1) 
-       eTimeTotal+= (GetTime() - eTime);
+       eTimeTotal+= (Utils::GetTimeMicroseconds() - eTime);
       acq_cnt++;
       if (acq_cnt == FREQUENCY_AVERAGE_COUNT) {
        eTimeTotal/=1e6;
@@ -918,7 +908,7 @@ CameraRaspi::acquireImage() {
   /*-----------------------------------------------------------------------
    * acquire frame
    *-----------------------------------------------------------------------*/
-  double eTime = GetTime();
+  double eTime = Utils::GetTimeMicroseconds();
   camera->grab();
   camera->retrieve ( data );
   if (data == nullptr) {
@@ -973,7 +963,7 @@ CameraRaspi::acquireImage() {
     emit getImage(imagergb32);
     emit updateMin(min);
     emit updateMax(max);
-    eTime = GetTime() - eTime;
+    eTime = Utils::GetTimeMicroseconds() - eTime;
     QLOG_DEBUG () << " Process eTime " << QString::number(eTime);
     QLOG_DEBUG () << " Cycle end ";
     acquireMutex->unlock();

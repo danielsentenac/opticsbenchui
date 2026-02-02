@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef ZYLACAMERA
 #include "CameraZyla.h"
+#include "Utils.h"
 
 #define NUMBER_OF_BUFFERS 1
 #define GAIN_NUMBER 3
@@ -133,17 +134,6 @@ int zyla_aoi_settings_packed[][4] = {
                           {240,1169,256,953},
                           {144,1217,128,1017}};
 
-#include <sys/time.h>
-/*----------------------------------------------------------------------------*/
-/*------------------------------------------------------------------- GetTime */
-/*----------------------------------------------------------------------------*/
-static double GetTime( void ) {
- struct timeval tp;
-/*--------------------------------------------------------------------------*/
- gettimeofday( &tp, nullptr );
-/*--------------------------------------------------------------------------*/
- return( tp.tv_sec*1e6 + tp.tv_usec );
-}
 
 CameraZyla::CameraZyla()
   :Camera()
@@ -598,13 +588,13 @@ CameraZyla::run() {
     eTimeTotal = 0;
     while (suspend == false) {
       QLOG_DEBUG () << "CameraZyla::run> " << id << " : start new Acquisition";
-      double eTime = GetTime();
+      double eTime = Utils::GetTimeMicroseconds();
       acqstart->wakeAll();
       acq_err = acquireImage();
       QLOG_DEBUG () << "CameraZyla::run> " << id << " : done";
       acqend->wakeAll();
       if (acq_err == 1) 
-       eTimeTotal+= (GetTime() - eTime);
+       eTimeTotal+= (Utils::GetTimeMicroseconds() - eTime);
       acq_cnt++;
       if (acq_cnt == FREQUENCY_AVERAGE_COUNT) {
        eTimeTotal/=1e6;
@@ -1331,7 +1321,7 @@ CameraZyla::acquireImage() {
   /*-----------------------------------------------------------------------
    * acquire frame
    *-----------------------------------------------------------------------*/
-  double eTime = GetTime();
+  double eTime = Utils::GetTimeMicroseconds();
   uchar* pBuf = nullptr;
   BufSize = 0;
   QLOG_DEBUG() << "CameraZyla::acquireImage> Trigger " 
@@ -1552,7 +1542,7 @@ CameraZyla::acquireImage() {
    errorOk(i_err, "AT_Command 'AcquisitionStart'");
    QLOG_INFO () << "CameraZyla::acquireImage> AcquisitionStart";
   }
-  eTime = GetTime() - eTime;
+  eTime = Utils::GetTimeMicroseconds() - eTime;
   QLOG_DEBUG () << " Process eTime " << QString::number(eTime);
   QLOG_DEBUG () << " Cycle end ";
   acquireMutex->unlock();

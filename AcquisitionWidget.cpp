@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "AcquisitionWidget.h"
+#include "Utils.h"
 
 namespace {
 const char kSelectionStylesheet[] =
@@ -186,10 +187,7 @@ void AcquisitionWidget::setDelegates() {
   ComboBoxDelegate *typeCombo = new ComboBoxDelegate(this, typeList);
 
   // Populate instrument list from motor database
-  QString motordb;
-  motordb = appDirPath;
-  motordb.append(QDir::separator()).append("motor.db3");
-  motordb = QDir::toNativeSeparators(motordb);
+  QString motordb = Utils::BuildDbPath(appDirPath, "motor.db3");
   QSqlQuery querymotor(QSqlDatabase::database(motordb));
   QStringList *instrumentList = new QStringList();
   instrumentList->append("");
@@ -199,10 +197,7 @@ void AcquisitionWidget::setDelegates() {
   }
   
   // Populate instrument list from dac database
-  QString dacdb;
-  dacdb = appDirPath;
-  dacdb.append(QDir::separator()).append("dac.db3");
-  dacdb = QDir::toNativeSeparators(dacdb);
+  QString dacdb = Utils::BuildDbPath(appDirPath, "dac.db3");
   QSqlQuery querydac(QSqlDatabase::database(dacdb));
   querydac.exec("select name from dac_settings");
   while (querydac.next()) {
@@ -210,10 +205,7 @@ void AcquisitionWidget::setDelegates() {
   }
 
   // Populate instrument list from comedi counter database
-  QString comedicounterdb;
-  comedicounterdb = appDirPath;
-  comedicounterdb.append(QDir::separator()).append("comedicounter.db3");
-  comedicounterdb = QDir::toNativeSeparators(comedicounterdb);
+  QString comedicounterdb = Utils::BuildDbPath(appDirPath, "comedicounter.db3");
   QSqlQuery querycomedicounter(QSqlDatabase::database(comedicounterdb));
   querycomedicounter.exec("select name from comedi_settings");
   while (querycomedicounter.next()) {
@@ -221,10 +213,7 @@ void AcquisitionWidget::setDelegates() {
   }
 
   // Populate instrument list from comedi dac database
-  QString comedidacdb;
-  comedidacdb = appDirPath;
-  comedidacdb.append(QDir::separator()).append("comedidac.db3");
-  comedidacdb = QDir::toNativeSeparators(comedidacdb);
+  QString comedidacdb = Utils::BuildDbPath(appDirPath, "comedidac.db3");
   QSqlQuery querycomedidac(QSqlDatabase::database(comedidacdb));
   querycomedidac.exec("select name from comedi_settings");
   while (querycomedidac.next()) {
@@ -232,10 +221,7 @@ void AcquisitionWidget::setDelegates() {
   }
 
   // Populate instrument list from superk database
-  QString superkdb;
-  superkdb = appDirPath;
-  superkdb.append(QDir::separator()).append("superk.db3");
-  superkdb = QDir::toNativeSeparators(superkdb);
+  QString superkdb = Utils::BuildDbPath(appDirPath, "superk.db3");
   QSqlQuery querysuperk(QSqlDatabase::database(superkdb));
   querysuperk.exec("select name from superk_driver");
   while (querysuperk.next()) {
@@ -437,32 +423,32 @@ void AcquisitionWidget::isopenCameraWindow(QVector<bool> isopencamerawindow) {
 
 void AcquisitionWidget::dbConnexion() {
   QLOG_DEBUG() << "AcquisitionWidget::dbConnexion";
-  path = appDirPath;
-  path.append(QDir::separator()).append("acquisition.db3");
-  path = QDir::toNativeSeparators(path);
-  QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", path);
-  db.setDatabaseName(path);
-  if (!db.open()) {
-    QLOG_WARN() << db.lastError().text();
-    emit showWarning(db.lastError().text());
+  path = Utils::BuildDbPath(appDirPath, "acquisition.db3");
+  QSqlDatabase db = Utils::ConnectSqliteDb(path,
+                                           "AcquisitionWidget::dbConnexion>");
+  if (!db.isOpen()) {
+    Utils::EmitWarning(this, __FUNCTION__,
+                       db.lastError().text());
   }
   // Create acquisition tables
   QSqlQuery query(QSqlDatabase::database(path));
-  query.exec(
-      "create table acquisition_sequence "
+  Utils::ExecSql(
+      query,
+      "create table if not exists acquisition_sequence "
       "(record int primary key, "
       "type varchar(128), "
       "instrument varchar(128), "
       "settings varchar(255), "
       "scanplan varchar(128), "
       "status varchar(128), "
-      "acquiring varchar(64))");
-  query.exec("update acquisition_sequence set status = ''");
-  query.exec("update acquisition_sequence set acquiring = ''");
- 
-  QLOG_DEBUG() << query.lastError().text();
+      "acquiring varchar(64))",
+      "AcquisitionWidget::dbConnexion>");
+  Utils::ExecSql(query, "update acquisition_sequence set status = ''",
+                 "AcquisitionWidget::dbConnexion>");
+  Utils::ExecSql(query, "update acquisition_sequence set acquiring = ''",
+                 "AcquisitionWidget::dbConnexion>");
 }
 
 void AcquisitionWidget::showAcquisitionWarning(QString message) {
-  emit showWarning(message);
+  Utils::EmitWarning(this, __FUNCTION__, message);
 }

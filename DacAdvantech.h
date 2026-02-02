@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 #include <QtWidgets>
 #include "QsLog.h"
+#include "Utils.h"
 
 class DacAdvantech : public Dac
 {
@@ -54,13 +55,7 @@ class DacAdvantech : public Dac
 
   void dbConnexion();
   QSqlDatabase connectDb(QString path) {
-     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
-     QLOG_INFO ( ) << "ComediDac::dbConnexion> Db path : " << path;
-     db.setDatabaseName(path);
-     if ( !db.open() ) {
-       QLOG_WARN ( ) << db.lastError().text();
-     }
-     return db;
+     return Utils::ConnectSqliteDb(path, "DacAdvantech::dbConnexion>");
   }
 
   QVector<PTR_T*>  fd;                /**< The device file descriptor*/

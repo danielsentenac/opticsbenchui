@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 #ifdef GIGECAMERA
 #include "CameraGiGE.h"
+#include "Utils.h"
 #include <arvcamera.h>
 
 #define GIGE_FRAME_NUMBER 50
@@ -93,17 +94,6 @@ char *gige_props_units[] = {
                             (char*)"",
                             (char*)""*/
                            };
-#include <sys/time.h>
-/*----------------------------------------------------------------------------*/
-/*------------------------------------------------------------------- GetTime */
-/*----------------------------------------------------------------------------*/
-static double GetTime( void ) {
- struct timeval tp;
-/*--------------------------------------------------------------------------*/
- gettimeofday( &tp, nullptr );
-/*--------------------------------------------------------------------------*/
- return( tp.tv_sec*1e6 + tp.tv_usec );
-}
 
 CameraGiGE::CameraGiGE()
   :Camera()
@@ -319,13 +309,13 @@ CameraGiGE::run() {
     eTimeTotal = 0;
     while (suspend == false) {
       QLOG_DEBUG () << "CameraGiGE::run> " << id << " : start new Acquisition";
-      double eTime = GetTime();
+      double eTime = Utils::GetTimeMicroseconds();
       acqstart->wakeAll();
       acq_err = acquireImage();
       QLOG_DEBUG () << "CameraGiGE::run> " << id << " : done";
       acqend->wakeAll();
       if (acq_err == 1)
-       eTimeTotal+= (GetTime() - eTime);
+       eTimeTotal+= (Utils::GetTimeMicroseconds() - eTime);
       acq_cnt++;
       if (acq_cnt == FREQUENCY_AVERAGE_COUNT) {
        eTimeTotal/=1e6;

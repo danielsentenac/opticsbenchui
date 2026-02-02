@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "Motor.h"
+#include "Utils.h"
 
 Motor::Motor(QObject* parent, QString _appDirPath)
   : QObject(parent)
@@ -201,13 +202,13 @@ Motor::connectMotor(QString newactuator) {
 				   comaddress.toStdString(),
 				   comsettings.toStdString());
       if (!accom) {
-	emit showWarning("Could not create Communication channel");
+	Utils::EmitWarning(this, __FUNCTION__, "Could not create Communication channel");
 	return;
       }
       if (accom == (ACCom*)(-1))
         QLOG_INFO() << "No Communication channel used";
       else if (accom->Open()) {
-	emit showWarning("Could not open communication with device");
+	Utils::EmitWarning(this, __FUNCTION__, "Could not open communication with device");
         delete accom;
 	return;
       }
@@ -222,13 +223,13 @@ Motor::connectMotor(QString newactuator) {
 				 drvsettings.toStdString(),
 				 actuatorCom.at(actuatorCom.size() -1 ));
     if (!drv) {
-      emit showWarning("Could not create Driver");
+      Utils::EmitWarning(this, __FUNCTION__, "Could not create Driver");
       return;
     }
     else {
       string driverState;
       if (drv->Init(driverState)) {
-	emit showWarning("Could not init driver");
+	Utils::EmitWarning(this, __FUNCTION__, "Could not init driver");
         delete drv;
         return;
       }
@@ -247,7 +248,7 @@ Motor::connectMotor(QString newactuator) {
   operationcomplete.push_back(0);
   QLOG_INFO() << " Create new Actuator with settings " << actusettings;
   if (actuatorDriver.at(actuator.size() - 1)->InitActuator(actusettings.toStdString(),actuposition)) {
-    emit showWarning("Could not init actuator");
+    Utils::EmitWarning(this, __FUNCTION__, "Could not init actuator");
     connectSuccess.replace(actuator.size() - 1, false);
     return;
   }
@@ -370,31 +371,38 @@ Motor::operationComplete() {
 // function : create connexion to the database
 void Motor::dbConnexion() {
   
-  path.append(QDir::separator()).append("motor.db3");
-  path = QDir::toNativeSeparators(path);
-  QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",path);
-  db.setDatabaseName(path);  
-  if ( !db.open() ) {
-    emit showWarning(db.lastError().text());
+  path = Utils::BuildDbPath(path, "motor.db3");
+  QSqlDatabase db = Utils::ConnectSqliteDb(path, "Motor::dbConnexion>");
+  if (!db.isOpen()) {
+    Utils::EmitWarning(this, __FUNCTION__, db.lastError().text());
   }
   // Create motor tables
 
   QSqlQuery query(QSqlDatabase::database(path));
-  query.exec("create table motor_com "
-	     "(name varchar(128) not null primary key, "
-	     "type varchar(30), "
-	     "address varchar(30), "
-	     "settings varchar(255))");
-  query.exec("create table motor_driver "
-	     "(name varchar(128) not null primary key, "
-	     "com  varchar(128), "
-	     "type varchar(30), "
-	     "settings varchar(255))");
-  query.exec("create table  motor_actuator "
-	     "(name varchar(128) not null primary key, "
-	     "driver  varchar(128), "
-	     "description varchar(255), "
-	     "settings varchar(255), "
-	     "position  float)");
+  Utils::ExecSql(
+      query,
+      "create table if not exists motor_com "
+      "(name varchar(128) not null primary key, "
+      "type varchar(30), "
+      "address varchar(30), "
+      "settings varchar(255))",
+      "Motor::dbConnexion>");
+  Utils::ExecSql(
+      query,
+      "create table if not exists motor_driver "
+      "(name varchar(128) not null primary key, "
+      "com  varchar(128), "
+      "type varchar(30), "
+      "settings varchar(255))",
+      "Motor::dbConnexion>");
+  Utils::ExecSql(
+      query,
+      "create table if not exists motor_actuator "
+      "(name varchar(128) not null primary key, "
+      "driver  varchar(128), "
+      "description varchar(255), "
+      "settings varchar(255), "
+      "position  float)",
+      "Motor::dbConnexion>");
  
 }

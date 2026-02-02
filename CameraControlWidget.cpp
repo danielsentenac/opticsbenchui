@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "CameraControlWidget.h"
+#include "Utils.h"
 
 #define DOCK_HEIGHT 130
 #define EXTRACTLOWPACKED(SourcePtr) ( (SourcePtr[0] << 4) + (SourcePtr[1] & 0xF) )
@@ -181,16 +182,17 @@ CameraControlWidget::snapShot() {
   else  
      img32 = camera->getSnapshot32();
   // Save File
-  QString filename = QFileDialog::getSaveFileName(this, tr("Take snapshot in HDF5 format"),
-						  QDir::currentPath ()+ 
-						  QDir::separator() + "untitled.h5",
-						  tr("HDF5 (*.h5)"));
+  QString filename = QFileDialog::getSaveFileName(
+      this, tr("Take snapshot in HDF5 format"),
+      Utils::DefaultHdf5Path("untitled"),
+      Utils::Hdf5FileDialogFilter());
   if (filename == "") return;
+  filename = Utils::EnsureHdf5Extension(filename);
   hid_t file_id = H5Fcreate(filename.toStdString().c_str(), 
 			    H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
   if ( file_id < 0 ) {
     QLOG_WARN () << "Unable to open file - " << filename ;
-    emit showWarning("Unable to open file - " + filename );
+    Utils::EmitWarning(this, __FUNCTION__, "Unable to open file - " + filename );
     return;
   }
   // Save data to File
