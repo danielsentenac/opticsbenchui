@@ -16,7 +16,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "CameraControlWidget.h"
+
+#include <QButtonGroup>
+#include <QCheckBox>
+#include <QFileDialog>
+#include <QGridLayout>
+#include <QLabel>
+#include <QLCDNumber>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QRadioButton>
+#include <QSignalMapper>
+#include <QSlider>
+
+#include "Camera.h"
+#include "QsLog.h"
 #include "Utils.h"
+#include "hdf5.h"
+#include "hdf5_hl.h"
 
 #define DOCK_HEIGHT 130
 #define EXTRACTLOWPACKED(SourcePtr) ( (SourcePtr[0] << 4) + (SourcePtr[1] & 0xF) )

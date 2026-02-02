@@ -15,43 +15,35 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
-#ifndef CAMERAWIDGET_H
-#define CAMERAWIDGET_H
+#ifndef CAMERACONTROLWIDGET_H
+#define CAMERACONTROLWIDGET_H
 
-#include "Camera.h"
+#include <QVector>
+#include <QWidget>
 
-#include <QSlider>
-#include <QSpinBox>
-#include <QGridLayout>
-#include <QLabel>
-#include <QSignalMapper>
-#include <QFileDialog>
-#include <QPushButton>
-#include <QCheckBox>
-#include <QLineEdit>
-#include <QLCDNumber>
-#include <QRadioButton>
-#include <QButtonGroup>
-#include "QsLog.h"
-#include "hdf5.h"
-#include "hdf5_hl.h"
+class Camera;
+class QSlider;
+class QLabel;
+class QLineEdit;
+class QCheckBox;
+class QPushButton;
+class QButtonGroup;
+class QSignalMapper;
 
 class CameraControlWidget : public QWidget
 {
   Q_OBJECT
     
-    public:
-  CameraControlWidget(Camera *_camera = 0);
+public:
+  CameraControlWidget(Camera *_camera = nullptr);
   ~CameraControlWidget();
 
- 
-  
- signals:
+signals:
   void setFeature(int position, double value);
   void setMode(int position, bool value);
   void showWarning(QString message);
 
-  private slots:
+private slots:
   void setFeatureValue(int);
   void setSliderValue(int);
   void setModeValue(int);
@@ -59,7 +51,7 @@ class CameraControlWidget : public QWidget
   void snapShot();
   void optimizeAcquisition();
 
- private:
+private:
   Camera *camera;
   QVector<QSlider*> featureSliderList;
   QVector<QLabel*> valueMaxList, valueMinList;
