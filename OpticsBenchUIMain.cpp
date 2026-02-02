@@ -40,6 +40,25 @@ void setupCameraManager(Camera *&manager,
     cameraWindowList.push_back(NULL);
   }
 }
+
+void addCameraMenuActions(Camera *manager,
+                          QMenu *menu,
+                          QSignalMapper *signalMapper,
+                          int &cameraNumber)
+{
+  if (!manager) {
+    return;
+  }
+  for (int i = 0; i < manager->num; i++) {
+    const QString selectedCamera =
+        QString(manager->vendorlist.at(i)) + " / " +
+        QString(manager->modelist.at(i));
+    QAction *action = new QAction(selectedCamera, menu);
+    menu->addAction(action);
+    QObject::connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(action, cameraNumber++);
+  }
+}
 } // namespace
 
 #define DEBUG_LEVEL QsLogging::InfoLevel
@@ -285,94 +304,31 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   menuOperations->addAction("Analysis", this, SLOT(openanalysis()) );
   int cameranumber = 0;
 #ifdef USBCAMERA
-  for (int i = 0 ; i < cameraUSBMgr->num; i++) {
-    QString selectedCamera = QString(cameraUSBMgr->vendorlist.at(i)) + " / " + 
-      QString(cameraUSBMgr->modelist.at(i));
-    QAction *action = new QAction(selectedCamera, this);
-    menuInstruments->addAction(action);
-    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(action, cameranumber++);
-  }
+  addCameraMenuActions(cameraUSBMgr, menuInstruments, signalMapper, cameranumber);
 #endif
  #ifdef IEEE1394CAMERA
-  for (int i = 0 ; i < cameraIEEE1394Mgr->num; i++) {
-    QString selectedCamera = QString(cameraIEEE1394Mgr->vendorlist.at(i)) + " / " + 
-      QString(cameraIEEE1394Mgr->modelist.at(i));
-    QAction *action = new QAction(selectedCamera, this);
-    menuInstruments->addAction(action);
-    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(action, cameranumber++);
-  }
+  addCameraMenuActions(cameraIEEE1394Mgr, menuInstruments, signalMapper, cameranumber);
 #endif
 #ifdef GIGECAMERA
-  for (int i = 0 ; i < cameraGiGEMgr->num; i++) {
-    QString selectedCamera = QString(cameraGiGEMgr->vendorlist.at(i)) + " / " +
-      QString(cameraGiGEMgr->modelist.at(i));
-    QAction *action = new QAction(selectedCamera, this);
-    menuInstruments->addAction(action);
-    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(action, cameranumber++);
-  }
+  addCameraMenuActions(cameraGiGEMgr, menuInstruments, signalMapper, cameranumber);
 #endif
 #ifdef NEOCAMERA
-  for (int i = 0 ; i < cameraNeoMgr->num; i++) {
-    QString selectedCamera = QString(cameraNeoMgr->vendorlist.at(i)) + " / " +
-      QString(cameraNeoMgr->modelist.at(i));
-    QAction *action = new QAction(selectedCamera, this);
-    menuInstruments->addAction(action);
-    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(action, cameranumber++);
-  }
+  addCameraMenuActions(cameraNeoMgr, menuInstruments, signalMapper, cameranumber);
 #endif
 #ifdef ZYLACAMERA
-  for (int i = 0 ; i < cameraZylaMgr->num; i++) {
-    QString selectedCamera = QString(cameraZylaMgr->vendorlist.at(i)) + " / " +
-      QString(cameraZylaMgr->modelist.at(i));
-    QAction *action = new QAction(selectedCamera, this);
-    menuInstruments->addAction(action);
-    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(action, cameranumber++);
-  }
+  addCameraMenuActions(cameraZylaMgr, menuInstruments, signalMapper, cameranumber);
 #endif
 #ifdef RAPTORFALCONCAMERA
-  for (int i = 0 ; i < cameraRAPTORFALCONMgr->num; i++) {
-    QString selectedCamera = QString(cameraRAPTORFALCONMgr->vendorlist.at(i)) + " / " +
-      QString(cameraRAPTORFALCONMgr->modelist.at(i));
-    QAction *action = new QAction(selectedCamera, this);
-    menuInstruments->addAction(action);
-    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(action, cameranumber++);
-  }
+  addCameraMenuActions(cameraRAPTORFALCONMgr, menuInstruments, signalMapper, cameranumber);
 #endif
 #ifdef RAPTORNINOX640CAMERA
-  for (int i = 0 ; i < cameraRAPTORNINOX640Mgr->num; i++) {
-    QString selectedCamera = QString(cameraRAPTORNINOX640Mgr->vendorlist.at(i)) + " / " +
-      QString(cameraRAPTORNINOX640Mgr->modelist.at(i));
-    QAction *action = new QAction(selectedCamera, this);
-    menuInstruments->addAction(action);
-    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(action, cameranumber++);
-  }
+  addCameraMenuActions(cameraRAPTORNINOX640Mgr, menuInstruments, signalMapper, cameranumber);
 #endif
 #ifdef RASPICAMERA
-  for (int i = 0 ; i < cameraRaspiMgr->num; i++) {
-    QString selectedCamera = QString(cameraRaspiMgr->vendorlist.at(i)) + " / " +
-      QString(cameraRaspiMgr->modelist.at(i));
-    QAction *action = new QAction(selectedCamera, this);
-    menuInstruments->addAction(action);
-    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(action, cameranumber++);
-  }
+  addCameraMenuActions(cameraRaspiMgr, menuInstruments, signalMapper, cameranumber);
 #endif
 #ifdef ALLIEDVISIONCAMERA
-  for (int i = 0 ; i < cameraAlliedVisionMgr->num; i++) {
-    QString selectedCamera = QString(cameraAlliedVisionMgr->vendorlist.at(i)) + " / " +
-      QString(cameraAlliedVisionMgr->modelist.at(i));
-    QAction *action = new QAction(selectedCamera, this);
-    menuInstruments->addAction(action);
-    connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(action, cameranumber++);
-  }
+  addCameraMenuActions(cameraAlliedVisionMgr, menuInstruments, signalMapper, cameranumber);
 #endif
 
   connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(openCameraWindow(int)));
