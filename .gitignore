@@ -5,3 +5,4 @@ moc_*.o
 .qmake.stash
 OpticsBenchUI
 moc_predefs.h
+Makefile
