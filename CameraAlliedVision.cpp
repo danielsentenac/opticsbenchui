@@ -468,6 +468,32 @@ CameraAlliedVision::getFeatures() {
   featureValueList.replace(++featureCnt, gain);
   featureAbsValueList.replace(featureCnt, gain);
 
+  // Exposure Auto feature
+  camera->GetFeatureByName("ExposureAuto",feature);
+  string exposureauto;
+  double exposureautoNum = 0;
+  feature->GetValue(exposureauto);
+  if (exposureauto.compare("On") == 0 ||
+      exposureauto.compare("Continuous") == 0 ||
+      exposureauto.compare("Once") == 0) {
+    exposureautoNum = 1;
+  }
+  featureValueList.replace(++featureCnt, exposureautoNum);
+  featureAbsValueList.replace(featureCnt, exposureautoNum);
+
+  // Gain Auto feature
+  camera->GetFeatureByName("GainAuto",feature);
+  string gainauto;
+  double gainautoNum = 0;
+  feature->GetValue(gainauto);
+  if (gainauto.compare("On") == 0 ||
+      gainauto.compare("Continuous") == 0 ||
+      gainauto.compare("Once") == 0) {
+    gainautoNum = 1;
+  }
+  featureValueList.replace(++featureCnt, gainautoNum);
+  featureAbsValueList.replace(featureCnt, gainautoNum);
+
   emit updateFeatures();
 }
 
