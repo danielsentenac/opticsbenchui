@@ -7,37 +7,35 @@
   <body>
     <h1>SUPERK Configuration</h1>
     <p>
-      SUPERK devices are accessible from OpticsBenchUI through CP210X module for serial RS485 protocol. 
-      The type of SUPERK compatible devices are SuperK VARIA from NKT Photonics.
+      SUPERK devices are accessible through a CP210x module over serial RS485.
+      Supported devices include SuperK VARIA from NKT Photonics (when enabled).
     </p>
     <p>
       <img src="./SuperKWindow.jpg" >
     </p>
-    <p>
-    <TABLE BORDER="1">
-      <CAPTION> <b> SUPERK settings </b></CAPTION>
-	<TR>
-	  <TD> name </TD>
-	  <TD> This is a unique name given by the user defining the SuperK device instance </TD>
-	</TR>
-        <TR>
-          <TD> comtype </TD>
-          <TD> The communication type (SERIAL_PORT)
-        </TR>
-        <TR>
-          <TD> comaddress </TD>
-          <TD> The device address (/dev/ttyUSBXX)
-        </TR>
-	<TR>
-	  <TD> comsettings </TD>
-	  <TD> The communication settings are for the serial port: baudrate,databits,parity,stopbit,vtime,flow control 
-	</TR>
-	<TR>
-	  <TD> description </TD>
-	  <TD> A brief description of the device</TD>
-	</TR>
-    </TABLE>
-  </p>
+    <table border="1">
+      <caption><b>SUPERK settings</b></caption>
+      <tr>
+        <td>name</td>
+        <td>This is a unique name given by the user defining the SuperK device instance.</td>
+      </tr>
+      <tr>
+        <td>comtype</td>
+        <td>The communication type (SERIAL_PORT).</td>
+      </tr>
+      <tr>
+        <td>comaddress</td>
+        <td>The device address (example: /dev/ttyUSB0).</td>
+      </tr>
+      <tr>
+        <td>comsettings</td>
+        <td>Serial settings: baudrate, databits, parity, stopbit, vtime, flow control.</td>
+      </tr>
+      <tr>
+        <td>description</td>
+        <td>A brief description of the device.</td>
+      </tr>
+    </table>
     <hr>
     <address><a href="mailto:postmaster@opticsbenchui.com">OpticsBenchUI</a></address>
     <!-- Created: Mon Feb  7 16:28:17 CET 2011 -->

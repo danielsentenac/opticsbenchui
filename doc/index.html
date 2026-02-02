@@ -5,27 +5,36 @@
   </head>
 
   <body>
-    <h1>OpticsBenchUI Documentation (version 0.10)</h1>
+    <h1>OpticsBenchUI Documentation (version 1.1)</h1>
     
     <p>
-      OpticsBenchUI allows to control 3 types of devices commonly used in optical experiments:
-      <br>
-      <li> Comedi devices : a family of devices used for acquisition and control applications 
-           (<a href=Comedi.html> Configuration </a>)</li>
-      <li> DAC used to set voltage/currents (<a href=DAC.html> Configuration </a>)</li>
-      <li> Supercontinuum sources (<a href=SUPERK.html> Configuration </a>)</li>
-      <li> Motors to move mirrors and lens (<a href=Motor.html> Configuration </a>)</li>
-      <li> Cameras to look at beam profiles (<a href=Camera.html> Configuration </a>)</li>
-      <li> SLMs to modulate spatially light in phase and amplitude (<a href=SLM.html> Configuration </a>)</li>
-      <li> Files to grab external data produced by other devices (<a href=File.html> Configuration </a>)</li>
-      <br>
-      Once all devices are configured, a scan can be operated in the Acquisition panel from the Operation menu
-      (<a href=Acquisition.html> Configuration </a>)<br>
+      OpticsBenchUI controls devices commonly used in optical experiments. The exact hardware
+      support depends on build options and installed drivers.
+    </p>
+    <ul>
+      <li>Comedi devices for acquisition and control
+          (<a href="Comedi.html">Configuration</a>)</li>
+      <li>DAC boards to set voltages/currents
+          (<a href="DAC.html">Configuration</a>)</li>
+      <li>Supercontinuum sources (SuperK)
+          (<a href="SUPERK.html">Configuration</a>)</li>
+      <li>Motors to move optics
+          (<a href="Motor.html">Configuration</a>)</li>
+      <li>Cameras for beam profiling and imaging
+          (<a href="Camera.html">Configuration</a>)</li>
+      <li>SLMs to modulate phase and amplitude
+          (<a href="SLM.html">Configuration</a>)</li>
+      <li>File inputs for external data
+          (<a href="File.html">Configuration</a>)</li>
+    </ul>
+    <p>
+      Once devices are configured, scans are run from the Acquisition panel
+      in the Operation menu (<a href="Acquisition.html">Configuration</a>).
     </p>
     <p>
-      Data are saved in HDF5 format in files. This format is fully accessible from C and Fortran code.<br>
-      A documentation can be found at 
-      <a href=http://www.hdfgroup.org/HDF5/doc/RM/RM_H5Front.html> HDF5 Reference Documentation </a><br>
+      Data are saved in HDF5 files (accessible from C/Fortran and many other languages).
+      See the
+      <a href="https://www.hdfgroup.org/solutions/hdf5/">HDF5 documentation</a>.
     </p>
     <hr>
     <address><a href="mailto:postmaster@opticsbenchui.com">OpticsBenchUI</a></address>
@@ -35,4 +44,3 @@ Last modified: Thu Feb 10 09:48:13 CET 2011
 <!-- hhmts end -->
   </body>
 </html>
-

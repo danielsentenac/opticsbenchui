@@ -7,32 +7,33 @@
   <body>
     <h1>Comedi Configuration</h1>
     <p>
-      Comedi devices are accessible from OpticsBenchUI using the comedi project. Refer to
-      the documentation at <a href="http://www.comedi.org"> comedi project web site</a>.
-    </>
-    <p>
-      <img src="./ComediWindow2.jpg" >
+      Comedi devices are accessible using the Comedi project. Refer to
+      the documentation at <a href="http://www.comedi.org">the Comedi project website</a>.
     </p>
     <p>
-    <TABLE BORDER="1">
-      <CAPTION> <b> Comedi settings </b></CAPTION>
-	<TR>
-	  <TD> name </TD>
-	  <TD> This is a unique name given by the user defining the Comedi board instance </TD>
-	</TR>
-	<TR>
-	  <TD> settings </TD>
-	  <TD> The file descriptor address and the mode of operation (DAC or COUNTER),
-	   the subdevice identifier, the number of outputs and the range value (MIN and MAX). 
-           Here is an example of configuration setting line:<br>
-	    <li>address=/dev/comedi0 mode=DAC subdev=4 min=-10 max=10</li></TD>
-	</TR>
-	<TR>
-	  <TD> description </TD>
-	  <TD> A brief description  of the Comedi board</TD>
-	</TR>
-    </TABLE>
-  </p>
+      <img src="./ComediWindow.jpg" >
+    </p>
+    <table border="1">
+      <caption><b>Comedi settings</b></caption>
+      <tr>
+        <td>name</td>
+        <td>This is a unique name given by the user defining the Comedi board instance.</td>
+      </tr>
+      <tr>
+        <td>settings</td>
+        <td>
+          The device path, mode of operation (DAC or COUNTER), subdevice identifier,
+          number of outputs, and range (MIN/MAX). Example setting line:
+          <ul>
+            <li>address=/dev/comedi0 mode=DAC subdev=4 min=-10 max=10</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>description</td>
+        <td>A brief description of the Comedi board.</td>
+      </tr>
+    </table>
     <hr>
     <address><a href="mailto:postmaster@opticsbenchui.com">OpticsBenchUI</a></address>
     <!-- Created: Fri Jul 20 15:01:48 CEST 2012 -->

@@ -7,61 +7,79 @@
   <body>
     <h1>File Configuration</h1>
     <p>
-    The File functionality allows users to store data from external files together with the data recorded by OpticsBenchUI scans. for example, it may happen when a device cannot be interfaced by OpticsBenchUI, but can store its data in files: 
+      The File functionality allows you to include data from external files in the same
+      HDF5 dataset as OpticsBenchUI scans. This is useful when a device cannot be
+      controlled directly but still produces files on disk.
     </p>
-    </p>
-    <p>
-    <TABLE BORDER="1">
-      <CAPTION> <b>  File settings (in the acquisition panel only)</b></CAPTION>
-        <TR>
-          <TD> DIR </TD>
-          <TD> This is the directory path of the image location</TD>
-        </TR>
-        <TR>
-          <TD> PREFIX </TD>
-          <TD> This is the file prefix</TD>
-        </TR>
-        <TR>
-          <TD> SUFFIX </TD>
-          <TD> This is the file extension</TD>
-        </TR>
-        <TR>
-          <TD> DEL </TD>
-          <TD> This indicates whether to delete the directory content<br>
-          <li><b>BEFORE</b></li>
-           <li><b>AFTER</b></li></TD>
-        </TR>
-        <TR>
-          <TD> SEP </TD>
-          <TD> The data separator<br>
-          <li><b>SPACE</b></li>
-          <li><b>COMMA</b></li>
-          <li><b>TAB</b></li></TD>
-        </TR>
-        <TR>
-          <TD> ORDER </TD>
-          <TD> The choice of the file must be timely ordered (like a FIFO) <br>
-          <li><b>LAST</b></li>
-          <li><b>FIRST</b></li></TD>
-        </TR>
-        <TR>
-          <TD> DELAY </TD>
-          <TD> An integer in seconds to indicate a pause before grabbing the file</TD>
-        </TR>
-        <TR>
-          <TD> FORMAT </TD>
-          <TD> The file format<br>
-          <li><b>ASCII</b></li></TD>
-        </TR>
-        <TR>
-          <TD> TYPE </TD>
-          <TD> The data type in the file. For instance, it can be a list of parameters, 
-              an image, etc... <br>
-          <li><b>ARRAY</b></li>
-          <li><b>LIST </b></li></TD>
-        </TR>
-      </TABLE>
-    </p>
+    <table border="1">
+      <caption><b>File settings (Acquisition panel only)</b></caption>
+      <tr>
+        <td>DIR</td>
+        <td>Directory path to watch for incoming files.</td>
+      </tr>
+      <tr>
+        <td>PREFIX</td>
+        <td>File name prefix.</td>
+      </tr>
+      <tr>
+        <td>SUFFIX</td>
+        <td>File extension (suffix).</td>
+      </tr>
+      <tr>
+        <td>DEL</td>
+        <td>
+          Delete files in DIR (and DIR/Results) at scan boundaries:
+          <ul>
+            <li><b>BEFORE</b></li>
+            <li><b>AFTER</b></li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>SEP</td>
+        <td>
+          The data separator:
+          <ul>
+            <li><b>SPACE</b></li>
+            <li><b>COMMA</b></li>
+            <li><b>TAB</b></li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>ORDER</td>
+        <td>
+          File selection order (FIFO-like):
+          <ul>
+            <li><b>LAST</b></li>
+            <li><b>FIRST</b></li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>DELAY</td>
+        <td>Delay (seconds) before grabbing the file.</td>
+      </tr>
+      <tr>
+        <td>FORMAT</td>
+        <td>
+          File format:
+          <ul>
+            <li><b>ASCII</b></li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>TYPE</td>
+        <td>
+          Data type in the file. Examples:
+          <ul>
+            <li><b>ARRAY</b></li>
+            <li><b>LIST</b> (optional label list: LIST[name1,name2,...])</li>
+          </ul>
+        </td>
+      </tr>
+    </table>
 
     <hr>
     <address><a href="mailto:postmaster@opticsbenchui.com">OpticsBenchUI</a></address>

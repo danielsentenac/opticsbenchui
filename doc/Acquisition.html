@@ -7,69 +7,92 @@
   <body>
     <h1>Acquisition Configuration</h1>
     <p>
-      The Acquisition window allows the user to program a Scan and save data in a user-specific way.
+      The Acquisition window allows the user to program a scan and save data in a user-defined way.
     </p>
     <p>
       <img src="./AcquisitionWindow.jpg" >
     </p>
-     <p>
-    <TABLE BORDER="1">
-      <CAPTION> <b> Acquisition sequence </b></CAPTION>
-	<TR>
-	  <TD> record </TD>
-	  <TD> This is a unique value given by the user defining the sequence order in the scan. 
-	    The scan will be treated in ascending order </TD>
-	</TR>
-	<TR>
-	  <TD> type </TD>
-	  <TD> The type of sequence. Can take one of the following name:<br>
-	  <li> <b>MOTOR</b>: a motor is called for a movement </li>
-          <li> <b>SUPERK</b>: a supercontinnum laser is called for a filter setting </li>
-	  <li> <b>DAC</b>: a DAC is called for setting an output value </li>
-	  <li> <b>CAMERA</b>: a camera is called for taking an image </li>
-	  <li> <b>TREATMENT</b>: a calculation on existing sequence data is performed</li></TD>
-          <li> <b>FILE</b>: an external file is parsed to use its data</li></TD>
-          <li> <b>SLM</b>: a spatial light modulator like a secondary screen  is used with a registered masks list</li></TD>
-	</TR>
-	<TR>
-	  <TD> instrument </TD>
-	  <TD> Here is indicated the instrument instance name from its configuration. Camera are denoted from 0 to n in order 
-	    of appearance in the Instrument menu</TD>
-	</TR>
-	<TR>
-	  <TD> settings </TD>
-	  <TD> Here we put the information on what to do with the instrument, usually in format : [key=value] separated by one space<br>
-	  <li> <b>MOTOR</b>: a motor can have MOVEREL (relative movement), MOVEABS (absolute movement) calls, 
-	      with the value to be reached </li>
-          <li> <b>SUPERK</b>: a superk can have (R)POWER (power level), (R)ND (output level), (R)SWP (short wavelength setpoint), (R)LWP (long wavelength setpoint) calls
-              with the value (absolute or (R) relative) to be reached </li>
-	  <li> <b>DAC</b>:  The DAC output is specified by OUTPUT key with the corresponding value to be set using 
-                            key VALUE for absolute value or ke RVALUE for relative value</li>
-	  <li> <b>CAMERA</b>: The SNAPSHOT key is used to grab an image from the camera to the format Mono 8-bit. 
-                              The key SNAPSHOT32 is used to grab an image from the camera to the format Mono 12-bit, 
-                              Mono 12-bit packed and Mono 16-bit</li>
-	  <li> <b>TREATMENT</b>: The AVG=[i[-+/*]j] key is used to perform any type of average between two taken data sequences i and j 
-	      (must be of the same instrument type). For example: AVG[10] will result on the average value taken from record 10.
-	      <br> The PHASE=[i,j] key is used to compute the phase from imaginary i and real j parts.
-	      <br> The AMPLITUDE=[i,j] key is used to compute the amplitude from imaginary i and real j parts.
-	      <br> The IMAGE=[i] key is used to convert a 2D array dataset to the corresponding 8bit pixel image.</li>
-          <li> <b>FILE</b>: see File section.</li>
-          <li> <b>SLM</b>: see SLM section.</li>
-	  <li><b>SLEEP</b>: A sleep in seconds to be added at the end of the sequence </li></TD>
-	</TR>
-	<TR>
-	  <TD> scanplan </TD>
-	  <TD> Here we describe the scan and closely related data saving behavior, 
-	    usually in format : [key=value] separated by one space<br>
-	    <li> <b>LOOP</b>:  a fixed number of loop will begin when this key is present. 
-	      It must be terminated with key <b>LOOP=END</b>. More than one loop can be nested</li>
-	    <li> <b>DATAGROUP</b>: assign a name to a group of data. It may be used in relation with the LOOP key</li>
-	  <li> <b>DATANAME</b>:  assign a name to a data element. The data is attached to the parent group in the scanplan. 
-	      If it is a scalar element, the data will be attached to the parent group as an attribute. 
-	      If it is an averaged data (defined in the settings box), it will be attached to the grand parent group.</li></TD>
-	</TR>
-    </TABLE>
-  </p>
+    <table border="1">
+      <caption><b>Acquisition sequence</b></caption>
+      <tr>
+        <td>record</td>
+        <td>
+          This is a unique value given by the user defining the sequence order in the scan.
+          The scan is processed in ascending order.
+        </td>
+      </tr>
+      <tr>
+        <td>type</td>
+        <td>
+          The type of sequence. Supported values include:
+          <ul>
+            <li><b>MOTOR</b>: a motor is called for a movement</li>
+            <li><b>SUPERK</b>: a supercontinuum laser is called for filter settings</li>
+            <li><b>DAC</b>: a DAC is called for setting an output value</li>
+            <li><b>CAMERA</b>: a camera is called for taking an image</li>
+            <li><b>TREATMENT</b>: a calculation on existing sequence data is performed</li>
+            <li><b>FILE</b>: an external file is parsed to use its data</li>
+            <li><b>SLM</b>: a spatial light modulator (secondary screen) is used with a registered mask list</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>instrument</td>
+        <td>
+          The instrument instance name from its configuration. Cameras are numbered from 0 to n
+          in order of appearance in the Instrument menu.
+        </td>
+      </tr>
+      <tr>
+        <td>settings</td>
+        <td>
+          Instrument actions, usually in format [key=value] separated by spaces.
+          <ul>
+            <li><b>MOTOR</b>: MOVEREL (relative movement) or MOVEABS (absolute movement) with the target value</li>
+            <li>
+              <b>SUPERK</b>: (R)POWER (power level), (R)ND (output level), (R)SWP (short wavelength setpoint),
+              (R)LWP (long wavelength setpoint) with absolute or relative values
+            </li>
+            <li><b>DAC</b>: OUTPUT key with VALUE (absolute) or RVALUE (relative) for the output value</li>
+            <li>
+              <b>CAMERA</b>: SNAPSHOT for Mono 8-bit; SNAPSHOT32 for Mono 12-bit, Mono 12-bit packed, or Mono 16-bit
+            </li>
+            <li>
+              <b>TREATMENT</b>:
+              AVG=[i[-+/*]j] performs arithmetic between two sequence records i and j (same instrument type).
+              Example: AVG[10] uses the average value from record 10.
+              PHASE=[i,j] computes phase from imaginary i and real j.
+              AMPLITUDE=[i,j] computes amplitude from imaginary i and real j.
+              IMAGE=[i] converts a 2D array dataset to an 8-bit pixel image.
+            </li>
+            <li><b>FILE</b>: see File section.</li>
+            <li><b>SLM</b>: see SLM section.</li>
+            <li><b>SLEEP</b>: delay (seconds) added at the end of the sequence</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>scanplan</td>
+        <td>
+          Scan and data-saving behavior, usually in format [key=value] separated by spaces.
+          <ul>
+            <li>
+              <b>LOOP</b>: a fixed number of loops begin when this key is present and must be terminated with
+              <b>LOOP=END</b>. More than one loop can be nested.
+            </li>
+            <li>
+              <b>LOOPMODE</b>: defines loop traversal behavior. Use <b>LOOPMODE=SNAKE</b> for
+              a serpentine scan (alternate direction each loop pass).
+            </li>
+            <li><b>DATAGROUP</b>: assign a name to a group of data, often used with LOOP.</li>
+            <li>
+              <b>DATANAME</b>: assign a name to a data element. Scalar data is attached to the parent group
+              as an attribute. Averaged data (defined in the settings box) is attached to the grandparent group.
+            </li>
+          </ul>
+        </td>
+      </tr>
+    </table>
     <hr>
     <address><a href="mailto:postmaster@opticsbenchui.com">OpticsBenchUI</a></address>
 <!-- Created: Mon Feb  7 16:32:58 CET 2011 -->

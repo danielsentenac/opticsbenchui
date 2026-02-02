@@ -7,31 +7,33 @@
   <body>
     <h1>DAC Configuration</h1>
     <p>
-      DAC devices are accessible from OpticsBenchUI through PCI bus protocol. 
-      The type of PCI DAC compatible are from Advantech series PCI-1720U, PCI-1723, PCI-1724U, PCI-1727U.
+      DAC devices are accessible through the PCI bus. Typical supported boards are the
+      Advantech PCI-1720U, PCI-1723, PCI-1724U, and PCI-1727U (when the corresponding driver is enabled).
     </p>
     <p>
       <img src="./DACWindow.jpg" >
     </p>
-    <p>
-    <TABLE BORDER="1">
-      <CAPTION> <b> Dac settings </b></CAPTION>
-	<TR>
-	  <TD> name </TD>
-	  <TD> This is a unique name given by the user defining the DAC board instance </TD>
-	</TR>
-	<TR>
-	  <TD> settings </TD>
-	  <TD> The communication address and some DAC parameters are specified like mode [CURRENT, VOLT], 
-	    number of outputs, max and min value range. Here is an example of configuration setting line:<br>
-	    <li>address=/dev/advdaq0 mode=CURRENT outputs=32 max=20 min=0</li></TD>
-	</TR>
-	<TR>
-	  <TD> description </TD>
-	  <TD> A brief description of the DAC board</TD>
-	</TR>
-    </TABLE>
-  </p>
+    <table border="1">
+      <caption><b>DAC settings</b></caption>
+      <tr>
+        <td>name</td>
+        <td>This is a unique name given by the user defining the DAC board instance.</td>
+      </tr>
+      <tr>
+        <td>settings</td>
+        <td>
+          The address and DAC parameters such as mode (CURRENT or VOLT), number of outputs,
+          and min/max range. Example setting line:
+          <ul>
+            <li>address=/dev/advdaq0 mode=CURRENT outputs=32 max=20 min=0</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>description</td>
+        <td>A brief description of the DAC board.</td>
+      </tr>
+    </table>
     <hr>
     <address><a href="mailto:postmaster@opticsbenchui.com">OpticsBenchUI</a></address>
     <!-- Created: Mon Feb  7 16:28:17 CET 2011 -->

@@ -7,18 +7,24 @@
   <body>
     <h1>Camera Configuration</h1>
     <p>
-    At the present OpticsBenchUI works with three types of cameras:
-     <li>Firewire cameras compliant with the IIDC (DCAM) standard. 
-     A huge list of cameras compliant with IIDC can be found at
-    <a href="http://damien.douxchamps.net/ieee1394/cameras"> Damien DouxChamps Web Site </a>. </li>
-     <li>Ethernet cameras compliant with the GIGEVision standard through the use of the <a href="http://live.gnome.org/Aravis"> aravis library</a>.</li>
-     <li> CameraLink Neo camera from Andor, using the SDK provided by Andor and working with BitFlow frame grabber PCIe card.</li>
-    </br> 
-    When starting the application, cameras plugged in the workstation will be automatically 
-    added in the Instrument list in the top menu bar. In the Instruments menu, clicking on the camera 
-    name triggers a separate camera window which contains the real-time video (the image frequence rate 
-    depends on the resolution and workstation graphics card capabilities). It is possible from the camera 
-    window to control some general features like the brightness, the gamma, the gain and the exposure time. 
+      Camera support depends on build options and installed SDKs. Typical backends include:
+    </p>
+    <ul>
+      <li>
+        FireWire cameras compliant with IIDC/DCAM (IEEE1394).
+        See <a href="http://damien.douxchamps.net/ieee1394/cameras">Damien Douxchamps' camera list</a>.
+      </li>
+      <li>GigE Vision cameras via the <a href="http://live.gnome.org/Aravis">Aravis</a> library.</li>
+      <li>Andor Neo/Zyla (CameraLink) with the vendor SDK and a frame grabber.</li>
+      <li>Raptor cameras (Falcon, Ninox640) with the vendor SDK.</li>
+      <li>Allied Vision cameras via VimbaX.</li>
+      <li>Raspberry Pi camera (when enabled).</li>
+      <li>USB cameras (UVC) when enabled.</li>
+    </ul>
+    <p>
+      On startup, connected cameras are added to the Instruments menu. Selecting a camera opens
+      a live view window; frame rate depends on resolution and workstation graphics capability.
+      The camera window exposes common controls such as exposure and gain when supported by the device.
     </p>
     <p>
     <img src="./CameraWindow.jpg" >

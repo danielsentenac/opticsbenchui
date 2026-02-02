@@ -1,9 +1,9 @@
-The Simple Text Viewer enables the user to select and view existing
-files.
+OpticsBenchUI is a Qt-based control application for optical experiments.
+It connects to common lab hardware (cameras, motors, DAC/Comedi boards,
+laser sources, and SLMs), and lets you build scan sequences from the
+Acquisition window. Device availability depends on build options and
+installed vendor SDKs.
 
-HTML files is displayed using rich text, while other files are
-presented as plain text. The application provides a file dialog
-allowing the user to search for files using wildcard matching. The
-search is performed within in the specified directory, and the user is
-given an option to browse the existing file system to find the
-relevant directory.
+The documentation in this folder describes how to configure each device
+class and how scan sequences are defined. Measurements are saved in HDF5
+format for downstream analysis.
