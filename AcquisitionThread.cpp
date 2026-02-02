@@ -405,6 +405,12 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     //emit getDacStatus(dacsuccess);
   }
   else if (sequence->instrumentType == "COMEDICOUNTER") {
+    if (!comedicounter) {
+      Utils::EmitWarning(this, __FUNCTION__,
+                         "COMEDICOUNTER is not configured");
+      sequence->status = false;
+      return;
+    }
     QLOG_INFO() << "AcquisitionThread::execute> connecting COMEDI COUNTER ..." << sequence->instrumentName
                 << " ComediCounter pointer " << comedicounter;
     comedicountersuccess = comedicounter->connectComedi(sequence->instrumentName);
@@ -432,6 +438,12 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     //emit getComediStatus(comedicountersuccess);
   }
   else if (sequence->instrumentType == "COMEDIDAC") {
+    if (!comedidac) {
+      Utils::EmitWarning(this, __FUNCTION__,
+                         "COMEDIDAC is not configured");
+      sequence->status = false;
+      return;
+    }
     QLOG_INFO() << "AcquisitionThread::execute> connecting COMEDI DAC ..." << sequence->instrumentName;
     comedidacsuccess = comedidac->connectComedi(sequence->instrumentName);
     QLOG_INFO() << "AcquisitionThread::execute> COMEDI DAC " << sequence->instrumentName
@@ -462,6 +474,12 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     //emit getComediStatus(comedidacsuccess);
   }
   else if (sequence->instrumentType == "RASPIDAC") {
+    if (!raspidac) {
+      Utils::EmitWarning(this, __FUNCTION__,
+                         "RASPIDAC is not configured");
+      sequence->status = false;
+      return;
+    }
     QLOG_INFO() << "AcquisitionThread::execute> connecting RASPI DAC ..." << sequence->instrumentName;
     raspidacsuccess = raspidac->connectRaspi(sequence->instrumentName);
     QLOG_INFO() << "AcquisitionThread::execute> RASPI DAC " << sequence->instrumentName
