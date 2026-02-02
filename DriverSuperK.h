@@ -19,8 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DRIVERSUPERK_H
 
 #include "ACCom.h"
-
-enum { OPEN, CLOSED };
 enum {
     Hunting_SOT,
     Hunting_EOT,

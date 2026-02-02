@@ -157,7 +157,7 @@ bool
 DriverSuperK::readInterbus_Byte(unsigned char deviceId, unsigned char registerId, unsigned char& value)
 {
   unsigned char tempData[1] = {0};
-  if (comm->GetStatus() == OPEN) {
+  if (comm->GetStatus() == ACCom::OPEN) {
     sendInterbusMessage(deviceId, registerId, 0x04, NULL);
     if (ReceiveMessage(deviceId, registerId, 0x08, tempData) == MessageReady) {
       value = tempData[0];
@@ -171,7 +171,7 @@ DriverSuperK::writeInterbus_Byte(unsigned char deviceId, unsigned char registerI
 {
   unsigned char ackbyte[1] = {0};
 
-  if (comm->GetStatus() == OPEN) {
+  if (comm->GetStatus() == ACCom::OPEN) {
     sendInterbusMessage(deviceId, registerId, 0x05, &data);
     if (ReceiveMessage(deviceId, registerId, 0x03, ackbyte) == MessageReady) {
       return true;  // Acknowledge received (0x03)
@@ -190,7 +190,7 @@ DriverSuperK::readInterbus_UInt16(unsigned char deviceId, unsigned char register
 
   ByteUInt16Conv tempData;
 
-  if (comm->GetStatus() == OPEN) { 
+  if (comm->GetStatus() == ACCom::OPEN) { 
     sendInterbusMessage(deviceId, registerId, 0x04, NULL);
     if (ReceiveMessage(deviceId, registerId, 0x08, tempData.bytedata) == MessageReady){
        return tempData.ushortdata;
@@ -212,7 +212,7 @@ DriverSuperK::writeInterbus_UInt16(unsigned char deviceId, unsigned char registe
 
   tempData.ushortdata = data;
 
-  if (comm->GetStatus() == OPEN) {
+  if (comm->GetStatus() == ACCom::OPEN) {
     sendInterbusMessage(deviceId, registerId, 0x05, tempData.bytedata);
     if (ReceiveMessage(deviceId, registerId, 0x03, ackbyte) == MessageReady)
       return true;  // Acknowledge received (0x03)
@@ -230,7 +230,7 @@ DriverSuperK::readInterbus_UInt32(unsigned char deviceId, unsigned char register
 
   ByteUInt32Conv tempData;
 
-  if (comm->GetStatus() == OPEN) {
+  if (comm->GetStatus() == ACCom::OPEN) {
     sendInterbusMessage(deviceId, registerId, 0x04, NULL);
     if (ReceiveMessage(deviceId, registerId, 0x08, tempData.bytedata) == MessageReady){
        return tempData.uintdata;
@@ -252,7 +252,7 @@ DriverSuperK::writeInterbus_UInt32(unsigned char deviceId, unsigned char registe
 
   tempData.uintdata = data;
 
-  if (comm->GetStatus() == OPEN) {
+  if (comm->GetStatus() == ACCom::OPEN) {
     sendInterbusMessage(deviceId, registerId, 0x05, tempData.bytedata);
     if (ReceiveMessage( deviceId, registerId, 0x03, ackbyte) == MessageReady)
       return true;  // Acknowledge received (0x03)
@@ -270,7 +270,7 @@ DriverSuperK::readInterbus_Float32(unsigned char deviceId, unsigned char registe
 
   ByteFloatConv tempData;
 
-  if (comm->GetStatus() == OPEN) {
+  if (comm->GetStatus() == ACCom::OPEN) {
     sendInterbusMessage(deviceId, registerId, 0x04, NULL);
     if (ReceiveMessage(deviceId, registerId, 0x08, tempData.bytedata) == MessageReady)
        return tempData.floatdata;
@@ -306,7 +306,7 @@ DriverSuperK::readInterbus_Stream(unsigned char deviceId, unsigned char register
      return false;
    }
    unsigned char tempData[255] = {};
-   if (comm->GetStatus() == OPEN) {  
+   if (comm->GetStatus() == ACCom::OPEN) {  
      sendInterbusMessage(deviceId, registerId, 0x04, NULL);
      if (ReceiveMessage(deviceId, registerId, 0x08, tempData) == MessageReady) {
        int copySize = dataSize;
@@ -326,7 +326,7 @@ bool
 DriverSuperK::writeInterbus_Stream(unsigned char deviceId, unsigned char registerId, unsigned char data[255])
 {
    unsigned char ackbyte[1];
-   if (comm->GetStatus() == OPEN) {
+   if (comm->GetStatus() == ACCom::OPEN) {
      sendInterbusMessage(deviceId, registerId, 0x05, data);
      if (ReceiveMessage(deviceId, registerId, 0x03, ackbyte) == MessageReady)
 	return true;  // Acknowledge received (0x03)
