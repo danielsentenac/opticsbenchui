@@ -75,6 +75,7 @@ private:
   void saveData(AcquisitionSequence *sequence, int cur_record);
   void setImageFromCamera(uchar*, int, int, int);
   bool isSnakeReverseForRecord(int cur_record) const;
+  void updateChildSnakeReverse(int parent_start, int parent_end, bool reset);
 
   QVector<Camera*> cameraList;
   QVector<AcquisitionSequence*> sequenceList;

@@ -638,6 +638,31 @@ bool AcquisitionThread::isSnakeReverseForRecord(int cur_record) const {
   }
   return false;
 }
+
+void AcquisitionThread::updateChildSnakeReverse(int parent_start,
+                                                int parent_end,
+                                                bool reset) {
+  int depth = 0;
+  for (int i = parent_start + 1; i < parent_end; ++i) {
+    AcquisitionSequence *tmpSequence = sequenceList.at(i);
+    if (tmpSequence->loop != AcquisitionSequence::IS_LOOP) {
+      continue;
+    }
+    if (tmpSequence->loopends == AcquisitionSequence::LOOP_START) {
+      depth++;
+      if (depth == 1 && tmpSequence->loopSnake) {
+        tmpSequence->loopReverse = reset ? false : !tmpSequence->loopReverse;
+      }
+      continue;
+    }
+    if (tmpSequence->loopends == AcquisitionSequence::LOOP_END) {
+      if (depth > 0) {
+        depth--;
+      }
+      continue;
+    }
+  }
+}
 void AcquisitionThread::nextRecord(AcquisitionSequence *sequence, int cur_record) {
   if (sequence->loop == AcquisitionSequence::IS_LOOP &&
       sequence->loopends == AcquisitionSequence::LOOP_END) {
@@ -678,9 +703,7 @@ void AcquisitionThread::nextRecord(AcquisitionSequence *sequence, int cur_record
           if (tmpSequence->remainingLoops > 1) {
             record = tmpSequence->record;
             tmpSequence->remainingLoops--;
-            if (tmpSequence->loopSnake) {
-              tmpSequence->loopReverse = !tmpSequence->loopReverse;
-            }
+            updateChildSnakeReverse(i, cur_record, false);
             // Set new group name
             if (sequence->inc_group >= 10) {
               sequence->group =
@@ -697,7 +720,7 @@ void AcquisitionThread::nextRecord(AcquisitionSequence *sequence, int cur_record
             // reset remainScans and go to next record
             QLOG_DEBUG() << "AcquisitionThread::nextRecord> RemainingLoops = 1";
             tmpSequence->remainingLoops = tmpSequence->loopNumber;
-            tmpSequence->loopReverse = false;
+            updateChildSnakeReverse(i, cur_record, true);
             // reset inc_group number for the entire loop sequence
             for (int j = cur_record; j >= i; j--) {
               AcquisitionSequence *tmpSequencebis = sequenceList.at(j);
