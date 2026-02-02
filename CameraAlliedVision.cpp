@@ -191,7 +191,9 @@ CameraAlliedVision::setCamera(void* _camera, int _id)
  string exposureauto;
  double exposureautoNum = 0;
  feature->GetValue(exposureauto);
- if (exposureauto.compare("On") == 0)
+ if (exposureauto.compare("On") == 0 ||
+     exposureauto.compare("Continuous") == 0 ||
+     exposureauto.compare("Once") == 0)
     exposureautoNum = 1;
  else if (exposureauto.compare("Off") == 0)
     exposureautoNum = 0;
@@ -214,7 +216,9 @@ CameraAlliedVision::setCamera(void* _camera, int _id)
  string gainauto;
  double gainautoNum = 0;
  feature->GetValue(gainauto);
- if (gainauto.compare("On") == 0)
+ if (gainauto.compare("On") == 0 ||
+     gainauto.compare("Continuous") == 0 ||
+     gainauto.compare("Once") == 0)
     gainautoNum = 1;
  else if (gainauto.compare("Off") == 0)
     gainautoNum = 0;
@@ -348,7 +352,6 @@ CameraAlliedVision::setFeature(int feature, double value) {
    VmbCPP::FeaturePtr featurec;
    string valueStr;
    VmbErrorType err;
-   bool valueB;
    switch ( feature ) {
     case 0:
     QLOG_INFO() << "CameraAlliedVision::setFeature> Update feature " << QString(alliedvision_features[0])
@@ -368,13 +371,15 @@ CameraAlliedVision::setFeature(int feature, double value) {
     camera->GetFeatureByName("ExposureAuto",featurec);
     if ( value == 0 ) {
        valueStr = "Off";
-       valueB = false;
     }
     else if ( value == 1 ) {
-       valueStr = "On";
-       valueB = true;
+       valueStr = "Continuous";
     }
-    err = featurec->SetValue(valueB);
+    err = featurec->SetValue(valueStr.c_str());
+    if (err != VmbErrorSuccess && value == 1) {
+       valueStr = "On";
+       err = featurec->SetValue(valueStr.c_str());
+    }
     if (err != VmbErrorSuccess)
        QLOG_ERROR() << "CameraAlliedVision::setFeature> Could not set Exposure Auto value; error = " << QString::number(err);
     break;
@@ -384,13 +389,15 @@ CameraAlliedVision::setFeature(int feature, double value) {
     camera->GetFeatureByName("GainAuto",featurec);
     if ( value == 0 ) {
        valueStr = "Off";
-       valueB = false;
     }
     else if ( value == 1 ) {
-       valueStr = "On";
-       valueB = true;
+       valueStr = "Continuous";
     }
-    err = featurec->SetValue(valueB);
+    err = featurec->SetValue(valueStr.c_str());
+    if (err != VmbErrorSuccess && value == 1) {
+       valueStr = "On";
+       err = featurec->SetValue(valueStr.c_str());
+    }
     if (err != VmbErrorSuccess)
        QLOG_ERROR() << "CameraAlliedVision::setFeature> Could not set Gain Auto value; error = " << QString::number(err);
     break;
