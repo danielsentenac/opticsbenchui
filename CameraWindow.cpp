@@ -96,36 +96,18 @@ void CameraWindow::closeEvent(QCloseEvent* event)
 }
 void CameraWindow::set480x320() {
   emit setVideoPlayerResolution(480,320);
-  if (cameraPropWidget != nullptr) {
-    this->setMaximumSize(QSize(480 + OFFSET_X, 320 + OFFSET_Y));
-    //this->setMinimumSize(QSize(480 + OFFSET_X, 320 + OFFSET_Y));  
-  }
-  else {
-    this->setMaximumSize(QSize(480, 320 + OFFSET_Y));
-    //this->setMinimumSize(QSize(480, 320 + OFFSET_Y));
-  }
+  const int width = (cameraPropWidget != nullptr) ? 480 + OFFSET_X : 480;
+  resize(QSize(width, 320 + OFFSET_Y));
 }
 void CameraWindow::set640x480() {
   emit setVideoPlayerResolution(640,480); 
-  if (cameraPropWidget != nullptr) {
-    this->setMaximumSize(QSize(640 + OFFSET_X, 480 + OFFSET_Y));
-    //this->setMinimumSize(QSize(640 + OFFSET_X, 480 + OFFSET_Y));
-  }
-  else {
-    this->setMaximumSize(QSize(640, 480 + OFFSET_Y));
-    //this->setMinimumSize(QSize(640, 480 + OFFSET_Y));
-  }
+  const int width = (cameraPropWidget != nullptr) ? 640 + OFFSET_X : 640;
+  resize(QSize(width, 480 + OFFSET_Y));
 }
 void CameraWindow::set1280x960() {
   emit setVideoPlayerResolution(1280,960);
-  if (cameraPropWidget != nullptr) {
-    this->setMaximumSize(QSize(1280 + OFFSET_X, 960 + OFFSET_Y));
-    //this->setMinimumSize(QSize(1280 + OFFSET_X, 960 + OFFSET_Y));
-  }
-  else {
-    this->setMaximumSize(QSize(1280, 960 + OFFSET_Y));
-    //this->setMinimumSize(QSize(1280, 960 + OFFSET_Y));
-  }
+  const int width = (cameraPropWidget != nullptr) ? 1280 + OFFSET_X : 1280;
+  resize(QSize(width, 960 + OFFSET_Y));
 }
 void CameraWindow::update() {
   camera->getFeatures();
