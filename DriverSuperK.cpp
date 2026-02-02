@@ -291,7 +291,7 @@ DriverSuperK::writeInterbus_Float32(unsigned char deviceId, unsigned char regist
 
   tempData.floatdata = data;
 
-  if (comm->GetStatus() == OPEN) {
+  if (comm->GetStatus() == ACCom::OPEN) {
     sendInterbusMessage(deviceId, registerId, 0x05, tempData.bytedata);
     if (ReceiveMessage( deviceId, registerId, 0x03, ackbyte) == MessageReady)
       return true;  // Acknowledge received (0x03)
