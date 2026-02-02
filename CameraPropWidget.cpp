@@ -23,12 +23,16 @@ CameraPropWidget::CameraPropWidget(Camera *_camera)
  
 {
   camera = _camera;
-  
+  if (!camera) {
+    QLOG_WARN() << "CameraPropWidget::CameraPropWidget> camera is null";
+    return;
+  }
+
   connect(camera,SIGNAL(updateProps()),this,SLOT(updateProps()));
 
   QGridLayout *layout = new QGridLayout(this);
   
-  refreshButton = new QPushButton("Refresh",this);
+  refreshButton = new QPushButton(QStringLiteral("Refresh"),this);
   refreshButton->setFixedHeight(30);
   refreshButton->setFixedWidth(80);
   connect(refreshButton, SIGNAL(clicked()), camera, SLOT(getProps()));
@@ -48,6 +52,10 @@ CameraPropWidget::~CameraPropWidget()
 }
 
 void CameraPropWidget::updateProps() {
+  if (!camera) {
+    QLOG_WARN() << "CameraPropWidget::updateProps> camera is null";
+    return;
+  }
   QLOG_DEBUG ( ) << "CameraPropWidget::update properties ";
   for (int i = 0 ; i < propList.size(); i++) {
     QLabel * propLabel = propList.at(i);
@@ -56,5 +64,4 @@ void CameraPropWidget::updateProps() {
                    << camera->propList.at(i);
   }
 }
-
 

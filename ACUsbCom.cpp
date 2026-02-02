@@ -8,6 +8,7 @@
 
 
 #include "ACUsbCom.h"
+#include <vector>
 
 // ----------------------------------------------------------------------------
 /// Operation : Open
@@ -66,7 +67,6 @@ if ( _device_vendor_id == 0x10c4 && _device_product_id == 0x0230 )
 
   if (r < 0 )  {
      ReportError(QString("ACUsbCom::Open> Configuration descriptor error %1").arg(r));
-     QLOG_INFO () << "ACUsbCom::Open> Configuration extra " << config->extra;
      _interface_number = 0;
   }
   else {
@@ -179,16 +179,25 @@ int
 ACUsbCom::WriteBulkTransfer (string & message,unsigned char endpoint,int *transferred,
 			      unsigned int timeout)
 {
-  unsigned char command[message.length()];
-  sprintf((char*)command,message.c_str());
+  std::vector<unsigned char> command(message.begin(), message.end());
   QLOG_DEBUG () << "ACUsbCom::WriteBulkTransfer> message = " << message.c_str() << " endpoint " << endpoint
 	       << " timeout " << timeout;
-  if (libusb_bulk_transfer(_device_handle, endpoint, command,sizeof(command), transferred, timeout) < 0 ) {
+  if (libusb_bulk_transfer(_device_handle, endpoint, command.data(),
+                           static_cast<int>(command.size()),
+                           transferred, timeout) < 0 ) {
     ReportWarning("ACUsbCom::WriteBulkTransfer> libusb_bulk_transfer failed");
     return 0;
   }
-  message = (char*)command;
-  return (*transferred);
+  if (transferred && *transferred > 0) {
+    size_t count = static_cast<size_t>(*transferred);
+    if (count > command.size()) {
+      count = command.size();
+    }
+    message.assign(reinterpret_cast<char*>(command.data()), count);
+  } else {
+    message.clear();
+  }
+  return (transferred ? *transferred : 0);
 }
 // ----------------------------------------------------------------------------
 /// Operation : WriteInterruptTransfer
@@ -200,15 +209,23 @@ int
 ACUsbCom::WriteInterruptTransfer (string & message,unsigned char endpoint,int *transferred,
 			      unsigned int timeout)
 {
-  unsigned char command[message.length()];
-  sprintf((char*)command,message.c_str());
-  if (libusb_interrupt_transfer(_device_handle, endpoint, command,sizeof(command), 
+  std::vector<unsigned char> command(message.begin(), message.end());
+  if (libusb_interrupt_transfer(_device_handle, endpoint, command.data(),
+				static_cast<int>(command.size()), 
 				transferred, timeout) < 0 ) {
     ReportWarning("ACUsbCom::WriteInterruptTransfer> libusb_interrupt_transfer failed");
     return 0;
   }
-  message = (char*)command;
-  return (*transferred);
+  if (transferred && *transferred > 0) {
+    size_t count = static_cast<size_t>(*transferred);
+    if (count > command.size()) {
+      count = command.size();
+    }
+    message.assign(reinterpret_cast<char*>(command.data()), count);
+  } else {
+    message.clear();
+  }
+  return (transferred ? *transferred : 0);
 }
 // ----------------------------------------------------------------------------
 /// Operation : Read
@@ -261,13 +278,19 @@ int
 ACUsbCom::ReadBulkTransfer (string & message,unsigned char endpoint,int *transferred,
 			     unsigned int timeout)
 {
-  unsigned char answer[64];
+  std::vector<unsigned char> answer(64);
   QLOG_DEBUG () <<"ACUsbCom::ReadBulkTransfer> endpoint " << endpoint << " timeout " << timeout;
-  if (libusb_bulk_transfer(_device_handle, endpoint, answer,sizeof(answer), transferred, timeout) < 0 ) {
+  if (libusb_bulk_transfer(_device_handle, endpoint, answer.data(),
+                           static_cast<int>(answer.size()),
+                           transferred, timeout) < 0 ) {
     ReportWarning("ACUsbCom::ReadBulkTransfer> libusb_bulk_transfer failed");
     return 0;
   }
-  message = (char*)answer;
+  if (*transferred > 0) {
+    message.assign(reinterpret_cast<char*>(answer.data()), *transferred);
+  } else {
+    message.clear();
+  }
   return (*transferred);
 }
 // ----------------------------------------------------------------------------
@@ -280,12 +303,18 @@ int
 ACUsbCom::ReadInterruptTransfer (string & message,unsigned char endpoint,int *transferred,
 				  unsigned int timeout)
 {
-  unsigned char answer[64];
-  if (libusb_interrupt_transfer(_device_handle, endpoint, answer,sizeof(answer), transferred, timeout) < 0 ) {
+  std::vector<unsigned char> answer(64);
+  if (libusb_interrupt_transfer(_device_handle, endpoint, answer.data(),
+				static_cast<int>(answer.size()),
+				transferred, timeout) < 0 ) {
     ReportWarning("ACUsbCom::ReadInterruptTransfer> libusb_interrupt_transfer failed");
     return 0;
   }
-  message = (char*)answer;
+  if (*transferred > 0) {
+    message.assign(reinterpret_cast<char*>(answer.data()), *transferred);
+  } else {
+    message.clear();
+  }
   return (*transferred);
 }
 // ----------------------------------------------------------------------------
