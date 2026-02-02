@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DriverSuperK.h"
 
+#include <cstring>
+
 const int DriverSuperK::NB_ITEM_DRV_SETTING  =  1;  // number of items at the driver ()
 const unsigned char DriverSuperK::masterId = 66; // Device master Id
 const int DriverSuperK::timeout_mS = 50;
@@ -37,15 +39,18 @@ DriverSuperK::Init()
 {
   QLOG_DEBUG() << "DriverSuperK::Init";
   int retStatus = 0;
-  unsigned char* version;
-  version = readInterbus_Stream(0x0F, 0x64);
-  QLOG_INFO() << " Version : " << QString((char*)version);
-  unsigned char *emission = NULL;
-  emission = readInterbus_Byte(0x0F, 0x30);
-  if (emission)
-   QLOG_INFO() << " Read On/Off emission " << QString("%1").arg(emission[0],0,16);
-  else
-   retStatus = -1;
+  unsigned char version[255] = {};
+  if (readInterbus_Stream(0x0F, 0x64, version, static_cast<int>(sizeof(version)))) {
+    QLOG_INFO() << " Version : " << QString(reinterpret_cast<char*>(version));
+  } else {
+    retStatus = -1;
+  }
+  unsigned char emission = 0;
+  if (readInterbus_Byte(0x0F, 0x30, emission)) {
+    QLOG_INFO() << " Read On/Off emission " << QString("%1").arg(emission,0,16);
+  } else {
+    retStatus = -1;
+  }
   return retStatus;
 }
 int 
@@ -148,21 +153,23 @@ DriverSuperK::operationComplete()
 
   return retStatus;
 }
-unsigned char*
-DriverSuperK::readInterbus_Byte(unsigned char deviceId, unsigned char registerId)
+bool
+DriverSuperK::readInterbus_Byte(unsigned char deviceId, unsigned char registerId, unsigned char& value)
 {
-  unsigned char *tempData = new unsigned char[1];
+  unsigned char tempData[1] = {0};
   if (comm->GetStatus() == OPEN) {
     sendInterbusMessage(deviceId, registerId, 0x04, NULL);
-    if (ReceiveMessage(deviceId, registerId, 0x08, tempData) == MessageReady)
-      return tempData;
+    if (ReceiveMessage(deviceId, registerId, 0x08, tempData) == MessageReady) {
+      value = tempData[0];
+      return true;
+    }
   }
-  return 0;
+  return false;
 }
 bool 
 DriverSuperK::writeInterbus_Byte(unsigned char deviceId, unsigned char registerId, unsigned char data)
 {
-  unsigned char *ackbyte = new unsigned char[1];
+  unsigned char ackbyte[1] = {0};
 
   if (comm->GetStatus() == OPEN) {
     sendInterbusMessage(deviceId, registerId, 0x05, &data);
@@ -291,18 +298,29 @@ DriverSuperK::writeInterbus_Float32(unsigned char deviceId, unsigned char regist
   }
   return false;
 }
-unsigned char* 
-DriverSuperK::readInterbus_Stream(unsigned char deviceId, unsigned char registerId)
+bool
+DriverSuperK::readInterbus_Stream(unsigned char deviceId, unsigned char registerId,
+                                  unsigned char *data, int dataSize)
 {
-   unsigned char *tempData = new unsigned char[255];
-   for (int i = 0 ; i < 255 ; i++)
-      tempData[i] = '\0';
+   if (!data || dataSize <= 0) {
+     return false;
+   }
+   unsigned char tempData[255] = {};
    if (comm->GetStatus() == OPEN) {  
      sendInterbusMessage(deviceId, registerId, 0x04, NULL);
-     if (ReceiveMessage(deviceId, registerId, 0x08, tempData) == MessageReady)
-	return tempData;
+     if (ReceiveMessage(deviceId, registerId, 0x08, tempData) == MessageReady) {
+       int copySize = dataSize;
+       if (copySize > static_cast<int>(sizeof(tempData))) {
+         copySize = static_cast<int>(sizeof(tempData));
+       }
+       memcpy(data, tempData, copySize);
+       if (copySize < dataSize) {
+         memset(data + copySize, 0, dataSize - copySize);
+       }
+       return true;
+     }
    }
-    return NULL;
+    return false;
 }
 bool 
 DriverSuperK::writeInterbus_Stream(unsigned char deviceId, unsigned char registerId, unsigned char data[255])

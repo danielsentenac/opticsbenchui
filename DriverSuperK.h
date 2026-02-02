@@ -67,7 +67,7 @@ class DriverSuperK
     static const int timeout_mS;
     static const int NB_ITEM_DRV_SETTING;
 
-    unsigned char* readInterbus_Byte(unsigned char deviceId, unsigned char registerId);
+    bool readInterbus_Byte(unsigned char deviceId, unsigned char registerId, unsigned char& value);
     bool writeInterbus_Byte(unsigned char deviceId, unsigned char registerId, unsigned char data);
     unsigned short readInterbus_UInt16(unsigned char deviceId, unsigned char registerId);
     bool writeInterbus_UInt16(unsigned char deviceId, unsigned char registerId, unsigned short data);
@@ -75,8 +75,10 @@ class DriverSuperK
     bool writeInterbus_UInt32(unsigned char deviceId, unsigned char registerId, unsigned int data);
     float readInterbus_Float32(unsigned char deviceId, unsigned char registerId);
     bool writeInterbus_Float32(unsigned char deviceId, unsigned char registerId, float data);
-    unsigned char* readInterbus_Stream(unsigned char deviceId, unsigned char registerId);
-    bool writeInterbus_Stream(unsigned char deviceId, unsigned char registerId, unsigned char *data);
+    bool readInterbus_Stream(unsigned char deviceId, unsigned char registerId,
+                             unsigned char *data, int dataSize);
+    bool writeInterbus_Stream(unsigned char deviceId, unsigned char registerId,
+                              unsigned char *data);
     unsigned short calcCRC16(unsigned char data, unsigned short OldCRC);
     void addToTxMsgData(unsigned char *data, int cnt, bool escParse, bool updCRC);
     void addToTxMsgData(unsigned char data, bool escParse, bool updCRC);
