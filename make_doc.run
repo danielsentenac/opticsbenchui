@@ -1,5 +1,23 @@
 #!/bin/bash
 export PATH=${PATH}:../../install/bin/
 cd docs/help
-qhelpgenerator OpticsBenchUI.qhp -o OpticsBenchUI.qch
-qcollectiongenerator OpticsBenchUI.qhcp -o OpticsBenchUIColl.qhc
+
+QHELPGEN=qhelpgenerator
+QCOLLGEN=qcollectiongenerator
+
+if command -v qhelpgenerator-qt5 >/dev/null 2>&1; then
+  QHELPGEN=qhelpgenerator-qt5
+fi
+
+if command -v qcollectiongenerator-qt5 >/dev/null 2>&1; then
+  QCOLLGEN=qcollectiongenerator-qt5
+elif ! command -v qcollectiongenerator >/dev/null 2>&1; then
+  QCOLLGEN=""
+fi
+
+${QHELPGEN} OpticsBenchUI.qhp -o OpticsBenchUI.qch
+if [ -n "${QCOLLGEN}" ]; then
+  ${QCOLLGEN} OpticsBenchUI.qhcp -o OpticsBenchUIColl.qhc
+else
+  echo "Warning: qcollectiongenerator not found; skipping OpticsBenchUIColl.qhc."
+fi
