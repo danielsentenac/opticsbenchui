@@ -577,6 +577,22 @@ int main(int argc, char *argv[])
   logger.setLoggingLevel(DEBUG_LEVEL);
 
   QApplication app(argc, argv); 
+  app.setStyle("Fusion");
+  QPalette darkPalette;
+  darkPalette.setColor(QPalette::Window, QColor(30, 30, 30));
+  darkPalette.setColor(QPalette::WindowText, QColor(230, 230, 230));
+  darkPalette.setColor(QPalette::Base, QColor(25, 25, 25));
+  darkPalette.setColor(QPalette::AlternateBase, QColor(35, 35, 35));
+  darkPalette.setColor(QPalette::ToolTipBase, QColor(230, 230, 230));
+  darkPalette.setColor(QPalette::ToolTipText, QColor(30, 30, 30));
+  darkPalette.setColor(QPalette::Text, QColor(230, 230, 230));
+  darkPalette.setColor(QPalette::Button, QColor(45, 45, 45));
+  darkPalette.setColor(QPalette::ButtonText, QColor(230, 230, 230));
+  darkPalette.setColor(QPalette::BrightText, QColor(255, 80, 80));
+  darkPalette.setColor(QPalette::Link, QColor(138, 180, 248));
+  darkPalette.setColor(QPalette::Highlight, QColor(88, 132, 214));
+  darkPalette.setColor(QPalette::HighlightedText, QColor(255, 255, 255));
+  app.setPalette(darkPalette);
   app.addLibraryPath("/usr/local/lib"); 
   QLOG_INFO() << "Built with Qt" << QT_VERSION_STR << "running on" << qVersion();
   QLOG_INFO() << "Qt User Data location : " 
