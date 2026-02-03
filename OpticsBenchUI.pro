@@ -118,7 +118,7 @@ QMAKE_CXXFLAGS += -g `pkg-config --cflags glib-2.0` -fPIC
 
 QMAKE_LFLAGS += -fPIC
 # External packages
-HDF5_LIB_PATH = /lib64
+HDF5_LIB_PATH = /home/sentenac/miniforge3/lib
 COMEDI_LIB_PATH = /usr/local/lib
 QWTPLOT_LIB_PATH = /usr/lib64
 ADVDAQ_LIB_PATH = /usr/lib
@@ -136,7 +136,7 @@ ALLIEDVISION_LIB_PATH = /usr/local/VimbaX/lib
 SPI_LIB_PATH = /usr/local/lib
 
 
-HDF5_INC_PATH = /usr/include
+HDF5_INC_PATH = /home/sentenac/miniforge3/include
 COMEDI_INC_PATH = /usr/local/include
 QWTPLOT_INC_PATH = /usr/include/qwt
 ADVDAQ_INC_PATH = /usr/local/include/Advantech
@@ -184,7 +184,19 @@ contains(DEFINES, ADVANTECHDAC) {
   }
 }
 
+!isEmpty(HDF5_ROOT) {
+  HDF5_INC_PATH = $$HDF5_ROOT/include
+  HDF5_LIB_PATH = $$HDF5_ROOT/lib
+}
+
 HDF5_HEADERS_FOUND = 0
+exists($$HDF5_INC_PATH/hdf5.h) {
+  HDF5_HEADERS_FOUND = 1
+}
+exists($$HDF5_INC_PATH/hdf5/serial/hdf5.h) {
+  HDF5_HEADERS_FOUND = 1
+  HDF5_INC_PATH = $$HDF5_INC_PATH/hdf5/serial
+}
 exists(/usr/include/hdf5.h) {
   HDF5_HEADERS_FOUND = 1
 }
@@ -194,6 +206,19 @@ exists(/usr/include/hdf5/serial/hdf5.h) {
 }
 
 HDF5_LIB_FOUND = 0
+HDF5_LIB_FILE =
+HDF5_HL_LIB_FILE =
+HDF5_LIB_FILE = $$files($$HDF5_LIB_PATH/libhdf5.so)
+HDF5_HL_LIB_FILE = $$files($$HDF5_LIB_PATH/libhdf5_hl.so)
+isEmpty(HDF5_LIB_FILE) {
+  HDF5_LIB_FILE = $$files($$HDF5_LIB_PATH/libhdf5.so.*)
+}
+isEmpty(HDF5_HL_LIB_FILE) {
+  HDF5_HL_LIB_FILE = $$files($$HDF5_LIB_PATH/libhdf5_hl.so.*)
+}
+!isEmpty(HDF5_LIB_FILE):!isEmpty(HDF5_HL_LIB_FILE) {
+  HDF5_LIB_FOUND = 1
+}
 exists(/lib64/libhdf5.so) {
   HDF5_LIB_FOUND = 1
   HDF5_LIB_PATH = /lib64
@@ -478,7 +503,13 @@ contains(DEFINES, RASPICAMERA) {
 }
 
 !contains(DEFINES, NO_HDF5) {
-  LIBS += -L$$HDF5_LIB_PATH -lhdf5_hl -lhdf5
+  exists($$HDF5_LIB_PATH/libhdf5.so):exists($$HDF5_LIB_PATH/libhdf5_hl.so) {
+    LIBS += -L$$HDF5_LIB_PATH -lhdf5_hl -lhdf5
+  } else:!isEmpty(HDF5_LIB_FILE):!isEmpty(HDF5_HL_LIB_FILE) {
+    LIBS += $$HDF5_HL_LIB_FILE $$HDF5_LIB_FILE
+  } else {
+    message("HDF5 libraries found but linker names missing. Install hdf5-devel for libhdf5.so symlinks.")
+  }
 }
 
 contains(DEFINES, COMEDICOUNTER) {
