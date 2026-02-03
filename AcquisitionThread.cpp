@@ -52,6 +52,9 @@ AcquisitionThread::AcquisitionThread(QObject* parent)
 AcquisitionThread::~AcquisitionThread() {
   QLOG_DEBUG() << "Deleting AcquisitionThread";
   stop();
+  if (isRunning()) {
+    wait();
+  }
   delete mutex;
   delete splashScreenOk;
 }
@@ -105,8 +108,9 @@ void AcquisitionThread::wakeSplashScreen() {
 
 void AcquisitionThread::stop() {
   suspend = true;
-  wait();
-  exit();
+  if (splashScreenOk) {
+    splashScreenOk->wakeAll();
+  }
 }
 
 void AcquisitionThread::run() {
