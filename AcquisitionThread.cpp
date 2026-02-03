@@ -53,7 +53,11 @@ AcquisitionThread::~AcquisitionThread() {
   QLOG_DEBUG() << "Deleting AcquisitionThread";
   stop();
   if (isRunning()) {
-    wait();
+    if (!wait(2000)) {
+      QLOG_WARN() << "AcquisitionThread did not stop in time. Forcing terminate.";
+      terminate();
+      wait(2000);
+    }
   }
   delete mutex;
   delete splashScreenOk;
@@ -108,6 +112,7 @@ void AcquisitionThread::wakeSplashScreen() {
 
 void AcquisitionThread::stop() {
   suspend = true;
+  requestInterruption();
   if (splashScreenOk) {
     splashScreenOk->wakeAll();
   }
@@ -137,7 +142,12 @@ void AcquisitionThread::run() {
     // run acquisition sequence
     QLOG_INFO() << "AcquisitionThread::run> start Acquisition : "
                 << Utils::CurrentTimestampString();
+    bool stoppedEarly = false;
     while (record < lastrecord) {
+      if (shouldStop()) {
+        stoppedEarly = true;
+        break;
+      }
       AcquisitionSequence *sequence = sequenceList.at(record);
       emit getAcquiring(sequence->record);
       sequence->etime = Utils::GetTimeMicroseconds();
@@ -150,11 +160,16 @@ void AcquisitionThread::run() {
         QLOG_INFO() << "AcquisitionThread::run> Analysis requested by settings";
         emit requestAnalysis();
       }
+      if (shouldStop()) {
+        stoppedEarly = true;
+        break;
+      }
       if (sequence->sleep > 0) {
         usleep(sequence->sleep);
       }
       sequence->etime = Utils::GetTimeMicroseconds() - sequence->etime;
-      if (suspend) {
+      if (shouldStop()) {
+        stoppedEarly = true;
         break;
       }
 #ifndef NO_HDF5
@@ -236,11 +251,17 @@ void AcquisitionThread::run() {
       delete sequence;
     }
     sequenceList.clear();
+    if (stoppedEarly) {
+      emit getAcquiring(lastrecord);
+    }
   }
   suspend = true;
   QLOG_DEBUG() << "AcquisitionThread::run> End of thread";
 }
 void AcquisitionThread::execute(AcquisitionSequence *sequence) {
+  if (shouldStop()) {
+    return;
+  }
   // New acquisition
   QLOG_INFO() << "AcquisitionThread::execute> instrument type " << sequence->instrumentType;
   //emit getAcquiring(record);
@@ -548,11 +569,25 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       }
       QLOG_INFO() << "AcquisitionThread::execute>  wait for Image Acquisition ";
       camera->mutex->lock();
-      camera->acqstart->wait(camera->mutex);
+      while (!shouldStop()) {
+        if (camera->acqstart->wait(camera->mutex, 100)) {
+          break;
+        }
+      }
       camera->mutex->unlock();
+      if (shouldStop()) {
+        return;
+      }
       camera->mutex->lock();
-      camera->acqend->wait(camera->mutex);
+      while (!shouldStop()) {
+        if (camera->acqend->wait(camera->mutex, 100)) {
+          break;
+        }
+      }
       camera->mutex->unlock();
+      if (shouldStop()) {
+        return;
+      }
       if (sequence->settings.contains("SNAPSHOT") &&
           !sequence->settings.contains("32") &&
           !sequence->settings.contains("16")) {
@@ -597,7 +632,11 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       emit splashScreen(sequence->fullpath, sequence->screen_x,
                         sequence->screen_y);
       mutex->lock();
-      splashScreenOk->wait(mutex);
+      while (!shouldStop()) {
+        if (splashScreenOk->wait(mutex, 100)) {
+          break;
+        }
+      }
       mutex->unlock();
       slmsuccess = true;
     }
@@ -649,6 +688,10 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     filesuccess = sequence->getFileData();
     QLOG_INFO() << "AcquisitionThread::execute()> type=FILE " << filesuccess;
   }
+}
+
+bool AcquisitionThread::shouldStop() const {
+  return suspend || isInterruptionRequested();
 }
 bool AcquisitionThread::isSnakeReverseForRecord(int cur_record) const {
   int loopDepth = 0;
