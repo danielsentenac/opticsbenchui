@@ -69,6 +69,12 @@ DACs and SPI (`ADVANTECHDAC` / `NO_ADVDAQ`, `RASPIDAC` / `NO_SPI`):
 | --- | --- | --- | --- |
 | NKT SuperK (`SUPERK`) | USB / RS-232 / Ethernet | NKT CONTROL software (https://www.nktphotonics.com/products/femtosecond-lasers/nkt-photonics-laser-control-software/) | Control via NKT software/SDK. |
 
+#### SLM
+
+| Hardware (define) | Protocol | SDK/Library | Notes |
+| --- | --- | --- | --- |
+| Spatial Light Modulator (`SLM`) | HDMI/DisplayPort (secondary display) | OS display stack (X11/Wayland/Windows) | Appears as an external monitor; masks are rendered full-screen. |
+
 ### Build
 
 - Qt 5: `qmake-qt5 OpticsBenchUI.pro` then `make -j4`

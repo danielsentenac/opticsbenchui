@@ -61,3 +61,7 @@ Native serial/Ethernet | RS-232/RS-485, TCP/IP | https://pubs.opengroup.org/onli
 Lasers:
 Hardware | Protocol | SDK/Library | Notes
 NKT SuperK | USB / RS-232 / Ethernet | https://www.nktphotonics.com/products/femtosecond-lasers/nkt-photonics-laser-control-software/ | Control via NKT software/SDK.
+
+SLM:
+Hardware | Protocol | SDK/Library | Notes
+Spatial Light Modulator | HDMI/DisplayPort (secondary display) | OS display stack (X11/Wayland/Windows) | Appears as an external monitor; masks are rendered full-screen.
