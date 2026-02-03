@@ -417,7 +417,7 @@ void OpticsBenchUIMain::showDocumentation()
 }
 void OpticsBenchUIMain::showApiDocumentation()
 {
-  const QString apiIndex = appDirPath + QLatin1String("/docs/api/index.html");
+  const QString apiIndex = appDirPath + QLatin1String("/docs/api/html/index.html");
   if (!QFile::exists(apiIndex)) {
     QMessageBox::warning(this, tr("OpticsBenchUI"),
                          tr("API documentation not found at:\n%1").arg(apiIndex));
