@@ -30,6 +30,7 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
       analysisrow(0),
       analysistitle(new QLabel("Analysis sequence")),
       statusLabel(new QLabel("Idle")),
+      outputView(new QTextEdit()),
       analysistable(nullptr),
       analysisview(new QTableView()),
       reloadButton(new QPushButton("Reload", this)),
@@ -73,6 +74,9 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
   gridlayout->addWidget(stopButton, 5, 1, 1, 1);
 
   gridlayout->addWidget(statusLabel, 5, 2, 1, 6);
+  outputView->setReadOnly(true);
+  outputView->setMinimumHeight(120);
+  gridlayout->addWidget(outputView, 6, 0, 1, 10);
 
   setupAnalysisTable();
   InitConfig();
@@ -173,6 +177,7 @@ QVector<AnalysisTask> AnalysisWidget::buildTaskList() const {
 void AnalysisWidget::run() {
   stop();
   statusLabel->setText("Running...");
+  outputView->clear();
   analysis->setTasks(buildTaskList());
   analysis->start();
   QLOG_DEBUG() << "AnalysisWidget::run started";
@@ -190,6 +195,7 @@ void AnalysisWidget::stop() {
 
 void AnalysisWidget::analysisStarted(int record) {
   statusLabel->setText(QString("Running record %1").arg(record));
+  outputView->append(QString(">> Running record %1").arg(record));
 }
 
 void AnalysisWidget::analysisFinished(int record, bool success,
@@ -198,8 +204,10 @@ void AnalysisWidget::analysisFinished(int record, bool success,
               << " success=" << success;
   if (!output.trimmed().isEmpty()) {
     QLOG_INFO() << "Analysis output: " << output;
+    outputView->append(output);
   }
   statusLabel->setText(success ? "Done" : "Failed");
+  outputView->append(success ? ">> Done" : ">> Failed");
 }
 
 void AnalysisWidget::showAnalysisWarning(QString message) {

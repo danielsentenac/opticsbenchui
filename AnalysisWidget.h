@@ -80,6 +80,7 @@ private:
 
   QLabel* analysistitle;
   QLabel* statusLabel;
+  QTextEdit* outputView;
   QSqlTableModel* analysistable;
   QTableView* analysisview;
   QPushButton* reloadButton;
