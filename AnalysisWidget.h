@@ -59,6 +59,10 @@ public slots:
   /// \param success True if the command succeeded.
   /// \param output Process output.
   void analysisFinished(int record, bool success, const QString& output);
+  /// Append streaming output from the analysis process.
+  /// \param record Task record index.
+  /// \param output Output chunk.
+  void analysisOutput(int record, const QString& output);
   /// Show analysis warning to the user.
   /// \param message Warning message.
   void showAnalysisWarning(QString message);

@@ -85,6 +85,8 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
           SLOT(analysisStarted(int)));
   connect(analysis, SIGNAL(analysisFinished(int, bool, QString)), this,
           SLOT(analysisFinished(int, bool, QString)));
+  connect(analysis, SIGNAL(analysisOutput(int, QString)), this,
+          SLOT(analysisOutput(int, QString)));
   connect(analysis, SIGNAL(showWarning(QString)), this,
           SLOT(showAnalysisWarning(QString)));
 }
@@ -208,6 +210,16 @@ void AnalysisWidget::analysisFinished(int record, bool success,
   }
   statusLabel->setText(success ? "Done" : "Failed");
   outputView->append(success ? ">> Done" : ">> Failed");
+}
+
+void AnalysisWidget::analysisOutput(int record, const QString& output) {
+  Q_UNUSED(record);
+  if (output.isEmpty()) {
+    return;
+  }
+  outputView->moveCursor(QTextCursor::End);
+  outputView->insertPlainText(output);
+  outputView->ensureCursorVisible();
 }
 
 void AnalysisWidget::showAnalysisWarning(QString message) {

@@ -56,6 +56,10 @@ signals:
   /// Emitted when a task starts.
   /// \param record Task record index.
   void analysisStarted(int record);
+  /// Emitted when a task produces output.
+  /// \param record Task record index.
+  /// \param output Output chunk from stdout/stderr.
+  void analysisOutput(int record, const QString& output);
   /// Emitted when a task finishes.
   /// \param record Task record index.
   /// \param success True if the command exited normally with code 0.
@@ -74,7 +78,6 @@ private:
 
   QVector<AnalysisTask> tasks;
   QMutex* mutex;
-  QProcess* process;
   bool suspend;
 };
 

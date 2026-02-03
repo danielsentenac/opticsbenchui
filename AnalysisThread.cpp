@@ -21,12 +21,12 @@ AnalysisThread::AnalysisThread(QObject* parent)
     : QThread(parent),
       tasks(),
       mutex(new QMutex()),
-      process(nullptr),
       suspend(true) {}
 
 AnalysisThread::~AnalysisThread() {
   QLOG_DEBUG() << "Deleting AnalysisThread";
   stop();
+  wait(2000);
   delete mutex;
 }
 
@@ -37,16 +37,6 @@ void AnalysisThread::setTasks(const QVector<AnalysisTask>& tasks) {
 void AnalysisThread::stop() {
   QMutexLocker locker(mutex);
   suspend = true;
-  if (process) {
-    process->terminate();
-    process->waitForFinished(2000);
-    if (process->state() != QProcess::NotRunning) {
-      process->kill();
-      process->waitForFinished(2000);
-    }
-  }
-  wait();
-  exit();
 }
 
 QStringList AnalysisThread::splitArguments(const QString& arguments) const {
@@ -82,33 +72,80 @@ void AnalysisThread::run() {
     QLOG_INFO() << "AnalysisThread::run> Starting task " << task.record
                 << " cmd=" << task.codePath << " args=" << task.arguments;
 
+    QString program = task.codePath.trimmed();
+    QStringList arguments = splitArguments(task.arguments);
+    if (program.contains(' ')) {
+      const QStringList commandParts = splitArguments(program);
+      if (!commandParts.isEmpty()) {
+        program = commandParts.first();
+        QStringList extraArgs = commandParts;
+        extraArgs.removeFirst();
+        if (!extraArgs.isEmpty()) {
+          arguments = extraArgs + arguments;
+        }
+      }
+    }
+
     QProcess localProcess;
-    process = &localProcess;
     localProcess.setProcessChannelMode(QProcess::MergedChannels);
-    localProcess.start(task.codePath, splitArguments(task.arguments));
+    localProcess.start(program, arguments);
 
     if (!localProcess.waitForStarted()) {
-      QString output = localProcess.readAllStandardOutput();
+      const QString output =
+          "Unable to start command.\n"
+          "Command: " + program + "\n"
+          "Arguments: " + arguments.join(' ') + "\n"
+          "Error: " + localProcess.errorString();
       emit analysisFinished(task.record, false, output);
       emit showWarning("Unable to start analysis command: " + task.codePath);
       continue;
     }
 
+    bool stopped = false;
+    QString outputBuffer;
     while (!localProcess.waitForFinished(100)) {
+      const QString chunk = localProcess.readAllStandardOutput();
+      if (!chunk.isEmpty()) {
+        outputBuffer += chunk;
+        emit analysisOutput(task.record, chunk);
+      }
       QMutexLocker locker(mutex);
       if (suspend) {
+        stopped = true;
         break;
       }
     }
 
-    const QString output = localProcess.readAllStandardOutput();
+    if (stopped) {
+      localProcess.terminate();
+      localProcess.waitForFinished(2000);
+      if (localProcess.state() != QProcess::NotRunning) {
+        localProcess.kill();
+        localProcess.waitForFinished(2000);
+      }
+      const QString chunk = localProcess.readAllStandardOutput();
+      if (!chunk.isEmpty()) {
+        outputBuffer += chunk;
+        emit analysisOutput(task.record, chunk);
+      }
+      emit analysisFinished(task.record, false, "Stopped by user.");
+      break;
+    }
+
+    const QString remaining = localProcess.readAllStandardOutput();
+    if (!remaining.isEmpty()) {
+      outputBuffer += remaining;
+      emit analysisOutput(task.record, remaining);
+    }
+
     const bool success =
         (localProcess.exitStatus() == QProcess::NormalExit &&
          localProcess.exitCode() == 0);
+    const QString output =
+        "Exit code: " + QString::number(localProcess.exitCode());
     emit analysisFinished(task.record, success, output);
   }
 
-  process = nullptr;
   QMutexLocker locker(mutex);
   suspend = true;
   QLOG_DEBUG() << "AnalysisThread::run> End of thread";
