@@ -142,6 +142,10 @@ void AcquisitionThread::run() {
       this->nextRecord(sequence, cur_record);
       QLOG_DEBUG() << "AcquisitionThread::run> Start sequence " << sequence->seq_record;
       this->saveData(sequence, cur_record);
+      if (sequence->settings.contains("ANALYSE=START")) {
+        QLOG_INFO() << "AcquisitionThread::run> Analysis requested by settings";
+        emit requestAnalysis();
+      }
       if (sequence->sleep > 0) {
         usleep(sequence->sleep);
       }

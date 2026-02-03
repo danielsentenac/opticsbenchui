@@ -73,6 +73,8 @@ signals:
   /// Emit warnings to the UI.
   /// \param message Warning message.
   void showWarning(QString message);
+  /// Request analysis execution.
+  void requestAnalysis();
   
 public slots:
   /// Refresh displayed values.
@@ -123,6 +125,8 @@ public slots:
   /// Show acquisition warning to the user.
   /// \param message Warning message.
   void showAcquisitionWarning(QString message);
+  /// Relay analysis request from acquisition thread.
+  void requestAnalysisFromThread();
  
 private:
   void InitConfig();

@@ -107,6 +107,8 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
           SLOT(showAcquisitionWarning(QString)));
   connect(acquisition, SIGNAL(splashScreen(QString, int, int)), this,
           SLOT(splashScreen(QString, int, int)));
+  connect(acquisition, SIGNAL(requestAnalysis()), this,
+          SLOT(requestAnalysisFromThread()));
 }
 
 AcquisitionWidget::~AcquisitionWidget() {
@@ -451,4 +453,8 @@ void AcquisitionWidget::dbConnexion() {
 
 void AcquisitionWidget::showAcquisitionWarning(QString message) {
   Utils::EmitWarning(this, __FUNCTION__, message);
+}
+
+void AcquisitionWidget::requestAnalysisFromThread() {
+  emit requestAnalysis();
 }

@@ -234,16 +234,19 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
                                          camerawindowList);
 #endif
 
-  analysiswidget = new AnalysisWidget();
+  analysiswidget = new AnalysisWidget(qdir.currentPath());
   analysiswidget->setObjectName("Analysis");
   acquisitionwidget = new AcquisitionWidget(qdir.currentPath());
   acquisitionwidget->setObjectName("Acquisition");
   connect(this,SIGNAL(setDbPath(QString)),acquisitionwidget,SLOT(setDbPath(QString)));
+  connect(this,SIGNAL(setDbPath(QString)),analysiswidget,SLOT(setDbPath(QString)));
   connect(this,SIGNAL(setAcqFile(QString)),acquisitionwidget,SLOT(setAcqFile(QString)));
   connect(this,SIGNAL(isopenCameraWindow(QVector<bool>)),
 	  acquisitionwidget,SLOT(isopenCameraWindow(QVector<bool>)));
   connect(acquisitionwidget,SIGNAL(showWarning(QString)),this,
 	  SLOT(showAcquisitionWarning(QString)));
+  connect(acquisitionwidget,SIGNAL(requestAnalysis()),analysiswidget,
+          SLOT(runFromAcquisition()));
   
 #ifdef ADVANTECHDAC
   acquisitionwidget->setDac(dac);

@@ -126,6 +126,8 @@ signals:
   /// \param screen_x Screen X coordinate.
   /// \param screen_y Screen Y coordinate.
   void splashScreen(QString imagepath, int screen_x, int screen_y);	
+  /// Request analysis execution (triggered by ANALYSE=START in settings).
+  void requestAnalysis();
 
 protected:
   /// Thread entry point.
