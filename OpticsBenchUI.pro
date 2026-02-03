@@ -230,8 +230,6 @@ HEADERS += OpticsBenchUIMain.h \
   CameraWindow.h \
   CameraControlWidget.h \
   CameraPropWidget.h \
-  VideoPlayer.h \
-  VideoWidget.h \
   Raspi.h \
   RaspiDac.h \
   RaspiDacControlWidget.h \
@@ -283,8 +281,6 @@ SOURCES += OpticsBenchUIMain.cpp \
   CameraWindow.cpp \
   CameraControlWidget.cpp \
   CameraPropWidget.cpp \
-  VideoPlayer.cpp \
-  VideoWidget.cpp \
   RaspiDac.cpp \
   RaspiDacControlWidget.cpp \
   RaspiWindow.cpp \
@@ -321,11 +317,17 @@ SOURCES += OpticsBenchUIMain.cpp \
   QsDebugOutput.cpp \
   QsLogDest.cpp \
   Assistant.cpp
-lessThan(QT_MAJOR_VERSION, 6) {
-  !contains(DEFINES, NO_MULTIMEDIA) {
+!contains(DEFINES, NO_MULTIMEDIA) {
+  HEADERS += VideoPlayer.h \
+    VideoWidget.h
+  SOURCES += VideoPlayer.cpp \
+    VideoWidget.cpp
+  lessThan(QT_MAJOR_VERSION, 6) {
     HEADERS += VideoWidgetSurface.h
     SOURCES += VideoWidgetSurface.cpp
   }
+} else {
+  message("Qt Multimedia not available. Video display disabled.")
 }
 
 contains(DEFINES, USBCAMERA) {

@@ -22,7 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Camera.h"
 #include "CameraControlWidget.h"
 #include "CameraPropWidget.h"
+#ifndef NO_MULTIMEDIA
 #include "VideoPlayer.h"
+#else
+class VideoPlayer;
+#endif
 #include "QsLog.h"
 
 /// \ingroup ui
@@ -73,6 +77,10 @@ signals:
   CameraPropWidget *cameraPropWidget;
   Camera *camera;
   int cameraNumber;
+#ifndef NO_MULTIMEDIA
   VideoPlayer *player;
+#else
+  QLabel *videoPlaceholder;
+#endif
 };
 #endif // CAMERAWINDOW_H
