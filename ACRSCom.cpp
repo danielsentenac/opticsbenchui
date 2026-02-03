@@ -85,7 +85,7 @@ ACRSCom::Write (string & message, ...)
   char * typewrite = va_arg(args,char*);
   if (typewrite && (sizeof(typewrite) == sizeof(char*))) {
    if (!strcmp(typewrite,"ECHO")) {
-      QLOG_DEBUG () << "ACRSCom::Write> WRITE type = " << typewrite << endl;
+      QLOG_DEBUG () << "ACRSCom::Write> WRITE type = " << typewrite;
       va_end(args);
       return (WriteEcho(message));
     }
@@ -210,12 +210,12 @@ ACRSCom::Setup ()
       _commSetup.c_iflag &= ~ICRNL;	/* don't translate \r to \n */
       _commSetup.c_iflag &= ~INLCR;	/* don't translate \n to \r */
       if (!strcmp(_flow,"XONXOFF")) {
-	QLOG_INFO() << "RS232 uses XONXOFF flow control" << endl;
+	QLOG_INFO() << "RS232 uses XONXOFF flow control";
 	_commSetup.c_iflag |= ~IXOFF;	/* enable */
 	_commSetup.c_iflag |= ~IXON;	/* enable */
       }
       else {
-	QLOG_INFO() << "RS232 uses defaut (NONE) flow control" << endl;
+	QLOG_INFO() << "RS232 uses defaut (NONE) flow control";
 	_commSetup.c_iflag &= ~IXOFF;	/* disable */
 	_commSetup.c_iflag &= ~IXON;	/* disable */
       }
@@ -231,11 +231,11 @@ ACRSCom::Setup ()
       _commSetup.c_cflag &= ~HUPCL;	/* don't generate a modem disconnect */
       _commSetup.c_cflag |= CLOCAL;	/* ignore modem status lines */
       _commSetup.c_cflag |= CREAD;	/* input can be read from the terminal */
-      QLOG_INFO() << "RS232 uses 8 data bits" << endl;
+      QLOG_INFO() << "RS232 uses 8 data bits";
       _commSetup.c_cflag |= CS8;	/* use 8 bits per byte */
-      QLOG_INFO() << "RS232 uses 1 stop bit" << endl;
+      QLOG_INFO() << "RS232 uses 1 stop bit";
       _commSetup.c_cflag &= ~CSTOPB;	/* use only one stop bit */
-      QLOG_INFO() << "RS232 uses no parity" << endl;
+      QLOG_INFO() << "RS232 uses no parity";
       _commSetup.c_cflag &= ~PARENB;	/* disable parity bit */
       _commSetup.c_cflag &= ~PARODD;	/* use even parity */
       /* local modes */

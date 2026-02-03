@@ -839,7 +839,7 @@ CameraRaspi::findCamera() {
   QLOG_INFO() << "CameraRaspi::findCamera> opening camera " << id;
 
   if ( !camera->open() ) {
-    QLOG_ERROR() << "Error opening RASPI camera" << endl;
+    QLOG_ERROR() << "Error opening RASPI camera";
     return -1;
   }
   camera->release();

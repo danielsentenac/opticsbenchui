@@ -17,11 +17,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef USBCAMERA
 #ifndef CAMERAUSB_H
 #define CAMERAUSB_H
+#include <QtGlobal>
 #include <QCamera>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QCameraInfo>
 #include <QCameraImageCapture>
 #include <QCameraViewfinderSettings>
 #include <QCameraViewfinder>
+#else
+#include <QCameraDevice>
+#include <QCameraFormat>
+#include <QImageCapture>
+#include <QMediaCaptureSession>
+#include <QMediaDevices>
+#endif
 #include "Camera.h"
 
 /// \ingroup cameras
@@ -92,11 +101,17 @@ class CameraUSB : public Camera
   int  acquireImage() override;
   void cleanup_and_exit() override;
   
-  QCamera *camera = nullptr;
+ QCamera *camera = nullptr;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
   QCameraImageCapture *imageCapture = nullptr;
   QList<QCameraInfo> cameras;
   QCameraViewfinder *viewfinder = nullptr;
   QCameraViewfinderSettings viewfinderSettings;
+#else
+  QImageCapture *imageCapture = nullptr;
+  QList<QCameraDevice> cameras;
+  QMediaCaptureSession captureSession;
+#endif
   
   int cameraIndex = 0;
   int imageWidth = 0;

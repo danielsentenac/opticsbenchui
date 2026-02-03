@@ -7,3 +7,29 @@ installed vendor SDKs.
 The documentation in this folder describes how to configure each device
 class and how scan sequences are defined. Measurements are saved in HDF5
 format for downstream analysis.
+
+External libraries (OpticsBenchUI.pro) are optional and will disable related
+features when missing.
+
+Data and plotting (HDF5 / NO_HDF5, COMEDICOUNTER, COMEDIDAC):
+HDF5 (HDF5 / NO_HDF5): https://www.hdfgroup.org/solutions/hdf5/
+Comedi (COMEDICOUNTER, COMEDIDAC / NO_COMEDI): http://www.comedi.org
+Qwt (COMEDICOUNTER): https://qwt.sourceforge.io/
+
+Cameras (USBCAMERA / NO_MULTIMEDIA, IEEE1394CAMERA, GIGECAMERA, NEOCAMERA, ZYLACAMERA, RAPTORFALCONCAMERA, RAPTORNINOX640CAMERA, RASPICAMERA, ALLIEDVISIONCAMERA, NO_USB):
+libusb (NO_USB / USB comm): https://libusb.info/
+libdc1394 (IEEE1394CAMERA / NO_DC1394): http://damien.douxchamps.net/ieee1394/libdc1394/
+libraw1394 (IEEE1394CAMERA / NO_RAW1394): https://www.kernel.org/doc/html/latest/driver-api/firewire.html
+Aravis (GIGECAMERA / NO_ARAVIS): https://github.com/AravisProject/aravis
+Andor SDK3 (NEOCAMERA, ZYLACAMERA / NO_NEO): https://andor.oxinst.com/products/software-development-kit
+Allied Vision Vimba X (ALLIEDVISIONCAMERA): https://www.alliedvision.com/en/products/software/vimba-x-sdk/
+raspicam (RASPICAMERA / NO_RASPI): http://www.uco.es/investiga/grupos/ava/node/40
+Raptor support (RAPTORFALCONCAMERA, RAPTORNINOX640CAMERA / NO_RAPTOR): https://www.raptorphotonics.com/support/
+EPIX XCLIB (RAPTORFALCONCAMERA, RAPTORNINOX640CAMERA / NO_RAPTOR): https://www.epixinc.com/products/xclib.htm
+
+Motors (Standa when available):
+Standa XIMC (NO_STANDA): https://libximc.xisupport.com/
+
+DACs and SPI (ADVANTECHDAC / NO_ADVDAQ, RASPIDAC / NO_SPI):
+Advantech DAQNavi (ADVANTECHDAC / NO_ADVDAQ): https://us2.advantech.com/DAQNavi/
+bcm2835 (RASPIDAC / NO_SPI): http://www.airspayce.com/mikem/bcm2835/

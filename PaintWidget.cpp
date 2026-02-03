@@ -19,7 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 PaintWidget::PaintWidget(QWidget* parent) : 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+QOpenGLWidget(parent)
+#else
 QGLWidget(parent)
+#endif
 {
 }
 PaintWidget::~PaintWidget()
@@ -27,7 +31,11 @@ PaintWidget::~PaintWidget()
 }
 void PaintWidget::paintGL(const QImage & data)
 {
+  #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+  gldata = data.convertToFormat(QImage::Format_RGBA8888).mirrored();
+  #else
   gldata = QGLWidget::convertToGLFormat(data);
+  #endif
   resize(data.size());
   glDrawPixels(data.width(), data.height(), GL_RGBA, GL_UNSIGNED_BYTE, gldata.bits());
 }

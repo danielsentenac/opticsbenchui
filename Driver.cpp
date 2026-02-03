@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "DriverNewPort_NSC200.h"
 #ifdef STANDA_uSMC
 #include "DriverStanda_uSMC.h"
-#else
+#elif !defined(NO_STANDA)
 #include "DriverStanda_uSMC2.h"
 #endif
 #include "DriverNewPort_AGUC2.h"
@@ -90,7 +90,7 @@ Driver* Driver::Create(string driverType,
   {
     pactuatorDrv = new DriverStanda_uSMC(channel);
   }
-#else
+#elif !defined(NO_STANDA)
   else if (driverType == STANDA_USMC2)
   {
     pactuatorDrv = new DriverStanda_uSMC2(channel);
@@ -163,7 +163,7 @@ Driver* Driver::Create(const Driver* prefActuatorDrv,
     {
       pactuatorDrv = new DriverStanda_uSMC(*prefStanda_uSMCDrv,prefChannel);
     }
-#else
+#elif !defined(NO_STANDA)
   else if (const DriverStanda_uSMC2* prefStanda_uSMCDrv =
            dynamic_cast<const DriverStanda_uSMC2*> (prefActuatorDrv))
     {

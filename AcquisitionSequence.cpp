@@ -202,9 +202,17 @@ AcquisitionSequence::prepare() {
    // Treat scanplanList
   QStringList scanplanList;
   QStringList subscanplanList;
-  scanplanList = scanplan.split(" ",QString::SkipEmptyParts);
+ #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+  scanplanList = scanplan.split(" ", Qt::SkipEmptyParts);
+ #else
+  scanplanList = scanplan.split(" ", QString::SkipEmptyParts);
+ #endif
   for (int i = 0 ; i < scanplanList.size(); i++ ) {
-    subscanplanList = scanplanList.at(i).split("=",QString::SkipEmptyParts);
+ #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    subscanplanList = scanplanList.at(i).split("=", Qt::SkipEmptyParts);
+ #else
+    subscanplanList = scanplanList.at(i).split("=", QString::SkipEmptyParts);
+ #endif
     for (int j = 0 ; j < subscanplanList.size(); j++ ) {
       if (subscanplanList.at(j) == "DATAGROUP" && subscanplanList.size() > j + 1)
         datagroup = subscanplanList.at(j+1);
@@ -227,11 +235,19 @@ AcquisitionSequence::prepare() {
   // Treat settingsList
   QStringList settingsList;
   QStringList subsettingsList;
-  settingsList = settings.split(" ",QString::SkipEmptyParts);
+ #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+  settingsList = settings.split(" ", Qt::SkipEmptyParts);
+ #else
+  settingsList = settings.split(" ", QString::SkipEmptyParts);
+ #endif
   foreach (const QString &itemlist, settingsList)
     QLOG_DEBUG () << "AcquisitionSequence::prepare> settingsList : " << itemlist;
   for (int i = 0 ; i < settingsList.size(); i++ ) {
-    subsettingsList = settingsList.at(i).split("=",QString::SkipEmptyParts);
+ #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    subsettingsList = settingsList.at(i).split("=", Qt::SkipEmptyParts);
+ #else
+    subsettingsList = settingsList.at(i).split("=", QString::SkipEmptyParts);
+ #endif
     foreach (const QString &subitemlist, subsettingsList)
       QLOG_DEBUG () << "AcquisitionSequence::prepare> subsettingsList : " << subitemlist;
     for (int j = 0 ; j < subsettingsList.size(); j++ ) {
@@ -265,7 +281,7 @@ AcquisitionSequence::prepare() {
         fileParser->setOrder(subsettingsList.at(j+1));
       }
       // Motor section
-      else if (subsettingsList.at(j).leftRef(4) == "MOVE" && subsettingsList.size() > j + 1) {
+      else if (subsettingsList.at(j).left(4) == "MOVE" && subsettingsList.size() > j + 1) {
 	motorAction = subsettingsList.at(j);
 	motorValue = subsettingsList.at(j+1).toFloat();
       }

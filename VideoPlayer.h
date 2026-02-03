@@ -1,10 +1,16 @@
 #ifndef VIDEOPLAYER_H
 #define VIDEOPLAYER_H
-#include <QMediaPlayer>
 #include <QMovie>
+#include <QtGlobal>
 #include <QWidget>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
+#include <QMediaPlayer>
+#include <QAbstractVideoSurface>
+#endif
 #include "Camera.h"
 #include "QsLog.h"
+
+class VideoWidget;
 
 /// \ingroup ui
 /// Widget for displaying live camera frames.
@@ -44,12 +50,17 @@ public:
   /// \param event Close event.
   void closeEvent(QCloseEvent *event);
 private:
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
     QMediaPlayer mediaPlayer;
     /// Present an image to the rendering surface.
     bool presentImage(const QImage &image);
- 
     QAbstractVideoSurface *surface;
+#else
+    /// Present an image to the rendering widget.
+    bool presentImage(const QImage &image);
+#endif
     QImage image;
+    VideoWidget *videoWidget = nullptr;
 
 };
 #endif // VIDEOPLAYER_H

@@ -32,8 +32,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "AnalysisWidget.h"
 #include "DacWindow.h"
 #include "Dac.h"
+#if defined(COMEDICOUNTER) || defined(COMEDIDAC)
 #include "ComediWindow.h"
 #include "Comedi.h"
+#endif
 #include "RaspiWindow.h"
 #include "Raspi.h"
 #include "Motor.h"
@@ -137,10 +139,12 @@ class OpticsBenchUIMain : public QMainWindow
   void openSuperKWindow();
   /// Open the DAC control window.
   void openDacWindow();
+#if defined(COMEDICOUNTER) || defined(COMEDIDAC)
   /// Open the Comedi counter window.
   void openComediCounterWindow();
   /// Open the Comedi DAC window.
   void openComediDacWindow();
+#endif
   /// Open the Raspi DAC window.
   void openRaspiDacWindow();
   /// Display DAC warning message.
@@ -171,8 +175,6 @@ class OpticsBenchUIMain : public QMainWindow
   void showDocumentation();
   /// Show API documentation in the default browser.
   void showApiDocumentation();
-  /// Show API documentation in the default browser.
-  void showApiDocumentation();
   /// Open the configuration dialog.
   void openConfiguration();
   /// Save acquisition file settings.
@@ -197,13 +199,17 @@ class OpticsBenchUIMain : public QMainWindow
   MotorWindow   *motorwindow;
   SuperKWindow  *superkwindow;
   DacWindow     *dacwindow;
+#if defined(COMEDICOUNTER) || defined(COMEDIDAC)
   ComediWindow  *comedicounterwindow, *comedidacwindow;
+#endif
   RaspiWindow   *raspidacwindow;
   QTabWidget    *tab;
   AcquisitionWidget *acquisitionwidget;
   AnalysisWidget    *analysiswidget;
   Dac      *dac;
+#if defined(COMEDICOUNTER) || defined(COMEDIDAC)
   Comedi   *comedicounter, *comedidac;
+#endif
   Raspi    *raspidac;
   Motor    *motor;
   SuperK   *superk;

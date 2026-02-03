@@ -15,12 +15,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+#include <QtGlobal>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QOpenGLWidget>
+#else
 #include <QGLWidget>
+#endif
 #include <QImage>
 
 /// \ingroup ui
 /// OpenGL-based widget for rendering images.
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+class PaintWidget : public QOpenGLWidget
+#else
 class PaintWidget : public QGLWidget
+#endif
 {
   Q_OBJECT
     

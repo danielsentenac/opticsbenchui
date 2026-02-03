@@ -19,6 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Utils.h"
 #include <QDesktopServices>
 #include <QUrl>
+#include <QScreen>
+#include <QGuiApplication>
 #include <functional>
 
 namespace {
@@ -70,8 +72,10 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   appDirPath = _appDirPath;
   assistant = new Assistant(appDirPath);
   dacwindow = NULL;
+#if defined(COMEDICOUNTER) || defined(COMEDIDAC)
   comedidacwindow = NULL;
   comedicounterwindow = NULL;
+#endif
   motorwindow = NULL;
   superkwindow = NULL;
   isopencamerawindow.clear();
@@ -79,7 +83,13 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   isopenacquisitionwidget = false;
   QDir qdir;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+  if (QScreen *screen = QGuiApplication::primaryScreen()) {
+    resize(screen->availableGeometry().size() * 0.7);
+  }
+#else
   resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
+#endif
    
 #ifdef ADVANTECHDAC
   //
@@ -296,7 +306,12 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
 
  
   menuFile->addAction("Open Configuration", this, SLOT(openConfiguration()) );
+#ifndef NO_HDF5
   menuFile->addAction("Save Acquisition", this, SLOT(saveAcqFile()) );
+#else
+  QAction* saveAcqAction = menuFile->addAction("Save Acquisition", this, SLOT(saveAcqFile()) );
+  saveAcqAction->setEnabled(false);
+#endif
   menuFile->addAction("Exit", this, SLOT(close()) );
  
   menuHelp->addAction("Documentation",this,SLOT(showDocumentation()));
@@ -378,6 +393,11 @@ void OpticsBenchUIMain::openConfiguration() {
     emit setDbPath(path);
 }
 void OpticsBenchUIMain::saveAcqFile() {
+#ifdef NO_HDF5
+  QMessageBox::warning(this, tr("OpticsBenchUI"),
+                       tr("HDF5 support is disabled. Acquisition files cannot be saved."));
+  return;
+#endif
   QString acqfile = "";
   acqfile = QFileDialog::getSaveFileName(
       this, tr("Save Acquisition File in HDF5 format"),
@@ -440,6 +460,7 @@ void OpticsBenchUIMain::openDacWindow() {
   if (dacwindow->isHidden())
     dacwindow->show();
 }
+#if defined(COMEDICOUNTER) || defined(COMEDIDAC)
 void OpticsBenchUIMain::openComediCounterWindow() {
   if (comedicounterwindow->isHidden())
     comedicounterwindow->show();
@@ -448,6 +469,7 @@ void OpticsBenchUIMain::openComediDacWindow() {
   if (comedidacwindow->isHidden())
     comedidacwindow->show();
 }
+#endif
 void OpticsBenchUIMain::openRaspiDacWindow() {
   if (raspidacwindow->isHidden())
     raspidacwindow->show();
@@ -458,8 +480,10 @@ OpticsBenchUIMain::~OpticsBenchUIMain()
   delete acquisitionwidget;
   delete assistant;
   if (dacwindow) delete dacwindow;
+#if defined(COMEDICOUNTER) || defined(COMEDIDAC)
   if (comedidacwindow) delete comedidacwindow;
   if (comedicounterwindow) delete comedicounterwindow;
+#endif
   if (motorwindow) delete motorwindow;
   if (superkwindow) delete superkwindow;
   for (int i = 0 ; i < cameraList.size() ; i++) {
@@ -556,15 +580,25 @@ int main(int argc, char *argv[])
               << QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation); 
   QLOG_INFO() << "OpticsBenchUI version " << OPTICSBENCHUIVERSION
               << " started : " <<  app.applicationDirPath();
-  OpticsBenchUIMain* OpticsBenchUI = new OpticsBenchUIMain(app.applicationDirPath(),NULL,NULL);
+  OpticsBenchUIMain* OpticsBenchUI =
+      new OpticsBenchUIMain(app.applicationDirPath(), nullptr, Qt::Window);
   OpticsBenchUI->setWindowTitle("OpticsBenchUI");
   OpticsBenchUI->show();
   foreach (const QString &path, app.libraryPaths())
   QLOG_DEBUG() << path;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+  const QList<QScreen *> screens = QGuiApplication::screens();
+  QLOG_INFO() << " Screen number " << screens.size();
+  if (!screens.isEmpty()) {
+    const QRect geom = screens.first()->geometry();
+    QLOG_INFO() << " X,Y " << geom.width() << " " << geom.height();
+  }
+#else
   QDesktopWidget *desktop = QApplication::desktop();
   QLOG_INFO() << " Screen number " << desktop->screenCount();
   QLOG_INFO() << " Virtual Desktop " << desktop->isVirtualDesktop();
-  QLOG_INFO() << " X,Y " << desktop->screenGeometry(0).width() << " " << 
-                 desktop->screenGeometry(0).height();
+  QLOG_INFO() << " X,Y " << desktop->screenGeometry(0).width() << " "
+              << desktop->screenGeometry(0).height();
+#endif
   return app.exec();
 }

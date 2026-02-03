@@ -207,7 +207,7 @@ FileParser::getFileData()
      QString filename = fileinfo.fileName();
      QLOG_DEBUG() << "FileParser::getFileData> treating file" << filename;
      QDateTime date (fileinfo.lastModified());
-     uint filetimeTmp = date.toTime_t();
+     uint filetimeTmp = static_cast<uint>(date.toSecsSinceEpoch());
      if ( filename.left(prefix.length()) == prefix && 
           filename.right(suffix.length()) == suffix ) {
         if ( order == "FIRST" ) {
@@ -339,5 +339,4 @@ FileParser::getDataList()
 {
   return dataList;
 }
-
 

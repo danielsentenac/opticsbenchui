@@ -480,7 +480,7 @@ int DriverPI_C862::OperationComplete(string& rstateData,
   {
     rlimitSwitch = IN_BETWEEN;
   }
-  QLOG_DEBUG () << " rlimitSwitch = " << rlimitSwitch << endl;
+  QLOG_DEBUG () << " rlimitSwitch = " << rlimitSwitch;
   return retStatus;
 }
 

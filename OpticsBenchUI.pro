@@ -12,7 +12,55 @@ CONFIG          += 	qt thread warn_off release
 
 DEPENDPATH 	+= .
 
-QT      	+= 	svg widgets multimedia multimediawidgets sql concurrent 
+QT      	+= 	widgets sql concurrent 
+
+qtHaveModule(svg) {
+  QT += svg
+} else {
+  DEFINES += NO_SVG
+  message("Qt SVG module not found. Building without SVG support.")
+}
+
+qtHaveModule(multimedia) {
+  QT += multimedia
+} else {
+  DEFINES += NO_MULTIMEDIA
+}
+
+qtHaveModule(multimediawidgets) {
+  QT += multimediawidgets
+} else {
+  DEFINES += NO_MULTIMEDIA
+}
+
+!exists(/usr/include/GL/gl.h) {
+  !exists(/usr/local/include/GL/gl.h) {
+    DEFINES += NO_OPENGL QT_NO_OPENGL
+    message("OpenGL headers not found. Building without OpenGL support.")
+  }
+}
+
+!contains(DEFINES, NO_OPENGL) {
+  lessThan(QT_MAJOR_VERSION, 6) {
+    QT += opengl
+  } else {
+    QT += opengl openglwidgets
+  }
+}
+contains(DEFINES, NO_OPENGL) {
+  QMAKE_LIBS_OPENGL =
+  QMAKE_LFLAGS_OPENGL =
+  LIBS -= -lGL
+  LIBS -= /home/sentenac/miniforge3/lib/libGL.so
+  QMAKE_LIBS_QT -= -lGL
+  QMAKE_LIBS_QT -= /home/sentenac/miniforge3/lib/libGL.so
+  LIBS += -L/home/sentenac/miniforge3/lib
+  exists(/usr/lib64/libGL.so.1) {
+    QMAKE_LIBS_QT += /usr/lib64/libGL.so.1
+  }
+  CONFIG += no_prl
+}
+
 
 # Require Qt 5+ (Qt 3 qmake will not provide the right headers/modules).
 lessThan(QT_MAJOR_VERSION, 5) {
@@ -48,7 +96,7 @@ DEFINES 	+= 	QT_NO_DEBUG_OUTPUT
 #DEFINES         +=      RASPICAMERA
 
 #  ALLIED VISION camera support
-DEFINES         +=      ALLIEDVISIONCAMERA
+#DEFINES         +=      ALLIEDVISIONCAMERA
 
 # SuperK support
 #DEFINES         +=      SUPERK
@@ -105,6 +153,69 @@ RASPI_INC_PATH   =      /usr/local/include/raspicam
 ALLIEDVISION_INC_PATH = /usr/local/VimbaX/include
 SPI_INC_PATH  =         /usr/local/include
 
+!exists($$STANDA_INC_PATH/ximc.h) {
+  DEFINES += NO_STANDA
+  message("Standa XIMC headers not found. Building without Standa support.")
+} else {
+  !exists($$STANDA_LIB_PATH/libximc.so) {
+    DEFINES += NO_STANDA
+    message("Standa XIMC library not found. Building without Standa support.")
+  }
+}
+
+!exists(/usr/include/libusb-1.0/libusb.h) {
+  !exists(/usr/local/include/libusb-1.0/libusb.h) {
+    DEFINES += NO_USB
+    message("libusb headers not found. Building without USB support.")
+  }
+}
+!contains(DEFINES, NO_USB) {
+  !exists($$USB_LIB_PATH/libusb-1.0.so) {
+    DEFINES += NO_USB
+    message("libusb library not found. Building without USB support.")
+  }
+}
+
+contains(DEFINES, ADVANTECHDAC) {
+  !exists($$ADVDAQ_INC_PATH/Advantech/advdaq.h)|!exists($$ADVDAQ_INC_PATH/Advantech/advdevice.h)|!exists($$ADVDAQ_LIB_PATH/libadvdaq.so) {
+    DEFINES -= ADVANTECHDAC
+    DEFINES += NO_ADVDAQ
+    message("Advantech headers or library not found. Disabling Advantech DAC support.")
+  }
+}
+
+HDF5_HEADERS_FOUND = 0
+exists(/usr/include/hdf5.h) {
+  HDF5_HEADERS_FOUND = 1
+}
+exists(/usr/include/hdf5/serial/hdf5.h) {
+  HDF5_HEADERS_FOUND = 1
+  HDF5_INC_PATH = /usr/include/hdf5/serial
+}
+
+HDF5_LIB_FOUND = 0
+exists(/lib64/libhdf5.so) {
+  HDF5_LIB_FOUND = 1
+  HDF5_LIB_PATH = /lib64
+}
+exists(/usr/lib64/libhdf5.so) {
+  HDF5_LIB_FOUND = 1
+  HDF5_LIB_PATH = /usr/lib64
+}
+exists(/usr/lib/x86_64-linux-gnu/libhdf5.so) {
+  HDF5_LIB_FOUND = 1
+  HDF5_LIB_PATH = /usr/lib/x86_64-linux-gnu
+}
+exists(/usr/lib/libhdf5.so) {
+  HDF5_LIB_FOUND = 1
+  HDF5_LIB_PATH = /usr/lib
+}
+
+!equals(HDF5_HEADERS_FOUND, 1)|!equals(HDF5_LIB_FOUND, 1) {
+  DEFINES += NO_HDF5
+  message("HDF5 headers or libraries not found. Building without HDF5 support.")
+}
+
 
 HEADERS 	+= 	OpticsBenchUIMain.h \
 			Camera.h \
@@ -116,28 +227,18 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
                         CameraRAPTORFALCON.h \
                         CameraRAPTORNINOX640.h \
                         CameraRaspi.h \
-                        CameraAlliedVision.h \
 			CameraWindow.h \
 			CameraControlWidget.h \
 			CameraPropWidget.h \
 			VideoPlayer.h \
 			VideoWidget.h \
-			VideoWidgetSurface.h \
                         Raspi.h \
                         RaspiDac.h \
                         RaspiDacControlWidget.h \
                         RaspiWindow.h \
-                        Comedi.h \
-                        ComediCounter.h \
-                        ComediCounterControlWidget.h \
-                        ComediCounterPlot.h \
-                        ComediWindow.h \
-                        ComediDac.h \
-                        ComediDacControlWidget.h \
 			DacWindow.h \
 			DacControlWidget.h \
 			Dac.h \
-#                       DacAdvantech.h \
 			MotorWindow.h \
 			MotorControlWidget.h \
 			Motor.h \
@@ -151,7 +252,6 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			DriverMicos_Pollux.h \
 			DriverPI_C862.h \
 			DriverNewPort_AGUC2.h \
-			DriverStanda_uSMC2.h \
                         SuperK.h \
                         DriverSuperK.h \
                         SuperKWindow.h \
@@ -159,7 +259,6 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			ACCom.h \
 			ACEthCom.h \
 			ACRSCom.h \
-			ACUsbCom.h \
 			AcquisitionWidget.h \
                         ComboBoxDelegate.h \
 			AcquisitionThread.h \
@@ -170,8 +269,7 @@ HEADERS 	+= 	OpticsBenchUIMain.h \
 			QsLog.h \
 			QsDebugOutput.h \
 			QsLogDest.h \
-			Assistant.h 
-
+			Assistant.h
 SOURCES		+= 	OpticsBenchUIMain.cpp \
                         CameraUSB.cpp \
 			CameraIEEE1394.cpp \
@@ -181,25 +279,16 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
                         CameraRAPTORFALCON.cpp \
                         CameraRAPTORNINOX640.cpp \
                         CameraRaspi.cpp \
-                        CameraAlliedVision.cpp \
 			CameraWindow.cpp \
 			CameraControlWidget.cpp \
 			CameraPropWidget.cpp \
 			VideoPlayer.cpp \
 			VideoWidget.cpp \
-			VideoWidgetSurface.cpp \
                         RaspiDac.cpp \
                         RaspiDacControlWidget.cpp \
                         RaspiWindow.cpp \
-                        ComediDac.cpp \
-                        ComediDacControlWidget.cpp \
-			ComediCounter.cpp \
- 			ComediCounterControlWidget.cpp \
-                        ComediCounterPlot.cpp \
-			ComediWindow.cpp \
 			DacWindow.cpp \
 			DacControlWidget.cpp \
-#                       DacAdvantech.cpp \
 			MotorWindow.cpp \
 			MotorControlWidget.cpp \
 			Motor.cpp \
@@ -211,7 +300,6 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			DriverMicos_Pollux.cpp \
 			DriverPI_C862.cpp \
 			DriverNewPort_AGUC2.cpp \
-			DriverStanda_uSMC2.cpp \
 			DriverPI_E725.cpp \
                         SuperK.cpp \
                         DriverSuperK.cpp \
@@ -220,7 +308,6 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			ACCom.cpp \
 			ACEthCom.cpp \
 			ACRSCom.cpp \
-			ACUsbCom.cpp \
 			AcquisitionWidget.cpp \
 			ComboBoxDelegate.cpp \
 			AcquisitionThread.cpp \
@@ -231,44 +318,204 @@ SOURCES		+= 	OpticsBenchUIMain.cpp \
 			QsLog.cpp \
 			QsDebugOutput.cpp \
 			QsLogDest.cpp \
-			Assistant.cpp 
+			Assistant.cpp
+lessThan(QT_MAJOR_VERSION, 6) {
+  !contains(DEFINES, NO_MULTIMEDIA) {
+    HEADERS += VideoWidgetSurface.h
+    SOURCES += VideoWidgetSurface.cpp
+  }
+}
+
+contains(DEFINES, USBCAMERA) {
+  contains(DEFINES, NO_MULTIMEDIA) {
+    DEFINES -= USBCAMERA
+    message("USBCAMERA requires Qt Multimedia. Disabling USB camera support.")
+  }
+}
+
+contains(DEFINES, ALLIEDVISIONCAMERA) {
+  !exists($$ALLIEDVISION_INC_PATH/VmbCPP/VmbCPP.h)|!exists($$ALLIEDVISION_LIB_PATH/libVmbCPP.so) {
+    DEFINES -= ALLIEDVISIONCAMERA
+    message("Allied Vision headers or library not found. Disabling Allied Vision support.")
+  } else {
+    HEADERS += CameraAlliedVision.h
+    SOURCES += CameraAlliedVision.cpp
+    INCLUDEPATH += $$ALLIEDVISION_INC_PATH
+    LIBS += -L$$ALLIEDVISION_LIB_PATH -lVmbCPP
+  }
+}
+
+contains(DEFINES, ADVANTECHDAC) {
+  HEADERS += DacAdvantech.h
+  SOURCES += DacAdvantech.cpp
+}
+
+!contains(DEFINES, NO_USB) {
+  HEADERS += ACUsbCom.h
+  SOURCES += ACUsbCom.cpp
+  INCLUDEPATH += $$USB_INC_PATH
+  LIBS += -L$$USB_LIB_PATH -lusb-1.0
+}
+
+!contains(DEFINES, NO_STANDA) {
+  HEADERS += DriverStanda_uSMC2.h
+  SOURCES += DriverStanda_uSMC2.cpp
+  INCLUDEPATH += $$STANDA_INC_PATH
+  LIBS += -L$$STANDA_LIB_PATH -lximc
+}
 
 INCLUDEPATH 	+=	\
 			$$COMEDI_INC_PATH \
                         $$QWTPLOT_INC_PATH \
 			$$ADVDAQ_INC_PATH \
-			$$STANDA_INC_PATH \
                         $$V4L2_INC_PATH \
 			$$RAW1394_INC_PATH \
 			$$DC1394_INC_PATH \
 			$$ARAVIS_INC_PATH \
 			$$GLIB_INC_PATH \
-			$$HDF5_INC_PATH \
 			$$NEO_INC_PATH \
                         $$RAPTOR_INC_PATH \
                         $$RASPI_INC_PATH \
-                        $$ALLIEDVISION_INC_PATH \
-                        $$SPI_INC_PATH 
+                        $$SPI_INC_PATH
 
+!contains(DEFINES, NO_HDF5) {
+  INCLUDEPATH += $$HDF5_INC_PATH
+}
 LIBS 		+= 	 \
-#                       -L$$COMEDI_LIB_PATH -lcomedi \
-#                       -L$$SPI_LIB_PATH -lbcm2835 \
-                        -L$$QWTPLOT_LIB_PATH -lqwt-qt5 \
-#                       -L$$ADVDAQ_LIB_PATH -ladvdaq \
-			-L$$USB_LIB_PATH -lusb-1.0 \
-#                       -L$$GLIB_LIB_PATH -lgobject-2.0 \
-#                       -L$$DC1394_LIB_PATH -ldc1394 \
-#                       -L$$V4L2_LIB_PATH -lv4l2 \
-#                       -L$$RAW1394_LIB_PATH -lraw1394 \
-#                       -L$$ARAVIS_LIB_PATH -laravis-0.2 \
-			-L$$STANDA_LIB_PATH -lximc \
-			-L$$HDF5_LIB_PATH -lhdf5_hl -lhdf5 \
-# 			-L$$NEO_LIB_PATH -latcore \
-#                       -L$$RASPI_LIB_PATH -lraspicam \
-                        -L$$ALLIEDVISION_LIB_PATH -lVmbCPP 
-#                       -lwiringPi 
-#                       -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64_pic.a -Wl,-Bdynamic \
-#                       -Wl,-Bstatic $$SPI_LIB_PATH/libbcm2835.a -Wl,-Bdynamic
+                        
+contains(DEFINES, COMEDICOUNTER)|contains(DEFINES, COMEDIDAC) {
+  !exists($$COMEDI_INC_PATH/comedi.h)|!exists($$COMEDI_LIB_PATH/libcomedi.so) {
+    DEFINES -= COMEDICOUNTER
+    DEFINES -= COMEDIDAC
+    DEFINES += NO_COMEDI
+    message("Comedi headers or library not found. Disabling Comedi support.")
+  } else {
+    LIBS += -L$$COMEDI_LIB_PATH -lcomedi
+  }
+}
+
+contains(DEFINES, ADVANTECHDAC) {
+  !exists($$ADVDAQ_INC_PATH/Advantech/advdaq.h)|!exists($$ADVDAQ_INC_PATH/Advantech/advdevice.h)|!exists($$ADVDAQ_LIB_PATH/libadvdaq.so) {
+    DEFINES -= ADVANTECHDAC
+    DEFINES += NO_ADVDAQ
+    message("Advantech headers or library not found. Disabling Advantech DAC support.")
+  } else {
+    LIBS += -L$$ADVDAQ_LIB_PATH -ladvdaq
+  }
+}
+
+contains(DEFINES, IEEE1394CAMERA) {
+  !exists($$DC1394_INC_PATH/dc1394/dc1394.h)|!exists($$RAW1394_INC_PATH/raw1394.h)|!exists($$DC1394_LIB_PATH/libdc1394.so)|!exists($$RAW1394_LIB_PATH/libraw1394.so) {
+    DEFINES -= IEEE1394CAMERA
+    DEFINES += NO_DC1394
+    message("IEEE1394 headers or libraries not found. Disabling IEEE1394 camera support.")
+  } else {
+    LIBS += -L$$DC1394_LIB_PATH -ldc1394
+    LIBS += -L$$RAW1394_LIB_PATH -lraw1394
+  }
+}
+
+contains(DEFINES, RASPICAMERA) {
+  !exists($$RASPI_INC_PATH/raspicam.h)|!exists($$RASPI_LIB_PATH/libraspicam.so) {
+    DEFINES -= RASPICAMERA
+    DEFINES += NO_RASPI
+    message("Raspberry Pi camera headers or library not found. Disabling Raspi support.")
+  } else {
+    LIBS += -L$$RASPI_LIB_PATH -lraspicam
+  }
+}
+
+contains(DEFINES, GIGECAMERA) {
+  !exists($$ARAVIS_INC_PATH/arv.h)|!exists($$ARAVIS_LIB_PATH/libaravis-0.2.so) {
+    DEFINES -= GIGECAMERA
+    DEFINES += NO_ARAVIS
+    message("Aravis headers or library not found. Disabling GigE Vision support.")
+  } else {
+    LIBS += -L$$ARAVIS_LIB_PATH -laravis-0.2
+  }
+}
+
+contains(DEFINES, NEOCAMERA)|contains(DEFINES, ZYLACAMERA) {
+  !exists($$NEO_INC_PATH/atcore.h)|!exists($$NEO_LIB_PATH/libatcore.so) {
+    DEFINES -= NEOCAMERA
+    DEFINES -= ZYLACAMERA
+    DEFINES += NO_NEO
+    message("Andor SDK headers or library not found. Disabling Neo/Zyla support.")
+  } else {
+    LIBS += -L$$NEO_LIB_PATH -latcore
+  }
+}
+
+contains(DEFINES, RAPTORFALCONCAMERA)|contains(DEFINES, RAPTORNINOX640CAMERA) {
+  !exists($$RAPTOR_INC_PATH/xcliball.h)|!exists($$RAPTOR_LIB_PATH/xclib_x86_64_pic.a) {
+    DEFINES -= RAPTORFALCONCAMERA
+    DEFINES -= RAPTORNINOX640CAMERA
+    DEFINES += NO_RAPTOR
+    message("Raptor headers or library not found. Disabling Raptor support.")
+  } else {
+    LIBS += -Wl,-Bstatic $$RAPTOR_LIB_PATH/xclib_x86_64_pic.a -Wl,-Bdynamic
+  }
+}
+
+contains(DEFINES, RASPIDAC) {
+  !exists($$SPI_INC_PATH/bcm2835.h)|!exists($$SPI_LIB_PATH/libbcm2835.a) {
+    DEFINES -= RASPIDAC
+    DEFINES += NO_SPI
+    message("SPI bcm2835 headers or library not found. Disabling Raspi DAC support.")
+  } else {
+    LIBS += -Wl,-Bstatic $$SPI_LIB_PATH/libbcm2835.a -Wl,-Bdynamic
+  }
+}
+
+contains(DEFINES, RASPICAMERA) {
+  exists($$V4L2_LIB_PATH/libv4l2.so) {
+    LIBS += -L$$V4L2_LIB_PATH -lv4l2
+  }
+}
+
+!contains(DEFINES, NO_HDF5) {
+  LIBS += -L$$HDF5_LIB_PATH -lhdf5_hl -lhdf5
+}
+
+contains(DEFINES, COMEDICOUNTER) {
+  !exists($$QWTPLOT_INC_PATH/qwt_plot.h) {
+    error("COMEDICOUNTER requires Qwt (qwt_plot.h). Please install Qwt or disable COMEDICOUNTER.")
+  }
+  HEADERS += Comedi.h \
+             ComediCounter.h \
+             ComediCounterControlWidget.h \
+             ComediCounterPlot.h \
+             ComediWindow.h
+  SOURCES += ComediCounter.cpp \
+             ComediCounterControlWidget.cpp \
+             ComediCounterPlot.cpp \
+             ComediWindow.cpp
+  INCLUDEPATH += $$QWTPLOT_INC_PATH
+  lessThan(QT_MAJOR_VERSION, 6) {
+    LIBS += -L$$QWTPLOT_LIB_PATH -lqwt-qt5
+  } else {
+    LIBS += -L$$QWTPLOT_LIB_PATH -lqwt-qt6
+  }
+}
+
+contains(DEFINES, COMEDIDAC) {
+  HEADERS += Comedi.h \
+             ComediDac.h \
+             ComediDacControlWidget.h \
+             ComediWindow.h
+  SOURCES += ComediDac.cpp \
+             ComediDacControlWidget.cpp \
+             ComediWindow.cpp
+}
+
+contains(DEFINES, NO_OPENGL) {
+  exists(/usr/lib64/libGL.so.1) {
+    QMAKE_LIBS_QT = $$replace(QMAKE_LIBS_QT, $$[QT_INSTALL_LIBS]/libGL.so, /usr/lib64/libGL.so.1)
+    QMAKE_LIBS_QT = $$replace(QMAKE_LIBS_QT, -lGL, /usr/lib64/libGL.so.1)
+    LIBS = $$replace(LIBS, $$[QT_INSTALL_LIBS]/libGL.so, /usr/lib64/libGL.so.1)
+    LIBS = $$replace(LIBS, -lGL, /usr/lib64/libGL.so.1)
+  }
+}
 
 # make install
 documentation.extra = ./make_doc.run

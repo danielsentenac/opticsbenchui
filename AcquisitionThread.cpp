@@ -25,7 +25,7 @@ AcquisitionThread::AcquisitionThread(QObject* parent)
       cameraList(),
       sequenceList(),
       isopencamerawindow(),
-      mutex(new QMutex(QMutex::NonRecursive)),
+      mutex(new QMutex()),
       splashScreenOk(new QWaitCondition()),
       record(0),
       motor(nullptr),
@@ -114,6 +114,10 @@ void AcquisitionThread::run() {
     suspend = false;
 
     /* create a new data File */
+#ifdef NO_HDF5
+    Utils::EmitWarning(this, __FUNCTION__,
+                       "HDF5 support is disabled. Acquisition data will not be saved.");
+#else
     file_id = H5Fcreate(filename.toStdString().c_str(), H5F_ACC_TRUNC,
                         H5P_DEFAULT, H5P_DEFAULT);
     if (file_id < 0) {
@@ -122,6 +126,7 @@ void AcquisitionThread::run() {
       Utils::EmitWarning(this, __FUNCTION__, message);
       return;
     }
+#endif
     record = 0;
     int lastrecord = sequenceList.size();
     QLOG_DEBUG() << "AcquisitionThread::run> Number of sequences " << lastrecord;
@@ -144,10 +149,12 @@ void AcquisitionThread::run() {
       if (suspend) {
         break;
       }
+#ifndef NO_HDF5
       if (H5Fflush(file_id, H5F_SCOPE_GLOBAL) < 0) {
         QLOG_WARN() << " File flushing failed !";
       }
       H5garbage_collect();
+#endif
       QLOG_INFO() << "AcquisitionThread::run> sequence " << sequence->seq_record
                   << ": etime = " << (int)sequence->etime;
     }
@@ -156,12 +163,14 @@ void AcquisitionThread::run() {
     emit getAcquiring(record);
     filenumber++;
     emit getFilenumber(filenumber);
+#ifndef NO_HDF5
     // close all groups
     for (int i = ids.size(); i >= 0; i--) {
       H5Gclose(ids.at(i));
     }
     ids.clear();
     status = H5Fclose(file_id);
+#endif
     // Close eventually open camera
     for (int i = 0; i < cameraList.size(); i++) {
       Camera *camera = cameraList.at(i);
@@ -767,6 +776,11 @@ void AcquisitionThread::nextRecord(AcquisitionSequence *sequence, int cur_record
   }
 }
 void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) {
+#ifdef NO_HDF5
+  Q_UNUSED(sequence);
+  Q_UNUSED(cur_record);
+  return;
+#else
 
   AcquisitionSequence *parentSequence = NULL;
   AcquisitionSequence *grandparentSequence = NULL;
@@ -1078,4 +1092,5 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
       }
     }
   }
+#endif
 }

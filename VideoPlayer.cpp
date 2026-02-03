@@ -1,10 +1,18 @@
 #include "VideoPlayer.h"
 #include "VideoWidget.h"
 #include <QtWidgets>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
+#include <QVideoFrame>
 #include <qvideosurfaceformat.h>
+#endif
+
 VideoPlayer::VideoPlayer(QWidget *parent, Camera *_camera)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
     : QWidget(parent)
     , mediaPlayer(0, QMediaPlayer::VideoSurface)
+#else
+    : QWidget(parent)
+#endif
 {
     camera = _camera;
     connect(camera, SIGNAL(getImage(const QImage &)),this, SLOT(setImageFromCamera(const QImage &)));
@@ -17,12 +25,16 @@ VideoPlayer::VideoPlayer(QWidget *parent, Camera *_camera)
     timer->start(10);
     camera->start();
 
-    VideoWidget *videoWidget = new VideoWidget;
+    videoWidget = new VideoWidget;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
     surface = videoWidget->videoSurface();
+#endif
     QBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(videoWidget);
     setLayout(layout);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
     mediaPlayer.setVideoOutput(videoWidget->videoSurface());
+#endif
 }
 VideoPlayer::~VideoPlayer()
 {
@@ -46,6 +58,7 @@ void VideoPlayer::setImageFromCamera(const QImage &_image) {
 }
 bool VideoPlayer::presentImage(const QImage &image)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
   QVideoFrame frame(image);
   if (!frame.isValid()) {
     QLOG_DEBUG ( ) << "Invalid frame";
@@ -71,6 +84,14 @@ bool VideoPlayer::presentImage(const QImage &image)
   } else {
     return true;
   }
+#else
+  if (videoWidget == nullptr) {
+    return false;
+  }
+
+  videoWidget->setImage(image);
+  return true;
+#endif
 }
 
 void VideoPlayer::setVideoPlayerResolution(int width,int height) {
@@ -79,4 +100,3 @@ void VideoPlayer::setVideoPlayerResolution(int width,int height) {
   this->setMinimumSize(QSize(width+20,height+20));
    
 }
-

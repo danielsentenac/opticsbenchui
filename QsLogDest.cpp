@@ -58,7 +58,7 @@ FileDestination::FileDestination(const QString& filePath)
 
 void FileDestination::write(const QString& message)
 {
-   mOutputStream << message << endl;
+   mOutputStream << message << Qt::endl;
    mOutputStream.flush();
 }
 

@@ -32,8 +32,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Camera.h"
 #include "QsLog.h"
 #include "Utils.h"
+#ifndef NO_HDF5
 #include "hdf5.h"
 #include "hdf5_hl.h"
+#endif
 
 #define DOCK_HEIGHT 130
 #define EXTRACTLOWPACKED(SourcePtr) ( (SourcePtr[0] << 4) + (SourcePtr[1] & 0xF) )
@@ -165,7 +167,11 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
     if ( camera->modeCheckEnabled == true )
       layout->addWidget(modeCheck,3,col,1,2);
     if (camera->featureModeAutoList.at(i) == true) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+      featureSlider->setBackgroundRole(QPalette::WindowText);
+#else
       featureSlider->setBackgroundRole(QPalette::Foreground);
+#endif
       featureSlider->setDisabled(true);
       modeCheck->setChecked(false);
     }
@@ -243,6 +249,11 @@ CameraControlWidget::~CameraControlWidget()
 
 void
 CameraControlWidget::snapShot() {
+#ifdef NO_HDF5
+  Utils::EmitWarning(this, __FUNCTION__,
+                     "HDF5 support is disabled. Snapshot in HDF5 format is unavailable.");
+  return;
+#else
   
   uchar *img8 = nullptr;
   int *img32 = nullptr;
@@ -298,6 +309,7 @@ CameraControlWidget::snapShot() {
   }
   // Close file
   H5Fclose(file_id);
+#endif
 }
 void 
 CameraControlWidget::optimizeAcquisition() {
@@ -368,7 +380,11 @@ CameraControlWidget::setModeValue(int position) {
     else {
       QLOG_DEBUG() << " Mode change to false emitting !" ;
       featureSlider->setDisabled(true);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+      featureSlider->setBackgroundRole(QPalette::WindowText);
+#else
       featureSlider->setBackgroundRole(QPalette::Foreground);
+#endif
     }
   }
 }

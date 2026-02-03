@@ -24,7 +24,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFile>
 #include <QDateTime>
 #include <QTextStream>
-#include <QRegExp>
 #include "QsLog.h"
 
 /// \ingroup utils

@@ -101,7 +101,11 @@ SuperK::connectSuperK(QString newdriver)
     drvsettings = query.value(3).toString();
     drvdescription = query.value(4).toString();
     drvdata = query.value(5).toString();
-    QStringList dataSplit = drvdata.split(" ",QString::SkipEmptyParts);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QStringList dataSplit = drvdata.split(" ", Qt::SkipEmptyParts);
+#else
+    QStringList dataSplit = drvdata.split(" ", QString::SkipEmptyParts);
+#endif
     if (dataSplit.size() == 4) {
        drvpower = dataSplit.at(0).toInt();
        drvnd = dataSplit.at(1).toInt();

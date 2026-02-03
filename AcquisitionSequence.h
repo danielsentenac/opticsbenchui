@@ -19,8 +19,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ACQUISITIONSEQUENCE_H
 
 #include <QtWidgets>
+#ifndef NO_HDF5
 #include "hdf5.h"
 #include "hdf5_hl.h"
+#else
+typedef int hid_t;
+typedef int herr_t;
+#endif
 #include "FileParser.h"
 #include "QsLog.h"
 

@@ -5,6 +5,9 @@ External packages needed prior to installation:
 1) Graphical user interface is based on Qt5 for Linux. 
 Install it using 
 git clone git://code.qt.io/qt/qt5.git
+   Qt 5 note: ensure the Qt SVG development package is installed so qmake can
+   find the `svg` module. On Fedora this is typically `qt5-qtsvg-devel`
+   (the runtime package alone does not provide the module `.pri` file).
 
 2) Firewire Camera compliant with DCAM (IIDC) standard is based on libdc1394
 http://damien.douxchamps.net/ieee1394/libdc1394/
@@ -27,10 +30,15 @@ OpticsBenchUI installation steps:
 In the source directory (where is present the OpticsBenchUI.pro file):
 
 1) qmake
+   - Qt 5: qmake-qt5 OpticsBenchUI.pro
+   - Qt 6: qmake6 OpticsBenchUI.pro
 
 2) make
 
 This will create an OpticsBenchUI executable
+
+Optional dependencies (HDF5, OpenGL headers, Qt Multimedia, Standa, USB, Qt SVG)
+are detected at build time and disabled if missing.
 
 3) Set/Update the LD_LIBRARY_PATH environment variable with the library paths of 
 libdc1394,advdaq,comedi,hdf5 libraries 

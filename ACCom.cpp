@@ -18,7 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ACRSCom.h"
 #include "ACEthCom.h"
+#ifndef NO_USB
 #include "ACUsbCom.h"
+#endif
 #include "Utils.h"
 
 
@@ -65,10 +67,17 @@ ACCom *ACCom::Create (string channelType, string device, string settings)
     {
         channel = new ACEthCom (device, settings);
     }
+#ifndef NO_USB
     else if (channelType == USB_COM)
     {
         channel = new ACUsbCom (device, settings);
     }
+#else
+    else if (channelType == USB_COM)
+    {
+        Utils::ReportWarning(NULL, "ACCom::Create> USB_COM requested but USB support is disabled.");
+    }
+#endif
     else if (channelType == NULL_COM)
     {
         channel = (ACCom*)(-1);
@@ -105,11 +114,13 @@ ACCom *ACCom::Create (const ACCom * prefChannel)
     {
       pchannel = new ACEthCom (*pethChannel);
     }
+#ifndef NO_USB
   else if (const ACUsbCom * pethChannel
            = dynamic_cast < const ACUsbCom * >(prefChannel))
     {
       pchannel = new ACUsbCom (*pethChannel);
     }
+#endif
 
   return pchannel;
 }

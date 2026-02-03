@@ -18,9 +18,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QCoreApplication>
 #include <QCamera>
-#include <QCameraImageCapture>
 #include <QImage>
 #include <QDebug>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#include <QCameraImageCapture>
+#include <QVideoFrame>
+#endif
 #include "CameraUSB.h"
 #include "Utils.h"
 
@@ -32,8 +35,12 @@ CameraUSB::CameraUSB()
       imageWidth(0),
       imageHeight(0)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     cameras = QCameraInfo::availableCameras();
     viewfinder = new QCameraViewfinder();
+#else
+    cameras = QMediaDevices::videoInputs();
+#endif
 }
 
 CameraUSB::~CameraUSB()
@@ -53,6 +60,13 @@ void CameraUSB::stop()
         delete imageCapture;
         imageCapture = nullptr;
     }
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    if (viewfinder) {
+        delete viewfinder;
+        viewfinder = nullptr;
+    }
+#endif
 }
 
 int CameraUSB::findCamera()
@@ -80,9 +94,14 @@ void CameraUSB::setCamera(void *_camera, int _id)
     camera = (QCamera*)_camera;
     cameraIndex = _id;
     
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     imageCapture = new QCameraImageCapture(camera);
-    
-    
+#else
+    imageCapture = new QImageCapture;
+    imageCapture->setParent(camera);
+    captureSession.setCamera(camera);
+    captureSession.setImageCapture(imageCapture);
+#endif
 }
 
 void CameraUSB::getFeatures()
@@ -113,6 +132,7 @@ void CameraUSB::setImageSize(const int &_imageWidth, const int &_imageHeight)
     imageWidth = _imageWidth;
     imageHeight = _imageHeight;
     
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     // Set the image capture's capture destination format to QImage
     imageCapture->setCaptureDestination(QCameraImageCapture::CaptureToBuffer);
     
@@ -122,6 +142,20 @@ void CameraUSB::setImageSize(const int &_imageWidth, const int &_imageHeight)
     viewfinderSettings.setMaximumFrameRate(5.0);
     viewfinderSettings.setPixelFormat(QVideoFrame::Format_YUYV);
     camera->setViewfinderSettings(viewfinderSettings);
+#else
+    if (!camera) {
+        return;
+    }
+
+    const QList<QCameraFormat> formats = camera->cameraDevice().videoFormats();
+    for (const QCameraFormat &format : formats) {
+        if (format.resolution().width() == imageWidth
+            && format.resolution().height() == imageHeight) {
+            camera->setCameraFormat(format);
+            break;
+        }
+    }
+#endif
 }
 
 void CameraUSB::setFeature(int feature, double value)
@@ -154,7 +188,9 @@ void CameraUSB::run()
     // Set the camera
     setCamera(camera, cameraId);
     
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     camera->setViewfinder(viewfinder);
+#endif
     // Start the camera
     camera->start();
     
@@ -183,6 +219,7 @@ int CameraUSB::acquireImage()
     imageCapture->capture();
 
     // Connect a slot to handle the captured image
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QObject::connect(imageCapture, &QCameraImageCapture::imageCaptured, [this](int id, const QImage& image)
     {
         // Emit the captured image
@@ -191,6 +228,16 @@ int CameraUSB::acquireImage()
         // Disconnect the slot
         QObject::disconnect(imageCapture, &QCameraImageCapture::imageCaptured, nullptr, nullptr);
     });
+#else
+    QObject::connect(imageCapture, &QImageCapture::imageCaptured, [this](int id, const QImage& image)
+    {
+        // Emit the captured image
+        emit getImage(image);
+
+        // Disconnect the slot
+        QObject::disconnect(imageCapture, &QImageCapture::imageCaptured, nullptr, nullptr);
+    });
+#endif
     
     
     return 0;

@@ -36,6 +36,39 @@
       See the
       <a href="https://www.hdfgroup.org/solutions/hdf5/">HDF5 documentation</a>.
     </p>
+    <h2>External Libraries (.pro)</h2>
+    <p>
+      The OpticsBenchUI.pro file wires optional third-party SDKs/libraries through
+      build defines and include/library paths. If a dependency is missing, the
+      related feature is disabled at build time.
+    </p>
+    <h3>Data and Plotting (HDF5 / NO_HDF5, COMEDICOUNTER, COMEDIDAC)</h3>
+    <ul>
+      <li>HDF5 data files (HDF5 / NO_HDF5): <a href="https://www.hdfgroup.org/solutions/hdf5/">HDF5</a></li>
+      <li>Comedi drivers/libraries (COMEDICOUNTER, COMEDIDAC / NO_COMEDI): <a href="http://www.comedi.org">Comedi</a></li>
+      <li>Qwt plotting (COMEDICOUNTER): <a href="https://qwt.sourceforge.io/">Qwt</a></li>
+    </ul>
+    <h3>Cameras (USBCAMERA / NO_MULTIMEDIA, IEEE1394CAMERA, GIGECAMERA, NEOCAMERA, ZYLACAMERA, RAPTORFALCONCAMERA, RAPTORNINOX640CAMERA, RASPICAMERA, ALLIEDVISIONCAMERA, NO_USB)</h3>
+    <ul>
+      <li>USB access (NO_USB / USB comm): <a href="https://libusb.info/">libusb</a></li>
+      <li>IEEE1394/DCAM (IEEE1394CAMERA / NO_DC1394): <a href="http://damien.douxchamps.net/ieee1394/libdc1394/">libdc1394</a> and
+          <a href="https://www.kernel.org/doc/html/latest/driver-api/firewire.html">libraw1394</a></li>
+      <li>GigE Vision (GIGECAMERA / NO_ARAVIS): <a href="https://github.com/AravisProject/aravis">Aravis</a></li>
+      <li>Andor Neo/Zyla (NEOCAMERA, ZYLACAMERA / NO_NEO): <a href="https://andor.oxinst.com/products/software-development-kit">Andor SDK3 (atcore)</a></li>
+      <li>Allied Vision cameras (ALLIEDVISIONCAMERA): <a href="https://www.alliedvision.com/en/products/software/vimba-x-sdk/">Vimba X SDK</a></li>
+      <li>Raspberry Pi camera (RASPICAMERA / NO_RASPI): <a href="http://www.uco.es/investiga/grupos/ava/node/40">raspicam</a></li>
+      <li>Raptor cameras (RAPTORFALCONCAMERA, RAPTORNINOX640CAMERA / NO_RAPTOR): <a href="https://www.raptorphotonics.com/support/">Raptor support</a> and
+          <a href="https://www.epixinc.com/products/xclib.htm">EPIX XCLIB</a></li>
+    </ul>
+    <h3>Motors (Standa when available)</h3>
+    <ul>
+      <li>Standa motors (NO_STANDA): <a href="https://libximc.xisupport.com/">XIMC (libximc)</a></li>
+    </ul>
+    <h3>DACs and SPI (ADVANTECHDAC / NO_ADVDAQ, RASPIDAC / NO_SPI)</h3>
+    <ul>
+      <li>Advantech DACs (ADVANTECHDAC / NO_ADVDAQ): <a href="https://us2.advantech.com/DAQNavi/">DAQNavi SDK</a></li>
+      <li>Raspberry Pi SPI (RASPIDAC / NO_SPI): <a href="http://www.airspayce.com/mikem/bcm2835/">bcm2835</a></li>
+    </ul>
     <hr>
     <address><a href="mailto:postmaster@opticsbenchui.com">OpticsBenchUI</a></address>
     <!-- Created: Mon Feb  7 16:28:17 CET 2011 -->

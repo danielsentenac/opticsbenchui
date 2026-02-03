@@ -1,4 +1,7 @@
 #include "VideoWidgetSurface.h"
+#include <QtGlobal>
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
 #include <QtWidgets>
 #include <qabstractvideosurface.h>
 #include <qvideosurfaceformat.h>
@@ -106,3 +109,4 @@ void VideoWidgetSurface::paint(QPainter *painter)
     }
 }
 //! [6]
+#endif

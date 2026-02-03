@@ -1,5 +1,8 @@
 #ifndef VIDEOWIDGETSURFACE_H
 #define VIDEOWIDGETSURFACE_H
+#include <QtGlobal>
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
 #include <QAbstractVideoSurface>
 #include <QImage>
 #include <QRect>
@@ -46,4 +49,5 @@ private:
     QVideoFrame currentFrame;
 };
 //! [0]
+#endif
 #endif
