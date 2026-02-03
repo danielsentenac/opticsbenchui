@@ -1,0 +1,39 @@
+body {
+  background-color: #1e1e1e;
+  color: #e6e6e6;
+  font-family: sans-serif;
+}
+
+a { color: #8ab4f8; }
+
+a:visited { color: #c58af9; }
+
+a:hover { color: #a3c3ff; }
+
+table {
+  border-collapse: collapse;
+  background-color: #252525;
+  color: #e6e6e6;
+}
+
+table, th, td {
+  border: 1px solid #444;
+}
+
+th {
+  background-color: #2f2f2f;
+}
+
+tr:nth-child(even) {
+  background-color: #222;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #444;
+}
+
+code, pre {
+  background-color: #2a2a2a;
+  color: #e6e6e6;
+}
