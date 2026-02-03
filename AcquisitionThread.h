@@ -134,6 +134,7 @@ protected:
   void run() override;
 
 private:
+  bool shouldStop() const;
   /// Execute one acquisition sequence.
   /// \param sequence Sequence to execute.
   void execute(AcquisitionSequence *sequence);
@@ -159,6 +160,7 @@ private:
   /// \param parent_end Parent end record.
   /// \param reset True to reset state.
   void updateChildSnakeReverse(int parent_start, int parent_end, bool reset);
+  void stopActiveMotor();
 
   QVector<Camera*> cameraList;
   QVector<AcquisitionSequence*> sequenceList;
@@ -182,6 +184,7 @@ private:
   bool filesuccess;
   bool treatmentsuccess;
   bool suspend;
+  QString activeMotorName;
 
   // Data File
   hid_t file_id;

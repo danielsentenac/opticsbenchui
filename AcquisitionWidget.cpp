@@ -315,6 +315,20 @@ void AcquisitionWidget::run() {
     AcquisitionSequence *sequence = sequenceList.at(i);
     sequence->prepare();
   }
+  if (motor) {
+    QSet<QString> motorNames;
+    for (int i = 0; i < sequenceList.size(); i++) {
+      const AcquisitionSequence *sequence = sequenceList.at(i);
+      if (sequence->instrumentType == "MOTOR") {
+        motorNames.insert(sequence->instrumentName);
+      }
+    }
+    for (const QString& name : motorNames) {
+      if (!name.isEmpty()) {
+        motor->connectMotor(name);
+      }
+    }
+  }
   // Set File name and number from widget
   QString filepath = acqfile + "_" + filenumber + ".h5";
   acquisition->setFile(filepath, filenumber.toInt());

@@ -100,9 +100,7 @@ class Motor : public QObject
 
   // function : create connexion to the database
   void dbConnexion();
-  QSqlDatabase connectDb(QString path) {
-     return Utils::ConnectSqliteDb(path, "Motor::dbConnexion>");
-  }
+  QSqlDatabase connectDb(const QString& path);
 
   QVector<ACCom*>   actuatorCom;
   QVector<Driver*>  actuatorDriver;

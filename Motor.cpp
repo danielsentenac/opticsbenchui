@@ -85,6 +85,19 @@ void Motor::setDbPath(QString _path) {
   dbConnexion();
 }
 
+QSqlDatabase Motor::connectDb(const QString& path) {
+  if (QSqlDatabase::contains(path)) {
+    QSqlDatabase db = QSqlDatabase::database(path);
+    if (!db.isOpen()) {
+      if (!db.open()) {
+        QLOG_WARN() << "Motor::connectDb> " << db.lastError().text();
+      }
+    }
+    return db;
+  }
+  return Utils::ConnectSqliteDb(path, "Motor::connectDb>");
+}
+
 void
 Motor::connectMotor(QString newactuator) {  
   

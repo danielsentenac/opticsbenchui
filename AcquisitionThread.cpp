@@ -47,7 +47,8 @@ AcquisitionThread::AcquisitionThread(QObject* parent)
       ids(),
       status(0),
       filename(),
-      filenumber(0) {}
+      filenumber(0),
+      activeMotorName() {}
 
 AcquisitionThread::~AcquisitionThread() {
   QLOG_DEBUG() << "Deleting AcquisitionThread";
@@ -113,6 +114,7 @@ void AcquisitionThread::wakeSplashScreen() {
 void AcquisitionThread::stop() {
   suspend = true;
   requestInterruption();
+  stopActiveMotor();
   if (splashScreenOk) {
     splashScreenOk->wakeAll();
   }
@@ -274,6 +276,7 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
   
   if (sequence->instrumentType == "MOTOR") {
     motor->connectMotor(sequence->instrumentName);
+    activeMotorName = sequence->instrumentName;
     
     float motorValue = sequence->motorValue;
     if (sequence->motorAction == "MOVEREL" && isSnakeReverseForRecord(record)) {
@@ -292,11 +295,17 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     }
     // Wait for motor movement to be completed
     while (motor->getOperationComplete(sequence->instrumentName) <= 0) {
-      if (suspend) {
+      if (shouldStop()) {
         motor->stopMotor(sequence->instrumentName);
+        break;
       }
       usleep(100);
       motor->operationComplete();
+    }
+    if (shouldStop()) {
+      sequence->status = false;
+      activeMotorName.clear();
+      return;
     }
     // Update motor position
     QString positionQString;
@@ -307,6 +316,7 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     QLOG_INFO() << "AcquisitionThread::execute> " << sequence->instrumentName
                 << " new position:" << positionQString;
     sequence->status = true;
+    activeMotorName.clear();
   }
   else if (sequence->instrumentType == "SUPERK") {
     superk->connectSuperK(sequence->instrumentName);
@@ -692,6 +702,13 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
 
 bool AcquisitionThread::shouldStop() const {
   return suspend || isInterruptionRequested();
+}
+
+void AcquisitionThread::stopActiveMotor() {
+  if (!motor || activeMotorName.isEmpty()) {
+    return;
+  }
+  motor->stopMotor(activeMotorName);
 }
 bool AcquisitionThread::isSnakeReverseForRecord(int cur_record) const {
   int loopDepth = 0;
