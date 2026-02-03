@@ -133,6 +133,7 @@ private:
   void dbConnexion();
   void setupAcquisitionTable();
   void updateStatusForRecord(const QString& status, int record);
+  void setAcquiringToLastRecord();
   QString statusFromSuccess(bool success) const;
 
   QString appDirPath;

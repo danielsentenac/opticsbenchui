@@ -332,6 +332,7 @@ void AcquisitionWidget::run() {
 
 void AcquisitionWidget::stop() {
   acquisition->stop();
+  setAcquiringToLastRecord();
 }
 
 void AcquisitionWidget::splashScreen(QString imagepath, int screen_x,
@@ -414,6 +415,26 @@ void AcquisitionWidget::getAcquiring(int record) {
   query.exec();
   InitConfig();
   cur_record = seq_record;
+}
+
+void AcquisitionWidget::setAcquiringToLastRecord() {
+  QSqlQuery query(QSqlDatabase::database(path));
+  query.exec("update acquisition_sequence set acquiring = ''");
+  if (!query.exec("select record from acquisition_sequence "
+                  "where record >= 0 order by record desc limit 1")) {
+    QLOG_WARN() << "AcquisitionWidget::setAcquiringToLastRecord"
+                << query.lastError().text();
+    InitConfig();
+    return;
+  }
+  if (query.next()) {
+    const int lastRecord = query.value(0).toInt();
+    QSqlQuery update(QSqlDatabase::database(path));
+    update.prepare("update acquisition_sequence set acquiring = '*' where record = ?");
+    update.addBindValue(lastRecord);
+    update.exec();
+  }
+  InitConfig();
 }
 void AcquisitionWidget::getFilenumber(int number) {
   filenumber = QString::number(number);
