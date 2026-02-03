@@ -6,3 +6,5 @@ moc_*.o
 OpticsBenchUI
 moc_predefs.h
 Makefile
+*.log
+*.h5
