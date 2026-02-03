@@ -184,25 +184,15 @@ contains(DEFINES, ADVANTECHDAC) {
   }
 }
 
-!isEmpty(HDF5_ROOT) {
-  HDF5_INC_PATH = $$HDF5_ROOT/include
-  HDF5_LIB_PATH = $$HDF5_ROOT/lib
-}
 
 HDF5_HEADERS_FOUND = 0
+HDF5_EXTRA_INC_PATH =
 exists($$HDF5_INC_PATH/hdf5.h) {
   HDF5_HEADERS_FOUND = 1
 }
 exists($$HDF5_INC_PATH/hdf5/serial/hdf5.h) {
   HDF5_HEADERS_FOUND = 1
-  HDF5_INC_PATH = $$HDF5_INC_PATH/hdf5/serial
-}
-exists(/usr/include/hdf5.h) {
-  HDF5_HEADERS_FOUND = 1
-}
-exists(/usr/include/hdf5/serial/hdf5.h) {
-  HDF5_HEADERS_FOUND = 1
-  HDF5_INC_PATH = /usr/include/hdf5/serial
+  HDF5_EXTRA_INC_PATH = $$HDF5_INC_PATH/hdf5/serial
 }
 
 HDF5_LIB_FOUND = 0
@@ -218,22 +208,6 @@ isEmpty(HDF5_HL_LIB_FILE) {
 }
 !isEmpty(HDF5_LIB_FILE):!isEmpty(HDF5_HL_LIB_FILE) {
   HDF5_LIB_FOUND = 1
-}
-exists(/lib64/libhdf5.so) {
-  HDF5_LIB_FOUND = 1
-  HDF5_LIB_PATH = /lib64
-}
-exists(/usr/lib64/libhdf5.so) {
-  HDF5_LIB_FOUND = 1
-  HDF5_LIB_PATH = /usr/lib64
-}
-exists(/usr/lib/x86_64-linux-gnu/libhdf5.so) {
-  HDF5_LIB_FOUND = 1
-  HDF5_LIB_PATH = /usr/lib/x86_64-linux-gnu
-}
-exists(/usr/lib/libhdf5.so) {
-  HDF5_LIB_FOUND = 1
-  HDF5_LIB_PATH = /usr/lib
 }
 
 !equals(HDF5_HEADERS_FOUND, 1)|!equals(HDF5_LIB_FOUND, 1) {
@@ -409,6 +383,9 @@ INCLUDEPATH += \
 
 !contains(DEFINES, NO_HDF5) {
   INCLUDEPATH += $$HDF5_INC_PATH
+  !isEmpty(HDF5_EXTRA_INC_PATH) {
+    INCLUDEPATH += $$HDF5_EXTRA_INC_PATH
+  }
 }
 LIBS += \
 
