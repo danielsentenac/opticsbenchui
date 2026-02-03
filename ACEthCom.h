@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
+/// Ethernet-based communication channel.
 class ACEthCom:public ACCom
 {
 public:

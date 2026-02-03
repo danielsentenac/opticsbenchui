@@ -26,34 +26,73 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "QsLog.h"
 #include "Utils.h"
 
+/// \ingroup motors
+/// Controls and queries motorized actuators defined in the database.
+///
+/// This class provides a thin UI-facing API for connecting to motors,
+/// issuing motion commands, and reading positions. It also emits Qt
+/// signals for UI updates and warnings.
 class Motor : public QObject
 {
   Q_OBJECT
     
     public:
+  /// Create a motor controller.
+  /// \param parent QObject parent.
+  /// \param _appDirPath Application directory for locating databases.
   Motor(QObject* parent = 0, QString _appDirPath = 0);
+  /// Destructor.
   ~Motor();
 
+  /// Connect to a motorized actuator by name.
+  /// \param newactuator Actuator identifier from the database.
   void  connectMotor(QString newactuator);
+  /// Move an actuator forward by a relative distance.
+  /// \param newactuator Actuator identifier from the database.
+  /// \param motion Relative motion amount (device units).
   void  moveForward(QString newactuator,float motion);
+  /// Move an actuator backward by a relative distance.
+  /// \param newactuator Actuator identifier from the database.
+  /// \param motion Relative motion amount (device units).
   void  moveBackward(QString newactuator,float motion);
+  /// Move an actuator to an absolute position.
+  /// \param newactuator Actuator identifier from the database.
+  /// \param motion Absolute position (device units).
   void  moveAbsolute(QString newactuator,float motion);
+  /// Stop the current actuator motion.
+  /// \param newactuator Actuator identifier from the database.
   void  stopMotor(QString newactuator);
+  /// Set the path to the motor database.
+  /// \param _path Filesystem path to the motor SQLite DB.
   void  setDbPath(QString _path);
+  /// Return nonzero when the actuator operation is complete.
+  /// \param newactuator Actuator identifier from the database.
   int   getOperationComplete(QString newactuator);
+  /// Read current actuator position.
+  /// \param newactuator Actuator identifier from the database.
   float getPosition(QString newactuator);
   
   // parameters
+  /// Per-actuator completion flags.
   QVector<int> operationcomplete;
+  /// Path to the motor database.
   QString path;
 
  signals:
+  /// Emit the current position for display.
+  /// \param position Position value (device units).
   void getPosition(float position);
+  /// Emit a human-readable description of the actuator.
+  /// \param description Actuator description string.
   void getDescription(QString description);
+  /// Emit warnings to the UI.
+  /// \param message Warning message.
   void showWarning(QString message);
+  /// Request timers to stop (UI coordination).
   void stopTimer();
 
  public slots:
+  /// Slot called when a motor operation completes.
   void operationComplete();
   
 

@@ -15,6 +15,7 @@
 
 using namespace std;
 
+/// RS-232 serial communication channel.
 class ACRSCom:public ACCom
 {
 public:

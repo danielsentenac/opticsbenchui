@@ -50,12 +50,7 @@ using namespace DriverDefinition;
 /// Operation : Create
 ///    Instantiates a subclass and returns a pointer on it
 //
-/// @param driverType
-///    Driver type to instantiate
-/// @param setting
-///    Driver setting
-/// @channel
-///    Channel communication
+///    Driver type to instantiate and settings.
 //
 // -----------------------------------------------------------------------------
 Driver* Driver::Create(string driverType,
@@ -122,10 +117,7 @@ Driver* Driver::Create(string driverType,
 /// Operation : Create
 ///    Instantiates a subclass and returns a pointer on it
 //
-/// @param prefActuatorDrv
-///    pointer on the reference driver
-/// @param prefChannel
-///    pointer on the reference channel
+///    pointer on the reference driver and channel
 //
 // -----------------------------------------------------------------------------
 Driver* Driver::Create(const Driver* prefActuatorDrv,
@@ -197,7 +189,6 @@ Driver* Driver::Create(const Driver* prefActuatorDrv,
 /// Operation : GetLastError
 ///    Gives the code of the last problem
 //
-/// @param lastError
 ///    code of the last error
 //
 // -----------------------------------------------------------------------------
@@ -243,10 +234,7 @@ void Driver::ReportRangeError(const QString& message) const
 /// Operation : SendCommand
 ///    Sends a command to the motor driver interface
 ///
-/// @param state
-///    command line text
-/// @param actuatorName
-/// actuator name
+///    command line text buffer and reply string
 //------------------------------------------------------------------------------
 int 
 Driver::SendGeneralCommand(char *buffer,string& rply) const

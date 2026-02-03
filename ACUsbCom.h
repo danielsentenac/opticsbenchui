@@ -1,4 +1,4 @@
-/// @file ACUsbCom.hpp
+/// @file ACUsbCom.h
 /// Class ACUsbCom
 ///
 /// This class provides a set of operations to perform communication
@@ -15,6 +15,7 @@
 
 using namespace std;
 
+/// USB communication channel backed by libusb.
 class ACUsbCom:public ACCom
 {
 public:

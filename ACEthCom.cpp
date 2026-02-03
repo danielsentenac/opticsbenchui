@@ -113,7 +113,6 @@ ACEthCom::Open ()
 // ----------------------------------------------------------------------------
 /// Operation : WriteEcho
 ///    sends data through the socket
-/// @param message
 ///    message to send
 // ----------------------------------------------------------------------------
 int
@@ -137,7 +136,6 @@ ACEthCom::WriteEcho (string message)
 // ----------------------------------------------------------------------------
 /// Operation : Write
 ///    sends data through the socket
-/// @param message
 ///    message to send
 // ----------------------------------------------------------------------------
 int
@@ -196,7 +194,6 @@ ACEthCom::Write (string & message, ...)
 // ----------------------------------------------------------------------------
 /// Operation : WriteRaw
 ///    sends data through the socket
-/// @param message
 ///    message to send
 // ----------------------------------------------------------------------------
 int
@@ -238,7 +235,6 @@ ACEthCom::WriteRaw (string message)
 // ----------------------------------------------------------------------------
 /// Operation : Read
 ///    reads data through the socket
-/// @param message
 ///    message to  read
 // ----------------------------------------------------------------------------
 int
@@ -298,7 +294,6 @@ ACEthCom::Read (string & message, ...)
 ///    reads data through the socket without timeout applied. 
 ///    The data is limited to the buffer size STRLENGTH.
 ///    It should be used when one expect a small message with size < STRLENGTH.
-/// @param message
 ///    message to  read
 // ----------------------------------------------------------------------------
 int

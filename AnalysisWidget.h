@@ -22,12 +22,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets>
 #include "QsLog.h"
 
+/// \ingroup ui
+/// UI widget for analysis tools.
 class AnalysisWidget : public QWidget
 {
   Q_OBJECT
     
 public:
+  /// Constructor.
   AnalysisWidget();
+  /// Destructor.
   ~AnalysisWidget() override;
 
 };

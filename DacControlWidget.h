@@ -26,27 +26,50 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 typedef QVector<float> floatVector;
 
+/// \ingroup ui
+/// UI widget for DAC control.
 class DacControlWidget : public QWidget
 {
   Q_OBJECT
     
 public:
+  /// Construct a DAC control widget.
+  /// \param dacList List of DAC names (optional).
   explicit DacControlWidget(QVector<QString>* dacList = nullptr);
+  /// Destructor.
   ~DacControlWidget() override;
     
+  /// Attach the DAC controller.
+  /// \param dac DAC controller instance.
   void setDac(Dac* dac);
+  /// Set the list of available DAC devices.
+  /// \param dacList List of DAC names.
   void setDacList(QVector<QString>* dacList);
 
 private slots:
+  /// Connect to the selected DAC.
   void connectDac();
+  /// Reset the selected DAC.
   void resetDac();
+  /// Set a DAC output value.
+  /// \param output Output channel index.
   void setDacValue(int output);
+  /// Set a DAC output raw value.
+  /// \param output Output channel index.
   void setDacRValue(int output);
+  /// Update the description display.
+  /// \param description Device description.
   void getDescription(QString description);
+  /// Update output count and mode.
+  /// \param outputs Number of outputs.
+  /// \param mode Mode or unit string.
   void getOutputs(int outputs, QString mode);
+  /// Update output value displays.
+  /// \param dacvalues Pointer to output values.
   void getOutputValues(QVector<float> *dacvalues);
 
 private:
+  /// Clear output UI widgets.
   void clearOutputs();
 
   QPushButton *connectButton; 

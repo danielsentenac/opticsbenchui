@@ -28,9 +28,13 @@
 
 class QString;
 
+/// \ingroup utils
+/// Debug output helper for logging.
 class QsDebugOutput
 {
 public:
+   /// Write a message to debug output.
+   /// \param a_message Message text.
    static void output(const QString& a_message);
 };
 

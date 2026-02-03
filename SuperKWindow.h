@@ -24,6 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 #include <QtWidgets>
 
+/// \ingroup ui
+/// Window for SuperK configuration and control.
 class SuperKWindow : public QMainWindow 
 {
   
@@ -31,18 +33,31 @@ class SuperKWindow : public QMainWindow
     
     public:
   
+  /// Construct a SuperK window.
+  /// \param parent Parent window.
+  /// \param fl Window flags.
+  /// \param _superk SuperK controller instance.
   SuperKWindow( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window , SuperK *_superk = 0);
+  /// Destructor.
   virtual ~SuperKWindow();
 
+  /// SuperK control widget instance.
   SuperKControlWidget *superkWidget;
 
  public slots:
+   /// Update database-backed tables.
    void update();
+   /// Remove selected entries.
    void remove();
+   /// Load configuration into runtime.
    void load();
+   /// Set the database path for tables.
+   /// \param _path Filesystem path to the SuperK DB.
    void setDbPath(QString _path);
 
  protected:
+  /// Handle window close events.
+  /// \param event Close event.
   void closeEvent(QCloseEvent *event);
     
  private:

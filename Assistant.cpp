@@ -71,7 +71,7 @@ bool Assistant::startAssistant() {
     }
     QStringList args;
     args << QLatin1String("-collectionFile")
-         << appDirPath + QLatin1String("/doc/OpticsBenchUIColl.qhc")
+         << appDirPath + QLatin1String("/docs/help/OpticsBenchUIColl.qhc")
          << QLatin1String("-enableRemoteControl");
     proc->start(app, args);
     if (!proc->waitForStarted()) {

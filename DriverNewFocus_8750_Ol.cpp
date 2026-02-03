@@ -383,8 +383,10 @@ int DriverNewFocus_8750_Ol::SendCommand(string command,
 ///    motion unit
 /// @param valueToConvert
 ///    value to be converted
-/// @rconvertedValue
+/// @param rconvertedValue
 ///    conversion result
+/// @param rrange
+///    output range for the selected unit
 // -----------------------------------------------------------------------------
 int DriverNewFocus_8750_Ol::ConvertUnit(int unit, 
 			       float valueToConvert, 

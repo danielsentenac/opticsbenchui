@@ -34,9 +34,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Set namespace
 using namespace std;
 
-/// The Class Driver defines an abstract interface for actuator
-/// driver implementations. 
-///
+/// \ingroup motors
+/// Abstract interface for actuator driver implementations.
 class Driver
 {
   public:
@@ -111,25 +110,31 @@ class Driver
     // Methods:
     //
 
-    /// Creates a new driver instance
+    /// Creates a new driver instance.
+    /// \param driverType Driver identifier.
+    /// \param setting Driver settings string.
+    /// \param channel Communication channel instance.
     static Driver* Create(string driverType,
                                  string setting,
                                  ACCom* channel);
-    /// Creates a new driver instance
+    /// Creates a new driver instance.
+    /// \param prefActuatorDrv Reference driver to copy.
+    /// \param prefChannel Communication channel instance.
     static Driver* Create(const Driver* prefActuatorDrv,
                                  ACCom* prefChannel );
 
-    /// Initializes the driver
+    /// Initializes the driver.
+    /// \param rstateData Output state data string.
     virtual int Init(string& rstateData) const = 0;
  
-    /// @brief Initializes the hardware device
+    /// @brief Initializes the hardware device.
     /// @param actuatorSetting
     /// @param position
     ///   This string contains the information for the setting to be
     ///   applied during the harwdare initialization
     virtual int InitActuator(string actuatorSetting,float position) const = 0;
 
-    /// @brief Retrieves the current position of the actuator
+    /// @brief Retrieves the current position of the actuator.
     /// @param actuatorSetting
     ///   This string contains the settings that have to be applied for
     ///   getting the position
@@ -138,7 +143,7 @@ class Driver
     virtual int GetPos(string actuatorSetting,
 		       float& position) const = 0;
 
-    /// @brief Performs a relative movement of the actuator
+    /// @brief Performs a relative movement of the actuator.
     /// @param actuatorSetting
     ///   This string contains the settings that have to be applied for
     ///   the moving action
@@ -150,7 +155,7 @@ class Driver
 		     float nbSteps,
                      int   unit) const = 0;
 
-    /// @brief Performs an absolute movement of the actuator
+    /// @brief Performs an absolute movement of the actuator.
     /// @param actuatorSetting
     ///   This string contains the settings that have to be applied for
     ///   the moving action
@@ -163,59 +168,87 @@ class Driver
 			float  absPos,
                         int    unit) const = 0;
 
-    /// @brief Stops the current movement of the actuator
+    /// @brief Stops the current movement of the actuator.
     /// @param actuatorSetting
     ///   This string contains the settings that have to be applied for
     ///   stopping the movement
     virtual int Stop(string actuatorSetting) const = 0;
 
-    /// @brief Checks if an operation has been finished or not
+    /// @brief Checks if an operation has been finished or not.
     /// @param rstateData
     ///   state data of the driver 
     /// @param actuatorSetting
     ///   This string contains the settings that have to be applied
-    /// @param switchLimit
+    /// @param rlimitSwitch
     ///   Reached limit flag
     virtual int OperationComplete(
                  string& rstateData,
                  string actuatorSetting,
                  DriverDefinition::ADLimitSwitch& rlimitSwitch) const = 0;
 
-    /// @gives the code of the last problem
+    /// Gives the code of the last problem
     /// @param lastError
     ///    code of the last error 
     virtual int GetLastError(DriverDefinition::ADErrorCode &lastError);
 
-    /// @gives the features of the steered actuator
+    /// Gives the features of the steered actuator
     /// @param ractuatorFeature
     ///    steered actuator feature
     virtual int GetActuatorFeature(
        DriverDefinition::DriverFeature& ractuatorFeature) const = 0;
 
-    /// @converts a default unit value into a custom one
+    /// Converts a default unit value into a custom one
+    /// \param unit Unit selector.
+    /// \param valueToConvert Input value.
+    /// \param rconvertedValue Output converted value.
+    /// \param rrange Output range.
     virtual int ConvertUnit(int unit, 
                             float valueToConvert, 
                             float& rconvertedValue,
                             float& rrange) const = 0;
+    /// Send a driver-specific command string and return the reply.
+    /// \param buffer Command buffer.
+    /// \param rply Output reply string.
     virtual int SendGeneralCommand(char* buffer,string& rply) const ;
+    /// Optional shutdown hook; default is no-op.
+    /// \param actuatorSetting Settings string for shutdown.
     virtual int Exit(string actuatorSetting){ return 0; }
 
  protected :
     
-    mutable DriverDefinition::ADErrorCode _lastError; // code of the last error
-    string              _setting;         // Driver setting
-    ACCom*             _pcommChannel;    // Actuators Communication channel 
+    /// Code of the last error.
+    mutable DriverDefinition::ADErrorCode _lastError;
+    /// Driver setting string.
+    string              _setting;
+    /// Actuator communication channel.
+    ACCom*             _pcommChannel;
     
+    /// Split a string into tokens using the given delimiters.
+    /// \param str Input string.
+    /// \param tokens Output token list.
+    /// \param delimiters Delimiter characters.
     void Tokenize(const string& str,
 		  vector<string>& tokens,
 		  const string& delimiters = " ") const;
 
+    /// Log a warning with a driver error code.
+    /// \param code Error code.
+    /// \param message Warning message.
     void ReportWarning(DriverDefinition::ADErrorCode code,
                        const QString& message) const;
+    /// Log an error with a driver error code.
+    /// \param code Error code.
+    /// \param message Error message.
     void ReportError(DriverDefinition::ADErrorCode code,
                      const QString& message) const;
+    /// Log a setting parsing/validation error.
+    /// \param message Error message.
     void ReportSettingError(const QString& message) const;
+    /// Log a communication-layer error.
+    /// \param message Error message.
     void ReportCommError(const QString& message) const;
+    /// Log a range/limits error.
+    /// \param message Error message.
     void ReportRangeError(const QString& message) const;
 };
 #endif //_DRIVER_H_

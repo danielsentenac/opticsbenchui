@@ -32,11 +32,15 @@
 namespace QsLogging
 {
 
-//! file message sink
+/// File-based log destination.
 class FileDestination : public Destination
 {
 public:
+   /// Construct a file destination.
+   /// \param filePath Output file path.
    FileDestination(const QString& filePath);
+   /// Write a log message.
+   /// \param message Log message.
    virtual void write(const QString& message);
 
 private:
@@ -58,10 +62,12 @@ void FileDestination::write(const QString& message)
    mOutputStream.flush();
 }
 
-//! debugger sink
+/// Debug output log destination.
 class DebugOutputDestination : public Destination
 {
 public:
+   /// Write a log message.
+   /// \param message Log message.
    virtual void write(const QString& message);
 };
 

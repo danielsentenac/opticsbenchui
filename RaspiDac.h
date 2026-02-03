@@ -25,19 +25,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "QsLog.h"
 #include "Utils.h"
 
+/// \ingroup dac
+/// Raspberry Pi DAC implementation.
 class RaspiDac : public Raspi
 {
    Q_OBJECT 
      
     public:
-  RaspiDac(QString dbpath);
+  /// Create a Raspi DAC using the given DB path.
+  /// \param dbpath Filesystem path to the Raspi DB.
+  explicit RaspiDac(QString dbpath);
+  /// Destructor.
   ~RaspiDac();
 
+  /// Connect to the Raspi DAC device.
+  /// \param newraspi Device identifier from the database.
   bool connectRaspi(QString newraspi);
+  /// Reset the DAC device.
+  /// \param newraspi Device identifier from the database.
   bool resetRaspi(QString newraspi);
+  /// Set a DAC output value (device-specific).
+  /// \param newraspi Device identifier from the database.
+  /// \param output Output channel index.
+  /// \param value Pointer to a device-specific value.
   bool setRaspiValue(QString newraspi, int output, void *value);
+  /// Read a DAC output value.
+  /// \param newraspi Device identifier from the database.
+  /// \param output Output channel index.
+  /// \param value Output value in engineering units.
   bool getRaspiValue(QString newraspi, int output, double &value);
+  /// Sync or update database-backed settings.
+  /// \param newraspi Device identifier from the database.
   bool updateDBValues(QString newraspi);
+  /// Set the database path used by this device.
+  /// \param _path Filesystem path to the Raspi DB.
   void setDbPath(QString _path);
   
   QString path;
@@ -46,9 +67,17 @@ class RaspiDac : public Raspi
   public slots:
 
  signals:
+  /// Emit a human-readable description of the device.
+  /// \param description Device description string.
   void getDescription(QString description);
+  /// Emit warnings to the UI.
+  /// \param message Warning message.
   void showWarning(QString message);
+  /// Emit output count.
+  /// \param outputs Number of outputs.
   void getOutputs(int outputs);
+  /// Emit output values (device-specific type).
+  /// \param raspivalues Pointer to device-specific values.
   void getOutputValues(void *raspivalues);
 
  private:

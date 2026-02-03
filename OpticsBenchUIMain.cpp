@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "OpticsBenchUIMain.h"
 #include "Utils.h"
 #include <QDesktopServices>
+#include <QUrl>
 #include <functional>
 
 namespace {
@@ -299,6 +300,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   menuFile->addAction("Exit", this, SLOT(close()) );
  
   menuHelp->addAction("Documentation",this,SLOT(showDocumentation()));
+  menuHelp->addAction("API Documentation",this,SLOT(showApiDocumentation()));
 
   menuOperations->addAction("Acquisition", this, SLOT(openacquisition()));
   menuOperations->addAction("Analysis", this, SLOT(openanalysis()) );
@@ -389,6 +391,16 @@ void OpticsBenchUIMain::saveAcqFile() {
 void OpticsBenchUIMain::showDocumentation()
 {
   assistant->showDocumentation("index.html");
+}
+void OpticsBenchUIMain::showApiDocumentation()
+{
+  const QString apiIndex = appDirPath + QLatin1String("/docs/api/index.html");
+  if (!QFile::exists(apiIndex)) {
+    QMessageBox::warning(this, tr("OpticsBenchUI"),
+                         tr("API documentation not found at:\n%1").arg(apiIndex));
+    return;
+  }
+  QDesktopServices::openUrl(QUrl::fromLocalFile(apiIndex));
 }
 void OpticsBenchUIMain::openacquisition() {
   if (isopenacquisitionwidget == false) {    

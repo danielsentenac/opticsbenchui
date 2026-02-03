@@ -25,40 +25,88 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "QsLog.h"
 #include "Utils.h"
 
+/// \ingroup lasers
+/// Controls a SuperK laser source via its driver.
 class SuperK : public QObject
 {
   Q_OBJECT
     
     public:
+  /// Create a SuperK controller.
+  /// \param parent QObject parent.
+  /// \param _appDirPath Application directory for locating databases.
   SuperK(QObject* parent = 0, QString _appDirPath = 0);
+  /// Destructor.
   ~SuperK();
 
+  /// Connect to a SuperK driver by name.
+  /// \param newdriver Driver identifier from the database.
   void  connectSuperK(QString newdriver);
+  /// Set the output power.
+  /// \param newdriver Driver identifier from the database.
+  /// \param power Power value (device units).
   void  setPower(QString newdriver, int power);
+  /// Set the neutral density (ND) value.
+  /// \param newdriver Driver identifier from the database.
+  /// \param nd ND value.
   void  setNd(QString newdriver, int nd);
+  /// Set the short-wavelength pass (SWP) value.
+  /// \param newdriver Driver identifier from the database.
+  /// \param swp SWP value.
   void  setSwp(QString newdriver, int swp);
+  /// Set the long-wavelength pass (LWP) value.
+  /// \param newdriver Driver identifier from the database.
+  /// \param lwp LWP value.
   void  setLwp(QString newdriver, int lwp);
+  /// Set the path to the SuperK database.
+  /// \param _path Filesystem path to the SuperK SQLite DB.
   void  setDbPath(QString _path);
+  /// Return nonzero when the driver operation is complete.
+  /// \param newdriver Driver identifier from the database.
   int   getOperationComplete(QString newdriver);
+  /// Read current power setting.
+  /// \param newdriver Driver identifier from the database.
   int   getPower(QString newdriver);
+  /// Read current ND setting.
+  /// \param newdriver Driver identifier from the database.
   int   getNd(QString newdriver);
+  /// Read current SWP setting.
+  /// \param newdriver Driver identifier from the database.
   int   getSwp(QString newdriver);
+  /// Read current LWP setting.
+  /// \param newdriver Driver identifier from the database.
   int   getLwp(QString newdriver);
 
   // parameters
+  /// Per-driver completion flags.
   QVector<int> operationcomplete;
+  /// Path to the SuperK database.
   QString path;
 
- signals:
+signals:
+  /// Emit current power value.
+  /// \param power Power value.
   void getPower(int power);
+  /// Emit current ND value.
+  /// \param nd ND value.
   void getNd(int nd);
+  /// Emit current SWP value.
+  /// \param swp SWP value.
   void getSwp(int swp);
+  /// Emit current LWP value.
+  /// \param lwp LWP value.
   void getLwp(int lwp);
+  /// Emit a human-readable description of the device.
+  /// \param description Device description string.
   void getDescription(QString description);
+  /// Emit warnings to the UI.
+  /// \param message Warning message.
   void showWarning(QString message);
+  /// Request timers to stop (UI coordination).
   void stopTimer();
 
  public slots:
+  /// Slot called when a driver operation completes.
   void operationComplete();
   
 

@@ -34,6 +34,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
+/// Abstract communication channel for device drivers.
+///
+/// Concrete implementations provide protocol-specific open/read/write
+/// operations (serial, ethernet, USB, CAN, etc.).
 class ACCom
 {
 public:
@@ -153,7 +157,9 @@ protected:
   */
   string _settings;
 
+  /// Log a warning message tagged with this communication channel.
   void ReportWarning(const QString& message) const;
+  /// Log an error message tagged with this communication channel.
   void ReportError(const QString& message) const;
 };
 #endif                                            // ACCom_H

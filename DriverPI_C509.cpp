@@ -385,8 +385,10 @@ int DriverPI_C509::GetActuatorFeature(DriverFeature& ractuatorFeature) const
 ///    motion unit
 /// @param valueToConvert
 ///    value to be converted
-/// @rconvertedValue
+/// @param rconvertedValue
 ///    conversion result
+/// @param rrange
+///    output range for the selected unit
 // -----------------------------------------------------------------------------
 int DriverPI_C509::ConvertUnit(int unit, 
                                     float valueToConvert, 

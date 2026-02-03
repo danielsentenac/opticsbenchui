@@ -26,27 +26,50 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 typedef QVector<float> floatVector;
 
+/// \ingroup ui
+/// UI widget for Comedi DAC control.
 class ComediDacControlWidget : public QWidget
 {
   Q_OBJECT
     
 public:
+  /// Construct a Comedi DAC control widget.
+  /// \param comediList List of Comedi device names (optional).
   explicit ComediDacControlWidget(QVector<QString>* comediList = nullptr);
+  /// Destructor.
   ~ComediDacControlWidget() override;
     
+  /// Attach the Comedi controller.
+  /// \param comedi Comedi controller instance.
   void setComedi(Comedi* comedi);
+  /// Set the list of available Comedi devices.
+  /// \param comediList List of Comedi device names.
   void setComediList(QVector<QString>* comediList);
 
 private slots:
+  /// Connect to the selected Comedi device.
   void connectComedi();
+  /// Reset the selected device.
   void resetComedi();
+  /// Set a DAC output value.
+  /// \param output Output channel index.
   void setComediValue(int output);
+  /// Set a DAC output raw value.
+  /// \param output Output channel index.
   void setComediRValue(int output);
+  /// Update the description display.
+  /// \param description Device description.
   void getDescription(QString description);
+  /// Update output count and mode.
+  /// \param outputs Number of outputs.
+  /// \param mode Mode or unit string.
   void getOutputs(int outputs, QString mode);
+  /// Update output value displays.
+  /// \param comedivalues Pointer to device-specific values.
   void getOutputValues(void *comedivalues);
 
 private:
+  /// Clear output UI widgets.
   void clearOutputs();
 
   QPushButton *connectButton; 

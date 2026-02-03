@@ -27,28 +27,61 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "QsLog.h"
 #include "Utils.h"
 
+/// \ingroup dac
+/// Advantech DAC implementation.
 class DacAdvantech : public Dac
 {
   Q_OBJECT
     
     public:
-  DacAdvantech(QString dbpath);
+  /// Create an Advantech DAC controller.
+  /// \param dbpath Filesystem path to the DAC DB.
+  explicit DacAdvantech(QString dbpath);
+  /// Destructor.
   ~DacAdvantech();
 
+  /// Connect to the configured DAC device.
+  /// \param newdac DAC identifier from the database.
   bool connectDac(QString newdac);
+  /// Reset the DAC device.
+  /// \param newdac DAC identifier from the database.
   bool resetDac(QString newdac);
+  /// Set a DAC channel value in engineering units.
+  /// \param newdac DAC identifier from the database.
+  /// \param output Output channel index.
+  /// \param value Value in engineering units.
   bool setDacValue(QString newdac, int output, double value);
+  /// Set a DAC channel value in raw units.
+  /// \param newdac DAC identifier from the database.
+  /// \param output Output channel index.
+  /// \param rvalue Raw device value.
   bool setDacRValue(QString newdac, int output, double rvalue);
+  /// Read the DAC channel value.
+  /// \param newdac DAC identifier from the database.
+  /// \param output Output channel index.
   float getDacValue(QString newdac,int output);
+  /// Sync or update database-backed settings.
+  /// \param newdac DAC identifier from the database.
   bool updateDBValues(QString newdac);
+  /// Set the database path used by this device.
+  /// \param _path Filesystem path to the DAC DB.
   void setDbPath(QString _path);
   
   public slots:
 
  signals:
+  /// Emit a human-readable description of the device.
+  /// \param description Device description string.
   void getDescription(QString description);
+  /// Emit warnings to the UI.
+  /// \param message Warning message.
   void showWarning(QString message);
+  /// Emit output count and device name.
+  /// \param outputs Number of outputs.
+  /// \param QString Device name or mode string.
   void getOutputs(int outputs,QString);
+  /// Emit current output values.
+  /// \param dacvalues Pointer to output values.
   void getOutputValues(QVector<float> *dacvalues);
 
  private:

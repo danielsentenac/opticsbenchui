@@ -29,9 +29,12 @@
 #include <QDebug>
 #include <QString>
 
+/// \ingroup utils
+/// Lightweight logging framework.
 namespace QsLogging
 {
 class Destination;
+/// Log severity levels.
 enum Level
 {
    TraceLevel = 0,
@@ -43,31 +46,38 @@ enum Level
 };
 
 class LoggerImpl; // d pointer
+/// Logger singleton and configuration.
 class Logger
 {
 public:
+   /// Return the logger singleton instance.
    static Logger& instance()
    {
       static Logger staticLog;
       return staticLog;
    }
 
-   //! Adds a log message destination. Don't add null destinations.
+   /// Adds a log message destination. Don't add null destinations.
    void addDestination(Destination* destination);
-   //! Logging at a level < 'newLevel' will be ignored
+   /// Logging at a level < 'newLevel' will be ignored.
    void setLoggingLevel(Level newLevel);
-   //! The default level is INFO
+   /// The default level is INFO.
    Level loggingLevel() const;
 
    //! The helper forwards the streaming to QDebug and builds the final
    //! log message.
+   /// Helper object that builds and writes a log message.
    class Helper
    {
    public:
+      /// Construct a helper for the given log level.
+      /// \param logLevel Logging level.
       explicit Helper(Level logLevel) :
             level(logLevel),
             qtDebug(&buffer) {}
+      /// Destructor writes the buffered log entry.
       ~Helper();
+      /// Return the stream to append message content.
       QDebug& stream(){ return qtDebug; }
 
    private:

@@ -26,34 +26,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Set namespace
 using namespace std;
 
+/// \ingroup motors
+/// NewFocus 8750 open-loop Picomotor driver implementation.
 class DriverNewFocus_8750_Ol : public Driver
 {
   public:
  
-    // Constructor
+    /// Default constructor.
    DriverNewFocus_8750_Ol():
       _lastNumberOfPulses(0)
    {}
+    /// Construct with a communication channel.
+    /// \param commChannel Communication channel instance.
     DriverNewFocus_8750_Ol(ACCom* commChannel):
        Driver(commChannel)
     {}
+    /// Copy-construct with a new communication channel.
+    /// \param actuatorDrvNewFocus_8750_Ol Reference driver to copy.
+    /// \param commChannel Communication channel instance.
     DriverNewFocus_8750_Ol(const DriverNewFocus_8750_Ol& actuatorDrvNewFocus_8750_Ol,
                          ACCom* commChannel):
        Driver(actuatorDrvNewFocus_8750_Ol, commChannel),
        _lastNumberOfPulses(actuatorDrvNewFocus_8750_Ol._lastNumberOfPulses)
     {}
 
-    // Destructor
+    /// Destructor.
     virtual ~DriverNewFocus_8750_Ol(){}
 
-    //Copy Constructor
+    /// Copy constructor.
+    /// \param actuatorDrvNewFocus_8750_Ol Reference driver to copy.
     DriverNewFocus_8750_Ol(const DriverNewFocus_8750_Ol& actuatorDrvNewFocus_8750_Ol ):
        Driver(actuatorDrvNewFocus_8750_Ol),
        _lastNumberOfPulses(actuatorDrvNewFocus_8750_Ol._lastNumberOfPulses) 
     {
     }
   
-    //Affectation Operator 
+    /// Assignment operator.
+    /// \param actuatorDrvNewFocus_8750_Ol Reference driver to copy.
     virtual DriverNewFocus_8750_Ol& operator = (const DriverNewFocus_8750_Ol& actuatorDrvNewFocus_8750_Ol) 
     {
        _pcommChannel       = actuatorDrvNewFocus_8750_Ol._pcommChannel;
@@ -64,19 +73,28 @@ class DriverNewFocus_8750_Ol : public Driver
     //
     // Methods:
     //
+    /// Initialize the driver.
     virtual int Init(string& rstateData) const;
+    /// Initialize the actuator with settings and an optional position.
     virtual int InitActuator(string actuatorSetting,float position) const ;
+    /// Read the current actuator position.
     virtual int GetPos(string actuatorSetting, float& position) const ;
+    /// Perform a relative motion.
     virtual int Move(string actuatorSetting,float nbSteps,int unit) const;
+    /// Perform an absolute motion.
     virtual int MoveAbs(string actuatorSetting, float absPos, int unit) const;
+    /// Stop the actuator.
     virtual int Stop(string actuatorSetting) const;
+    /// Check whether the last operation has completed.
     virtual int OperationComplete(
                     string& rstateData,
                     string actuatorSetting,
                     DriverDefinition::ADLimitSwitch& rlimitSwitch) const;
+    /// Get actuator feature metadata.
     virtual int GetActuatorFeature(
        DriverDefinition::DriverFeature& ractuatorFeature) const;
 
+    /// Convert between default and custom units.
     virtual int ConvertUnit(int unit, 
                             float valueToConvert, 
                             float& rconvertedValue,

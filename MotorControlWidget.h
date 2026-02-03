@@ -24,25 +24,44 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets>
 #include "QsLog.h"
 
+/// \ingroup ui
+/// UI widget for motor control.
 class MotorControlWidget : public QWidget
 {
   Q_OBJECT
     
     public:
+  /// Construct a motor control widget.
+  /// \param _actuatorList List of actuator names (optional).
   MotorControlWidget(QVector<QString>  *_actuatorList = 0);
+  /// Destructor.
   ~MotorControlWidget();
 
+  /// Attach the motor controller.
+  /// \param _motor Motor controller instance.
   void setMotor(Motor *_motor);
+  /// Set the list of available actuators.
+  /// \param _actuatorList List of actuator names.
   void setActuatorList(QVector<QString>  *_actuatorList);
   
   private slots:
+  /// Connect to the selected motor.
   void connectMotor();
+  /// Move forward by a relative amount.
   void moveForward();
+  /// Move backward by a relative amount.
   void moveBackward();
+  /// Move to an absolute position.
   void moveAbsolute();
+  /// Stop the motor.
   void stopMotor();
+  /// Update the current position display.
+  /// \param position Current position.
   void getPosition(float position);
+  /// Update the description display.
+  /// \param description Actuator description.
   void getDescription(QString description);
+  /// Stop periodic updates.
   void stopTimer();
 
  private:

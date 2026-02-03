@@ -24,6 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 #include <QtWidgets>
 
+/// \ingroup ui
+/// Window for motor configuration and control.
 class MotorWindow : public QMainWindow 
 {
   
@@ -31,18 +33,31 @@ class MotorWindow : public QMainWindow
     
     public:
   
+  /// Construct a motor window.
+  /// \param parent Parent window.
+  /// \param fl Window flags.
+  /// \param _motor Motor controller instance.
   MotorWindow( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window , Motor *_motor = 0);
+  /// Destructor.
   virtual ~MotorWindow();
 
+  /// Motor control widget instance.
   MotorControlWidget *motorWidget;
 
  public slots:
+   /// Update database-backed tables.
    void update();
+   /// Remove selected entries.
    void remove();
+   /// Load configuration into runtime.
    void load();
+   /// Set the database path for tables.
+   /// \param _path Filesystem path to the motor DB.
    void setDbPath(QString _path);
 
  protected:
+  /// Handle window close events.
+  /// \param event Close event.
   void closeEvent(QCloseEvent *event);
     
  private:

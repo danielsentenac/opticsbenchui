@@ -367,8 +367,10 @@ int DriverNewPort_AGUC2::GetActuatorFeature(DriverFeature& ractuatorFeature) con
 ///    motion unit
 /// @param valueToConvert
 ///    value to be converted
-/// @rconvertedValue
+/// @param rconvertedValue
 ///    conversion result
+/// @param rrange
+///    output range for the selected unit
 // -----------------------------------------------------------------------------
 // Use indifferently default units or custom units configuration (STEPS == MM)
 int DriverNewPort_AGUC2::ConvertUnit(int unit, 
@@ -386,10 +388,6 @@ int DriverNewPort_AGUC2::ConvertUnit(int unit,
 /// Operation : SendGeneralCommand
 ///    Sends a command to the motor driver interface
 ///
-/// @param state
-///    command line text
-/// @param actuatorName
-/// actuator name
 //------------------------------------------------------------------------------
 int 
 DriverNewPort_AGUC2::SendGeneralCommand(char *buffer,string& rply) const

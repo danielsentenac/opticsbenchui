@@ -82,6 +82,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "CameraAlliedVision.h"
 #endif
 
+/// \ingroup ui
+/// Main application window coordinating device windows and widgets.
 class OpticsBenchUIMain : public QMainWindow
 {
   
@@ -89,46 +91,102 @@ class OpticsBenchUIMain : public QMainWindow
     
     public:
   
+  /// Construct the main window.
+  /// \param appDirPath Application directory for resources and DBs.
+  /// \param parent Parent window.
+  /// \param fl Window flags.
   OpticsBenchUIMain( QString appDirPath = 0, QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window );
   
+  /// Destructor.
   virtual ~OpticsBenchUIMain();
   
+  /// Per-camera open flags.
   QVector<bool> isopencamerawindow;
+  /// True if analysis widget is open.
   bool isopenanalysiswidget;
+  /// True if acquisition widget is open.
   bool isopenacquisitionwidget;
 
+  /// Track camera window open/close state.
+  /// \param isopen True if the window is open.
+  /// \param cameranumber Camera index.
   void setOpenCameraWindow(bool isopen, int cameranumber);
 
  signals:
+  /// Emit open/close state for camera windows.
+  /// \param isopencamerawindow Per-camera open flags.
   void isopenCameraWindow(QVector<bool> isopencamerawindow);
+  /// Emit new database path.
+  /// \param path Filesystem path to DBs.
   void setDbPath(QString path);
+  /// Emit new acquisition file path/prefix.
+  /// \param acqfile Acquisition file base.
   void setAcqFile(QString acqfile);
 
  public slots:
+  /// Open acquisition UI.
   void openacquisition();
+  /// Open analysis UI.
   void openanalysis();
+  /// Open a camera window by index.
+  /// \param cameraNumber Camera index.
   void openCameraWindow(int cameraNumber);
+  /// Open the motor control window.
   void openMotorWindow();
+  /// Open the SuperK control window.
   void openSuperKWindow();
+  /// Open the DAC control window.
   void openDacWindow();
+  /// Open the Comedi counter window.
   void openComediCounterWindow();
+  /// Open the Comedi DAC window.
   void openComediDacWindow();
+  /// Open the Raspi DAC window.
   void openRaspiDacWindow();
-  void showDacWarning(QString);
-  void showComediWarning(QString);
-  void showRaspiWarning(QString);
-  void showMotorWarning(QString);
-  void showSuperKWarning(QString);
-  void showCameraWarning(QString);
-  void showCameraControlWidgetWarning(QString);
-  void showAcquisitionWarning(QString);
+  /// Display DAC warning message.
+  /// \param message Warning text.
+  void showDacWarning(QString message);
+  /// Display Comedi warning message.
+  /// \param message Warning text.
+  void showComediWarning(QString message);
+  /// Display Raspi warning message.
+  /// \param message Warning text.
+  void showRaspiWarning(QString message);
+  /// Display motor warning message.
+  /// \param message Warning text.
+  void showMotorWarning(QString message);
+  /// Display SuperK warning message.
+  /// \param message Warning text.
+  void showSuperKWarning(QString message);
+  /// Display camera warning message.
+  /// \param message Warning text.
+  void showCameraWarning(QString message);
+  /// Display camera control warning message.
+  /// \param message Warning text.
+  void showCameraControlWidgetWarning(QString message);
+  /// Display acquisition warning message.
+  /// \param message Warning text.
+  void showAcquisitionWarning(QString message);
+  /// Show help documentation.
   void showDocumentation();
+  /// Show API documentation in the default browser.
+  void showApiDocumentation();
+  /// Show API documentation in the default browser.
+  void showApiDocumentation();
+  /// Open the configuration dialog.
   void openConfiguration();
+  /// Save acquisition file settings.
   void saveAcqFile();
+  /// Close the tab at a given index.
+  /// \param index Tab index.
   void closeTab(int index);
 
  protected:
+  /// Handle application close events.
+  /// \param event Close event.
   void closeEvent(QCloseEvent *event);
+  /// Handle global key press events.
+  /// \param e Key press event.
   void keyPressEvent(QKeyEvent *e);
 
  private:

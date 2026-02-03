@@ -8,13 +8,16 @@
 #include <qwt_plot_canvas.h>
 #include "ComediCounterPlot.h"
 
+/// Scale draw that formats axis labels as elapsed time.
 class TimeScaleDraw: public QwtScaleDraw
 {
 public:
+    /// Construct with a base time.
     TimeScaleDraw( const QTime &base ):
         baseTime( base )
     {
     }
+    /// Format the label for a given value.
     QwtText label( double v ) const override
     {
         QTime upTime = baseTime.addSecs( static_cast<int>( v ) );
@@ -24,19 +27,23 @@ private:
     QTime baseTime;
 };
 
+/// Background plot item that paints alternating bands.
 class Background: public QwtPlotItem
 {
 public:
+    /// Construct the background item.
     Background()
     {
         setZ( 0.0 );
     }
 
+    /// Return the runtime type information.
     int rtti() const override
     {
         return QwtPlotItem::Rtti_PlotUserItem;
     }
 
+    /// Draw the background bands.
     void draw( QPainter *painter,
         const QwtScaleMap &, const QwtScaleMap &yMap,
         const QRectF &canvasRect ) const override
@@ -55,15 +62,18 @@ public:
     }
 };
 
+/// Plot curve with translucent fill for Comedi counter data.
 class ComediCounterCurve: public QwtPlotCurve
 {
 public:
+    /// Construct a curve with the given title.
     ComediCounterCurve( const QString &title ):
         QwtPlotCurve( title )
     {
         setRenderHint( QwtPlotItem::RenderAntialiased );
     }
 
+    /// Set the curve color with alpha.
     void setColor( const QColor &color )
     {
         QColor c = color;

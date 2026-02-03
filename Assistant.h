@@ -23,14 +23,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class QProcess;
 
+/// \ingroup ui
+/// Launches and manages the Qt Assistant help viewer.
 class Assistant
 {
 public:
+  /// Construct an assistant helper.
+  /// \param appDirPath Application directory for resources.
   explicit Assistant(QString appDirPath = QString());
+  /// Destructor.
   ~Assistant();
+  /// Show a documentation file inside the assistant.
+  /// \param file Help file or page name.
   void showDocumentation(const QString &file);
   
 private:
+  /// Start the Qt Assistant process if not already running.
   bool startAssistant();
   QProcess *proc;
   QString appDirPath;

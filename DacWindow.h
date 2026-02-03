@@ -23,25 +23,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 #include <QtWidgets>
 
+/// \ingroup ui
+/// Window for DAC configuration and control.
 class DacWindow : public QMainWindow 
 {
   
   Q_OBJECT
     
 public:
+  /// Construct a DAC window.
+  /// \param parent Parent window.
+  /// \param fl Window flags.
+  /// \param dac DAC controller instance.
   DacWindow(QMainWindow* parent = nullptr, Qt::WindowFlags fl = Qt::Window,
             Dac *dac = nullptr);
+  /// Destructor.
   ~DacWindow() override;
   
+  /// DAC control widget instance.
   DacControlWidget *dacWidget;
 
 public slots:
+  /// Update database-backed tables.
   void update();
+  /// Remove selected entries.
   void remove();
+  /// Load configuration into runtime.
   void load();
+  /// Set the database path for tables.
+  /// \param path Filesystem path to the DAC DB.
   void setDbPath(QString path);
 
 protected:
+  /// Handle window close events.
+  /// \param event Close event.
   void closeEvent(QCloseEvent *event) override;
     
 private:

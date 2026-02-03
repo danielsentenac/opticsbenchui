@@ -21,20 +21,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 #include <QtWidgets>
 
+/// \ingroup ui
+/// Item delegate providing a combo box editor.
 class ComboBoxDelegate : public QItemDelegate
 {
    Q_OBJECT
 
 public:
+  /// Construct a combo box delegate with an optional item list.
+  /// \param parent Parent object.
+  /// \param itemlist List of items for the combo box.
   ComboBoxDelegate(QObject *parent = nullptr, QStringList *itemlist = nullptr);
+  /// Destructor.
   ~ComboBoxDelegate() override;
+  /// Create the editor widget.
+  /// \param parent Parent widget.
+  /// \param option Style options.
+  /// \param index Model index.
   QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                         const QModelIndex &index) const override;
 
+  /// Populate the editor with model data.
+  /// \param editor Editor widget.
+  /// \param index Model index.
   void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+  /// Commit editor data back to the model.
+  /// \param editor Editor widget.
+  /// \param model Model to update.
+  /// \param index Model index.
   void setModelData(QWidget *editor, QAbstractItemModel *model,
                     const QModelIndex &index) const override;
 
+  /// Update editor geometry to fit the item.
+  /// \param editor Editor widget.
+  /// \param option Style options.
+  /// \param index Model index.
   void updateEditorGeometry(QWidget *editor,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const override;

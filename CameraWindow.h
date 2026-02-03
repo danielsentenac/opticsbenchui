@@ -25,6 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "VideoPlayer.h"
 #include "QsLog.h"
 
+/// \ingroup ui
+/// Window hosting camera controls and live video.
 class CameraWindow : public QMainWindow
 {
   
@@ -32,21 +34,36 @@ class CameraWindow : public QMainWindow
     
     public:
   
+  /// Construct a camera window.
+  /// \param parent Parent window.
+  /// \param fl Window flags.
+  /// \param _camera Camera to display/control.
+  /// \param cameraNumber Camera index.
   CameraWindow( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window, Camera *_camera = 0, 
 		int cameraNumber = 0);
+  /// Destructor.
   virtual ~CameraWindow();
   
+  /// Refresh the UI.
   void update();
 
  public slots:
+  /// Set video resolution to 480x320.
   void set480x320();
+  /// Set video resolution to 640x480.
   void set640x480();
+  /// Set video resolution to 1280x960.
   void set1280x960();
 
- signals:
-  void setVideoPlayerResolution(int,int);
+signals:
+  /// Set video player resolution.
+  /// \param width Width in pixels.
+  /// \param height Height in pixels.
+  void setVideoPlayerResolution(int width,int height);
   
  protected:
+  /// Handle window close events.
+  /// \param event Close event.
   void closeEvent(QCloseEvent *event);
     
  private:

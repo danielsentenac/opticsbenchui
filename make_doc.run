@@ -1,5 +1,5 @@
 #!/bin/bash
 export PATH=${PATH}:../../install/bin/
-cd doc
+cd docs/help
 qhelpgenerator OpticsBenchUI.qhp -o OpticsBenchUI.qch
 qcollectiongenerator OpticsBenchUI.qhcp -o OpticsBenchUIColl.qhc

@@ -272,8 +272,8 @@ LIBS 		+= 	 \
 
 # make install
 documentation.extra = ./make_doc.run
-documentation.path = /usr/local/bin/doc
-documentation.files = doc/*
+documentation.path = /usr/local/bin/docs/help
+documentation.files = docs/help/*
 
 target.path = /usr/local/bin
 

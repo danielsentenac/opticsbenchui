@@ -35,6 +35,7 @@
 
 namespace QsLogging
 {
+/// List of log destinations.
 typedef QList<Destination*> DestinationList;
 
 static const char TraceString[] = "TRACE";
@@ -71,16 +72,21 @@ static const char* LevelToText(Level theLevel)
    }
 }
 
+/// Private logger implementation details.
 class LoggerImpl
 {
 public:
+   /// Construct with default logging level.
    LoggerImpl() :
       level(InfoLevel)
    {
 
    }
+   /// Mutex protecting logging operations.
    QMutex logMutex;
+   /// Current logging level.
    Level level;
+   /// Registered log destinations.
    DestinationList destList;
 };
 

@@ -74,7 +74,6 @@ ACRSCom::WriteEcho (string message)
 // ----------------------------------------------------------------------------
 /// Operation : Write
 /// Writes datas on the serial port. Returns the number of bytes written
-/// @param message
 ///    data to send on the serial port
 // ----------------------------------------------------------------------------
 int
@@ -98,7 +97,6 @@ ACRSCom::Write (string & message, ...)
 // ----------------------------------------------------------------------------
 /// Operation : Read
 /// Reads datas on the serial port. Returns the number of read characters.
-/// @param message
 ///    data read on the serial port
 // ----------------------------------------------------------------------------
 int

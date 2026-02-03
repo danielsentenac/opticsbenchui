@@ -24,18 +24,47 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "QsLog.h"
 
+/// \ingroup utils
+/// Utility helpers for logging, database paths, and timestamps.
 namespace Utils {
+/// Return the current time in microseconds.
 double GetTimeMicroseconds();
+/// Build a database path from a base directory and filename.
+/// \param baseDir Base directory.
+/// \param filename Database filename.
 QString BuildDbPath(const QString& baseDir, const QString& filename);
+/// Return the current timestamp as a formatted string.
 QString CurrentTimestampString();
+/// Ensure a filename ends with the HDF5 extension.
+/// \param filename Input filename.
 QString EnsureHdf5Extension(const QString& filename);
+/// Build a default HDF5 path using a base name.
+/// \param baseName Base filename.
 QString DefaultHdf5Path(const QString& baseName);
+/// Return the file dialog filter for HDF5 files.
 QString Hdf5FileDialogFilter();
+/// Open a SQLite database and log context for errors.
+/// \param path Database path.
+/// \param logContext Context string for logging.
 QSqlDatabase ConnectSqliteDb(const QString& path, const char* logContext);
+/// Execute a SQL statement and log on error.
+/// \param query Query object.
+/// \param sql SQL statement.
+/// \param logContext Context string for logging.
 bool ExecSql(QSqlQuery& query, const QString& sql, const char* logContext);
+/// Log an error with context.
+/// \param logContext Context string for logging.
+/// \param message Error message.
 void ReportError(const char* logContext, const QString& message);
+/// Log a warning with context.
+/// \param logContext Context string for logging.
+/// \param message Warning message.
 void ReportWarning(const char* logContext, const QString& message);
 
+/// Report a warning and emit `showWarning` when available.
+/// \param sender Object that may expose `showWarning`.
+/// \param logContext Context string for logging.
+/// \param message Warning message.
 template <typename T>
 void EmitWarning(T* sender, const char* logContext, const QString& message) {
   ReportWarning(logContext, message);

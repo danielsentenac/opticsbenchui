@@ -30,25 +30,47 @@ class QPushButton;
 class QButtonGroup;
 class QSignalMapper;
 
+/// \ingroup ui
+/// UI widget for camera feature control.
 class CameraControlWidget : public QWidget
 {
   Q_OBJECT
     
 public:
+  /// Construct a control widget for a camera.
+  /// \param _camera Camera to control.
   CameraControlWidget(Camera *_camera = nullptr);
+  /// Destructor.
   ~CameraControlWidget();
 
 signals:
+  /// Set a camera feature value.
+  /// \param position Feature index.
+  /// \param value Feature value.
   void setFeature(int position, double value);
+  /// Set a camera feature mode.
+  /// \param position Feature index.
+  /// \param value True for auto/enable, false for manual/disable.
   void setMode(int position, bool value);
+  /// Emit warnings to the UI.
+  /// \param message Warning message.
   void showWarning(QString message);
 
 private slots:
-  void setFeatureValue(int);
-  void setSliderValue(int);
-  void setModeValue(int);
+  /// Update a feature from a slider.
+  /// \param value New slider value.
+  void setFeatureValue(int value);
+  /// Update a slider from a text value.
+  /// \param value New text value.
+  void setSliderValue(int value);
+  /// Update a feature mode from a checkbox.
+  /// \param value Checkbox state.
+  void setModeValue(int value);
+  /// Refresh feature values from the camera.
   void updateFeatures();
+  /// Trigger a single snapshot.
   void snapShot();
+  /// Optimize acquisition settings.
   void optimizeAcquisition();
 
 private:

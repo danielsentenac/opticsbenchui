@@ -22,33 +22,64 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets>
 #include "QsLog.h"
 
+/// \ingroup dac
+/// Abstract interface for Comedi-based devices (counter/DAC).
 class Comedi : public QObject
 {
   Q_OBJECT
     
 public:
+  /// Virtual destructor.
   ~Comedi() override = default;
 
+  /// Connect to a Comedi device by name.
+  /// \param newcomedi Device identifier from the database.
   virtual bool connectComedi(QString newcomedi) = 0;
+  /// Reset the Comedi device to a known state.
+  /// \param newcomedi Device identifier from the database.
   virtual bool resetComedi(QString newcomedi) = 0;
+  /// Set an output value (type depends on device).
+  /// \param newcomedi Device identifier from the database.
+  /// \param output Output channel index.
+  /// \param value Pointer to a device-specific value.
   virtual bool setComediValue(QString newcomedi, int output, void *value) = 0;
+  /// Read an output/input value from the device.
+  /// \param newcomedi Device identifier from the database.
+  /// \param output Output channel index.
+  /// \param value Output value in engineering units.
   virtual bool getComediValue(QString newcomedi, int output, double &value) = 0;
+  /// Sync or update database-backed settings.
+  /// \param newcomedi Device identifier from the database.
   virtual bool updateDBValues(QString newcomedi) = 0;
+  /// Set the database path used by this device.
+  /// \param path Filesystem path to the Comedi SQLite DB.
   virtual void setDbPath(QString path) = 0;
   
   // parameters
+  /// Path to the Comedi database.
   QString path;
+  /// Comedi device type identifier.
   QString comeditype;
 
 public slots:
 
 signals:
+  /// Emit a human-readable description of the device.
+  /// \param description Device description string.
   void getDescription(QString description);
+  /// Emit warnings to the UI.
+  /// \param message Warning message.
   void showWarning(QString message);
-  void getOutputs(int outputs,QString);
+  /// Emit output count and device name.
+  /// \param outputs Number of outputs.
+  /// \param mode Device name or mode string.
+  void getOutputs(int outputs, QString mode);
+  /// Emit output values (device-specific type).
+  /// \param comedivalues Pointer to device-specific values.
   void getOutputValues(void *comedivalues);
 
 protected:
+   /// Create or refresh the device database connection.
    virtual void dbConnexion() = 0;
 
 };

@@ -97,8 +97,6 @@ if ( _device_vendor_id == 0x10c4 && _device_product_id == 0x0230 )
 // ----------------------------------------------------------------------------
 /// Operation : Write
 ///    sends data through the USB port
-/// @message
-///    message to send
 // ----------------------------------------------------------------------------
 int
 ACUsbCom::Write (string & message, ...)
@@ -150,8 +148,6 @@ ACUsbCom::Write (string & message, ...)
 // ----------------------------------------------------------------------------
 /// Operation : WriteControlTransfer
 ///    sends data through the USB port
-/// @message
-///    message to send
 // ----------------------------------------------------------------------------
 int
 ACUsbCom::WriteControlTransfer (string & message,uint8_t bmRequestType,uint8_t  bRequest,
@@ -172,8 +168,6 @@ ACUsbCom::WriteControlTransfer (string & message,uint8_t bmRequestType,uint8_t  
 // ----------------------------------------------------------------------------
 /// Operation : WriteBulkTransfer
 ///    sends data through the USB port
-/// @message
-///    message to send
 // ----------------------------------------------------------------------------
 int
 ACUsbCom::WriteBulkTransfer (string & message,unsigned char endpoint,int *transferred,
@@ -202,8 +196,6 @@ ACUsbCom::WriteBulkTransfer (string & message,unsigned char endpoint,int *transf
 // ----------------------------------------------------------------------------
 /// Operation : WriteInterruptTransfer
 ///    sends data through the USB port
-/// @message
-///    message to send
 // ----------------------------------------------------------------------------
 int
 ACUsbCom::WriteInterruptTransfer (string & message,unsigned char endpoint,int *transferred,
@@ -230,8 +222,6 @@ ACUsbCom::WriteInterruptTransfer (string & message,unsigned char endpoint,int *t
 // ----------------------------------------------------------------------------
 /// Operation : Read
 ///    reads data through the socket
-/// @message
-///    message to  read
 // ----------------------------------------------------------------------------
 int
 ACUsbCom::Read (string & message, ...)
@@ -271,8 +261,6 @@ ACUsbCom::Read (string & message, ...)
 // ----------------------------------------------------------------------------
 /// Operation : ReadBulkTransfer
 ///    reads data through the USB port
-/// @message
-///    message to send
 // ----------------------------------------------------------------------------
 int
 ACUsbCom::ReadBulkTransfer (string & message,unsigned char endpoint,int *transferred,
@@ -296,8 +284,6 @@ ACUsbCom::ReadBulkTransfer (string & message,unsigned char endpoint,int *transfe
 // ----------------------------------------------------------------------------
 /// Operation : ReadInterruptTransfer
 ///    reads data through the USB port
-/// @message
-///    message to send
 // ----------------------------------------------------------------------------
 int
 ACUsbCom::ReadInterruptTransfer (string & message,unsigned char endpoint,int *transferred,

@@ -23,26 +23,42 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 #include <QtWidgets>
 
+/// \ingroup ui
+/// Window for Comedi device configuration and control.
 class ComediWindow : public QMainWindow 
 {
   
   Q_OBJECT
     
 public:
+  /// Construct a Comedi window.
+  /// \param parent Parent window.
+  /// \param fl Window flags.
+  /// \param comedi Comedi controller instance.
   ComediWindow(QMainWindow* parent = nullptr, Qt::WindowFlags fl = Qt::Window,
                Comedi *comedi = nullptr);
+  /// Destructor.
   ~ComediWindow() override;
   
+  /// Comedi counter control widget.
   ComediCounterControlWidget *comediWidget;
+  /// Comedi DAC control widget.
   ComediDacControlWidget *daccomediWidget;
 
 public slots:
+  /// Update database-backed tables.
   void update();
+  /// Remove selected entries.
   void remove();
+  /// Load configuration into runtime.
   void load();
+  /// Set the database path for tables.
+  /// \param path Filesystem path to the Comedi DB.
   void setDbPath(QString path);
 
 protected:
+  /// Handle window close events.
+  /// \param event Close event.
   void closeEvent(QCloseEvent *event) override;
     
 private:

@@ -22,6 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 #include <QtWidgets>
 
+/// \ingroup ui
+/// Window for Raspi DAC configuration and control.
 class RaspiWindow : public QMainWindow 
 {
   
@@ -29,18 +31,31 @@ class RaspiWindow : public QMainWindow
     
     public:
   
+  /// Construct a Raspi window.
+  /// \param parent Parent window.
+  /// \param fl Window flags.
+  /// \param _raspi Raspi controller instance.
   RaspiWindow( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window , Raspi *_raspi = 0);
+  /// Destructor.
   virtual ~RaspiWindow();
 
+  /// Raspi DAC control widget instance.
   RaspiDacControlWidget *raspiWidget;
 
  public slots:
+   /// Update database-backed tables.
    void update();
+   /// Remove selected entries.
    void remove();
+   /// Load configuration into runtime.
    void load();
+   /// Set the database path for tables.
+   /// \param _path Filesystem path to the Raspi DB.
    void setDbPath(QString _path);
 
  protected:
+  /// Handle window close events.
+  /// \param event Close event.
   void closeEvent(QCloseEvent *event);
     
  private:

@@ -30,20 +30,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QLCDNumber>
 #include "QsLog.h"
 
+/// \ingroup ui
+/// UI widget for displaying camera properties.
 class CameraPropWidget : public QWidget
 {
   Q_OBJECT
     
     public:
+  /// Construct a property widget for a camera.
+  /// \param _camera Camera to inspect.
   CameraPropWidget(Camera *_camera = 0);
+  /// Destructor.
   ~CameraPropWidget();
 
  
   
  signals:
+  /// Emit warnings to the UI.
+  /// \param message Warning message.
   void showWarning(QString message);
 
   private slots:
+  /// Refresh the property display.
   void updateProps();
 
  private:

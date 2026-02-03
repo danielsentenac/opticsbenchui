@@ -29,23 +29,32 @@
 #include <memory>
 class QString;
 
+/// \ingroup utils
+/// Logging destination interfaces and factory helpers.
 namespace QsLogging
 {
 
+/// Abstract log destination.
 class Destination
 {
 public:
+   /// Destructor.
    virtual ~Destination(){}
+   /// Write a log message to the destination.
+   /// \param message Log message.
    virtual void write(const QString& message) = 0;
 };
+/// Destination smart pointer type.
 typedef std::auto_ptr<Destination> DestinationPtr;
 
-//! Creates logging destinations/sinks. The caller will have ownership of 
-//! the newly created destinations.
+/// Creates logging destinations/sinks. The caller owns the result.
 class DestinationFactory
 {
 public:
+   /// Create a file destination.
+   /// \param filePath Output file path.
    static DestinationPtr MakeFileDestination(const QString& filePath);
+   /// Create a debug output destination.
    static DestinationPtr MakeDebugOutputDestination();
 };
 

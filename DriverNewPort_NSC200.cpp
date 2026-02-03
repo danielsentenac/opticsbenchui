@@ -553,8 +553,10 @@ int DriverNewPort_NSC200::GetActuatorFeature(DriverFeature& ractuatorFeature) co
 ///    motion unit
 /// @param valueToConvert
 ///    value to be converted
-/// @rconvertedValue
+/// @param rconvertedValue
 ///    conversion result
+/// @param rrange
+///    output range for the selected unit
 // -----------------------------------------------------------------------------
 // Use indifferently default units or custom units configuration (STEPS == MM)
 int DriverNewPort_NSC200::ConvertUnit(int unit, 

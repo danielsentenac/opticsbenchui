@@ -26,33 +26,63 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 typedef QVector<float> floatVector;
 
+/// \ingroup ui
+/// UI widget for Comedi counter control and plotting.
 class ComediCounterControlWidget : public QWidget
 {
   Q_OBJECT
     
 public:
+  /// Construct a Comedi counter control widget.
+  /// \param comediList List of Comedi device names (optional).
   explicit ComediCounterControlWidget(QVector<QString>* comediList = nullptr);
+  /// Destructor.
   ~ComediCounterControlWidget() override;
     
+  /// Attach the Comedi controller.
+  /// \param comedi Comedi controller instance.
   void setComedi(Comedi* comedi);
+  /// Set the list of available Comedi devices.
+  /// \param comediList List of Comedi device names.
   void setComediList(QVector<QString>* comediList);
 
+  /// Flag to request stopping the background future.
   bool stopFuture;
+  /// List of per-output set buttons.
   QVector<QPushButton*> *setButtonList;
 
 private slots:
+  /// Connect to the selected Comedi device.
   void connectComedi();
+  /// Reset the selected device.
   void resetComedi();
+  /// Set a counter value.
+  /// \param output Output channel index.
   void setComediValue(int output);
+  /// Start continuous counting.
+  /// \param output Output channel index.
   void setComediContinuousValue(int output);
+  /// Start counting on a channel.
+  /// \param output Output channel index.
   void startCounting(int output);
+  /// Start plotting for a channel.
+  /// \param output Output channel index.
   void startPlot(int output) ;
+  /// Update the description display.
+  /// \param description Device description.
   void getDescription(QString description);
+  /// Update output count and mode.
+  /// \param outputs Number of outputs.
+  /// \param mode Mode or unit string.
   void getOutputs(int outputs, QString mode);
+  /// Update output value displays.
+  /// \param comedivalues Pointer to device-specific values.
   void getOutputValues(void *comedivalues);
 
 private:
+  /// Clear output UI widgets.
   void clearOutputs();
+  /// Clear the plot display.
   void clearPlot();
 
   QPushButton *connectButton; 

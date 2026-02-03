@@ -318,8 +318,10 @@ int DriverStanda_uSMC::GetActuatorFeature(DriverFeature& ractuatorFeature) const
 ///    motion unit
 /// @param valueToConvert
 ///    value to be converted
-/// @rconvertedValue
+/// @param rconvertedValue
 ///    conversion result
+/// @param rrange
+///    output range for the selected unit
 // -----------------------------------------------------------------------------
 // Use indifferently default units or custom units configuration (STEPS == MM)
 int DriverStanda_uSMC::ConvertUnit(int unit, 

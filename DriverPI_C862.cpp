@@ -563,8 +563,10 @@ int DriverPI_C862::SendAddressCode() const
 ///    motion unit
 /// @param valueToConvert
 ///    value to be converted
-/// @rconvertedValue
+/// @param rconvertedValue
 ///    conversion result
+/// @param rrange
+///    output range for the selected unit
 // -----------------------------------------------------------------------------
 int DriverPI_C862::ConvertUnit(int unit, 
                                      float valueToConvert, 

@@ -33,6 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QTime>
 #include "QsLog.h"
 
+/// Pixel encoding types reported by camera backends.
 typedef enum {
   B8,
   B10,
@@ -43,6 +44,11 @@ typedef enum {
   UNKNOWN
 } pixel_encodings;
 
+/// \ingroup cameras
+/// Base camera thread with shared image handling utilities.
+///
+/// Concrete camera implementations derive from this class to provide
+/// device-specific acquisition and configuration.
 class Camera : public QThread
 {
   Q_OBJECT
@@ -317,80 +323,163 @@ class Camera : public QThread
     table = &gray;
   }
   ~Camera() override = default;
+  /// Stop acquisition and release resources.
   virtual void stop() = 0;
+  /// Discover available cameras.
   virtual int  findCamera() = 0;
+  /// Attach a backend camera handle.
+  /// \param _camera Backend-specific camera pointer.
+  /// \param _id Camera index within the manager.
   virtual void setCamera(void *_camera, int _id) = 0;
+  /// Query and cache camera features.
   virtual void getFeatures() = 0;
+  /// Query and cache camera properties.
   virtual void getProps() = 0;
+  /// Acquire a single 8-bit snapshot.
   virtual uchar *getSnapshot() = 0;
+  /// Acquire a single 16-bit snapshot.
   virtual ushort *getSnapshot16() = 0;
+  /// Acquire a single 32-bit snapshot.
   virtual int *getSnapshot32() = 0;
  
+  /// General mutex for camera operations.
   QMutex *mutex = nullptr;
+  /// Mutex for snapshot operations.
   QMutex *snapshotMutex = nullptr;
+  /// Mutex for acquisition operations.
   QMutex *acquireMutex = nullptr;
+  /// Wait condition for acquisition start.
   QWaitCondition *acqstart = nullptr;
+  /// Wait condition for acquisition end.
   QWaitCondition *acqend = nullptr;
+  /// True if acquisition has started.
   bool has_started = false;
+  /// True if acquisition is suspended.
   bool suspend = false;
+  /// True if acquisition optimization is enabled.
   bool optimizeAcquisition = false;
+  /// Current image width.
   unsigned int width = 0;
+  /// Current image height.
   unsigned int height = 0;
+  /// Video mode identifier.
   unsigned int video_mode = 0;
+  /// Pixel encoding identifier.
   unsigned int pixel_encoding = 0;
+  /// 8-bit acquisition buffer.
   uchar *buffer = nullptr;
+  /// 8-bit snapshot buffer.
   uchar *snapshot = nullptr;
+  /// 16-bit acquisition buffer.
   ushort *buffer16 = nullptr;
+  /// 16-bit snapshot buffer.
   ushort *snapshot16 = nullptr;
+  /// 32-bit acquisition buffer.
   int *buffer32 = nullptr;
+  /// 32-bit snapshot buffer.
   int *snapshot32 = nullptr;
+  /// Buffer size (bytes or elements, backend-specific).
   int BufSize = 0;
+  /// Snapshot minimum.
   int snapShotMin = 0;
+  /// Snapshot maximum.
   int snapShotMax = 0;
+  /// Snapshot average.
   int snapShotAvg = 0;
+  /// Current minimum.
   int min = 0;
+  /// Current maximum.
   int max = 0;
+  /// Current average.
   int avg = 0;
-  int camera_err = 0;                     /* Error flag */
-  int num = 0;                            /* Camera total number for camera manager*/
-  int id = 0;                             /* Camera position id in list for camera manager*/
-  QVector<void *> cameralist;             /* Available camera list for camera manager*/
-  QVector<QString> vendorlist;            /* Available vendor list for camera manager*/
-  QVector<QString> modelist;              /* Available model list for camera manager*/
-  QString vendor;                         /* Current vendor*/
-  QString model;                          /* Current model*/
-  bool modeCheckEnabled = false;          /* AUTO/MANUAL modeCheck enabled */
-  QVector<QString> featureNameList;       /* Available feature list*/
-  QVector<int> featureIdList;             /* Available feature id list*/
-  QVector<double> featureValueList;       /* Available feature value list*/
-  QVector<double> featureMinList;         /* Available feature min list*/
-  QVector<double> featureMaxList;         /* Available feature max list*/
-  QVector<bool> featureModeAutoList;      /* Available feature mode list*/
-  QVector<bool> featureAutoCapableList;   /* Available feature mode auto capable list*/
-  QVector<double> featureAbsValueList;    /* Available feature abs value list*/
-  QVector<int> featureAbsCapableList;     /* Available feature abs capable list*/
+  /// Error flag.
+  int camera_err = 0;
+  /// Camera total number for camera manager.
+  int num = 0;
+  /// Camera position id in list for camera manager.
+  int id = 0;
+  /// Available camera list for camera manager.
+  QVector<void *> cameralist;
+  /// Available vendor list for camera manager.
+  QVector<QString> vendorlist;
+  /// Available model list for camera manager.
+  QVector<QString> modelist;
+  /// Current vendor.
+  QString vendor;
+  /// Current model.
+  QString model;
+  /// AUTO/MANUAL mode check enabled.
+  bool modeCheckEnabled = false;
+  /// Available feature list.
+  QVector<QString> featureNameList;
+  /// Available feature id list.
+  QVector<int> featureIdList;
+  /// Available feature value list.
+  QVector<double> featureValueList;
+  /// Available feature min list.
+  QVector<double> featureMinList;
+  /// Available feature max list.
+  QVector<double> featureMaxList;
+  /// Available feature mode list.
+  QVector<bool> featureModeAutoList;
+  /// Available feature mode auto capable list.
+  QVector<bool> featureAutoCapableList;
+  /// Available feature abs value list.
+  QVector<double> featureAbsValueList;
+  /// Available feature abs capable list.
+  QVector<int> featureAbsCapableList;
   
-  QVector<QString> propList;          /* Available properties list*/
+  /// Available properties list.
+  QVector<QString> propList;
 
  signals:
+  /// Emit a new image frame.
+  /// \param image The latest frame.
   void  getImage(const QImage &image);
+  /// Emit warnings to the UI.
+  /// \param message Warning message.
   void  showWarning(QString message);
+  /// Notify UI to refresh feature values.
   void  updateFeatures();
+  /// Notify UI to refresh property values.
   void  updateProps();
+  /// Update the min display value.
+  /// \param min Minimum pixel value.
   void  updateMin(int min);
+  /// Update the max display value.
+  /// \param max Maximum pixel value.
   void  updateMax(int max);
+  /// Update the average display value.
+  /// \param avg Average pixel value.
   void  updateAvg(int avg);
 
   public slots:
+  /// Set the desired image size for acquisition.
+  /// \param _imageWidth Width in pixels.
+  /// \param _imageHeight Height in pixels.
   virtual void setImageSize(const int &_imageWidth, const int &_imageHeight) = 0;
+  /// Set a numeric camera feature.
+  /// \param feature Feature identifier.
+  /// \param value Feature value.
   virtual void setFeature(int feature, double value) = 0;
+  /// Enable or disable a feature mode.
+  /// \param feature Feature identifier.
+  /// \param value True for auto/enable, false for manual/disable.
   virtual void setMode(int feature, bool value) = 0;
+  /// Enable or disable vertical flip.
+  /// \param state Nonzero to enable.
   virtual void  vflipImage(int state) {
       vflip = state;
   }
+  /// Enable or disable horizontal flip.
+  /// \param state Nonzero to enable.
   virtual void  hflipImage(int state) {
       hflip = state;
   }
+  /// Reverse byte order in an 8-bit buffer.
+  /// \param buffer Buffer to modify in place.
+  /// \param buffersize Number of bytes in the buffer.
+  /// \return The modified buffer or nullptr.
   virtual uchar* reversebytes(uchar *buffer, int buffersize) {
      if (buffer == nullptr) return nullptr;
      uchar swap;
@@ -403,6 +492,10 @@ class Camera : public QThread
      }
      return buffer;
   }
+  /// Reverse byte order in a 16-bit buffer.
+  /// \param buffer Buffer to modify in place.
+  /// \param buffersize Number of elements in the buffer.
+  /// \return The modified buffer or nullptr.
   virtual ushort* reversebytes(ushort *buffer, int buffersize) {
      if (buffer == nullptr) return nullptr;
      ushort swap;
@@ -415,6 +508,10 @@ class Camera : public QThread
      }
      return buffer;
   }
+  /// Reverse byte order in a 32-bit buffer.
+  /// \param buffer Buffer to modify in place.
+  /// \param buffersize Number of elements in the buffer.
+  /// \return The modified buffer or nullptr.
   virtual int* reversebytes(int *buffer, int buffersize) {
      if (buffer == nullptr) return nullptr;
      int swap;
@@ -427,6 +524,11 @@ class Camera : public QThread
      }
      return buffer;
   }
+  /// Flip an 8-bit image horizontally in place.
+  /// \param buffer Buffer to modify.
+  /// \param buffersize Total number of pixels.
+  /// \param width Image width in pixels.
+  /// \return The modified buffer or nullptr.
   virtual uchar* fliphorizontal(uchar *buffer, int buffersize, int width) {
      if (buffer == nullptr) return nullptr;
      int nline = 0;
@@ -443,6 +545,11 @@ class Camera : public QThread
      }
      return buffer;
   }
+  /// Flip a 16-bit image horizontally in place.
+  /// \param buffer Buffer to modify.
+  /// \param buffersize Total number of pixels.
+  /// \param width Image width in pixels.
+  /// \return The modified buffer or nullptr.
   virtual ushort* fliphorizontal(ushort *buffer, int buffersize, int width) {
      if (buffer == nullptr) return nullptr;
      int nline = 0;
@@ -459,6 +566,11 @@ class Camera : public QThread
      }
      return buffer;
   }
+  /// Flip a 32-bit image horizontally in place.
+  /// \param buffer Buffer to modify.
+  /// \param buffersize Total number of pixels.
+  /// \param width Image width in pixels.
+  /// \return The modified buffer or nullptr.
   virtual int* fliphorizontal(int *buffer, int buffersize, int width) {
      if (buffer == nullptr) return nullptr;
      int nline = 0;
@@ -475,6 +587,8 @@ class Camera : public QThread
      }
      return buffer;
   }
+  /// Select the color table for 8-bit display.
+  /// \param id Color table identifier (-3 = hot, -2 = gray).
   virtual void setColorTable(int id) {
     if ( id == -3 ) {
      QLOG_INFO() << "Camera::setColorTable> changing color to hot";
@@ -493,17 +607,29 @@ class Camera : public QThread
     acquireMutex->unlock(); 
   }
  protected:
+  /// Thread entry point for acquisition.
   virtual void run() = 0;
+  /// Connect to the camera backend.
   virtual int  connectCamera() = 0;
+  /// Acquire an image from the camera backend.
   virtual int  acquireImage() = 0;
+  /// Cleanup backend resources.
   virtual void cleanup_and_exit() = 0;
+  /// Vertical flip flag.
   int vflip = 0;
+  /// Horizontal flip flag.
   int hflip = 0;
+  /// Total exposure time.
   double eTimeTotal = 0.0;
+  /// Acquisition frequency.
   double frequency = 0.0;
+  /// Hot color table.
   QVector<QRgb> hot;
+  /// Gray color table.
   QVector<QRgb> gray;
+  /// Active color table pointer.
   QVector<QRgb> *table = nullptr;
+  /// Image object for display.
   QImage *image = nullptr;
 };
 

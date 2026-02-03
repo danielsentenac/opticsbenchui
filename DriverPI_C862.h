@@ -26,33 +26,42 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Set namespace
 using namespace std;
 
+/// \ingroup motors
+/// PI C-862 actuator driver implementation.
 class DriverPI_C862 : public Driver
 {
   public:
  
-    // Constructor
+    /// Default constructor.
     DriverPI_C862(){}
 
+    /// Construct with a communication channel.
+    /// \param commChannel Communication channel instance.
     DriverPI_C862(ACCom* commChannel):
        Driver(commChannel)
     {}
+    /// Copy-construct with a new communication channel.
+    /// \param actuatorDrvPI_C862 Reference driver to copy.
+    /// \param commChannel Communication channel instance.
     DriverPI_C862(const DriverPI_C862& actuatorDrvPI_C862,
                         ACCom* commChannel):
        Driver(actuatorDrvPI_C862, commChannel),
        _originOffset(actuatorDrvPI_C862._originOffset)
     {}
 
-    // Destructor
+    /// Destructor.
     virtual ~DriverPI_C862(){}
 
-    // Copy Constructor
+    /// Copy constructor.
+    /// \param actuatorDrvPI_C862 Reference driver to copy.
     DriverPI_C862(const DriverPI_C862& actuatorDrvPI_C862 ):
        Driver(actuatorDrvPI_C862),
        _originOffset(actuatorDrvPI_C862._originOffset)
     {
     }
   
-    // Affectation Operator 
+    /// Assignment operator.
+    /// \param actuatorDrvPI_C862 Reference driver to copy.
     virtual DriverPI_C862& operator = (
        const DriverPI_C862& actuatorDrvPI_C862) 
     {
@@ -64,33 +73,48 @@ class DriverPI_C862 : public Driver
     //
     // Methods:
     //
+    /// Initialize the driver.
     virtual int Init(string& rstateData) const;
+    /// Initialize the actuator with settings and an optional position.
     virtual int InitActuator(string actuatorSetting,float position) const ;
+    /// Read the current actuator position.
     virtual int GetPos(string actuatorSetting, float& position) const ;
+    /// Perform a relative motion.
     virtual int Move(string actuatorSetting,float nbSteps,int unit) const;
+    /// Perform an absolute motion.
     virtual int MoveAbs(string actuatorSetting, float absPos, int unit) const;
+    /// Stop the actuator.
     virtual int Stop(string actuatorSetting) const;
+    /// Check whether the last operation has completed.
     virtual int OperationComplete(
                      string& rstateData,
                      string  actuatorSetting,
                      DriverDefinition::ADLimitSwitch& rlimitSwitch) const;
+    /// Get actuator feature metadata.
     virtual int GetActuatorFeature(
        DriverDefinition::DriverFeature& ractuatorFeature) const;
+    /// Convert between default and custom units.
     virtual int ConvertUnit(int unit, 
                             float valueToConvert, 
                             float& rconvertedValue,
                             float& rrange) const;
 
   protected : 
+    /// Serial buffer size.
     static const int BUFFER_SIZE;
+    /// Maximum device count.
     static const int MAX_DEVICES; 
+    /// Number of init settings items.
     static const int NB_ITEM_INIT_SETTING;
+    /// Number of driver settings items.
     static const int NB_ITEM_DRV_SETTING;
+    /// Translation stage features.
     static const DriverDefinition::DriverFeature PI_C862_FEATURE; 
-                                              // Translation stage features
 
+    /// Send device address code.
     int SendAddressCode() const;
 
+    /// Origin offset value.
     mutable float _originOffset;
 
 };

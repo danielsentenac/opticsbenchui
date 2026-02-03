@@ -18,19 +18,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGLWidget>
 #include <QImage>
 
+/// \ingroup ui
+/// OpenGL-based widget for rendering images.
 class PaintWidget : public QGLWidget
 {
   Q_OBJECT
     
     public:
+  /// Construct a paint widget.
+  /// \param parent Parent widget.
   PaintWidget(QWidget* parent = 0);
   
+  /// Destructor.
   ~PaintWidget();
   
+  /// Paint the given image using OpenGL.
+  /// \param data Image to render.
   void paintGL(const QImage & data);
+  /// Handle resize events for the GL viewport.
+  /// \param w New width in pixels.
+  /// \param h New height in pixels.
   void resizeGL(int w, int h);
   
  protected:
+  /// Current image data for rendering.
   QImage gldata;
 };
-

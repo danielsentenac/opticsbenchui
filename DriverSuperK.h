@@ -34,29 +34,50 @@ enum {
 // Set namespace
 using namespace std;
 
+/// \ingroup lasers
+/// Low-level driver for the SuperK laser over Interbus.
 class DriverSuperK 
 {
   public:
  
-    // Constructor
+    /// Constructor.
+    /// \param commChannel Communication channel instance.
     DriverSuperK(ACCom* commChannel);
 
-    // Destructor
+    /// Destructor.
     virtual ~DriverSuperK();
 
     //
     // Methods:
     //
+    /// Initialize the SuperK device.
     virtual int Init();
+    /// Set the power setting.
+    /// \param power Power value.
     virtual int setPower(int power);
+    /// Read the current power setting.
+    /// \param power Output power value.
     virtual int getPower(int& power);
+    /// Set the neutral density (ND) value.
+    /// \param nd ND value.
     virtual int setNd(int nd);
+    /// Read the current neutral density (ND) value.
+    /// \param nd Output ND value.
     virtual int getNd(int& nd);
+    /// Set the short-wavelength pass (SWP) value.
+    /// \param swp SWP value.
     virtual int setSwp(int swp);
+    /// Read the current short-wavelength pass (SWP) value.
+    /// \param swp Output SWP value.
     virtual int getSwp(int& swp);
+    /// Set the long-wavelength pass (LWP) value.
+    /// \param lwp LWP value.
     virtual int setLwp(int lwp);
+    /// Read the current long-wavelength pass (LWP) value.
+    /// \param lwp Output LWP value.
     virtual int getLwp(int& lwp);
 
+    /// Check whether the last command has completed.
     virtual int operationComplete();
 
   private :

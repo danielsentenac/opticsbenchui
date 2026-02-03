@@ -22,27 +22,57 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Comedi.h"
 #include "Utils.h"
 
+/// \ingroup dac
+/// Comedi counter implementation.
 class ComediCounter : public Comedi
 {
   Q_OBJECT
     
 public:
+  /// Create a Comedi counter using the given DB path.
+  /// \param dbpath Filesystem path to the Comedi DB.
   explicit ComediCounter(QString dbpath);
+  /// Destructor.
   ~ComediCounter() override;
 
+  /// Connect to the Comedi counter device.
+  /// \param newcomedi Device identifier from the database.
   bool connectComedi(QString newcomedi) override;
+  /// Reset the counter device.
+  /// \param newcomedi Device identifier from the database.
   bool resetComedi(QString newcomedi) override;
+  /// Set a counter value or mode (device-specific).
+  /// \param newcomedi Device identifier from the database.
+  /// \param output Output channel index.
+  /// \param value Pointer to a device-specific value.
   bool setComediValue(QString newcomedi, int output, void *value) override;
+  /// Read a counter value.
+  /// \param newcomedi Device identifier from the database.
+  /// \param output Output channel index.
+  /// \param value Output value in engineering units.
   bool getComediValue(QString newcomedi, int output, double &value) override;
+  /// Sync or update database-backed settings.
+  /// \param newcomedi Device identifier from the database.
   bool updateDBValues(QString newcomedi) override;
+  /// Set the database path used by this device.
+  /// \param path Filesystem path to the Comedi DB.
   void setDbPath(QString path) override;
 
 public slots:
 
 signals:
+  /// Emit a human-readable description of the device.
+  /// \param description Device description string.
   void getDescription(QString description);
+  /// Emit warnings to the UI.
+  /// \param message Warning message.
   void showWarning(QString message);
+  /// Emit output count and device name.
+  /// \param outputs Number of outputs.
+  /// \param QString Device name or mode string.
   void getOutputs(int outputs,QString);
+  /// Emit output values (device-specific type).
+  /// \param comedivalues Pointer to device-specific values.
   void getOutputValues(void *comedivalues);
 
 private:
