@@ -69,6 +69,155 @@
       <li>Advantech DACs (ADVANTECHDAC / NO_ADVDAQ): <a href="https://us2.advantech.com/DAQNavi/">DAQNavi SDK</a></li>
       <li>Raspberry Pi SPI (RASPIDAC / NO_SPI): <a href="http://www.airspayce.com/mikem/bcm2835/">bcm2835</a></li>
     </ul>
+    <h2>Hardware Protocols (by Device Type)</h2>
+    <p>
+      These tables summarize which communication protocols are used by the
+      supported hardware families and which vendor SDK or system library is
+      needed at build/run time.
+    </p>
+    <h3>Cameras</h3>
+    <table border="1" cellspacing="0" cellpadding="4">
+      <thead>
+        <tr>
+          <th>Hardware</th>
+          <th>Protocol</th>
+          <th>SDK/Library</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Generic USB cameras (UVC)</td>
+          <td>USB</td>
+          <td><a href="https://doc.qt.io/qt-6/qtmultimedia-index.html">Qt Multimedia</a></td>
+          <td>Uses OS camera backend via Qt Multimedia.</td>
+        </tr>
+        <tr>
+          <td>IEEE1394 / DCAM cameras</td>
+          <td>IEEE 1394 (FireWire)</td>
+          <td><a href="https://vcpkg.link/ports/libdc1394">libdc1394</a> +
+              <a href="https://ieee1394.docs.kernel.org/en/latest/libraw1394.html">libraw1394</a></td>
+          <td>Requires FireWire host/controller.</td>
+        </tr>
+        <tr>
+          <td>GigE Vision cameras</td>
+          <td>GigE Vision (Ethernet)</td>
+          <td><a href="https://github.com/AravisProject/aravis">Aravis</a></td>
+          <td>GenICam stack for GigE/USB3 cameras.</td>
+        </tr>
+        <tr>
+          <td>Andor Zyla (sCMOS)</td>
+          <td>USB 3.0 or Camera Link</td>
+          <td><a href="https://andor.oxinst.com/products/software-development-kit/software-development-kit">Andor SDK3</a></td>
+          <td>Vendor SDK required.</td>
+        </tr>
+        <tr>
+          <td>Andor Neo (sCMOS)</td>
+          <td>Camera Link (3-tap)</td>
+          <td><a href="https://andor.oxinst.com/products/software-development-kit/software-development-kit">Andor SDK3</a></td>
+          <td>Requires Camera Link frame grabber.</td>
+        </tr>
+        <tr>
+          <td>Allied Vision cameras</td>
+          <td>GigE Vision or USB 3.0</td>
+          <td><a href="https://www.alliedvision.com/en/products/vimba-sdk">Vimba X SDK</a></td>
+          <td>Transport layer depends on camera model.</td>
+        </tr>
+        <tr>
+          <td>Raptor cameras (Falcon / Ninox)</td>
+          <td>Camera Link (frame grabber)</td>
+          <td><a href="https://www.epixinc.com/products/xclib.htm">EPIX XCLIB</a></td>
+          <td>Requires frame grabber + XCLIB.</td>
+        </tr>
+        <tr>
+          <td>Raspberry Pi Camera</td>
+          <td>CSI-2 (MIPI)</td>
+          <td><a href="http://www.uco.es/investiga/grupos/ava/portfolio/raspicam/">raspicam</a></td>
+          <td>Requires Raspberry Pi CSI-2 connector.</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>Motors</h3>
+    <table border="1" cellspacing="0" cellpadding="4">
+      <thead>
+        <tr>
+          <th>Hardware</th>
+          <th>Protocol</th>
+          <th>SDK/Library</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>New Focus 8750</td>
+          <td>RS-232 / RS-485 / Ethernet</td>
+          <td><a href="https://artisantg.manualzilla.com/85/8750-Manual.610325539.pdf">New Focus 8750 Manual</a></td>
+          <td>Serial or TCP/IP depending on controller setup.</td>
+        </tr>
+        <tr>
+          <td>Newport NSC200 (PZC200)</td>
+          <td>RS-485</td>
+          <td><a href="https://www.newport.com/p/pzc200">PZC200 Controller</a></td>
+          <td>RS-485 bus; USB adapters OK.</td>
+        </tr>
+        <tr>
+          <td>Newport AG-UC2</td>
+          <td>USB</td>
+          <td><a href="https://www.newport.com/p/AG-UC2">AG-UC2 Controller</a></td>
+          <td>USB device controller.</td>
+        </tr>
+        <tr>
+          <td>PI C-862 / C-863</td>
+          <td>RS-232 or USB</td>
+          <td><a href="https://www.pi-usa.us/en/products/controllers-drivers/mercury-embedded-motion-controller-10244/">PI Mercury C-863</a></td>
+          <td>Mercury controller; serial or USB.</td>
+        </tr>
+        <tr>
+          <td>PI E-725</td>
+          <td>Ethernet / USB / RS-232</td>
+          <td><a href="https://static.pimicos.com/fileadmin/user_upload/pimicos/physik_instrumente/files/1_Datasheets/E-725_DataSheet.pdf">E-725 Datasheet</a></td>
+          <td>Ethernet preferred for multi-axis.</td>
+        </tr>
+        <tr>
+          <td>Micos SMC Pollux</td>
+          <td>RS-232</td>
+          <td><a href="https://www.mic-os.com/products/gearheads-stages-and-actuators/servo/8smc5.html">Micos SMC</a></td>
+          <td>Serial controller.</td>
+        </tr>
+        <tr>
+          <td>Standa uSMC2</td>
+          <td>USB / RS-232 / Ethernet</td>
+          <td><a href="https://pypi.org/project/libximc/">libximc</a></td>
+          <td>Vendor library provides all transports.</td>
+        </tr>
+        <tr>
+          <td>Native serial/Ethernet</td>
+          <td>RS-232/RS-485, TCP/IP</td>
+          <td><a href="https://pubs.opengroup.org/onlinepubs/7908799/xsh/tcsetattr.html">POSIX termios</a>,
+              <a href="https://pubs.opengroup.org/onlinepubs/009695399/functions/connect.html">POSIX sockets</a></td>
+          <td>Used for controllers without SDK.</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>Lasers</h3>
+    <table border="1" cellspacing="0" cellpadding="4">
+      <thead>
+        <tr>
+          <th>Hardware</th>
+          <th>Protocol</th>
+          <th>SDK/Library</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>NKT SuperK</td>
+          <td>USB / RS-232 / Ethernet</td>
+          <td><a href="https://www.nktphotonics.com/products/femtosecond-lasers/nkt-photonics-laser-control-software/">NKT Control</a></td>
+          <td>Control via NKT software/SDK.</td>
+        </tr>
+      </tbody>
+    </table>
     <hr>
     <address><a href="mailto:postmaster@opticsbenchui.com">OpticsBenchUI</a></address>
     <!-- Created: Mon Feb  7 16:28:17 CET 2011 -->
