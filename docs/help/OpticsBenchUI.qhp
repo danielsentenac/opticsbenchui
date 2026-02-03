@@ -11,6 +11,7 @@
              <section title="Motor" ref="Motor.html"></section>
              <section title="Camera" ref="Camera.html"></section>
              <section title="SLM" ref="SLM.html"></section>
+             <section title="Analysis" ref="Analysis.html"></section>
              <section title="File" ref="File.html"></section>
              <section title="Acquisition" ref="Acquisition.html"></section>
              </toc>
@@ -22,6 +23,7 @@
              <keyword name="Motor" ref="./Motor.html"/>
              <keyword name="Camera" ref="./Camera.html"/>
              <keyword name="SLM" ref="./SLM.html"/>
+             <keyword name="Analysis" ref="./Analysis.html"/>
              <keyword name="Acquisition" ref="./Acquisition.html"/>
              <keyword name="File" ref="./File.html"/>
              </keywords>
@@ -37,6 +39,7 @@
              <file>Camera.html</file>
              <file>CameraWindow.jpg</file>
              <file>SLM.html</file>
+             <file>Analysis.html</file>
              <file>Acquisition.html</file>
              <file>AcquisitionWindow.jpg</file>
              <file>File.html</file>

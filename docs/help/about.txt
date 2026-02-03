@@ -11,6 +11,11 @@ format for downstream analysis.
 External libraries (OpticsBenchUI.pro) are optional and will disable related
 features when missing.
 
+Analysis tasks:
+Analysis sequences are configured in analysis.db3 (table: analysis_sequence).
+Use the Analysis panel to define command-line tasks (code path + arguments).
+Add ANALYSE=START in acquisition settings to auto-run the analysis list.
+
 Data and plotting (HDF5 / NO_HDF5, COMEDICOUNTER, COMEDIDAC):
 HDF5 (HDF5 / NO_HDF5): https://www.hdfgroup.org/solutions/hdf5/
 Comedi (COMEDICOUNTER, COMEDIDAC / NO_COMEDI): http://www.comedi.org
