@@ -1,5 +1,6 @@
 var group__ui =
 [
+    [ "Analysis", "group__analysis.html", "group__analysis" ],
     [ "AcquisitionWidget", "classAcquisitionWidget.html", [
       [ "AcquisitionWidget", "classAcquisitionWidget.html#a7cfa4511b1126f95c8c3ea03ad812fd8", null ],
       [ "~AcquisitionWidget", "classAcquisitionWidget.html#acd075e4e967badd0298fdcf4afc04a02", null ],
@@ -15,6 +16,8 @@ var group__ui =
       [ "isopenCameraWindow", "classAcquisitionWidget.html#a64956d687b1e0e38c1783d4e6bcee157", null ],
       [ "reload", "classAcquisitionWidget.html#a560a54959e6833f22d4a86c0381d9183", null ],
       [ "remove", "classAcquisitionWidget.html#a9049c5959327a481327afabd87bee4b9", null ],
+      [ "requestAnalysis", "classAcquisitionWidget.html#ab3c30193159ef282fd3b77cbaceaacc5", null ],
+      [ "requestAnalysisFromThread", "classAcquisitionWidget.html#a538114f5a0300302795d256873ea0734", null ],
       [ "run", "classAcquisitionWidget.html#aac5152376c499940bd2ce3cbabe13e32", null ],
       [ "setAcqFile", "classAcquisitionWidget.html#aa946d8385c2d3449b779aff4cea688e2", null ],
       [ "setCamera", "classAcquisitionWidget.html#a44c6b4d3852b2b9fa5e0a56bbc92e312", null ],
@@ -33,8 +36,19 @@ var group__ui =
       [ "update", "classAcquisitionWidget.html#aac224bb734fac1fd52909da07ac9838d", null ]
     ] ],
     [ "AnalysisWidget", "classAnalysisWidget.html", [
-      [ "AnalysisWidget", "classAnalysisWidget.html#a89ed31318503bb6e049c873ca965e6df", null ],
-      [ "~AnalysisWidget", "classAnalysisWidget.html#a275424309fe7ecb5a13c10608e8ae8e0", null ]
+      [ "AnalysisWidget", "classAnalysisWidget.html#a967064cbeb7cc62daa72226030e027b7", null ],
+      [ "~AnalysisWidget", "classAnalysisWidget.html#a275424309fe7ecb5a13c10608e8ae8e0", null ],
+      [ "analysisFinished", "classAnalysisWidget.html#a0f280a63fa4a8ded04789112cea88b68", null ],
+      [ "analysisStarted", "classAnalysisWidget.html#a8c84b73b5ac067be1a7be27e4dfee941", null ],
+      [ "reload", "classAnalysisWidget.html#aefae3fb4325546147d5e5ee289f9b6b5", null ],
+      [ "remove", "classAnalysisWidget.html#a44227dfc138d8f0ce26547620b16d346", null ],
+      [ "run", "classAnalysisWidget.html#aad0deb0cffb1debffc704e9269d12551", null ],
+      [ "runFromAcquisition", "classAnalysisWidget.html#a8b50463355f626b510e2eaca3c4582b4", null ],
+      [ "setDbPath", "classAnalysisWidget.html#a201fe7c961b1d9cd2c4852729331b9c3", null ],
+      [ "showAnalysisWarning", "classAnalysisWidget.html#a777c7dd8ca130a2ee07bef90cb8a2177", null ],
+      [ "showWarning", "classAnalysisWidget.html#aa8befc39580821d330690195912e5433", null ],
+      [ "stop", "classAnalysisWidget.html#aaaab4fbe99e67641f0267acf42417988", null ],
+      [ "update", "classAnalysisWidget.html#a070e41f502feada79356e02d07a1e0dc", null ]
     ] ],
     [ "Assistant", "classAssistant.html", [
       [ "Assistant", "classAssistant.html#ab6499e0f9f0792047f1f6bb109e7977e", null ],
@@ -148,8 +162,6 @@ var group__ui =
       [ "openacquisition", "classOpticsBenchUIMain.html#a2e01452f3497c6ff68539ee426b4b4d1", null ],
       [ "openanalysis", "classOpticsBenchUIMain.html#a36b98909ce71c823e1e533ee6b127081", null ],
       [ "openCameraWindow", "classOpticsBenchUIMain.html#a740763cc40c157d7bd9b87959a2f8955", null ],
-      [ "openComediCounterWindow", "classOpticsBenchUIMain.html#af674c8025e824b0d0b408950be85ef6f", null ],
-      [ "openComediDacWindow", "classOpticsBenchUIMain.html#a1dfac06f6187e11f068ab59b75f01b9e", null ],
       [ "openConfiguration", "classOpticsBenchUIMain.html#a89db6026f401d7b121af5e7be28db389", null ],
       [ "openDacWindow", "classOpticsBenchUIMain.html#a44f82e985a1ad67900863798dd9e5504", null ],
       [ "openMotorWindow", "classOpticsBenchUIMain.html#a34cf137c4d61e8086f28423b5315fa89", null ],
@@ -160,7 +172,6 @@ var group__ui =
       [ "setDbPath", "classOpticsBenchUIMain.html#a5a1ad786d73b9f38fcab3b1f91f2133b", null ],
       [ "setOpenCameraWindow", "classOpticsBenchUIMain.html#a1abf1a5604021ed790f52a0e6b4f80ed", null ],
       [ "showAcquisitionWarning", "classOpticsBenchUIMain.html#a58808aa6e17c9b348aff637845816ba3", null ],
-      [ "showApiDocumentation", "classOpticsBenchUIMain.html#ac702e952521f4614f5e8947fa4360cb7", null ],
       [ "showApiDocumentation", "classOpticsBenchUIMain.html#ac702e952521f4614f5e8947fa4360cb7", null ],
       [ "showCameraControlWidgetWarning", "classOpticsBenchUIMain.html#a64b9dad51a62ab20652fcbd37ed01be6", null ],
       [ "showCameraWarning", "classOpticsBenchUIMain.html#a7fc26d871cc411b8276a3545f6204094", null ],
@@ -226,18 +237,7 @@ var group__ui =
       [ "~VideoWidget", "classVideoWidget.html#a77b8af4076f462cb5db7932e88d46829", null ],
       [ "paintEvent", "classVideoWidget.html#a1630b30d64cd82c04767d95075f1cfd8", null ],
       [ "resizeEvent", "classVideoWidget.html#a6e33f713b8174d3948e380794f43f04a", null ],
-      [ "sizeHint", "classVideoWidget.html#ac282629b2c0c2feeae99ec26fb60ddc9", null ],
-      [ "videoSurface", "classVideoWidget.html#ad3f80d790ab5ea47b968b62748af0637", null ]
-    ] ],
-    [ "VideoWidgetSurface", "classVideoWidgetSurface.html", [
-      [ "VideoWidgetSurface", "classVideoWidgetSurface.html#a8c6f7e90845a02ba3a5754842c815115", null ],
-      [ "isFormatSupported", "classVideoWidgetSurface.html#a261ea701ca4fd27784542a5b5f5242ac", null ],
-      [ "paint", "classVideoWidgetSurface.html#a7c549e193a9c991e212758e84da432b1", null ],
-      [ "present", "classVideoWidgetSurface.html#adb3c9477fb878fc14e204190a5fc7ca7", null ],
-      [ "start", "classVideoWidgetSurface.html#a1bd52a8b17ca889080d2723a7a1202bd", null ],
-      [ "stop", "classVideoWidgetSurface.html#ade446c36626d1379862ce590abaa263d", null ],
-      [ "supportedPixelFormats", "classVideoWidgetSurface.html#ae461b2897ae3e44622b76fbffe19b0f3", null ],
-      [ "updateVideoRect", "classVideoWidgetSurface.html#afe083a4914338964b3a178d754d7b7a9", null ],
-      [ "videoRect", "classVideoWidgetSurface.html#a58cda1f2dd6bdabbcb4b44dd5da4a112", null ]
+      [ "setImage", "classVideoWidget.html#a6272d89a0f6e68ed735f7449d5987140", null ],
+      [ "sizeHint", "classVideoWidget.html#ac282629b2c0c2feeae99ec26fb60ddc9", null ]
     ] ]
 ];

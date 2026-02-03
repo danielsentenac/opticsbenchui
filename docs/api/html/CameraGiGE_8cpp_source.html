@@ -203,43 +203,48 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">                            (char*)&quot;&quot;*/</span></div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                           };</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>CameraGiGE::CameraGiGE()</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  :<a class="code hl_class" href="classCamera.html">Camera</a>()</div>
+<div class="foldopen" id="foldopen00098" data-start="{" data-end="}">
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="classCameraGiGE.html#a31c3316a6ea692a72c49a91fbdb08dd7">   98</a></span><a class="code hl_function" href="classCameraGiGE.html#a31c3316a6ea692a72c49a91fbdb08dd7">CameraGiGE::CameraGiGE</a>()</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  :Camera()</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>{</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  vflip = 0;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  hflip = 0;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  image = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  buffer = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  snapshot = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  buffer32 = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  snapshot32 = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <a class="code hl_variable" href="classCamera.html#a3141f66445a193e8f21455e4c06b86bf">vflip</a> = 0;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <a class="code hl_variable" href="classCamera.html#a311d29c5e51e659f1de1b9f040047926">hflip</a> = 0;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  arvbuffer_last = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  suspend = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  has_started = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  mutex = <span class="keyword">new</span> QMutex(QMutex::NonRecursive);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  snapshotMutex = <span class="keyword">new</span> QMutex(QMutex::Recursive);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  acquireMutex = <span class="keyword">new</span> QMutex(QMutex::Recursive);</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  acqstart = <span class="keyword">new</span> QWaitCondition();</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  acqend = <span class="keyword">new</span> QWaitCondition();</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  modeCheckEnabled = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <a class="code hl_variable" href="classCamera.html#aa4f9dfb25e1fd1d5df43a8bd98844994">suspend</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <a class="code hl_variable" href="classCamera.html#a0db5c414ff3b1e98eaad9526f904936f">has_started</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <a class="code hl_variable" href="classCamera.html#a1133b0dd29ddb1d9d716e8e47129e217">mutex</a> = <span class="keyword">new</span> QMutex(QMutex::NonRecursive);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a> = <span class="keyword">new</span> QMutex(QMutex::Recursive);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <a class="code hl_variable" href="classCamera.html#af765862d776294761eb47f81e6682833">acquireMutex</a> = <span class="keyword">new</span> QMutex(QMutex::Recursive);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <a class="code hl_variable" href="classCamera.html#a4e64c09c8af69c5b5e667cee4eb33ff6">acqstart</a> = <span class="keyword">new</span> QWaitCondition();</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <a class="code hl_variable" href="classCamera.html#a33924d5eddaf9f897bed4e793407c4c7">acqend</a> = <span class="keyword">new</span> QWaitCondition();</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <a class="code hl_variable" href="classCamera.html#a66df10724d03b077fdb8c1477126d4c7">modeCheckEnabled</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>}</div>
+</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>CameraGiGE::~CameraGiGE()</div>
+<div class="foldopen" id="foldopen00119" data-start="{" data-end="}">
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="classCameraGiGE.html#a3ed4e9f32d984778f68a9b851099ef2d">  119</a></span><a class="code hl_function" href="classCameraGiGE.html#a3ed4e9f32d984778f68a9b851099ef2d">CameraGiGE::~CameraGiGE</a>()</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>{</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;Deleting CameraGiGE&quot;</span>;</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  stop();</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <a class="code hl_function" href="classCameraGiGE.html#a481e05f97483487476702db2b822e209">stop</a>();</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  cleanup_and_exit();</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keyword">delete</span> mutex;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keyword">delete</span> snapshotMutex;</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="keyword">delete</span> acqstart;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="keyword">delete</span> acqend;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keyword">delete</span> <a class="code hl_variable" href="classCamera.html#a1133b0dd29ddb1d9d716e8e47129e217">mutex</a>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keyword">delete</span> <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="keyword">delete</span> <a class="code hl_variable" href="classCamera.html#a4e64c09c8af69c5b5e667cee4eb33ff6">acqstart</a>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="keyword">delete</span> <a class="code hl_variable" href="classCamera.html#a33924d5eddaf9f897bed4e793407c4c7">acqend</a>;</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>}</div>
+</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="keywordtype">void</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>CameraGiGE::setCamera(<span class="keywordtype">void</span>* _camera, <span class="keywordtype">int</span> _id)</div>
+<div class="foldopen" id="foldopen00130" data-start="{" data-end="}">
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="classCameraGiGE.html#abbd26064a1cc38bb923d2936a339ef4d">  130</a></span><a class="code hl_function" href="classCameraGiGE.html#abbd26064a1cc38bb923d2936a339ef4d">CameraGiGE::setCamera</a>(<span class="keywordtype">void</span>* _camera, <span class="keywordtype">int</span> _id)</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>{</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> camera = (ArvCamera*)_camera;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> vendor = arv_camera_get_vendor_name (camera);</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> model = arv_camera_get_model_name (camera);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> <a class="code hl_variable" href="classCamera.html#a8152b3ad0d73754548a46e50b1a0148f">vendor</a> = arv_camera_get_vendor_name (camera);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> <a class="code hl_variable" href="classCamera.html#ac7debddf30d07a115056facc32cd7cd0">model</a> = arv_camera_get_model_name (camera);</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> device = arv_camera_get_device(camera);</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> <span class="keywordtype">double</span> feature_min_d, feature_max_d;</div>
@@ -259,9 +264,9 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        ARV_IS_GC_BOOLEAN (feature) ||</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    ARV_IS_GC_INTEGER (feature) </div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    ) {</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>      featureIdList.push_back(featureCnt);</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      featureNameList.push_back(gige_features[i]);</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      featureModeAutoList.push_back(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>      <a class="code hl_variable" href="classCamera.html#ad886ab68c1f94916ed5aa37b6b4473fe">featureIdList</a>.push_back(featureCnt);</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.push_back(gige_features[i]);</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      <a class="code hl_variable" href="classCamera.html#a56921e3621efce3412c57898e3f288d4">featureModeAutoList</a>.push_back(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>   }</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>   <span class="keywordflow">if</span> ( ARV_IS_GC_FLOAT (feature) ) {</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>     QVector&lt;QString&gt; feature_string_choice;</div>
@@ -270,13 +275,13 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>     QString feature_string_value;</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>     feature_string_value = QString(arv_gc_node_get_value_as_string (feature));</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>     QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setCamera&gt; FLOAT Feature &quot;</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                     &lt;&lt; featureNameList.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>     featureValueList.push_back( feature_string_value.toDouble() );</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>     featureMinList.push_back(feature_min_d );</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>     featureMaxList.push_back(feature_max_d );</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                     &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>     <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.push_back( feature_string_value.toDouble() );</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>     <a class="code hl_variable" href="classCamera.html#a33c6cb101766bb447cd58f553fdcdad5">featureMinList</a>.push_back(feature_min_d );</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>     <a class="code hl_variable" href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">featureMaxList</a>.push_back(feature_max_d );</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>     featureChoiceList.push_back(feature_string_choice);</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>     featureAbsCapableList.push_back(<span class="keyword">true</span>);</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>     featureAbsValueList.push_back(feature_string_value.toDouble());</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>     <a class="code hl_variable" href="classCamera.html#a21b164c6df511a8c3a56843641e21aca">featureAbsCapableList</a>.push_back(<span class="keyword">true</span>);</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>     <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.push_back(feature_string_value.toDouble());</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>   }</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>   <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( ARV_IS_GC_INTEGER (feature) ) {</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>     QVector&lt;QString&gt; feature_string_choice;</div>
@@ -285,33 +290,33 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>     QString feature_string_value;</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>     feature_string_value = QString(arv_gc_node_get_value_as_string (feature));</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>     QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setCamera&gt; INTEGER Feature &quot;</span></div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>                     &lt;&lt; featureNameList.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>     featureValueList.push_back( feature_string_value.toInt());</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>     featureMinList.push_back(feature_min_i);</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>     featureMaxList.push_back(feature_max_i);</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>                     &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>     <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.push_back( feature_string_value.toInt());</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>     <a class="code hl_variable" href="classCamera.html#a33c6cb101766bb447cd58f553fdcdad5">featureMinList</a>.push_back(feature_min_i);</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>     <a class="code hl_variable" href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">featureMaxList</a>.push_back(feature_max_i);</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>     featureChoiceList.push_back(feature_string_choice);</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>     featureAbsCapableList.push_back(<span class="keyword">false</span>);</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>     featureAbsValueList.push_back(feature_string_value.toDouble());</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>     <a class="code hl_variable" href="classCamera.html#a21b164c6df511a8c3a56843641e21aca">featureAbsCapableList</a>.push_back(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>     <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.push_back(feature_string_value.toDouble());</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>   }</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>   <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( ARV_IS_GC_BOOLEAN (feature) ) {</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>     QVector&lt;QString&gt; feature_string_choice;</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>     QString feature_string_value;</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>     feature_string_value = QString(arv_gc_node_get_value_as_string (feature));</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>     QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setCamera&gt; BOOLEAN Feature &quot;</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                 &lt;&lt; featureNameList.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                 &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>     feature_min_i = 0;</div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>     feature_max_i = 1;</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>     feature_string_choice.push_back(<span class="stringliteral">&quot;false&quot;</span>);</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>     feature_string_choice.push_back(<span class="stringliteral">&quot;true&quot;</span>);</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>     <span class="keywordflow">if</span> (feature_string_value == <span class="stringliteral">&quot;true&quot;</span>)</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>       featureValueList.push_back( feature_max_i );</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>       <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.push_back( feature_max_i );</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (feature_string_value == <span class="stringliteral">&quot;false&quot;</span>)</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>       featureValueList.push_back( feature_min_i);</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>     featureMinList.push_back(feature_min_i);</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>     featureMaxList.push_back(feature_max_i);</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>       <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.push_back( feature_min_i);</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>     <a class="code hl_variable" href="classCamera.html#a33c6cb101766bb447cd58f553fdcdad5">featureMinList</a>.push_back(feature_min_i);</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>     <a class="code hl_variable" href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">featureMaxList</a>.push_back(feature_max_i);</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>     featureChoiceList.push_back(feature_string_choice);</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>     featureAbsCapableList.push_back(<span class="keyword">false</span>);</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>     featureAbsValueList.push_back(feature_max_i);</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>     <a class="code hl_variable" href="classCamera.html#a21b164c6df511a8c3a56843641e21aca">featureAbsCapableList</a>.push_back(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>     <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.push_back(feature_max_i);</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>   }</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>   <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( ARV_IS_GC_ENUMERATION (feature) ) {</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>     QVector&lt;QString&gt; feature_string_choice;</div>
@@ -326,16 +331,16 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>       QString feature_string_value = QString(arv_gc_node_get_value_as_string (feature));</div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>       <span class="keywordflow">if</span> ( arv_gc_node_get_name ((ArvGcNode *)iter-&gt;data) == feature_string_value) {</div>
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>         QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setCamera&gt; Feature &quot;</span></div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>                     &lt;&lt; featureNameList.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>         featureValueList.push_back(feature_choicecnt);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>                     &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>         <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.push_back(feature_choicecnt);</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>         <span class="comment">// Particular Case Pixel Encoding</span></div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>         <span class="keywordflow">if</span> (featureNameList.at(featureCnt) == <span class="stringliteral">&quot;PixelFormat&quot;</span>) {</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>         <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(featureCnt) == <span class="stringliteral">&quot;PixelFormat&quot;</span>) {</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>           <span class="keywordflow">if</span> (feature_string_value == <span class="stringliteral">&quot;Mono8&quot;</span>)</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>             pixel_encoding = B8;</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>             <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a> = B8;</div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>           <span class="keywordflow">else</span> <span class="keywordflow">if</span> (feature_string_value == <span class="stringliteral">&quot;Mono10&quot;</span>)</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>             pixel_encoding = B10;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>             <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a> = B10;</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>           <span class="keywordflow">else</span> <span class="keywordflow">if</span> (feature_string_value == <span class="stringliteral">&quot;Mono12&quot;</span>)</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>             pixel_encoding = B12;</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>             <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a> = B12;</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>         }</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>       }</div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>       feature_choicecnt++;</div>
@@ -343,10 +348,10 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>     featureChoiceList.push_back(feature_string_choice);</div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>     feature_min_i = 0;</div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>     feature_max_i = feature_string_choice.size() -1;</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>     featureMinList.push_back(feature_min_i);</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>     featureMaxList.push_back(feature_max_i);</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>     featureAbsCapableList.push_back(<span class="keyword">false</span>);</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>     featureAbsValueList.push_back(feature_choicecnt);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>     <a class="code hl_variable" href="classCamera.html#a33c6cb101766bb447cd58f553fdcdad5">featureMinList</a>.push_back(feature_min_i);</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>     <a class="code hl_variable" href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">featureMaxList</a>.push_back(feature_max_i);</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>     <a class="code hl_variable" href="classCamera.html#a21b164c6df511a8c3a56843641e21aca">featureAbsCapableList</a>.push_back(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>     <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.push_back(feature_choicecnt);</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>   }</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>   featureCnt++;</div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  }</div>
@@ -357,89 +362,98 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="keywordflow">if</span> ( feature == <span class="keyword">nullptr</span> &amp;&amp; gige_props[i] != <span class="stringliteral">&quot;PC Rate&quot;</span> &amp;&amp; gige_props[i] != <span class="stringliteral">&quot;Frame Rate&quot;</span> ) <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    QString propStr = gige_props[i];</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    QLOG_INFO () &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setCamera&gt; &quot;</span> &lt;&lt; propStr &lt;&lt; <span class="stringliteral">&quot; property added &quot;</span>;</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    propList.push_back(propStr);</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.push_back(propStr);</div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    propCnt++;</div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  }</div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  </div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <span class="keywordtype">id</span> = _id;</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  camera_err = connectCamera();</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  <a class="code hl_variable" href="classCamera.html#aae9d6cd8ee85da741728c7f3b3b4311f">camera_err</a> = connectCamera();</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setCamera &quot;</span> &lt;&lt; vendor &lt;&lt; <span class="stringliteral">&quot; model : &quot;</span></div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>               &lt;&lt; model &lt;&lt; <span class="stringliteral">&quot; - Err : &quot;</span> &lt;&lt; camera_err;</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setCamera &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#a8152b3ad0d73754548a46e50b1a0148f">vendor</a> &lt;&lt; <span class="stringliteral">&quot; model : &quot;</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>               &lt;&lt; <a class="code hl_variable" href="classCamera.html#ac7debddf30d07a115056facc32cd7cd0">model</a> &lt;&lt; <span class="stringliteral">&quot; - Err : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#aae9d6cd8ee85da741728c7f3b3b4311f">camera_err</a>;</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>}</div>
+</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>uchar* </div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>CameraGiGE::getSnapshot() {</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  snapshotMutex-&gt;lock();</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  memcpy(snapshot,buffer,width * height * <span class="keyword">sizeof</span>(uchar));</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  snapShotMin = min;</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  snapShotMax = max;</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  snapshotMutex-&gt;unlock();</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  <span class="keywordflow">return</span> snapshot;</div>
+<div class="foldopen" id="foldopen00264" data-start="{" data-end="}">
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno"><a class="line" href="classCameraGiGE.html#ae34901ae349f2dacfd5365ab97d04b11">  264</a></span><a class="code hl_function" href="classCameraGiGE.html#ae34901ae349f2dacfd5365ab97d04b11">CameraGiGE::getSnapshot</a>() {</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;lock();</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  memcpy(<a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a>,<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <span class="keyword">sizeof</span>(uchar));</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  <a class="code hl_variable" href="classCamera.html#ac91d6b8947853370603e26ebcf7cb53c">snapShotMin</a> = <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>;</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  <a class="code hl_variable" href="classCamera.html#ab7faaf71010d522f44c33a1cd6798049">snapShotMax</a> = <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a>;</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;unlock();</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a>;</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>}</div>
+</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>ushort*</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>CameraGiGE::getSnapshot16() {</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  snapshotMutex-&gt;lock();</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::getSnapshot&gt; Image pixel size &quot;</span> &lt;&lt; width * height;</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  memcpy(snapshot16,buffer16, width * height * <span class="keyword">sizeof</span>(ushort));</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  snapShotMin = min;</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  snapShotMax = max;</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  snapshotMutex-&gt;unlock();</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  <span class="keywordflow">return</span> snapshot16;</div>
+<div class="foldopen" id="foldopen00273" data-start="{" data-end="}">
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno"><a class="line" href="classCameraGiGE.html#afd00cf6a81ed6e7083687cea7435c1e9">  273</a></span><a class="code hl_function" href="classCameraGiGE.html#afd00cf6a81ed6e7083687cea7435c1e9">CameraGiGE::getSnapshot16</a>() {</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;lock();</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::getSnapshot&gt; Image pixel size &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>;</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  memcpy(<a class="code hl_variable" href="classCamera.html#a4e4a46b74c5f7a1e7b6d2f1e0b9339d8">snapshot16</a>,<a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <span class="keyword">sizeof</span>(ushort));</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  <a class="code hl_variable" href="classCamera.html#ac91d6b8947853370603e26ebcf7cb53c">snapShotMin</a> = <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <a class="code hl_variable" href="classCamera.html#ab7faaf71010d522f44c33a1cd6798049">snapShotMax</a> = <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a>;</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;unlock();</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classCamera.html#a4e4a46b74c5f7a1e7b6d2f1e0b9339d8">snapshot16</a>;</div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>}</div>
+</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="keywordtype">int</span>*</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>CameraGiGE::getSnapshot32() {</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  snapshotMutex-&gt;lock();</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  memcpy(snapshot32,buffer32, width * height * <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  snapShotMin = min;</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  snapShotMax = max;</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  snapshotMutex-&gt;unlock();</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  <span class="keywordflow">return</span> snapshot32;</div>
+<div class="foldopen" id="foldopen00284" data-start="{" data-end="}">
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno"><a class="line" href="classCameraGiGE.html#a014826b641431d134580a0efe77d2f3b">  284</a></span><a class="code hl_function" href="classCameraGiGE.html#a014826b641431d134580a0efe77d2f3b">CameraGiGE::getSnapshot32</a>() {</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;lock();</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  memcpy(<a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a>,<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  <a class="code hl_variable" href="classCamera.html#ac91d6b8947853370603e26ebcf7cb53c">snapShotMin</a> = <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>;</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  <a class="code hl_variable" href="classCamera.html#ab7faaf71010d522f44c33a1cd6798049">snapShotMax</a> = <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a>;</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;unlock();</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a>;</div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>}</div>
+</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="keywordtype">void</span> </div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>CameraGiGE::stop() {</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  suspend = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  has_started = <span class="keyword">false</span>;</div>
+<div class="foldopen" id="foldopen00294" data-start="{" data-end="}">
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno"><a class="line" href="classCameraGiGE.html#a481e05f97483487476702db2b822e209">  294</a></span><a class="code hl_function" href="classCameraGiGE.html#a481e05f97483487476702db2b822e209">CameraGiGE::stop</a>() {</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <a class="code hl_variable" href="classCamera.html#aa4f9dfb25e1fd1d5df43a8bd98844994">suspend</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  <a class="code hl_variable" href="classCamera.html#a0db5c414ff3b1e98eaad9526f904936f">has_started</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  wait();</div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>  exit();  </div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>}</div>
+</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span> </div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="keywordtype">void</span> </div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>CameraGiGE::run() {</div>
 <div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  <span class="keywordtype">int</span> acq_err = 0;</div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  <span class="keywordtype">int</span> acq_cnt = 0;</div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::run&gt; start thread&quot;</span>;</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  <span class="keywordflow">if</span> (camera_err == 0 &amp;&amp; suspend == <span class="keyword">true</span> ) {</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#aae9d6cd8ee85da741728c7f3b3b4311f">camera_err</a> == 0 &amp;&amp; <a class="code hl_variable" href="classCamera.html#aa4f9dfb25e1fd1d5df43a8bd98844994">suspend</a> == <span class="keyword">true</span> ) {</div>
 <div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::run&gt; start thread in&quot;</span>;</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    suspend = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    eTimeTotal = 0;</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    <span class="keywordflow">while</span> (suspend == <span class="keyword">false</span>) {</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    <a class="code hl_variable" href="classCamera.html#aa4f9dfb25e1fd1d5df43a8bd98844994">suspend</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a> = 0;</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    <span class="keywordflow">while</span> (<a class="code hl_variable" href="classCamera.html#aa4f9dfb25e1fd1d5df43a8bd98844994">suspend</a> == <span class="keyword">false</span>) {</div>
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>      QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::run&gt; &quot;</span> &lt;&lt; <span class="keywordtype">id</span> &lt;&lt; <span class="stringliteral">&quot; : start new Acquisition&quot;</span>;</div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>      <span class="keywordtype">double</span> eTime = <a class="code hl_function" href="namespaceUtils.html#a80482614a1ae51bca37af587bb80188a">Utils::GetTimeMicroseconds</a>();</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>      acqstart-&gt;wakeAll();</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>      <a class="code hl_variable" href="classCamera.html#a4e64c09c8af69c5b5e667cee4eb33ff6">acqstart</a>-&gt;wakeAll();</div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>      acq_err = acquireImage();</div>
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>      QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::run&gt; &quot;</span> &lt;&lt; <span class="keywordtype">id</span> &lt;&lt; <span class="stringliteral">&quot; : done&quot;</span>;</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>      acqend-&gt;wakeAll();</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>      <a class="code hl_variable" href="classCamera.html#a33924d5eddaf9f897bed4e793407c4c7">acqend</a>-&gt;wakeAll();</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>      <span class="keywordflow">if</span> (acq_err == 1)</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>       eTimeTotal+= (<a class="code hl_function" href="namespaceUtils.html#a80482614a1ae51bca37af587bb80188a">Utils::GetTimeMicroseconds</a>() - eTime);</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>       <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a>+= (<a class="code hl_function" href="namespaceUtils.html#a80482614a1ae51bca37af587bb80188a">Utils::GetTimeMicroseconds</a>() - eTime);</div>
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>      acq_cnt++;</div>
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>      <span class="keywordflow">if</span> (acq_cnt == FREQUENCY_AVERAGE_COUNT) {</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>       eTimeTotal/=1e6;</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>       eTimeTotal/=FREQUENCY_AVERAGE_COUNT;</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>       <span class="keywordflow">if</span> ( eTimeTotal &gt; 0 )</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>        frequency = 1.0 / eTimeTotal;</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>       <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a>/=1e6;</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>       <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a>/=FREQUENCY_AVERAGE_COUNT;</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>       <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a> &gt; 0 )</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>        <a class="code hl_variable" href="classCamera.html#a690c5440136c44bfb96e520bc6e80f07">frequency</a> = 1.0 / <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a>;</div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>       <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>        frequency = 0;</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>        <a class="code hl_variable" href="classCamera.html#a690c5440136c44bfb96e520bc6e80f07">frequency</a> = 0;</div>
 <div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>       QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::run&gt; Acquisition &quot;</span></div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>                   &lt;&lt; <span class="stringliteral">&quot;freq &quot;</span> &lt;&lt; (int) frequency &lt;&lt; <span class="stringliteral">&quot; Hz&quot;</span>;</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>       eTimeTotal = 0;</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>                   &lt;&lt; <span class="stringliteral">&quot;freq &quot;</span> &lt;&lt; (int) <a class="code hl_variable" href="classCamera.html#a690c5440136c44bfb96e520bc6e80f07">frequency</a> &lt;&lt; <span class="stringliteral">&quot; Hz&quot;</span>;</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>       <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a> = 0;</div>
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>       acq_cnt = 0;</div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>       <span class="comment">// Update props</span></div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>       <span class="comment">//getProps();</span></div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>      }</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>     has_started = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>     <a class="code hl_variable" href="classCamera.html#a0db5c414ff3b1e98eaad9526f904936f">has_started</a> = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    }</div>
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;CameraNeo thread exiting&quot;</span>;</div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>  }</div>
@@ -447,15 +461,16 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>}</div>
 <div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span> </div>
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span><span class="keywordtype">void</span></div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>CameraGiGE::setFeature(<span class="keywordtype">int</span> feature, <span class="keywordtype">double</span> value) {</div>
+<div class="foldopen" id="foldopen00342" data-start="{" data-end="}">
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno"><a class="line" href="classCameraGiGE.html#adafbd4144ff02068ca9a2f95bcc4bae5">  342</a></span><a class="code hl_slot" href="classCameraGiGE.html#adafbd4144ff02068ca9a2f95bcc4bae5">CameraGiGE::setFeature</a>(<span class="keywordtype">int</span> feature, <span class="keywordtype">double</span> value) {</div>
 <div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span> </div>
 <div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  </div>
 <div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>   device = arv_camera_get_device(camera);</div>
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>   ArvGcNode *node = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>   node = arv_device_get_feature (device, featureNameList.at(feature).toStdString().c_str());</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>   node = arv_device_get_feature (device, <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature).toStdString().c_str());</div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>   QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setFeature&gt; Updating feature &quot;</span> </div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>           &lt;&lt; featureNameList.at(feature)</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>           &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature)</div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>               &lt;&lt; <span class="stringliteral">&quot; New Value &quot;</span> &lt;&lt; QString::number(value);</div>
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>   <span class="keywordflow">if</span> ( node == <span class="keyword">nullptr</span> ) {</div>
 <div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>       QLOG_ERROR() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setFeature&gt; node nullptr &quot;</span>;</div>
@@ -465,9 +480,9 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>     QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setFeature&gt; feature has FLOAT type &quot;</span>;</div>
 <div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>     QString feature_string_value = QString::number( value );</div>
 <div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>     QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setFeature&gt; set feature &quot;</span></div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>               &lt;&lt; featureNameList.at(feature)</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>               &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature)</div>
 <div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>               &lt;&lt; <span class="stringliteral">&quot; New value &quot;</span> &lt;&lt; feature_string_value;</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>     QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setFeature&gt; feature &quot;</span> &lt;&lt; featureNameList.at(feature)</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>     QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setFeature&gt; feature &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature)</div>
 <div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>                 &lt;&lt; <span class="stringliteral">&quot;has INT type &quot;</span>;</div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>     arv_gc_node_set_value_from_string (node, feature_string_value.toStdString().c_str());</div>
 <div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>   }</div>
@@ -475,12 +490,12 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>     QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setFeature&gt; feature has INT type &quot;</span>;</div>
 <div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>     QString feature_string_value = QString::number((<span class="keywordtype">int</span>)value);</div>
 <div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>     <span class="comment">// Particular Case Image Size</span></div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>     <span class="keywordflow">if</span> (featureNameList.at(feature) == <span class="stringliteral">&quot;Width&quot;</span>   ||</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>         featureNameList.at(feature) == <span class="stringliteral">&quot;Height&quot;</span>  ||</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>         featureNameList.at(feature) == <span class="stringliteral">&quot;OffsetX&quot;</span> ||</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>         featureNameList.at(feature) == <span class="stringliteral">&quot;OffsetY&quot;</span> ) {</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>     <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature) == <span class="stringliteral">&quot;Width&quot;</span>   ||</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>         <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature) == <span class="stringliteral">&quot;Height&quot;</span>  ||</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>         <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature) == <span class="stringliteral">&quot;OffsetX&quot;</span> ||</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>         <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature) == <span class="stringliteral">&quot;OffsetY&quot;</span> ) {</div>
 <div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>       <span class="comment">// Stop acquisition</span></div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>       this-&gt;stop();</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>       this-&gt;<a class="code hl_function" href="classCameraGiGE.html#a481e05f97483487476702db2b822e209">stop</a>();</div>
 <div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>       arv_camera_stop_acquisition (camera);</div>
 <div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>       g_object_unref (stream);</div>
 <div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>       </div>
@@ -489,26 +504,26 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>       arv_camera_get_region (camera, &amp;x, &amp;y, &amp;gwidth, &amp;gheight);</div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>       QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;arv_camera_get_region &quot;</span> &lt;&lt; x &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; y </div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>                   &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; gwidth &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; gheight;</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>       width = gwidth;</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>       height = gheight;</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>       <span class="keywordflow">if</span> (buffer) { free(buffer); buffer = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>       <span class="keywordflow">if</span> (buffer32) { free(buffer32); buffer32 = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>       <span class="keywordflow">if</span> (snapshot) { free(snapshot); snapshot = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>       <span class="keywordflow">if</span> (snapshot32) { free(snapshot32); snapshot32 = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>       buffer = (uchar*)malloc( <span class="keyword">sizeof</span>(uchar) * width * height);</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>       snapshot = (uchar*)malloc( <span class="keyword">sizeof</span>(uchar) * width * height);</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>       buffer32 = (<span class="keywordtype">int</span>*)malloc( <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) * width * height);</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>       snapshot32 = (<span class="keywordtype">int</span>*)malloc( <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) * width * height);</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>       <span class="keyword">delete</span> image;</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>       image = <span class="keyword">new</span> QImage(buffer,width,height,width,QImage::Format_Indexed8);</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>       image-&gt;setColorTable(*table);</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>       <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> = gwidth;</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>       <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> = gheight;</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>       <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>) { free(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>); <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>       <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>) { free(<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>); <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>       <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a>) { free(<a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a>); <a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a> = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>       <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a>) { free(<a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a>); <a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a> = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>       <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = (uchar*)malloc( <span class="keyword">sizeof</span>(uchar) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>       <a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a> = (uchar*)malloc( <span class="keyword">sizeof</span>(uchar) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>       <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = (<span class="keywordtype">int</span>*)malloc( <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>       <a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a> = (<span class="keywordtype">int</span>*)malloc( <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>       <span class="keyword">delete</span> <a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a>;</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>       <a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a> = <span class="keyword">new</span> QImage(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>,<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>,QImage::Format_Indexed8);</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>       <a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a>-&gt;setColorTable(*<a class="code hl_variable" href="classCamera.html#ada6182fea01bf1857c0b8d9ad18f4bd7">table</a>);</div>
 <div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span> </div>
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>       <span class="comment">// Start acquisition</span></div>
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>       payload = arv_camera_get_payload (camera);</div>
 <div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>       QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setFeature&gt; set feature &quot;</span></div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>                   &lt;&lt; featureNameList.at(feature)</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>                   &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature)</div>
 <div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>                   &lt;&lt; <span class="stringliteral">&quot; New value &quot;</span> &lt;&lt; feature_string_value</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>           &lt;&lt; <span class="stringliteral">&quot; Updated Width &quot;</span> &lt;&lt; width &lt;&lt; <span class="stringliteral">&quot; Height &quot;</span> &lt;&lt; height</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>           &lt;&lt; <span class="stringliteral">&quot; Updated Width &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> &lt;&lt; <span class="stringliteral">&quot; Height &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a></div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>           &lt;&lt; <span class="stringliteral">&quot; New payload &quot;</span> &lt;&lt; payload;</div>
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span> </div>
 <div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>       stream = arv_camera_create_stream (camera, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);</div>
@@ -539,7 +554,7 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>       QString feature_string_value = QString::number((<span class="keywordtype">int</span>)value);</div>
 <div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>       arv_gc_node_set_value_from_string (node, feature_string_value.toStdString().c_str());</div>
 <div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>       QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setFeature&gt; set feature &quot;</span></div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>                 &lt;&lt; featureNameList.at(feature) </div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>                 &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature) </div>
 <div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>                 &lt;&lt; <span class="stringliteral">&quot; New value &quot;</span> &lt;&lt; feature_string_value;</div>
 <div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>     }</div>
 <div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>   }</div>
@@ -548,23 +563,23 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>     QString feature_string_value = feature_string_choice.at((<span class="keywordtype">int</span>)value);</div>
 <div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>      arv_gc_node_set_value_from_string (node, feature_string_value.toStdString().c_str());</div>
 <div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>       QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setFeature&gt; set feature &quot;</span></div>
-<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>                 &lt;&lt; featureNameList.at(feature)</div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>                 &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature)</div>
 <div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>                 &lt;&lt; <span class="stringliteral">&quot; New value &quot;</span> &lt;&lt; feature_string_value;</div>
 <div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>   }</div>
 <div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>   <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( ARV_IS_GC_ENUMERATION (node) ) {</div>
 <div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>     QVector&lt;QString&gt; feature_string_choice = featureChoiceList.at(feature);</div>
 <div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>     QString feature_string_value = feature_string_choice.at((<span class="keywordtype">int</span>)value);</div>
 <div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>     <span class="comment">// Particular Case Pixel Encoding</span></div>
-<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>     <span class="keywordflow">if</span> (featureNameList.at(feature) == <span class="stringliteral">&quot;PixelFormat&quot;</span>) {</div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>     <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature) == <span class="stringliteral">&quot;PixelFormat&quot;</span>) {</div>
 <div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>          <span class="keywordflow">if</span> (feature_string_value == <span class="stringliteral">&quot;Mono8&quot;</span>)</div>
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>            pixel_encoding = B8;</div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>            <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a> = B8;</div>
 <div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>          <span class="keywordflow">else</span> <span class="keywordflow">if</span> (feature_string_value == <span class="stringliteral">&quot;Mono10&quot;</span>)</div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>            pixel_encoding = B10;</div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>            <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a> = B10;</div>
 <div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>          <span class="keywordflow">else</span> <span class="keywordflow">if</span> (feature_string_value == <span class="stringliteral">&quot;Mono12&quot;</span>)</div>
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>            pixel_encoding = B12;</div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>            <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a> = B12;</div>
 <div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>          </div>
 <div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>         <span class="comment">// Stop acquisition</span></div>
-<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>         this-&gt;stop();</div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>         this-&gt;<a class="code hl_function" href="classCameraGiGE.html#a481e05f97483487476702db2b822e209">stop</a>();</div>
 <div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>         arv_camera_stop_acquisition (camera);</div>
 <div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>         g_object_unref (stream);</div>
 <div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>       </div>
@@ -574,7 +589,7 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>         <span class="comment">// Start acquisition</span></div>
 <div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>         payload = arv_camera_get_payload (camera);</div>
 <div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>         QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setFeature&gt; set feature &quot;</span></div>
-<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>                   &lt;&lt; featureNameList.at(feature)</div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>                   &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature)</div>
 <div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>                   &lt;&lt; <span class="stringliteral">&quot; New value &quot;</span> &lt;&lt; feature_string_value;</div>
 <div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span> </div>
 <div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span> </div>
@@ -606,25 +621,29 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>     <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>        arv_gc_node_set_value_from_string (node, feature_string_value.toStdString().c_str());</div>
 <div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>        QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setFeature&gt; set feature &quot;</span></div>
-<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>                    &lt;&lt; featureNameList.at(feature) &lt;&lt; <span class="stringliteral">&quot; New value &quot;</span> &lt;&lt; feature_string_choice.at(value);</div>
+<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>                    &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(feature) &lt;&lt; <span class="stringliteral">&quot; New value &quot;</span> &lt;&lt; feature_string_choice.at(value);</div>
 <div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>     }</div>
 <div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>  }</div>
 <div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>  <span class="comment">//</span></div>
 <div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>  <span class="comment">// Update feature range</span></div>
 <div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>  <span class="comment">//</span></div>
-<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>  getFeatures();</div>
+<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>  <a class="code hl_function" href="classCameraGiGE.html#a3887292ec688187f4ff2579cbae4d6a8">getFeatures</a>();</div>
 <div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span> </div>
 <div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>}</div>
+</div>
 <div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span><span class="keywordtype">void</span></div>
-<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>CameraGiGE::setMode(<span class="keywordtype">int</span> feature, <span class="keywordtype">bool</span> value) {</div>
+<div class="foldopen" id="foldopen00511" data-start="{" data-end="}">
+<div class="line"><a id="l00511" name="l00511"></a><span class="lineno"><a class="line" href="classCameraGiGE.html#a036d4a016711ea57a7f7b418849d2417">  511</a></span><a class="code hl_slot" href="classCameraGiGE.html#a036d4a016711ea57a7f7b418849d2417">CameraGiGE::setMode</a>(<span class="keywordtype">int</span> feature, <span class="keywordtype">bool</span> value) {</div>
 <div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>  <span class="keywordflow">switch</span> ( feature ) {</div>
 <div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>   <span class="keywordflow">default</span>:</div>
 <div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>   <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span> }</div>
 <div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span> </div>
 <div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>}</div>
+</div>
 <div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span><span class="keywordtype">void</span></div>
-<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>CameraGiGE::getFeatures() {</div>
+<div class="foldopen" id="foldopen00519" data-start="{" data-end="}">
+<div class="line"><a id="l00519" name="l00519"></a><span class="lineno"><a class="line" href="classCameraGiGE.html#a3887292ec688187f4ff2579cbae4d6a8">  519</a></span><a class="code hl_function" href="classCameraGiGE.html#a3887292ec688187f4ff2579cbae4d6a8">CameraGiGE::getFeatures</a>() {</div>
 <div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>  </div>
 <div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>  device = arv_camera_get_device(camera);</div>
 <div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>  <span class="keywordtype">double</span> feature_min_d, feature_max_d;</div>
@@ -642,14 +661,14 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>     QString feature_string_value;</div>
 <div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>     feature_string_value = QString(arv_gc_node_get_value_as_string (feature));</div>
 <div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>     QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::getFeature&gt; get feature &quot;</span></div>
-<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>                     &lt;&lt; featureNameList.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
-<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>     featureValueList.replace(featureCnt, feature_string_value.toDouble() );</div>
-<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>     featureAbsValueList.replace(featureCnt, feature_string_value.toDouble() );</div>
-<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>     featureMinList.replace(featureCnt,feature_min_d );</div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>                     &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
+<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>     <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.replace(featureCnt, feature_string_value.toDouble() );</div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>     <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.replace(featureCnt, feature_string_value.toDouble() );</div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>     <a class="code hl_variable" href="classCamera.html#a33c6cb101766bb447cd58f553fdcdad5">featureMinList</a>.replace(featureCnt,feature_min_d );</div>
 <div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>     <span class="keywordflow">if</span> ( gige_features[i] == <span class="stringliteral">&quot;ExposureTimeAbs&quot;</span> ) <span class="comment">// Bug in aravis returns just half the value</span></div>
-<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>       featureMaxList.replace(featureCnt,feature_max_d * 2 );</div>
+<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>       <a class="code hl_variable" href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">featureMaxList</a>.replace(featureCnt,feature_max_d * 2 );</div>
 <div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>     <span class="keywordflow">else</span> </div>
-<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>       featureMaxList.replace(featureCnt,feature_max_d );</div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>       <a class="code hl_variable" href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">featureMaxList</a>.replace(featureCnt,feature_max_d );</div>
 <div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>   }</div>
 <div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>   <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( ARV_IS_GC_INTEGER (feature) ) {</div>
 <div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>     QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::getFeature&gt; get feature &quot;</span></div>
@@ -658,10 +677,10 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>     QString feature_string_value;</div>
 <div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>     feature_string_value = QString(arv_gc_node_get_value_as_string (feature));</div>
 <div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>     QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::getFeature&gt; get feature &quot;</span></div>
-<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>                     &lt;&lt; featureNameList.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
-<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>     featureValueList.replace(featureCnt, feature_string_value.toInt());</div>
-<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>     featureMinList.replace(featureCnt,feature_min_i);</div>
-<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>     featureMaxList.replace(featureCnt,feature_max_i);</div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>                     &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
+<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>     <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.replace(featureCnt, feature_string_value.toInt());</div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>     <a class="code hl_variable" href="classCamera.html#a33c6cb101766bb447cd58f553fdcdad5">featureMinList</a>.replace(featureCnt,feature_min_i);</div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>     <a class="code hl_variable" href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">featureMaxList</a>.replace(featureCnt,feature_max_i);</div>
 <div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>   }</div>
 <div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>   <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( ARV_IS_GC_BOOLEAN (feature) ) {</div>
 <div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>     QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::getFeature&gt; get feature &quot;</span></div>
@@ -669,11 +688,11 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>     QString feature_string_value;</div>
 <div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>     feature_string_value = QString(arv_gc_node_get_value_as_string (feature));</div>
 <div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>     QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::getFeature&gt; get feature &quot;</span></div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>                     &lt;&lt; featureNameList.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>                     &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; feature_string_value;</div>
 <div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>     <span class="keywordflow">if</span> ( feature_string_value == <span class="stringliteral">&quot;true&quot;</span> )</div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>       featureValueList.replace(featureCnt, 1);</div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>       <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.replace(featureCnt, 1);</div>
 <div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>     <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( feature_string_value == <span class="stringliteral">&quot;false&quot;</span> )</div>
-<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>       featureValueList.replace(featureCnt, 0);</div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>       <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.replace(featureCnt, 0);</div>
 <div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>   }</div>
 <div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>   <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( ARV_IS_GC_ENUMERATION (feature) ) {</div>
 <div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>     <span class="keyword">const</span> GSList *childs;</div>
@@ -683,8 +702,8 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>     <span class="keywordflow">for</span> (iter = childs; iter != <span class="keyword">nullptr</span>; iter = iter-&gt;next) {</div>
 <div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>       <span class="keywordflow">if</span> ( arv_gc_node_get_name ((ArvGcNode *)iter-&gt;data) == arv_gc_node_get_value_as_string (feature)) {</div>
 <div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>         QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::setCamera&gt; get feature &quot;</span></div>
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>                     &lt;&lt; featureNameList.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; QString(arv_gc_node_get_value_as_string (feature));</div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>         featureValueList.replace(featureCnt,feature_choicecnt);</div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>                     &lt;&lt; <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.at(featureCnt) &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; QString(arv_gc_node_get_value_as_string (feature));</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>         <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.replace(featureCnt,feature_choicecnt);</div>
 <div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>         <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>       }</div>
 <div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>       feature_choicecnt++;</div>
@@ -692,10 +711,12 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>   }</div>
 <div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>   featureCnt++;</div>
 <div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>  }</div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>  emit updateFeatures();</div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>  emit <a class="code hl_signal" href="classCameraGiGE.html#ae9cf2497ad84fae572dcd8207a46f3a0">updateFeatures</a>();</div>
 <div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>}</div>
+</div>
 <div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span><span class="keywordtype">void</span> </div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>CameraGiGE::getProps()  {</div>
+<div class="foldopen" id="foldopen00590" data-start="{" data-end="}">
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno"><a class="line" href="classCameraGiGE.html#aab7765ffaa02a8f5a81fdb3447e347e0">  590</a></span><a class="code hl_slot" href="classCameraGiGE.html#aab7765ffaa02a8f5a81fdb3447e347e0">CameraGiGE::getProps</a>()  {</div>
 <div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span> </div>
 <div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>  device = arv_camera_get_device(camera);</div>
 <div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>  <span class="keywordtype">double</span> feature_min, feature_max;</div>
@@ -715,23 +736,23 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>     <span class="keywordtype">double</span> value = feature_string_value.toDouble();</div>
 <div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>     propStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number(value,<span class="charliteral">&#39;f&#39;</span>,3) </div>
 <div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>                          + <span class="stringliteral">&quot; &quot;</span> + gige_props_units[i]);</div>
-<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>     propList.replace(propCnt++,propStr);</div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>     <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt++,propStr);</div>
 <div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>   }</div>
 <div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>   <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( ARV_IS_GC_INTEGER (feature) ) {</div>
 <div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>     <span class="keywordtype">int</span> value = feature_string_value.toInt();</div>
 <div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>     propStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number(value)</div>
 <div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>                          + <span class="stringliteral">&quot; &quot;</span> + gige_props_units[i]);</div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>     propList.replace(propCnt++,propStr);</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>     <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt++,propStr);</div>
 <div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>   }</div>
 <div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>   <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( ARV_IS_GC_BOOLEAN (feature) ) {</div>
 <div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>      propStr.append(<span class="stringliteral">&quot; : &quot;</span> + feature_string_value</div>
 <div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>                           + <span class="stringliteral">&quot; &quot;</span> + gige_props_units[i]);</div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>     propList.replace(propCnt++,propStr);</div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>     <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt++,propStr);</div>
 <div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>   }</div>
 <div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>   <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( ARV_IS_GC_ENUMERATION (feature) ) {</div>
 <div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>     propStr.append(<span class="stringliteral">&quot; : &quot;</span> + feature_string_value </div>
 <div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>                          + <span class="stringliteral">&quot; &quot;</span> + gige_props_units[i]);</div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>     propList.replace(propCnt++,propStr);</div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>     <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt++,propStr);</div>
 <div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>   }</div>
 <div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>  }</div>
 <div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>  <span class="comment">// Frame Rate prop</span></div>
@@ -739,48 +760,51 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>  <span class="keywordtype">int</span> frame_rate = (int) arv_camera_get_frame_rate (camera);</div>
 <div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>  propStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number(frame_rate) + <span class="stringliteral">&quot; &quot;</span> + gige_props_units[i]);</div>
 <div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::getProps&gt; &quot;</span> &lt;&lt; propStr &lt;&lt; <span class="stringliteral">&quot; updated &quot;</span>;</div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>  propList.replace(propCnt++,propStr);</div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt++,propStr);</div>
 <div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span> </div>
 <div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>  <span class="comment">// PC Rate prop</span></div>
 <div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>  propStr = gige_props[++i];</div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>  propStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number((<span class="keywordtype">int</span>)frequency) + <span class="stringliteral">&quot; &quot;</span> + gige_props_units[i]);</div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>  propStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number((<span class="keywordtype">int</span>)<a class="code hl_variable" href="classCamera.html#a690c5440136c44bfb96e520bc6e80f07">frequency</a>) + <span class="stringliteral">&quot; &quot;</span> + gige_props_units[i]);</div>
 <div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::getProps&gt; &quot;</span> &lt;&lt; propStr &lt;&lt; <span class="stringliteral">&quot; updated &quot;</span>;</div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>  propList.replace(propCnt,propStr);</div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt,propStr);</div>
 <div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>  </div>
 <div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>  </div>
 <div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span> </div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>  emit updateProps();</div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>  emit <a class="code hl_signal" href="classCamera.html#ab06db0796eb2f81f76af3daaf5e1d85d">updateProps</a>();</div>
 <div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>}</div>
+</div>
 <div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span> </div>
 <div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span><span class="keywordtype">int</span> </div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>CameraGiGE::findCamera() {</div>
+<div class="foldopen" id="foldopen00648" data-start="{" data-end="}">
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno"><a class="line" href="classCameraGiGE.html#aee9ec5a805b7aded05b7f29b88e5e5e8">  648</a></span><a class="code hl_function" href="classCameraGiGE.html#aee9ec5a805b7aded05b7f29b88e5e5e8">CameraGiGE::findCamera</a>() {</div>
 <div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>   <span class="keywordtype">int</span> i;</div>
 <div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>   <span class="comment">/* Find available gigevision cameras*/</span></div>
 <div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>   arv_update_device_list ();</div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>   num = arv_get_n_devices ();</div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>   <a class="code hl_variable" href="classCamera.html#a5c60cfc59d9abffabd129eda4e576c6a">num</a> = arv_get_n_devices ();</div>
 <div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>   <span class="comment">// Allocate camera list</span></div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>   <span class="keywordflow">for</span> (i = 1 ; i &lt; num; i++) {</div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>   <span class="keywordflow">for</span> (i = 1 ; i &lt; <a class="code hl_variable" href="classCamera.html#a5c60cfc59d9abffabd129eda4e576c6a">num</a>; i++) {</div>
 <div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>     camera =  arv_camera_new (arv_get_device_id (i));</div>
 <div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>     <span class="keywordflow">if</span> (!camera) {</div>
 <div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>      QLOG_ERROR() &lt;&lt; <span class="stringliteral">&quot;CameraGiGE::findCamera&gt; Failed to initialize camera with guid &quot;</span> &lt;&lt; arv_get_device_id (i);</div>
 <div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>      <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>     }</div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>     cameralist.push_back((ArvCamera*)camera);</div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>     vendorlist.push_back(arv_camera_get_vendor_name (camera));</div>
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>     modelist.push_back(arv_camera_get_model_name (camera));</div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>     <a class="code hl_variable" href="classCamera.html#a6063bbec41b6b47fb080d280f00832bb">cameralist</a>.push_back((ArvCamera*)camera);</div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>     <a class="code hl_variable" href="classCamera.html#a8ea245772da01fa88a9af64365b40beb">vendorlist</a>.push_back(arv_camera_get_vendor_name (camera));</div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>     <a class="code hl_variable" href="classCamera.html#a616b41fa3ff47a04d7da36ab78e73e90">modelist</a>.push_back(arv_camera_get_model_name (camera));</div>
 <div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>   }</div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>   num--; <span class="comment">// Remove Aravis Fake camera</span></div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>   <a class="code hl_variable" href="classCamera.html#a5c60cfc59d9abffabd129eda4e576c6a">num</a>--; <span class="comment">// Remove Aravis Fake camera</span></div>
 <div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>   <span class="keywordflow">return</span> (0);</div>
 <div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>}</div>
+</div>
 <div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span><span class="keywordtype">int</span> </div>
 <div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>CameraGiGE::connectCamera() {</div>
 <div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>  </div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>  camera_err = -1;</div>
+<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>  <a class="code hl_variable" href="classCamera.html#aae9d6cd8ee85da741728c7f3b3b4311f">camera_err</a> = -1;</div>
 <div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>  </div>
 <div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>  <span class="comment">/* Init camera*/</span></div>
 <div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>  arv_camera_get_region (camera, &amp;x, &amp;y, &amp;gwidth, &amp;gheight);</div>
-<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>  width = gwidth;</div>
-<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>  height = gheight;</div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>  <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> = gwidth;</div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>  <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> = gheight;</div>
 <div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>  arv_camera_get_binning (camera, &amp;dx, &amp;dy);</div>
 <div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>  payload = arv_camera_get_payload (camera);</div>
 <div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>   </div>
@@ -803,7 +827,7 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>   <span class="keywordflow">else</span>  {</div>
 <div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>    g_object_unref (camera);</div>
 <div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>    camera = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>    <span class="keywordflow">return</span> camera_err;</div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classCamera.html#aae9d6cd8ee85da741728c7f3b3b4311f">camera_err</a>;</div>
 <div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>   }</div>
 <div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>   arv_stream_set_emit_signals (stream, TRUE);</div>
 <div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>   </div>
@@ -814,13 +838,13 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span><span class="comment">   *  setup capture</span></div>
 <div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span><span class="comment">   *-----------------------------------------------------------------------*/</span></div>
 <div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span> </div>
-<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>  buffer = (uchar*)malloc( <span class="keyword">sizeof</span>(uchar) * width * height);</div>
-<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>  snapshot = (uchar*)malloc( <span class="keyword">sizeof</span>(uchar) * width * height);</div>
-<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>  buffer32 = (<span class="keywordtype">int</span>*)malloc( <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) * width * height);</div>
-<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>  snapshot32 = (<span class="keywordtype">int</span>*)malloc( <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) * width * height);</div>
+<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>  <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = (uchar*)malloc( <span class="keyword">sizeof</span>(uchar) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>  <a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a> = (uchar*)malloc( <span class="keyword">sizeof</span>(uchar) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>  <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = (<span class="keywordtype">int</span>*)malloc( <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>  <a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a> = (<span class="keywordtype">int</span>*)malloc( <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
 <div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span> </div>
-<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>  image = <span class="keyword">new</span> QImage(buffer,width,height,width,QImage::Format_Indexed8);</div>
-<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>  image-&gt;setColorTable(*table);</div>
+<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>  <a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a> = <span class="keyword">new</span> QImage(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>,<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>,QImage::Format_Indexed8);</div>
+<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>  <a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a>-&gt;setColorTable(*<a class="code hl_variable" href="classCamera.html#ada6182fea01bf1857c0b8d9ad18f4bd7">table</a>);</div>
 <div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span> </div>
 <div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>  <span class="comment">/*-----------------------------------------------------------------------</span></div>
 <div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span><span class="comment">   *  have the camera start sending data</span></div>
@@ -829,9 +853,9 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>   arv_camera_start_acquisition (camera);</div>
 <div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span> </div>
 <div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span>  <span class="comment">// Refresh properties</span></div>
-<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>  getProps();</div>
+<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>  <a class="code hl_slot" href="classCameraGiGE.html#aab7765ffaa02a8f5a81fdb3447e347e0">getProps</a>();</div>
 <div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>  <span class="comment">// Refresh features</span></div>
-<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>  getFeatures();</div>
+<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>  <a class="code hl_function" href="classCameraGiGE.html#a3887292ec688187f4ff2579cbae4d6a8">getFeatures</a>();</div>
 <div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span> </div>
 <div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>  }</div>
 <div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>  <span class="keywordflow">return</span> 0;</div>
@@ -846,11 +870,11 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>  g_object_unref (stream);</div>
 <div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>  g_object_unref (camera); </div>
 <div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>  arv_shutdown ();</div>
-<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>  <span class="keywordflow">if</span> (buffer) { free(buffer); buffer = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>  <span class="keywordflow">if</span> (snapshot) { free(snapshot); snapshot = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>  <span class="keywordflow">if</span> (buffer32) { free(buffer32); buffer32 = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span>  <span class="keywordflow">if</span> (snapshot32) { free(snapshot32); snapshot32 = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>  <span class="keywordflow">if</span> (image) <span class="keyword">delete</span> image;</div>
+<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>) { free(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>); <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a>) { free(<a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a>); <a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a> = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>) { free(<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>); <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a>) { free(<a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a>); <a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a> = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a>) <span class="keyword">delete</span> <a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a>;</div>
 <div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>  <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span>}</div>
 <div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span> </div>
@@ -861,10 +885,10 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span><span class="comment">   * acquire frame</span></div>
 <div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span><span class="comment">   *-----------------------------------------------------------------------*/</span></div>
 <div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span>  <span class="comment">// Capture a new frame</span></div>
-<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>  <span class="keywordflow">while</span> (acquireMutex-&gt;tryLock() == <span class="keyword">false</span>) {</div>
+<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>  <span class="keywordflow">while</span> (<a class="code hl_variable" href="classCamera.html#af765862d776294761eb47f81e6682833">acquireMutex</a>-&gt;tryLock() == <span class="keyword">false</span>) {</div>
 <div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span>      usleep(100);</div>
 <div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>  }</div>
-<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>  snapshotMutex-&gt;lock();</div>
+<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;lock();</div>
 <div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>  uchar *pBuf;</div>
 <div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span>  <span class="comment">/* copy captured image */</span></div>
 <div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>  </div>
@@ -881,109 +905,173 @@ $(function(){initNavTree('CameraGiGE_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>  </div>
 <div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>  arvbuffer_last = arvbuffer;</div>
 <div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;Buffer data size &quot;</span> &lt;&lt; arvbuffer-&gt;size;</div>
-<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;Pixel Encoding &quot;</span> &lt;&lt; pixel_encoding;</div>
+<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;Pixel Encoding &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a>;</div>
 <div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>  </div>
 <div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>  <span class="keywordflow">if</span> (arvbuffer-&gt;status != ARV_BUFFER_STATUS_SIZE_MISMATCH) { </div>
 <div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>    ushort *tmpBuf;</div>
 <div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>    pBuf = <span class="keyword">reinterpret_cast&lt;</span>uchar*<span class="keyword">&gt;</span>(arvbuffer_last-&gt;data);</div>
 <div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>    <span class="comment">// calculate min,max</span></div>
-<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>    max = 0;</div>
-<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>    min = 65535;</div>
-<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>    <span class="keywordflow">if</span> ( pixel_encoding == B8 ) {</div>
-<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0 ; i &lt; width * height; i++) {</div>
-<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>        <span class="keywordflow">if</span> (pBuf[i] &gt; max)</div>
-<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>          max = pBuf[i];</div>
-<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>        <span class="keywordflow">if</span> (pBuf[i] &lt; min)</div>
-<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>          min = pBuf[i];</div>
+<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>    <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a> = 0;</div>
+<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>    <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a> = 65535;</div>
+<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>    <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a> == B8 ) {</div>
+<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0 ; i &lt; <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>; i++) {</div>
+<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>        <span class="keywordflow">if</span> (pBuf[i] &gt; <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a>)</div>
+<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>          <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a> = pBuf[i];</div>
+<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>        <span class="keywordflow">if</span> (pBuf[i] &lt; <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>)</div>
+<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>          <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a> = pBuf[i];</div>
 <div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>      }</div>
 <div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>    }</div>
-<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>    <span class="keywordflow">if</span> ( pixel_encoding == B10 ) {</div>
+<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>    <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a> == B10 ) {</div>
 <div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>      tmpBuf = <span class="keyword">reinterpret_cast&lt;</span>ushort*<span class="keyword">&gt;</span>(pBuf);</div>
-<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0 ; i &lt; width * height; i++) {</div>
+<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0 ; i &lt; <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>; i++) {</div>
 <div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>        ushort ui_current = *(tmpBuf++) &amp; 0x03FF;</div>
-<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>        <span class="keywordflow">if</span> (ui_current &gt; max)</div>
-<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>          max = ui_current;</div>
-<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>        <span class="keywordflow">if</span> (ui_current &lt; min)</div>
-<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>          min = ui_current;</div>
+<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>        <span class="keywordflow">if</span> (ui_current &gt; <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a>)</div>
+<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>          <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a> = ui_current;</div>
+<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>        <span class="keywordflow">if</span> (ui_current &lt; <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>)</div>
+<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>          <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a> = ui_current;</div>
 <div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>      }</div>
 <div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>    }</div>
-<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>    <span class="keywordflow">if</span> ( pixel_encoding == B12 ) {</div>
+<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>    <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a> == B12 ) {</div>
 <div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>      tmpBuf = <span class="keyword">reinterpret_cast&lt;</span>ushort*<span class="keyword">&gt;</span>(pBuf);</div>
-<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0 ; i &lt; width * height; i++) {</div>
+<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0 ; i &lt; <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>; i++) {</div>
 <div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>        ushort ui_current = *(tmpBuf++) &amp; 0x07FF;</div>
-<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>        <span class="keywordflow">if</span> (ui_current &gt; max)</div>
-<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>          max = ui_current;</div>
-<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>        <span class="keywordflow">if</span> (ui_current &lt; min)</div>
-<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>          min = ui_current;</div>
+<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>        <span class="keywordflow">if</span> (ui_current &gt; <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a>)</div>
+<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>          <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a> = ui_current;</div>
+<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>        <span class="keywordflow">if</span> (ui_current &lt; <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>)</div>
+<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>          <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a> = ui_current;</div>
 <div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>      }</div>
 <div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>    }</div>
 <div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>    <span class="comment">// copy image to buffer (8-bit : 0 - 255 range) and to buffer32 (32-bit)</span></div>
 <div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>    <span class="comment">// Reset buffer (8-bit) and buffer32 (32-bit)</span></div>
-<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>    memset(buffer,0,height * width * <span class="keyword">sizeof</span>(uchar));</div>
-<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>    memset(buffer32,0,height * width * <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
-<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>    <span class="keywordflow">if</span> ( pixel_encoding == B8 ) {</div>
-<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>      memcpy(buffer,pBuf,width * height * <span class="keyword">sizeof</span>(uchar));</div>
-<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0 ; i &lt; width * height; i++)</div>
-<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>        buffer32[i] = buffer[i];</div>
+<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>    memset(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,0,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <span class="keyword">sizeof</span>(uchar));</div>
+<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>    memset(<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>,0,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
+<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>    <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a> == B8 ) {</div>
+<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>      memcpy(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,pBuf,<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <span class="keyword">sizeof</span>(uchar));</div>
+<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0 ; i &lt; <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>; i++)</div>
+<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>        <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>[i] = <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>[i];</div>
 <div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>    }</div>
-<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>    <span class="keywordflow">if</span> ( pixel_encoding == B10 ) {</div>
+<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>    <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a> == B10 ) {</div>
 <div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span>      tmpBuf = <span class="keyword">reinterpret_cast&lt;</span>ushort*<span class="keyword">&gt;</span>(pBuf);</div>
-<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0 ; i &lt; width * height; i++) {</div>
+<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0 ; i &lt; <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>; i++) {</div>
 <div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span>        ushort ui_current = *(tmpBuf++) &amp; 0x03FF;</div>
-<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span>        buffer32[i] = ui_current;</div>
-<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span>        <span class="keywordflow">if</span> ( (max - min) != 0 )</div>
-<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span>          buffer[i] = (uchar) (( 255 * (ui_current - min) ) / (max - min));</div>
+<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span>        <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>[i] = ui_current;</div>
+<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span>        <span class="keywordflow">if</span> ( (<a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a> - <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>) != 0 )</div>
+<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span>          <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>[i] = (uchar) (( 255 * (ui_current - <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>) ) / (<a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a> - <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>));</div>
 <div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span>        <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span>          buffer[i] = 255;</div>
+<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span>          <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>[i] = 255;</div>
 <div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span>      }</div>
 <div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span>    }</div>
-<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>    <span class="keywordflow">if</span> ( pixel_encoding == B12 ) {</div>
+<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>    <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a> == B12 ) {</div>
 <div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>      tmpBuf = <span class="keyword">reinterpret_cast&lt;</span>ushort*<span class="keyword">&gt;</span>(pBuf);</div>
-<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0 ; i &lt; width * height; i++) {</div>
+<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0 ; i &lt; <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>; i++) {</div>
 <div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>        ushort ui_current = *(tmpBuf++) &amp; 0x07FF;</div>
-<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>        buffer32[i] = ui_current;</div>
-<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>        <span class="keywordflow">if</span> ( (max - min) != 0 )</div>
-<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>          buffer[i] = (uchar) (( 255 * (ui_current - min) ) / (max - min));</div>
+<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>        <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>[i] = ui_current;</div>
+<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>        <span class="keywordflow">if</span> ( (<a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a> - <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>) != 0 )</div>
+<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>          <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>[i] = (uchar) (( 255 * (ui_current - <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>) ) / (<a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a> - <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>));</div>
 <div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>        <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>          buffer[i] = 255;</div>
+<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>          <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>[i] = 255;</div>
 <div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>      }</div>
 <div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>    }</div>
 <div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span> </div>
-<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>    <span class="keywordflow">if</span> (vflip) {</div>
-<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>      buffer = reversebytes(buffer,height * width);</div>
-<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>      buffer = fliphorizontal(buffer,height * width, width);</div>
-<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>      buffer32 = reversebytes(buffer32,height * width);</div>
-<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>      buffer32 = fliphorizontal(buffer32,height * width, width);</div>
+<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a3141f66445a193e8f21455e4c06b86bf">vflip</a>) {</div>
+<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>      <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = <a class="code hl_slot" href="classCamera.html#a941c13d84dc838b5b5594479fdafd594">reversebytes</a>(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
+<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>      <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = <a class="code hl_slot" href="classCamera.html#a7037d24df9894ca2d1623364c3476fad">fliphorizontal</a>(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
+<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>      <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = <a class="code hl_slot" href="classCamera.html#a941c13d84dc838b5b5594479fdafd594">reversebytes</a>(<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
+<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>      <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = <a class="code hl_slot" href="classCamera.html#a7037d24df9894ca2d1623364c3476fad">fliphorizontal</a>(<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
 <div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>    }</div>
-<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>    <span class="keywordflow">if</span> (hflip) {</div>
-<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>     buffer = fliphorizontal(buffer,height*width, width);</div>
-<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>     buffer32 = fliphorizontal(buffer32,height*width, width);</div>
+<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a311d29c5e51e659f1de1b9f040047926">hflip</a>) {</div>
+<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>     <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = <a class="code hl_slot" href="classCamera.html#a7037d24df9894ca2d1623364c3476fad">fliphorizontal</a>(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>*<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
+<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>     <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = <a class="code hl_slot" href="classCamera.html#a7037d24df9894ca2d1623364c3476fad">fliphorizontal</a>(<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>*<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
 <div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>    }</div>
 <div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>  </div>
 <div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>  </div>
 <div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>  <span class="comment">// emit visualisation image</span></div>
-<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>  QImage imagescaled = image-&gt;scaled(imageWidth,imageHeight);</div>
+<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>  QImage imagescaled = <a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a>-&gt;scaled(imageWidth,imageHeight);</div>
 <div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>  QImage imagergb32 =  imagescaled.convertToFormat(QImage::Format_ARGB32_Premultiplied);</div>
 <div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>  </div>
-<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>  emit getImage(imagergb32);</div>
-<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>  emit updateMin(min);</div>
-<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>  emit updateMax(max);</div>
+<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>  emit <a class="code hl_signal" href="classCameraGiGE.html#adf48a9fe658883b3a45ead9d3ea682c5">getImage</a>(imagergb32);</div>
+<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>  emit <a class="code hl_signal" href="classCameraGiGE.html#a055492b2b751e3ef129112d83da04758">updateMin</a>(<a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>);</div>
+<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>  emit <a class="code hl_signal" href="classCameraGiGE.html#acb276745c902d3addd1d01bc61a96776">updateMax</a>(<a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a>);</div>
 <div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>  }</div>
 <div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>  <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>   QLOG_ERROR() &lt;&lt; <span class="stringliteral">&quot; Arv buffer Error &quot;</span> &lt;&lt; arvbuffer_last-&gt;status;</div>
-<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>  snapshotMutex-&gt;unlock();</div>
-<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>  acquireMutex-&gt;unlock();</div>
+<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;unlock();</div>
+<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>  <a class="code hl_variable" href="classCamera.html#af765862d776294761eb47f81e6682833">acquireMutex</a>-&gt;unlock();</div>
 <div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>  <span class="keywordflow">return</span> (1);</div>
 <div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span>}</div>
 <div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span> </div>
-<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span><span class="keywordtype">void</span> CameraGiGE::setImageSize(<span class="keyword">const</span> <span class="keywordtype">int</span> &amp;_imageWidth, <span class="keyword">const</span> <span class="keywordtype">int</span> &amp;_imageHeight){</div>
+<div class="foldopen" id="foldopen00871" data-start="{" data-end="}">
+<div class="line"><a id="l00871" name="l00871"></a><span class="lineno"><a class="line" href="classCameraGiGE.html#aea93bb3977e47df973e9a11ddbe18184">  871</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classCameraGiGE.html#aea93bb3977e47df973e9a11ddbe18184">CameraGiGE::setImageSize</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> &amp;_imageWidth, <span class="keyword">const</span> <span class="keywordtype">int</span> &amp;_imageHeight){</div>
 <div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>  </div>
 <div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>  imageWidth = _imageWidth;</div>
 <div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>  imageHeight = _imageHeight;</div>
 <div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>  QLOG_DEBUG ( ) &lt;&lt;  <span class="stringliteral">&quot;emit new image with size &quot;</span> &lt;&lt; imageWidth  &lt;&lt; <span class="stringliteral">&quot;x&quot;</span> &lt;&lt; imageHeight;</div>
 <div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>}</div>
+</div>
 <div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassCamera_html"><div class="ttname"><a href="classCamera.html">Camera</a></div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00052">Camera.h:53</a></div></div>
+<div class="ttc" id="aclassCameraGiGE_html_a014826b641431d134580a0efe77d2f3b"><div class="ttname"><a href="classCameraGiGE.html#a014826b641431d134580a0efe77d2f3b">CameraGiGE::getSnapshot32</a></div><div class="ttdeci">int * getSnapshot32() override</div><div class="ttdoc">Acquire a single 32-bit image.</div><div class="ttdef"><b>Definition</b> <a href="#l00284">CameraGiGE.cpp:284</a></div></div>
+<div class="ttc" id="aclassCameraGiGE_html_a036d4a016711ea57a7f7b418849d2417"><div class="ttname"><a href="classCameraGiGE.html#a036d4a016711ea57a7f7b418849d2417">CameraGiGE::setMode</a></div><div class="ttdeci">void setMode(int feature, bool value) override</div><div class="ttdef"><b>Definition</b> <a href="#l00511">CameraGiGE.cpp:511</a></div></div>
+<div class="ttc" id="aclassCameraGiGE_html_a055492b2b751e3ef129112d83da04758"><div class="ttname"><a href="classCameraGiGE.html#a055492b2b751e3ef129112d83da04758">CameraGiGE::updateMin</a></div><div class="ttdeci">void updateMin(int min)</div></div>
+<div class="ttc" id="aclassCameraGiGE_html_a31c3316a6ea692a72c49a91fbdb08dd7"><div class="ttname"><a href="classCameraGiGE.html#a31c3316a6ea692a72c49a91fbdb08dd7">CameraGiGE::CameraGiGE</a></div><div class="ttdeci">CameraGiGE()</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> <a href="#l00098">CameraGiGE.cpp:98</a></div></div>
+<div class="ttc" id="aclassCameraGiGE_html_a3887292ec688187f4ff2579cbae4d6a8"><div class="ttname"><a href="classCameraGiGE.html#a3887292ec688187f4ff2579cbae4d6a8">CameraGiGE::getFeatures</a></div><div class="ttdeci">void getFeatures() override</div><div class="ttdoc">Query and cache camera features.</div><div class="ttdef"><b>Definition</b> <a href="#l00519">CameraGiGE.cpp:519</a></div></div>
+<div class="ttc" id="aclassCameraGiGE_html_a3ed4e9f32d984778f68a9b851099ef2d"><div class="ttname"><a href="classCameraGiGE.html#a3ed4e9f32d984778f68a9b851099ef2d">CameraGiGE::~CameraGiGE</a></div><div class="ttdeci">~CameraGiGE() override</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition</b> <a href="#l00119">CameraGiGE.cpp:119</a></div></div>
+<div class="ttc" id="aclassCameraGiGE_html_a481e05f97483487476702db2b822e209"><div class="ttname"><a href="classCameraGiGE.html#a481e05f97483487476702db2b822e209">CameraGiGE::stop</a></div><div class="ttdeci">void stop() override</div><div class="ttdoc">Stop acquisition and release resources.</div><div class="ttdef"><b>Definition</b> <a href="#l00294">CameraGiGE.cpp:294</a></div></div>
+<div class="ttc" id="aclassCameraGiGE_html_aab7765ffaa02a8f5a81fdb3447e347e0"><div class="ttname"><a href="classCameraGiGE.html#aab7765ffaa02a8f5a81fdb3447e347e0">CameraGiGE::getProps</a></div><div class="ttdeci">void getProps() override</div><div class="ttdoc">Query the camera for its properties.</div><div class="ttdef"><b>Definition</b> <a href="#l00590">CameraGiGE.cpp:590</a></div></div>
+<div class="ttc" id="aclassCameraGiGE_html_abbd26064a1cc38bb923d2936a339ef4d"><div class="ttname"><a href="classCameraGiGE.html#abbd26064a1cc38bb923d2936a339ef4d">CameraGiGE::setCamera</a></div><div class="ttdeci">void setCamera(void *_camera, int _id) override</div><div class="ttdef"><b>Definition</b> <a href="#l00130">CameraGiGE.cpp:130</a></div></div>
+<div class="ttc" id="aclassCameraGiGE_html_acb276745c902d3addd1d01bc61a96776"><div class="ttname"><a href="classCameraGiGE.html#acb276745c902d3addd1d01bc61a96776">CameraGiGE::updateMax</a></div><div class="ttdeci">void updateMax(int max)</div></div>
+<div class="ttc" id="aclassCameraGiGE_html_adafbd4144ff02068ca9a2f95bcc4bae5"><div class="ttname"><a href="classCameraGiGE.html#adafbd4144ff02068ca9a2f95bcc4bae5">CameraGiGE::setFeature</a></div><div class="ttdeci">void setFeature(int feature, double value) override</div><div class="ttdef"><b>Definition</b> <a href="#l00342">CameraGiGE.cpp:342</a></div></div>
+<div class="ttc" id="aclassCameraGiGE_html_adf48a9fe658883b3a45ead9d3ea682c5"><div class="ttname"><a href="classCameraGiGE.html#adf48a9fe658883b3a45ead9d3ea682c5">CameraGiGE::getImage</a></div><div class="ttdeci">void getImage(const QImage &amp;image)</div></div>
+<div class="ttc" id="aclassCameraGiGE_html_ae34901ae349f2dacfd5365ab97d04b11"><div class="ttname"><a href="classCameraGiGE.html#ae34901ae349f2dacfd5365ab97d04b11">CameraGiGE::getSnapshot</a></div><div class="ttdeci">uchar * getSnapshot() override</div><div class="ttdoc">Acquire a single 8-bit image.</div><div class="ttdef"><b>Definition</b> <a href="#l00264">CameraGiGE.cpp:264</a></div></div>
+<div class="ttc" id="aclassCameraGiGE_html_ae9cf2497ad84fae572dcd8207a46f3a0"><div class="ttname"><a href="classCameraGiGE.html#ae9cf2497ad84fae572dcd8207a46f3a0">CameraGiGE::updateFeatures</a></div><div class="ttdeci">void updateFeatures()</div><div class="ttdoc">Notify UI to refresh feature values.</div></div>
+<div class="ttc" id="aclassCameraGiGE_html_aea93bb3977e47df973e9a11ddbe18184"><div class="ttname"><a href="classCameraGiGE.html#aea93bb3977e47df973e9a11ddbe18184">CameraGiGE::setImageSize</a></div><div class="ttdeci">void setImageSize(const int &amp;_imageWidth, const int &amp;_imageHeight) override</div><div class="ttdef"><b>Definition</b> <a href="#l00871">CameraGiGE.cpp:871</a></div></div>
+<div class="ttc" id="aclassCameraGiGE_html_aee9ec5a805b7aded05b7f29b88e5e5e8"><div class="ttname"><a href="classCameraGiGE.html#aee9ec5a805b7aded05b7f29b88e5e5e8">CameraGiGE::findCamera</a></div><div class="ttdeci">int findCamera() override</div><div class="ttdoc">Discover available cameras.</div><div class="ttdef"><b>Definition</b> <a href="#l00648">CameraGiGE.cpp:648</a></div></div>
+<div class="ttc" id="aclassCameraGiGE_html_afd00cf6a81ed6e7083687cea7435c1e9"><div class="ttname"><a href="classCameraGiGE.html#afd00cf6a81ed6e7083687cea7435c1e9">CameraGiGE::getSnapshot16</a></div><div class="ttdeci">ushort * getSnapshot16() override</div><div class="ttdoc">Acquire a single 16-bit image.</div><div class="ttdef"><b>Definition</b> <a href="#l00273">CameraGiGE.cpp:273</a></div></div>
+<div class="ttc" id="aclassCamera_html_a0db5c414ff3b1e98eaad9526f904936f"><div class="ttname"><a href="classCamera.html#a0db5c414ff3b1e98eaad9526f904936f">Camera::has_started</a></div><div class="ttdeci">bool has_started</div><div class="ttdoc">True if acquisition has started.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00356">Camera.h:356</a></div></div>
+<div class="ttc" id="aclassCamera_html_a1133b0dd29ddb1d9d716e8e47129e217"><div class="ttname"><a href="classCamera.html#a1133b0dd29ddb1d9d716e8e47129e217">Camera::mutex</a></div><div class="ttdeci">QMutex * mutex</div><div class="ttdoc">General mutex for camera operations.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00346">Camera.h:346</a></div></div>
+<div class="ttc" id="aclassCamera_html_a12dc0b68ba02316823fc75ae47e4f382"><div class="ttname"><a href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">Camera::snapshotMutex</a></div><div class="ttdeci">QMutex * snapshotMutex</div><div class="ttdoc">Mutex for snapshot operations.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00348">Camera.h:348</a></div></div>
+<div class="ttc" id="aclassCamera_html_a184bbe6dca0b8478034497e486a00cd7"><div class="ttname"><a href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">Camera::snapshot32</a></div><div class="ttdeci">int * snapshot32</div><div class="ttdoc">32-bit snapshot buffer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00380">Camera.h:380</a></div></div>
+<div class="ttc" id="aclassCamera_html_a1a61588434d31ab19764788000ab4924"><div class="ttname"><a href="classCamera.html#a1a61588434d31ab19764788000ab4924">Camera::buffer</a></div><div class="ttdeci">uchar * buffer</div><div class="ttdoc">8-bit acquisition buffer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00370">Camera.h:370</a></div></div>
+<div class="ttc" id="aclassCamera_html_a21308d2be4c1a5433c7ee3b8630a3bbc"><div class="ttname"><a href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">Camera::propList</a></div><div class="ttdeci">QVector&lt; QString &gt; propList</div><div class="ttdoc">Available properties list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00433">Camera.h:433</a></div></div>
+<div class="ttc" id="aclassCamera_html_a21b164c6df511a8c3a56843641e21aca"><div class="ttname"><a href="classCamera.html#a21b164c6df511a8c3a56843641e21aca">Camera::featureAbsCapableList</a></div><div class="ttdeci">QVector&lt; int &gt; featureAbsCapableList</div><div class="ttdoc">Available feature abs capable list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00430">Camera.h:430</a></div></div>
+<div class="ttc" id="aclassCamera_html_a2ed3f9ca3ada391a955e9ecf711590b4"><div class="ttname"><a href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">Camera::featureNameList</a></div><div class="ttdeci">QVector&lt; QString &gt; featureNameList</div><div class="ttdoc">Available feature list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00414">Camera.h:414</a></div></div>
+<div class="ttc" id="aclassCamera_html_a311d29c5e51e659f1de1b9f040047926"><div class="ttname"><a href="classCamera.html#a311d29c5e51e659f1de1b9f040047926">Camera::hflip</a></div><div class="ttdeci">int hflip</div><div class="ttdoc">Horizontal flip flag.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00621">Camera.h:621</a></div></div>
+<div class="ttc" id="aclassCamera_html_a3141f66445a193e8f21455e4c06b86bf"><div class="ttname"><a href="classCamera.html#a3141f66445a193e8f21455e4c06b86bf">Camera::vflip</a></div><div class="ttdeci">int vflip</div><div class="ttdoc">Vertical flip flag.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00619">Camera.h:619</a></div></div>
+<div class="ttc" id="aclassCamera_html_a33924d5eddaf9f897bed4e793407c4c7"><div class="ttname"><a href="classCamera.html#a33924d5eddaf9f897bed4e793407c4c7">Camera::acqend</a></div><div class="ttdeci">QWaitCondition * acqend</div><div class="ttdoc">Wait condition for acquisition end.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00354">Camera.h:354</a></div></div>
+<div class="ttc" id="aclassCamera_html_a33c6cb101766bb447cd58f553fdcdad5"><div class="ttname"><a href="classCamera.html#a33c6cb101766bb447cd58f553fdcdad5">Camera::featureMinList</a></div><div class="ttdeci">QVector&lt; double &gt; featureMinList</div><div class="ttdoc">Available feature min list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00420">Camera.h:420</a></div></div>
+<div class="ttc" id="aclassCamera_html_a4e4a46b74c5f7a1e7b6d2f1e0b9339d8"><div class="ttname"><a href="classCamera.html#a4e4a46b74c5f7a1e7b6d2f1e0b9339d8">Camera::snapshot16</a></div><div class="ttdeci">ushort * snapshot16</div><div class="ttdoc">16-bit snapshot buffer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00376">Camera.h:376</a></div></div>
+<div class="ttc" id="aclassCamera_html_a4e64c09c8af69c5b5e667cee4eb33ff6"><div class="ttname"><a href="classCamera.html#a4e64c09c8af69c5b5e667cee4eb33ff6">Camera::acqstart</a></div><div class="ttdeci">QWaitCondition * acqstart</div><div class="ttdoc">Wait condition for acquisition start.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00352">Camera.h:352</a></div></div>
+<div class="ttc" id="aclassCamera_html_a51a719b1126266e1bcb2fc7eb992fa8e"><div class="ttname"><a href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">Camera::buffer16</a></div><div class="ttdeci">ushort * buffer16</div><div class="ttdoc">16-bit acquisition buffer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00374">Camera.h:374</a></div></div>
+<div class="ttc" id="aclassCamera_html_a56921e3621efce3412c57898e3f288d4"><div class="ttname"><a href="classCamera.html#a56921e3621efce3412c57898e3f288d4">Camera::featureModeAutoList</a></div><div class="ttdeci">QVector&lt; bool &gt; featureModeAutoList</div><div class="ttdoc">Available feature mode list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00424">Camera.h:424</a></div></div>
+<div class="ttc" id="aclassCamera_html_a57271306f031565b6e40f06786f9a015"><div class="ttname"><a href="classCamera.html#a57271306f031565b6e40f06786f9a015">Camera::featureValueList</a></div><div class="ttdeci">QVector&lt; double &gt; featureValueList</div><div class="ttdoc">Available feature value list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00418">Camera.h:418</a></div></div>
+<div class="ttc" id="aclassCamera_html_a5c60cfc59d9abffabd129eda4e576c6a"><div class="ttname"><a href="classCamera.html#a5c60cfc59d9abffabd129eda4e576c6a">Camera::num</a></div><div class="ttdeci">int num</div><div class="ttdoc">Camera total number for camera manager.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00398">Camera.h:398</a></div></div>
+<div class="ttc" id="aclassCamera_html_a5d83b6fb8ed1fe3753f1104109e70802"><div class="ttname"><a href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">Camera::eTimeTotal</a></div><div class="ttdeci">double eTimeTotal</div><div class="ttdoc">Total exposure time.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00623">Camera.h:623</a></div></div>
+<div class="ttc" id="aclassCamera_html_a5ec4351355ec887d929e879dc4201505"><div class="ttname"><a href="classCamera.html#a5ec4351355ec887d929e879dc4201505">Camera::featureAbsValueList</a></div><div class="ttdeci">QVector&lt; double &gt; featureAbsValueList</div><div class="ttdoc">Available feature abs value list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00428">Camera.h:428</a></div></div>
+<div class="ttc" id="aclassCamera_html_a6063bbec41b6b47fb080d280f00832bb"><div class="ttname"><a href="classCamera.html#a6063bbec41b6b47fb080d280f00832bb">Camera::cameralist</a></div><div class="ttdeci">QVector&lt; void * &gt; cameralist</div><div class="ttdoc">Available camera list for camera manager.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00402">Camera.h:402</a></div></div>
+<div class="ttc" id="aclassCamera_html_a616b41fa3ff47a04d7da36ab78e73e90"><div class="ttname"><a href="classCamera.html#a616b41fa3ff47a04d7da36ab78e73e90">Camera::modelist</a></div><div class="ttdeci">QVector&lt; QString &gt; modelist</div><div class="ttdoc">Available model list for camera manager.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00406">Camera.h:406</a></div></div>
+<div class="ttc" id="aclassCamera_html_a6398eb90f263077e353f910dcc893034"><div class="ttname"><a href="classCamera.html#a6398eb90f263077e353f910dcc893034">Camera::max</a></div><div class="ttdeci">int max</div><div class="ttdoc">Current maximum.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00392">Camera.h:392</a></div></div>
+<div class="ttc" id="aclassCamera_html_a6468d8a7c194ae93013a87541e40b7ad"><div class="ttname"><a href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">Camera::min</a></div><div class="ttdeci">int min</div><div class="ttdoc">Current minimum.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00390">Camera.h:390</a></div></div>
+<div class="ttc" id="aclassCamera_html_a65227509a53627a5fc5caf7615aa345f"><div class="ttname"><a href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">Camera::snapshot</a></div><div class="ttdeci">uchar * snapshot</div><div class="ttdoc">8-bit snapshot buffer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00372">Camera.h:372</a></div></div>
+<div class="ttc" id="aclassCamera_html_a66df10724d03b077fdb8c1477126d4c7"><div class="ttname"><a href="classCamera.html#a66df10724d03b077fdb8c1477126d4c7">Camera::modeCheckEnabled</a></div><div class="ttdeci">bool modeCheckEnabled</div><div class="ttdoc">AUTO/MANUAL mode check enabled.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00412">Camera.h:412</a></div></div>
+<div class="ttc" id="aclassCamera_html_a66e914bd0f8c274f824e2d9effb7bbb7"><div class="ttname"><a href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">Camera::pixel_encoding</a></div><div class="ttdeci">unsigned int pixel_encoding</div><div class="ttdoc">Pixel encoding identifier.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00368">Camera.h:368</a></div></div>
+<div class="ttc" id="aclassCamera_html_a690c5440136c44bfb96e520bc6e80f07"><div class="ttname"><a href="classCamera.html#a690c5440136c44bfb96e520bc6e80f07">Camera::frequency</a></div><div class="ttdeci">double frequency</div><div class="ttdoc">Acquisition frequency.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00625">Camera.h:625</a></div></div>
+<div class="ttc" id="aclassCamera_html_a7037d24df9894ca2d1623364c3476fad"><div class="ttname"><a href="classCamera.html#a7037d24df9894ca2d1623364c3476fad">Camera::fliphorizontal</a></div><div class="ttdeci">virtual uchar * fliphorizontal(uchar *buffer, int buffersize, int width)</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00532">Camera.h:532</a></div></div>
+<div class="ttc" id="aclassCamera_html_a708e9972336d6a6587f3a70a39fe7862"><div class="ttname"><a href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">Camera::featureMaxList</a></div><div class="ttdeci">QVector&lt; double &gt; featureMaxList</div><div class="ttdoc">Available feature max list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00422">Camera.h:422</a></div></div>
+<div class="ttc" id="aclassCamera_html_a8152b3ad0d73754548a46e50b1a0148f"><div class="ttname"><a href="classCamera.html#a8152b3ad0d73754548a46e50b1a0148f">Camera::vendor</a></div><div class="ttdeci">QString vendor</div><div class="ttdoc">Current vendor.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00408">Camera.h:408</a></div></div>
+<div class="ttc" id="aclassCamera_html_a8ea245772da01fa88a9af64365b40beb"><div class="ttname"><a href="classCamera.html#a8ea245772da01fa88a9af64365b40beb">Camera::vendorlist</a></div><div class="ttdeci">QVector&lt; QString &gt; vendorlist</div><div class="ttdoc">Available vendor list for camera manager.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00404">Camera.h:404</a></div></div>
+<div class="ttc" id="aclassCamera_html_a941c13d84dc838b5b5594479fdafd594"><div class="ttname"><a href="classCamera.html#a941c13d84dc838b5b5594479fdafd594">Camera::reversebytes</a></div><div class="ttdeci">virtual uchar * reversebytes(uchar *buffer, int buffersize)</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00483">Camera.h:483</a></div></div>
+<div class="ttc" id="aclassCamera_html_a9431ced47ded96644b4ce9a9f6a0fb08"><div class="ttname"><a href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">Camera::image</a></div><div class="ttdeci">QImage * image</div><div class="ttdoc">Image object for display.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00633">Camera.h:633</a></div></div>
+<div class="ttc" id="aclassCamera_html_aa18f0bf8b6e8cb661643d980a4484ac0"><div class="ttname"><a href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">Camera::width</a></div><div class="ttdeci">unsigned int width</div><div class="ttdoc">Current image width.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00362">Camera.h:362</a></div></div>
+<div class="ttc" id="aclassCamera_html_aa4f9dfb25e1fd1d5df43a8bd98844994"><div class="ttname"><a href="classCamera.html#aa4f9dfb25e1fd1d5df43a8bd98844994">Camera::suspend</a></div><div class="ttdeci">bool suspend</div><div class="ttdoc">True if acquisition is suspended.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00358">Camera.h:358</a></div></div>
+<div class="ttc" id="aclassCamera_html_aae9d6cd8ee85da741728c7f3b3b4311f"><div class="ttname"><a href="classCamera.html#aae9d6cd8ee85da741728c7f3b3b4311f">Camera::camera_err</a></div><div class="ttdeci">int camera_err</div><div class="ttdoc">Error flag.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00396">Camera.h:396</a></div></div>
+<div class="ttc" id="aclassCamera_html_ab06db0796eb2f81f76af3daaf5e1d85d"><div class="ttname"><a href="classCamera.html#ab06db0796eb2f81f76af3daaf5e1d85d">Camera::updateProps</a></div><div class="ttdeci">void updateProps()</div><div class="ttdoc">Notify UI to refresh property values.</div></div>
+<div class="ttc" id="aclassCamera_html_ab7faaf71010d522f44c33a1cd6798049"><div class="ttname"><a href="classCamera.html#ab7faaf71010d522f44c33a1cd6798049">Camera::snapShotMax</a></div><div class="ttdeci">int snapShotMax</div><div class="ttdoc">Snapshot maximum.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00386">Camera.h:386</a></div></div>
+<div class="ttc" id="aclassCamera_html_ac7debddf30d07a115056facc32cd7cd0"><div class="ttname"><a href="classCamera.html#ac7debddf30d07a115056facc32cd7cd0">Camera::model</a></div><div class="ttdeci">QString model</div><div class="ttdoc">Current model.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00410">Camera.h:410</a></div></div>
+<div class="ttc" id="aclassCamera_html_ac91d6b8947853370603e26ebcf7cb53c"><div class="ttname"><a href="classCamera.html#ac91d6b8947853370603e26ebcf7cb53c">Camera::snapShotMin</a></div><div class="ttdeci">int snapShotMin</div><div class="ttdoc">Snapshot minimum.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00384">Camera.h:384</a></div></div>
+<div class="ttc" id="aclassCamera_html_ad886ab68c1f94916ed5aa37b6b4473fe"><div class="ttname"><a href="classCamera.html#ad886ab68c1f94916ed5aa37b6b4473fe">Camera::featureIdList</a></div><div class="ttdeci">QVector&lt; int &gt; featureIdList</div><div class="ttdoc">Available feature id list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00416">Camera.h:416</a></div></div>
+<div class="ttc" id="aclassCamera_html_ada6182fea01bf1857c0b8d9ad18f4bd7"><div class="ttname"><a href="classCamera.html#ada6182fea01bf1857c0b8d9ad18f4bd7">Camera::table</a></div><div class="ttdeci">QVector&lt; QRgb &gt; * table</div><div class="ttdoc">Active color table pointer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00631">Camera.h:631</a></div></div>
+<div class="ttc" id="aclassCamera_html_adb678e500e52d67d34e54a953b994fbb"><div class="ttname"><a href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">Camera::buffer32</a></div><div class="ttdeci">int * buffer32</div><div class="ttdoc">32-bit acquisition buffer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00378">Camera.h:378</a></div></div>
+<div class="ttc" id="aclassCamera_html_ae9ed166dbbc8876027ecbec9af8761c4"><div class="ttname"><a href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">Camera::height</a></div><div class="ttdeci">unsigned int height</div><div class="ttdoc">Current image height.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00364">Camera.h:364</a></div></div>
+<div class="ttc" id="aclassCamera_html_af765862d776294761eb47f81e6682833"><div class="ttname"><a href="classCamera.html#af765862d776294761eb47f81e6682833">Camera::acquireMutex</a></div><div class="ttdeci">QMutex * acquireMutex</div><div class="ttdoc">Mutex for acquisition operations.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00350">Camera.h:350</a></div></div>
 <div class="ttc" id="anamespaceUtils_html_a80482614a1ae51bca37af587bb80188a"><div class="ttname"><a href="namespaceUtils.html#a80482614a1ae51bca37af587bb80188a">Utils::GetTimeMicroseconds</a></div><div class="ttdeci">double GetTimeMicroseconds()</div><div class="ttdoc">Return the current time in microseconds.</div><div class="ttdef"><b>Definition</b> <a href="Utils_8cpp_source.html#l00023">Utils.cpp:23</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

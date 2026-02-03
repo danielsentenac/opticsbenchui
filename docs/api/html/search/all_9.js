@@ -18,9 +18,8 @@ var searchData=
   ['instrumentname_15',['instrumentName',['../classAcquisitionSequence.html#a0e636cbd7fb41f0710abcb4748e57e30',1,'AcquisitionSequence']]],
   ['instrumentref_16',['instrumentRef',['../classAcquisitionSequence.html#ac1967f8a035f0809db5db14d81116a27',1,'AcquisitionSequence']]],
   ['instrumenttype_17',['instrumentType',['../classAcquisitionSequence.html#a7b1269c8636d378e7aede2aaef177fe9',1,'AcquisitionSequence']]],
-  ['isformatsupported_18',['isFormatSupported',['../classVideoWidgetSurface.html#a261ea701ca4fd27784542a5b5f5242ac',1,'VideoWidgetSurface']]],
-  ['isopenacquisitionwidget_19',['isopenacquisitionwidget',['../classOpticsBenchUIMain.html#aadc4739ab18f5100288242cbbbda24e0',1,'OpticsBenchUIMain']]],
-  ['isopenanalysiswidget_20',['isopenanalysiswidget',['../classOpticsBenchUIMain.html#a663f771cab86b02cabd9ea9b08e03027',1,'OpticsBenchUIMain']]],
-  ['isopencamerawindow_21',['isopenCameraWindow',['../classAcquisitionWidget.html#a64956d687b1e0e38c1783d4e6bcee157',1,'AcquisitionWidget::isopenCameraWindow()'],['../classOpticsBenchUIMain.html#ad3acec73bca4d59fdecb36e3aa0c6fb4',1,'OpticsBenchUIMain::isopenCameraWindow(QVector&lt; bool &gt; isopencamerawindow)']]],
-  ['isopencamerawindow_22',['isopencamerawindow',['../classOpticsBenchUIMain.html#a30de256688cd7a4fc1e715b163a2e591',1,'OpticsBenchUIMain']]]
+  ['isopenacquisitionwidget_18',['isopenacquisitionwidget',['../classOpticsBenchUIMain.html#aadc4739ab18f5100288242cbbbda24e0',1,'OpticsBenchUIMain']]],
+  ['isopenanalysiswidget_19',['isopenanalysiswidget',['../classOpticsBenchUIMain.html#a663f771cab86b02cabd9ea9b08e03027',1,'OpticsBenchUIMain']]],
+  ['isopencamerawindow_20',['isopenCameraWindow',['../classAcquisitionWidget.html#a64956d687b1e0e38c1783d4e6bcee157',1,'AcquisitionWidget::isopenCameraWindow()'],['../classOpticsBenchUIMain.html#ad3acec73bca4d59fdecb36e3aa0c6fb4',1,'OpticsBenchUIMain::isopenCameraWindow(QVector&lt; bool &gt; isopencamerawindow)']]],
+  ['isopencamerawindow_21',['isopencamerawindow',['../classOpticsBenchUIMain.html#a30de256688cd7a4fc1e715b163a2e591',1,'OpticsBenchUIMain']]]
 ];

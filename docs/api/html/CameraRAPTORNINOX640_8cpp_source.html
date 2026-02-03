@@ -163,26 +163,27 @@ $(function(){initNavTree('CameraRAPTORNINOX640_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                       };</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>CameraRAPTORNINOX640::CameraRAPTORNINOX640()</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  :<a class="code hl_class" href="classCamera.html">Camera</a>()</div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="}">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classCameraRAPTORNINOX640.html#acb6a0d173b5608f00b4fe66f4c7c8afd">   58</a></span><a class="code hl_function" href="classCameraRAPTORNINOX640.html#acb6a0d173b5608f00b4fe66f4c7c8afd">CameraRAPTORNINOX640::CameraRAPTORNINOX640</a>()</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  :Camera()</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>{</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  hflip = 0;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  vflip = 0;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  image = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  buffer = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  snapshot = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  buffer16 = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  snapshot16 = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  buffer32 = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  snapshot32 = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  suspend = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  has_started = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  mutex = <span class="keyword">new</span> QMutex(QMutex::NonRecursive);</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  snapshotMutex = <span class="keyword">new</span> QMutex(QMutex::Recursive);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  acquireMutex = <span class="keyword">new</span> QMutex(QMutex::Recursive);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  acqstart = <span class="keyword">new</span> QWaitCondition();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  acqend = <span class="keyword">new</span> QWaitCondition();</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  modeCheckEnabled = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <a class="code hl_variable" href="classCamera.html#a311d29c5e51e659f1de1b9f040047926">hflip</a> = 0;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <a class="code hl_variable" href="classCamera.html#a3141f66445a193e8f21455e4c06b86bf">vflip</a> = 0;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <a class="code hl_variable" href="classCamera.html#a4e4a46b74c5f7a1e7b6d2f1e0b9339d8">snapshot16</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <a class="code hl_variable" href="classCamera.html#aa4f9dfb25e1fd1d5df43a8bd98844994">suspend</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <a class="code hl_variable" href="classCamera.html#a0db5c414ff3b1e98eaad9526f904936f">has_started</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <a class="code hl_variable" href="classCamera.html#a1133b0dd29ddb1d9d716e8e47129e217">mutex</a> = <span class="keyword">new</span> QMutex(QMutex::NonRecursive);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a> = <span class="keyword">new</span> QMutex(QMutex::Recursive);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <a class="code hl_variable" href="classCamera.html#af765862d776294761eb47f81e6682833">acquireMutex</a> = <span class="keyword">new</span> QMutex(QMutex::Recursive);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <a class="code hl_variable" href="classCamera.html#a4e64c09c8af69c5b5e667cee4eb33ff6">acqstart</a> = <span class="keyword">new</span> QWaitCondition();</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <a class="code hl_variable" href="classCamera.html#a33924d5eddaf9f897bed4e793407c4c7">acqend</a> = <span class="keyword">new</span> QWaitCondition();</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <a class="code hl_variable" href="classCamera.html#a66df10724d03b077fdb8c1477126d4c7">modeCheckEnabled</a> = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  binning_changed = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  aoi_changed = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  adcCal0 = 1240;</div>
@@ -190,94 +191,98 @@ $(function(){initNavTree('CameraRAPTORNINOX640_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  dacCal0 = 1622;</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  dacCal40 = 2526;</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>}</div>
+</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>CameraRAPTORNINOX640::~CameraRAPTORNINOX640()</div>
+<div class="foldopen" id="foldopen00086" data-start="{" data-end="}">
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="classCameraRAPTORNINOX640.html#aa1ea1422825b903629f163503510f6fd">   86</a></span><a class="code hl_function" href="classCameraRAPTORNINOX640.html#aa1ea1422825b903629f163503510f6fd">CameraRAPTORNINOX640::~CameraRAPTORNINOX640</a>()</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>{</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;Deleting CameraRAPTORNINOX640&quot;</span>;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  stop();</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <a class="code hl_function" href="classCameraRAPTORNINOX640.html#a7cf8c9eb311cded11e1298f834725d21">stop</a>();</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  cleanup_and_exit();</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keyword">delete</span> mutex;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keyword">delete</span> snapshotMutex;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keyword">delete</span> acquireMutex;</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keyword">delete</span> acqstart;</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keyword">delete</span> acqend;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keyword">delete</span> <a class="code hl_variable" href="classCamera.html#a1133b0dd29ddb1d9d716e8e47129e217">mutex</a>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keyword">delete</span> <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keyword">delete</span> <a class="code hl_variable" href="classCamera.html#af765862d776294761eb47f81e6682833">acquireMutex</a>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keyword">delete</span> <a class="code hl_variable" href="classCamera.html#a4e64c09c8af69c5b5e667cee4eb33ff6">acqstart</a>;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keyword">delete</span> <a class="code hl_variable" href="classCamera.html#a33924d5eddaf9f897bed4e793407c4c7">acqend</a>;</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>}</div>
+</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="keywordtype">void</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>CameraRAPTORNINOX640::setCamera(<span class="keywordtype">void</span>* _camera, <span class="keywordtype">int</span> _id)</div>
+<div class="foldopen" id="foldopen00098" data-start="{" data-end="}">
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="classCameraRAPTORNINOX640.html#a202cfb7092df959ef1c195b7abd06946">   98</a></span><a class="code hl_function" href="classCameraRAPTORNINOX640.html#a202cfb7092df959ef1c195b7abd06946">CameraRAPTORNINOX640::setCamera</a>(<span class="keywordtype">void</span>* _camera, <span class="keywordtype">int</span> _id)</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>{</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="comment">/* Init camera*/</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  vendor = <span class="stringliteral">&quot;RaptorNinox640x640&quot;</span>;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  model = <span class="stringliteral">&quot;Raptor Ninox640&quot;</span>;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  camera_err = connectCamera();</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <a class="code hl_variable" href="classCamera.html#a8152b3ad0d73754548a46e50b1a0148f">vendor</a> = <span class="stringliteral">&quot;RaptorNinox640x640&quot;</span>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <a class="code hl_variable" href="classCamera.html#ac7debddf30d07a115056facc32cd7cd0">model</a> = <span class="stringliteral">&quot;Raptor Ninox640&quot;</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <a class="code hl_variable" href="classCamera.html#aae9d6cd8ee85da741728c7f3b3b4311f">camera_err</a> = connectCamera();</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::setCamera &quot;</span> &lt;&lt; vendor &lt;&lt; <span class="stringliteral">&quot; model : &quot;</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>              &lt;&lt; model &lt;&lt; <span class="stringliteral">&quot; - Err : &quot;</span> &lt;&lt; camera_err;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::setCamera &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#a8152b3ad0d73754548a46e50b1a0148f">vendor</a> &lt;&lt; <span class="stringliteral">&quot; model : &quot;</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>              &lt;&lt; <a class="code hl_variable" href="classCamera.html#ac7debddf30d07a115056facc32cd7cd0">model</a> &lt;&lt; <span class="stringliteral">&quot; - Err : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#aae9d6cd8ee85da741728c7f3b3b4311f">camera_err</a>;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> <span class="keywordtype">int</span> featureCnt = 0;</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> <span class="comment">// Frame Rate feature</span></div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> <span class="keywordtype">int</span> frate_min, frate_max;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> featureIdList.push_back(featureCnt);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> featureNameList.push_back(raptorninox640_features[featureCnt]);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> <a class="code hl_variable" href="classCamera.html#ad886ab68c1f94916ed5aa37b6b4473fe">featureIdList</a>.push_back(featureCnt);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.push_back(raptorninox640_features[featureCnt]);</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> frate_min = 1;</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> frate_max = 120;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> featureMinList.push_back(frate_min);</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> featureMaxList.push_back(frate_max);</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> featureValueList.push_back( (<span class="keywordtype">int</span>)frate );</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> featureAbsCapableList.push_back(<span class="keyword">true</span>);</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> featureAbsValueList.push_back((<span class="keywordtype">int</span>)frate);</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> featureModeAutoList.push_back(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> <a class="code hl_variable" href="classCamera.html#a33c6cb101766bb447cd58f553fdcdad5">featureMinList</a>.push_back(frate_min);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> <a class="code hl_variable" href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">featureMaxList</a>.push_back(frate_max);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.push_back( (<span class="keywordtype">int</span>)frate );</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> <a class="code hl_variable" href="classCamera.html#a21b164c6df511a8c3a56843641e21aca">featureAbsCapableList</a>.push_back(<span class="keyword">true</span>);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.push_back((<span class="keywordtype">int</span>)frate);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> <a class="code hl_variable" href="classCamera.html#a56921e3621efce3412c57898e3f288d4">featureModeAutoList</a>.push_back(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="comment">// Exposure feature</span></div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> <span class="keywordtype">int</span> exp_min, exp_max;</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> featureIdList.push_back(++featureCnt);</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> featureNameList.push_back(raptorninox640_features[featureCnt]);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> <a class="code hl_variable" href="classCamera.html#ad886ab68c1f94916ed5aa37b6b4473fe">featureIdList</a>.push_back(++featureCnt);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.push_back(raptorninox640_features[featureCnt]);</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> exp_min = 1;</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> exp_max = 1000;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> featureMinList.push_back(exp_min);</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> featureMaxList.push_back(exp_max);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> <a class="code hl_variable" href="classCamera.html#a33c6cb101766bb447cd58f553fdcdad5">featureMinList</a>.push_back(exp_min);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> <a class="code hl_variable" href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">featureMaxList</a>.push_back(exp_max);</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> <span class="keywordtype">int</span> exposure = (int)getExposure();</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> featureValueList.push_back( exposure );</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> featureAbsCapableList.push_back(<span class="keyword">true</span>);</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> featureAbsValueList.push_back( exposure );</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> featureModeAutoList.push_back(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.push_back( exposure );</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> <a class="code hl_variable" href="classCamera.html#a21b164c6df511a8c3a56843641e21aca">featureAbsCapableList</a>.push_back(<span class="keyword">true</span>);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.push_back( exposure );</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> <a class="code hl_variable" href="classCamera.html#a56921e3621efce3412c57898e3f288d4">featureModeAutoList</a>.push_back(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> <span class="comment">// Analog Gain feature</span></div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> <span class="keywordtype">int</span> g_min, g_max;</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> featureIdList.push_back(++featureCnt);</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> featureNameList.push_back(raptorninox640_features[featureCnt]);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> <a class="code hl_variable" href="classCamera.html#ad886ab68c1f94916ed5aa37b6b4473fe">featureIdList</a>.push_back(++featureCnt);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.push_back(raptorninox640_features[featureCnt]);</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> g_min = 0;</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> g_max = 1;</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> featureMinList.push_back(g_min);</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> featureMaxList.push_back(g_max);</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> <a class="code hl_variable" href="classCamera.html#a33c6cb101766bb447cd58f553fdcdad5">featureMinList</a>.push_back(g_min);</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> <a class="code hl_variable" href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">featureMaxList</a>.push_back(g_max);</div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> <span class="keywordtype">int</span> gain = (int)getGain();</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> featureValueList.push_back( gain );</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> featureAbsCapableList.push_back(<span class="keyword">true</span>);</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> featureAbsValueList.push_back( gain );</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> featureModeAutoList.push_back(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.push_back( gain );</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> <a class="code hl_variable" href="classCamera.html#a21b164c6df511a8c3a56843641e21aca">featureAbsCapableList</a>.push_back(<span class="keyword">true</span>);</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.push_back( gain );</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> <a class="code hl_variable" href="classCamera.html#a56921e3621efce3412c57898e3f288d4">featureModeAutoList</a>.push_back(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> <span class="comment">// Digital Gain feature</span></div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> <span class="keywordtype">int</span> dg_min, dg_max;</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> featureIdList.push_back(++featureCnt);</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> featureNameList.push_back(raptorninox640_features[featureCnt]);</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> <a class="code hl_variable" href="classCamera.html#ad886ab68c1f94916ed5aa37b6b4473fe">featureIdList</a>.push_back(++featureCnt);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.push_back(raptorninox640_features[featureCnt]);</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> dg_min = 0;</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> dg_max = 48;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> featureMinList.push_back(dg_min);</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> featureMaxList.push_back(dg_max);</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> <a class="code hl_variable" href="classCamera.html#a33c6cb101766bb447cd58f553fdcdad5">featureMinList</a>.push_back(dg_min);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> <a class="code hl_variable" href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">featureMaxList</a>.push_back(dg_max);</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> <span class="keywordtype">int</span> dgain = (int)getDGain();</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> featureValueList.push_back( dgain );</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> featureAbsCapableList.push_back(<span class="keyword">true</span>);</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> featureAbsValueList.push_back( dgain );</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> featureModeAutoList.push_back(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.push_back( dgain );</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> <a class="code hl_variable" href="classCamera.html#a21b164c6df511a8c3a56843641e21aca">featureAbsCapableList</a>.push_back(<span class="keyword">true</span>);</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.push_back( dgain );</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> <a class="code hl_variable" href="classCamera.html#a56921e3621efce3412c57898e3f288d4">featureModeAutoList</a>.push_back(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> <span class="comment">// NUC feature</span></div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> <span class="keywordtype">int</span> nuc_min, nuc_max;</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> featureIdList.push_back(++featureCnt);</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> featureNameList.push_back(raptorninox640_features[featureCnt]);</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> <a class="code hl_variable" href="classCamera.html#ad886ab68c1f94916ed5aa37b6b4473fe">featureIdList</a>.push_back(++featureCnt);</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> <a class="code hl_variable" href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">featureNameList</a>.push_back(raptorninox640_features[featureCnt]);</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> nuc_min = 0;</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> nuc_max = 3;</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> featureMinList.push_back(nuc_min);</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> featureMaxList.push_back(nuc_max);</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> <a class="code hl_variable" href="classCamera.html#a33c6cb101766bb447cd58f553fdcdad5">featureMinList</a>.push_back(nuc_min);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> <a class="code hl_variable" href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">featureMaxList</a>.push_back(nuc_max);</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> <span class="keywordtype">int</span> nuc = (int)getNUC();</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> featureValueList.push_back( nuc );</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> featureAbsCapableList.push_back(<span class="keyword">true</span>);</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> featureAbsValueList.push_back( nuc );</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> featureModeAutoList.push_back(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> <a class="code hl_variable" href="classCamera.html#a57271306f031565b6e40f06786f9a015">featureValueList</a>.push_back( nuc );</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> <a class="code hl_variable" href="classCamera.html#a21b164c6df511a8c3a56843641e21aca">featureAbsCapableList</a>.push_back(<span class="keyword">true</span>);</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.push_back( nuc );</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> <a class="code hl_variable" href="classCamera.html#a56921e3621efce3412c57898e3f288d4">featureModeAutoList</a>.push_back(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> <span class="comment">// Properties</span></div>
@@ -287,144 +292,154 @@ $(function(){initNavTree('CameraRAPTORNINOX640_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  QString pcbtempStr = raptorninox640_props[propCnt];</div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  pcbtempStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number(getPCBtemperature()));</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  pcbtempStr.append(<span class="stringliteral">&quot; C&quot;</span>);</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  propList.push_back(pcbtempStr);</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.push_back(pcbtempStr);</div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  </div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  <span class="comment">// CCD Temperature prop</span></div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  QString ccdtempStr = raptorninox640_props[++propCnt];</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  ccdtempStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number(getCCDtemperature()));</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  ccdtempStr.append(<span class="stringliteral">&quot; C&quot;</span>);</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  propList.push_back(ccdtempStr);</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.push_back(ccdtempStr);</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <span class="comment">// Image Size prop</span></div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  QString imgSizeStr = raptorninox640_props[++propCnt];;</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  imgSizeStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number(pxd_imageXdim()) + <span class="stringliteral">&quot;x&quot;</span> + QString::number(pxd_imageYdim()));</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  imgSizeStr.append(<span class="stringliteral">&quot; pixels&quot;</span>);</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  propList.push_back(imgSizeStr);</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.push_back(imgSizeStr);</div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <span class="comment">// Analog Gain prop</span></div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  QString gainStr = raptorninox640_props[++propCnt];</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  gainStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString(raptorninox640_gains[gain]));</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  propList.push_back(gainStr);</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.push_back(gainStr);</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="comment">// Digital Gain prop</span></div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  QString dgainStr = raptorninox640_props[++propCnt];</div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  dgainStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number(dgain));</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  dgainStr.append(<span class="stringliteral">&quot; dB&quot;</span>);</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  propList.push_back(dgainStr);</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.push_back(dgainStr);</div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  <span class="comment">// NUC prop</span></div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  QString nucStr = raptorninox640_props[++propCnt];</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  nucStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString(raptorninox640_nuc[nuc]));</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  propList.push_back(nucStr);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.push_back(nucStr);</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  <span class="comment">// Exposure prop</span></div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  QString exposureStr = raptorninox640_props[++propCnt];</div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  exposureStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number(exposure));</div>
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  exposureStr.append(<span class="stringliteral">&quot; ms&quot;</span>);</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  propList.push_back(exposureStr);</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.push_back(exposureStr);</div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> </div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  <span class="comment">// PC Rate prop</span></div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  QString freqStr = raptorninox640_props[++propCnt];;</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  freqStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number((<span class="keywordtype">int</span>)frequency));</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  freqStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number((<span class="keywordtype">int</span>)<a class="code hl_variable" href="classCamera.html#a690c5440136c44bfb96e520bc6e80f07">frequency</a>));</div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  freqStr.append(<span class="stringliteral">&quot; Hz&quot;</span>);</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  propList.push_back(freqStr);</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.push_back(freqStr);</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  <span class="comment">// Frame Rate prop</span></div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  QString frateStr = raptorninox640_props[++propCnt];;</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  frateStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number((<span class="keywordtype">int</span>)frate));</div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  frateStr.append(<span class="stringliteral">&quot; Hz&quot;</span>);</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  propList.push_back(frateStr);</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.push_back(frateStr);</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  pixel_encoding = B14;</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  <a class="code hl_variable" href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">pixel_encoding</a> = B14;</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>}</div>
+</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>uchar* </div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>CameraRAPTORNINOX640::getSnapshot() {</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  snapshotMutex-&gt;lock();</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  memcpy(snapshot,buffer,width * height * <span class="keyword">sizeof</span>(uchar));</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  snapShotMin = min;</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  snapShotMax = max;</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  snapShotAvg = avg;</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  snapshotMutex-&gt;unlock();</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  <span class="keywordflow">return</span> snapshot;</div>
+<div class="foldopen" id="foldopen00234" data-start="{" data-end="}">
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno"><a class="line" href="classCameraRAPTORNINOX640.html#a1dea33c5d376a47e8deadd81fc98809f">  234</a></span><a class="code hl_function" href="classCameraRAPTORNINOX640.html#a1dea33c5d376a47e8deadd81fc98809f">CameraRAPTORNINOX640::getSnapshot</a>() {</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;lock();</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  memcpy(<a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a>,<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <span class="keyword">sizeof</span>(uchar));</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  <a class="code hl_variable" href="classCamera.html#ac91d6b8947853370603e26ebcf7cb53c">snapShotMin</a> = <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>;</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  <a class="code hl_variable" href="classCamera.html#ab7faaf71010d522f44c33a1cd6798049">snapShotMax</a> = <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a>;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <a class="code hl_variable" href="classCamera.html#a4436c20cbd93809d4e50523b891b48bf">snapShotAvg</a> = <a class="code hl_variable" href="classCamera.html#a899f7576c33b2080b114d80749778103">avg</a>;</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;unlock();</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a>;</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>}</div>
+</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>ushort*</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>CameraRAPTORNINOX640::getSnapshot16() {</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  snapshotMutex-&gt;lock();</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::getSnapshot&gt; Image pixel size &quot;</span> &lt;&lt; width * height;</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  memcpy(snapshot16,buffer16, width * height * <span class="keyword">sizeof</span>(ushort));</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  snapShotMin = min;</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  snapShotMax = max;</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  snapShotAvg = avg;</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  snapshotMutex-&gt;unlock();</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  <span class="keywordflow">return</span> snapshot16;</div>
+<div class="foldopen" id="foldopen00245" data-start="{" data-end="}">
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno"><a class="line" href="classCameraRAPTORNINOX640.html#a8d7df3f336316f0cccf12c80fb820135">  245</a></span><a class="code hl_function" href="classCameraRAPTORNINOX640.html#a8d7df3f336316f0cccf12c80fb820135">CameraRAPTORNINOX640::getSnapshot16</a>() {</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;lock();</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::getSnapshot&gt; Image pixel size &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>;</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  memcpy(<a class="code hl_variable" href="classCamera.html#a4e4a46b74c5f7a1e7b6d2f1e0b9339d8">snapshot16</a>,<a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <span class="keyword">sizeof</span>(ushort));</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  <a class="code hl_variable" href="classCamera.html#ac91d6b8947853370603e26ebcf7cb53c">snapShotMin</a> = <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>;</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  <a class="code hl_variable" href="classCamera.html#ab7faaf71010d522f44c33a1cd6798049">snapShotMax</a> = <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a>;</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <a class="code hl_variable" href="classCamera.html#a4436c20cbd93809d4e50523b891b48bf">snapShotAvg</a> = <a class="code hl_variable" href="classCamera.html#a899f7576c33b2080b114d80749778103">avg</a>;</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;unlock();</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classCamera.html#a4e4a46b74c5f7a1e7b6d2f1e0b9339d8">snapshot16</a>;</div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>}</div>
+</div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="keywordtype">int</span>*</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>CameraRAPTORNINOX640::getSnapshot32() {</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  snapshotMutex-&gt;lock();</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::getSnapshot32()&gt; width &quot;</span> &lt;&lt; width &lt;&lt; <span class="stringliteral">&quot;height &quot;</span> &lt;&lt; height;</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  memcpy(snapshot32,buffer32, width * height * <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  snapShotMin = min;</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  snapShotMax = max;</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  snapShotAvg = avg;</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  snapshotMutex-&gt;unlock();</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <span class="keywordflow">return</span> snapshot32;</div>
+<div class="foldopen" id="foldopen00257" data-start="{" data-end="}">
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno"><a class="line" href="classCameraRAPTORNINOX640.html#a88d7304e77516e1c85d0844bd1817363">  257</a></span><a class="code hl_function" href="classCameraRAPTORNINOX640.html#a88d7304e77516e1c85d0844bd1817363">CameraRAPTORNINOX640::getSnapshot32</a>() {</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;lock();</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::getSnapshot32()&gt; width &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> &lt;&lt; <span class="stringliteral">&quot;height &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>;</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  memcpy(<a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a>,<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <a class="code hl_variable" href="classCamera.html#ac91d6b8947853370603e26ebcf7cb53c">snapShotMin</a> = <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>;</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  <a class="code hl_variable" href="classCamera.html#ab7faaf71010d522f44c33a1cd6798049">snapShotMax</a> = <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a>;</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <a class="code hl_variable" href="classCamera.html#a4436c20cbd93809d4e50523b891b48bf">snapShotAvg</a> = <a class="code hl_variable" href="classCamera.html#a899f7576c33b2080b114d80749778103">avg</a>;</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;unlock();</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a>;</div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>}</div>
+</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="keywordtype">void</span> </div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>CameraRAPTORNINOX640::stop() {</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  suspend = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  has_started = <span class="keyword">false</span>;</div>
+<div class="foldopen" id="foldopen00268" data-start="{" data-end="}">
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno"><a class="line" href="classCameraRAPTORNINOX640.html#a7cf8c9eb311cded11e1298f834725d21">  268</a></span><a class="code hl_function" href="classCameraRAPTORNINOX640.html#a7cf8c9eb311cded11e1298f834725d21">CameraRAPTORNINOX640::stop</a>() {</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  <a class="code hl_variable" href="classCamera.html#aa4f9dfb25e1fd1d5df43a8bd98844994">suspend</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  <a class="code hl_variable" href="classCamera.html#a0db5c414ff3b1e98eaad9526f904936f">has_started</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  wait();</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  exit();  </div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>}</div>
+</div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="keywordtype">void</span> </div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>CameraRAPTORNINOX640::run() {</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  <span class="keywordtype">int</span> acq_err = 0;</div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <span class="keywordtype">int</span> acq_cnt = 0;</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  <span class="keywordflow">if</span> (camera_err == 0 &amp;&amp; suspend == <span class="keyword">true</span> ) {</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    suspend = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    eTimeTotal = 0;</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#aae9d6cd8ee85da741728c7f3b3b4311f">camera_err</a> == 0 &amp;&amp; <a class="code hl_variable" href="classCamera.html#aa4f9dfb25e1fd1d5df43a8bd98844994">suspend</a> == <span class="keyword">true</span> ) {</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    <a class="code hl_variable" href="classCamera.html#aa4f9dfb25e1fd1d5df43a8bd98844994">suspend</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a> = 0;</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    frameTotal = pxd_videoFieldCount(1);</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    <span class="keywordflow">while</span> (suspend == <span class="keyword">false</span>) {</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    <span class="keywordflow">while</span> (<a class="code hl_variable" href="classCamera.html#aa4f9dfb25e1fd1d5df43a8bd98844994">suspend</a> == <span class="keyword">false</span>) {</div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>      QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::run&gt; &quot;</span> &lt;&lt; <span class="keywordtype">id</span> &lt;&lt; <span class="stringliteral">&quot; : start new Acquisition&quot;</span>;</div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>      <span class="keywordtype">double</span> eTime = <a class="code hl_function" href="namespaceUtils.html#a80482614a1ae51bca37af587bb80188a">Utils::GetTimeMicroseconds</a>();</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>      acqstart-&gt;wakeAll();</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>      <a class="code hl_variable" href="classCamera.html#a4e64c09c8af69c5b5e667cee4eb33ff6">acqstart</a>-&gt;wakeAll();</div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>      acq_err = acquireImage();</div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>      QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::run&gt; &quot;</span> &lt;&lt; <span class="keywordtype">id</span> &lt;&lt; <span class="stringliteral">&quot; : done&quot;</span>;</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>      acqend-&gt;wakeAll();</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>      <a class="code hl_variable" href="classCamera.html#a33924d5eddaf9f897bed4e793407c4c7">acqend</a>-&gt;wakeAll();</div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>      <span class="keywordflow">if</span> (acq_err == 1)</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>       eTimeTotal+= (<a class="code hl_function" href="namespaceUtils.html#a80482614a1ae51bca37af587bb80188a">Utils::GetTimeMicroseconds</a>() - eTime);</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>       <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a>+= (<a class="code hl_function" href="namespaceUtils.html#a80482614a1ae51bca37af587bb80188a">Utils::GetTimeMicroseconds</a>() - eTime);</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>      acq_cnt++;</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>      <span class="keywordflow">if</span> (acq_cnt == FREQUENCY_AVERAGE_COUNT) {</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>       eTimeTotal/=1e6;</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>       <span class="keywordflow">if</span> ( eTimeTotal &gt; 0 ) {</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        frequency = FREQUENCY_AVERAGE_COUNT / eTimeTotal;</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>       <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a>/=1e6;</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>       <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a> &gt; 0 ) {</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        <a class="code hl_variable" href="classCamera.html#a690c5440136c44bfb96e520bc6e80f07">frequency</a> = FREQUENCY_AVERAGE_COUNT / <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a>;</div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        frameTotal = pxd_videoFieldCount(1) - frameTotal;</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        frate = frameTotal  / eTimeTotal;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        frate = frameTotal  / <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a>;</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>       }</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>       <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>        frequency = 0;</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>        <a class="code hl_variable" href="classCamera.html#a690c5440136c44bfb96e520bc6e80f07">frequency</a> = 0;</div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>        frameTotal = 0;</div>
 <div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>       }</div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>       QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::run&gt; Acquisition &quot;</span></div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>                   &lt;&lt; <span class="stringliteral">&quot;freq &quot;</span> &lt;&lt; (int) frequency &lt;&lt; <span class="stringliteral">&quot; Hz&quot;</span>;</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>       eTimeTotal = 0;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>                   &lt;&lt; <span class="stringliteral">&quot;freq &quot;</span> &lt;&lt; (int) <a class="code hl_variable" href="classCamera.html#a690c5440136c44bfb96e520bc6e80f07">frequency</a> &lt;&lt; <span class="stringliteral">&quot; Hz&quot;</span>;</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>       <a class="code hl_variable" href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">eTimeTotal</a> = 0;</div>
 <div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>       frameTotal = pxd_videoFieldCount(1);</div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>       acq_cnt = 0;</div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>       <span class="comment">// Update props</span></div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>       <span class="comment">//getProps();</span></div>
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>     }</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>     has_started = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>     <a class="code hl_variable" href="classCamera.html#a0db5c414ff3b1e98eaad9526f904936f">has_started</a> = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    }</div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640 thread exiting&quot;</span>;</div>
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  }</div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>}</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="keywordtype">void</span></div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>CameraRAPTORNINOX640::setFeature(<span class="keywordtype">int</span> feature, <span class="keywordtype">double</span> value) {</div>
+<div class="foldopen" id="foldopen00319" data-start="{" data-end="}">
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno"><a class="line" href="classCameraRAPTORNINOX640.html#ade2607912df7ccb00db79ec26042f104">  319</a></span><a class="code hl_slot" href="classCameraRAPTORNINOX640.html#ade2607912df7ccb00db79ec26042f104">CameraRAPTORNINOX640::setFeature</a>(<span class="keywordtype">int</span> feature, <span class="keywordtype">double</span> value) {</div>
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span> </div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::setFeature&gt; Update feature &quot;</span> &lt;&lt; QString(raptorninox640_features[feature])</div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>               &lt;&lt; <span class="stringliteral">&quot; value &quot;</span> &lt;&lt; QString::number(value);</div>
@@ -450,33 +465,39 @@ $(function(){initNavTree('CameraRAPTORNINOX640_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>   <span class="keywordflow">default</span>:</div>
 <div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>     <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  }</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  getProps();</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  <a class="code hl_slot" href="classCameraRAPTORNINOX640.html#a54077ab63ec6d3feb6ba640ce858be0d">getProps</a>();</div>
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>}</div>
+</div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span><span class="keywordtype">void</span>  </div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>CameraRAPTORNINOX640::setMode(<span class="keywordtype">int</span> feature, <span class="keywordtype">bool</span> value) {</div>
+<div class="foldopen" id="foldopen00348" data-start="{" data-end="}">
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno"><a class="line" href="classCameraRAPTORNINOX640.html#accada3211b52ecc710e60fe30295ae1e">  348</a></span><a class="code hl_slot" href="classCameraRAPTORNINOX640.html#accada3211b52ecc710e60fe30295ae1e">CameraRAPTORNINOX640::setMode</a>(<span class="keywordtype">int</span> feature, <span class="keywordtype">bool</span> value) {</div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>}</div>
+</div>
 <div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span><span class="keywordtype">void</span></div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>CameraRAPTORNINOX640::getFeatures() {</div>
+<div class="foldopen" id="foldopen00351" data-start="{" data-end="}">
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno"><a class="line" href="classCameraRAPTORNINOX640.html#ac753bafce0f3bdaf8342f2207c13be9a">  351</a></span><a class="code hl_function" href="classCameraRAPTORNINOX640.html#ac753bafce0f3bdaf8342f2207c13be9a">CameraRAPTORNINOX640::getFeatures</a>() {</div>
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>  <span class="comment">/*-----------------------------------------------------------------------</span></div>
 <div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span><span class="comment">   *  report camera&#39;s features</span></div>
 <div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span><span class="comment">   *-----------------------------------------------------------------------*/</span></div>
 <div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span> </div>
 <div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span> <span class="keywordtype">int</span> featureCnt = 0;</div>
 <div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span> <span class="comment">// Frame rate feature</span></div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span> featureAbsValueList.replace(featureCnt, (<span class="keywordtype">int</span>)frate );</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span> <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.replace(featureCnt, (<span class="keywordtype">int</span>)frate );</div>
 <div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> <span class="comment">// Exposure feature</span></div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> featureAbsValueList.replace(++featureCnt, (<span class="keywordtype">int</span>)getExposure() );</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.replace(++featureCnt, (<span class="keywordtype">int</span>)getExposure() );</div>
 <div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span> <span class="comment">// Analog Gain feature</span></div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> featureAbsValueList.replace(++featureCnt, (<span class="keywordtype">int</span>)getGain() );</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.replace(++featureCnt, (<span class="keywordtype">int</span>)getGain() );</div>
 <div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> <span class="comment">// Digital Gain feature</span></div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span> featureAbsValueList.replace(++featureCnt, (<span class="keywordtype">int</span>)getDGain() );</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span> <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.replace(++featureCnt, (<span class="keywordtype">int</span>)getDGain() );</div>
 <div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span> <span class="comment">// NUC feature</span></div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span> featureAbsValueList.replace(++featureCnt, (<span class="keywordtype">int</span>)getNUC() );</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span> <a class="code hl_variable" href="classCamera.html#a5ec4351355ec887d929e879dc4201505">featureAbsValueList</a>.replace(++featureCnt, (<span class="keywordtype">int</span>)getNUC() );</div>
 <div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span> emit updateFeatures();</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span> emit <a class="code hl_signal" href="classCameraRAPTORNINOX640.html#aed411b6d9662082bfd30ce5b77977dbd">updateFeatures</a>();</div>
 <div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>}</div>
+</div>
 <div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span><span class="keywordtype">void</span> </div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>CameraRAPTORNINOX640::getProps()  {</div>
+<div class="foldopen" id="foldopen00371" data-start="{" data-end="}">
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno"><a class="line" href="classCameraRAPTORNINOX640.html#a54077ab63ec6d3feb6ba640ce858be0d">  371</a></span><a class="code hl_slot" href="classCameraRAPTORNINOX640.html#a54077ab63ec6d3feb6ba640ce858be0d">CameraRAPTORNINOX640::getProps</a>()  {</div>
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span> </div>
 <div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span><span class="comment">// Properties</span></div>
 <div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>  <span class="keywordtype">int</span> propCnt = 0;</div>
@@ -485,60 +506,62 @@ $(function(){initNavTree('CameraRAPTORNINOX640_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>  QString pcbtempStr = raptorninox640_props[propCnt];</div>
 <div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>  pcbtempStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number(getPCBtemperature()));</div>
 <div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>  pcbtempStr.append(<span class="stringliteral">&quot; C&quot;</span>);</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  propList.replace(propCnt,pcbtempStr);</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt,pcbtempStr);</div>
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span> </div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  <span class="comment">// CCD Temperature prop</span></div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>  QString ccdtempStr = raptorninox640_props[++propCnt];</div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  ccdtempStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number(getCCDtemperature()));</div>
 <div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>  ccdtempStr.append(<span class="stringliteral">&quot; C&quot;</span>);</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>  propList.replace(propCnt,ccdtempStr);</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt,ccdtempStr);</div>
 <div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>  </div>
 <div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  <span class="comment">// Image Size prop</span></div>
 <div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>  QString imgSizeStr = raptorninox640_props[++propCnt];;</div>
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>  imgSizeStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number(pxd_imageXdim()) + <span class="stringliteral">&quot;x&quot;</span> + QString::number(pxd_imageYdim()));</div>
 <div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>  imgSizeStr.append(<span class="stringliteral">&quot; pixels&quot;</span>);</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>  propList.replace(propCnt,imgSizeStr);</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt,imgSizeStr);</div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span> </div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>  <span class="comment">// Analog Gain prop</span></div>
 <div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>  QString gainStr = raptorninox640_props[++propCnt];</div>
 <div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>  gainStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString(raptorninox640_gains[getGain()]));</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  propList.replace(propCnt,gainStr);</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt,gainStr);</div>
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  <span class="comment">// Digital Gain prop</span></div>
 <div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>  QString dgainStr = raptorninox640_props[++propCnt];</div>
 <div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>  dgainStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number(getDGain()));</div>
 <div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>  dgainStr.append(<span class="stringliteral">&quot; dB&quot;</span>);</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>  propList.replace(propCnt,dgainStr);</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt,dgainStr);</div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span> </div>
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>  <span class="comment">// NUC prop</span></div>
 <div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>  QString nucStr = raptorninox640_props[++propCnt];</div>
 <div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>  nucStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString(raptorninox640_nuc[getNUC()]));</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>  propList.replace(propCnt,nucStr);</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt,nucStr);</div>
 <div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span> </div>
 <div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>  <span class="comment">// Exposure prop</span></div>
 <div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>  QString exposureStr = raptorninox640_props[++propCnt];</div>
 <div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  exposureStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number(getExposure()));</div>
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>  exposureStr.append(<span class="stringliteral">&quot; ms&quot;</span>);</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>  propList.replace(propCnt,exposureStr);</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt,exposureStr);</div>
 <div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span> </div>
 <div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>  <span class="comment">// PC Rate</span></div>
 <div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>  QString freqStr = raptorninox640_props[++propCnt];;</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  freqStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number((<span class="keywordtype">int</span>)frequency));</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  freqStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number((<span class="keywordtype">int</span>)<a class="code hl_variable" href="classCamera.html#a690c5440136c44bfb96e520bc6e80f07">frequency</a>));</div>
 <div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>  freqStr.append(<span class="stringliteral">&quot; Hz&quot;</span>);</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>  propList.replace(propCnt, freqStr);</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt, freqStr);</div>
 <div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span> </div>
 <div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>  <span class="comment">// Frame Rate prop</span></div>
 <div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>  QString frateStr = raptorninox640_props[++propCnt];;</div>
 <div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>  frateStr.append(<span class="stringliteral">&quot; : &quot;</span> + QString::number((<span class="keywordtype">int</span>)frate));</div>
 <div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>  frateStr.append(<span class="stringliteral">&quot; Hz&quot;</span>);</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>  propList.replace(propCnt,frateStr);</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>  <a class="code hl_variable" href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">propList</a>.replace(propCnt,frateStr);</div>
 <div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span> </div>
 <div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::getProps&gt; Properties updated&quot;</span>;</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>  emit updateProps();</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>  emit <a class="code hl_signal" href="classCamera.html#ab06db0796eb2f81f76af3daaf5e1d85d">updateProps</a>();</div>
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span> </div>
 <div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>}</div>
+</div>
 <div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span><span class="keywordtype">int</span> </div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>CameraRAPTORNINOX640::findCamera() {</div>
+<div class="foldopen" id="foldopen00433" data-start="{" data-end="}">
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno"><a class="line" href="classCameraRAPTORNINOX640.html#a95f5b471d2d7d899511fe9de8de28904">  433</a></span><a class="code hl_function" href="classCameraRAPTORNINOX640.html#a95f5b471d2d7d899511fe9de8de28904">CameraRAPTORNINOX640::findCamera</a>() {</div>
 <div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span> </div>
 <div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>  <span class="keywordtype">int</span> err = -1;</div>
 <div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;Open Raptor Ninox640&quot;</span>;</div>
@@ -546,18 +569,19 @@ $(function(){initNavTree('CameraRAPTORNINOX640_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;Open Raptor Ninox640&quot;</span> &lt;&lt; err;</div>
 <div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>  pxd_mesgFault(1);</div>
 <div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>  <span class="keywordflow">if</span> (err &lt; 0) {</div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>    num = 0;</div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>    <a class="code hl_variable" href="classCamera.html#a5c60cfc59d9abffabd129eda4e576c6a">num</a> = 0;</div>
 <div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>    pxd_PIXCIclose();</div>
 <div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>    <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>  }</div>
 <div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>  <span class="keywordtype">int</span> camera = 1; <span class="comment">// Camera internal ID</span></div>
-<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>  cameralist.push_back((<span class="keywordtype">int</span>*)&amp;camera);</div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>  vendorlist.push_back(<span class="stringliteral">&quot;Ninox640&quot;</span>);</div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>  modelist.push_back(<span class="stringliteral">&quot;Raptor&quot;</span>);</div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>  num = 1; <span class="comment">// Camera number</span></div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>  <a class="code hl_variable" href="classCamera.html#a6063bbec41b6b47fb080d280f00832bb">cameralist</a>.push_back((<span class="keywordtype">int</span>*)&amp;camera);</div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>  <a class="code hl_variable" href="classCamera.html#a8ea245772da01fa88a9af64365b40beb">vendorlist</a>.push_back(<span class="stringliteral">&quot;Ninox640&quot;</span>);</div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>  <a class="code hl_variable" href="classCamera.html#a616b41fa3ff47a04d7da36ab78e73e90">modelist</a>.push_back(<span class="stringliteral">&quot;Raptor&quot;</span>);</div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>  <a class="code hl_variable" href="classCamera.html#a5c60cfc59d9abffabd129eda4e576c6a">num</a> = 1; <span class="comment">// Camera number</span></div>
 <div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span> </div>
 <div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>  <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>}</div>
+</div>
 <div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span><span class="keywordtype">int</span> </div>
 <div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>CameraRAPTORNINOX640::connectCamera() {</div>
 <div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span> </div>
@@ -584,19 +608,19 @@ $(function(){initNavTree('CameraRAPTORNINOX640_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::connectCamera()&gt; Bdim=&quot;</span> &lt;&lt; pxd_imageBdim();</div>
 <div class="line"><a id="l00477" name="l00477"></a><span class="lineno">  477</span> </div>
 <div class="line"><a id="l00478" name="l00478"></a><span class="lineno">  478</span>  <span class="comment">// Init AOI and buffers</span></div>
-<div class="line"><a id="l00479" name="l00479"></a><span class="lineno">  479</span>  width = pxd_imageXdim();</div>
-<div class="line"><a id="l00480" name="l00480"></a><span class="lineno">  480</span>  height =  pxd_imageYdim();</div>
-<div class="line"><a id="l00481" name="l00481"></a><span class="lineno">  481</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::connectCamera&gt; Updated width &quot;</span> &lt;&lt; width;</div>
-<div class="line"><a id="l00482" name="l00482"></a><span class="lineno">  482</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::connectCamera&gt; Updated height &quot;</span> &lt;&lt; height;</div>
-<div class="line"><a id="l00483" name="l00483"></a><span class="lineno">  483</span>  buffer = (uchar*)malloc( <span class="keyword">sizeof</span>(uchar) * width * height);</div>
-<div class="line"><a id="l00484" name="l00484"></a><span class="lineno">  484</span>  snapshot = (uchar*)malloc( <span class="keyword">sizeof</span>(uchar) * width * height);</div>
-<div class="line"><a id="l00485" name="l00485"></a><span class="lineno">  485</span>  buffer16 = (ushort*)malloc( <span class="keyword">sizeof</span>(ushort) * width * height);</div>
-<div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span>  snapshot16 = (ushort*)malloc( <span class="keyword">sizeof</span>(ushort) * width * height);</div>
-<div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span>  buffer32 = (<span class="keywordtype">int</span>*)malloc( <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) * width * height);</div>
-<div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span>  snapshot32 = (<span class="keywordtype">int</span>*)malloc( <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) * width * height);</div>
-<div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span>  image16 = (ushort*)malloc( <span class="keyword">sizeof</span>(ushort) * width * height);</div>
-<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>  image = <span class="keyword">new</span> QImage(buffer,width,height,width,QImage::Format_Indexed8);</div>
-<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>  image-&gt;setColorTable(*table);</div>
+<div class="line"><a id="l00479" name="l00479"></a><span class="lineno">  479</span>  <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> = pxd_imageXdim();</div>
+<div class="line"><a id="l00480" name="l00480"></a><span class="lineno">  480</span>  <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> =  pxd_imageYdim();</div>
+<div class="line"><a id="l00481" name="l00481"></a><span class="lineno">  481</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::connectCamera&gt; Updated width &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>;</div>
+<div class="line"><a id="l00482" name="l00482"></a><span class="lineno">  482</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::connectCamera&gt; Updated height &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>;</div>
+<div class="line"><a id="l00483" name="l00483"></a><span class="lineno">  483</span>  <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = (uchar*)malloc( <span class="keyword">sizeof</span>(uchar) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00484" name="l00484"></a><span class="lineno">  484</span>  <a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a> = (uchar*)malloc( <span class="keyword">sizeof</span>(uchar) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00485" name="l00485"></a><span class="lineno">  485</span>  <a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a> = (ushort*)malloc( <span class="keyword">sizeof</span>(ushort) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span>  <a class="code hl_variable" href="classCamera.html#a4e4a46b74c5f7a1e7b6d2f1e0b9339d8">snapshot16</a> = (ushort*)malloc( <span class="keyword">sizeof</span>(ushort) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span>  <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = (<span class="keywordtype">int</span>*)malloc( <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span>  <a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a> = (<span class="keywordtype">int</span>*)malloc( <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span>  image16 = (ushort*)malloc( <span class="keyword">sizeof</span>(ushort) * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
+<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>  <a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a> = <span class="keyword">new</span> QImage(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>,<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>,QImage::Format_Indexed8);</div>
+<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>  <a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a>-&gt;setColorTable(*<a class="code hl_variable" href="classCamera.html#ada6182fea01bf1857c0b8d9ad18f4bd7">table</a>);</div>
 <div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span> </div>
 <div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>  <span class="comment">/*-----------------------------------------------------------------------</span></div>
 <div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span><span class="comment">   *  have the camera start sending data</span></div>
@@ -614,14 +638,14 @@ $(function(){initNavTree('CameraRAPTORNINOX640_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>  <span class="keywordtype">int</span> err;</div>
 <div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>  err = pxd_PIXCIclose();</div>
 <div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;Close Raptor&quot;</span> &lt;&lt; err;</div>
-<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>  <span class="keywordflow">if</span> (buffer) { free(buffer); buffer = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>  <span class="keywordflow">if</span> (snapshot) { free(snapshot); snapshot = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>  <span class="keywordflow">if</span> (buffer16) { free(buffer16); buffer16 = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>  <span class="keywordflow">if</span> (snapshot16) { free(snapshot16); snapshot16 = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>  <span class="keywordflow">if</span> (buffer32) { free(buffer32); buffer32 = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>  <span class="keywordflow">if</span> (snapshot32) { free(snapshot32); snapshot32 = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>) { free(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>); <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a>) { free(<a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a>); <a class="code hl_variable" href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">snapshot</a> = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a>) { free(<a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a>); <a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a> = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a4e4a46b74c5f7a1e7b6d2f1e0b9339d8">snapshot16</a>) { free(<a class="code hl_variable" href="classCamera.html#a4e4a46b74c5f7a1e7b6d2f1e0b9339d8">snapshot16</a>); <a class="code hl_variable" href="classCamera.html#a4e4a46b74c5f7a1e7b6d2f1e0b9339d8">snapshot16</a> = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>) { free(<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>); <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = <span class="keyword">nullptr</span>;}</div>
+<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a>) { free(<a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a>); <a class="code hl_variable" href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">snapshot32</a> = <span class="keyword">nullptr</span>;}</div>
 <div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>  <span class="keywordflow">if</span> (image16) { free(image16); image16 = <span class="keyword">nullptr</span>;}</div>
-<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>  <span class="keywordflow">if</span> (image) <span class="keyword">delete</span> image;</div>
+<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a>) <span class="keyword">delete</span> <a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a>;</div>
 <div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span> </div>
 <div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>  <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>}</div>
@@ -630,82 +654,84 @@ $(function(){initNavTree('CameraRAPTORNINOX640_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>CameraRAPTORNINOX640::acquireImage() {</div>
 <div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span> </div>
 <div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>    <span class="comment">// Capture a new frame</span></div>
-<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>    <span class="keywordflow">while</span> (acquireMutex-&gt;tryLock() == <span class="keyword">false</span>) {</div>
+<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>    <span class="keywordflow">while</span> (<a class="code hl_variable" href="classCamera.html#af765862d776294761eb47f81e6682833">acquireMutex</a>-&gt;tryLock() == <span class="keyword">false</span>) {</div>
 <div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>       usleep(100);</div>
 <div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>    }</div>
 <div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>    <span class="keywordtype">int</span> err = pxd_doSnap(1,1,2000);</div>
 <div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>    <span class="keywordflow">if</span> (err &lt; 0)</div>
 <div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>      QLOG_WARN() &lt;&lt; <span class="stringliteral">&quot;pxd_doSnap:&quot;</span> &lt;&lt;  pxd_mesgErrorCode(err) ;</div>
-<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>    err = pxd_readushort(1, 1, 0, 0, width, height, image16, (<span class="keywordtype">size_t</span>)(width * height), <span class="stringliteral">&quot;Grey&quot;</span>);</div>
+<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>    err = pxd_readushort(1, 1, 0, 0, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>, <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>, image16, (<span class="keywordtype">size_t</span>)(<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>), <span class="stringliteral">&quot;Grey&quot;</span>);</div>
 <div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>    <span class="keywordflow">if</span> (err &lt; 0)</div>
 <div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>      QLOG_WARN() &lt;&lt; <span class="stringliteral">&quot;pxd_readushort:&quot;</span> &lt;&lt;  pxd_mesgErrorCode(err) ;</div>
 <div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( err != pxd_imageXdim() * pxd_imageYdim())</div>
 <div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>      QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;pxd_readushort  missing pixels&quot;</span> &lt;&lt; err &lt;&lt; <span class="stringliteral">&quot;!= &quot;</span> &lt;&lt; pxd_imageXdim() * pxd_imageYdim();</div>
 <div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>    <span class="comment">// Copy image buffer</span></div>
-<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>    snapshotMutex-&gt;lock();</div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>    <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;lock();</div>
 <div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>    <span class="comment">// calculate min,max,avg</span></div>
-<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>    max = 0;</div>
-<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>    min = 16383; <span class="comment">// Camera is 14bit</span></div>
-<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>    avg = 0;</div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>    <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a> = 0;</div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>    <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a> = 16383; <span class="comment">// Camera is 14bit</span></div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>    <a class="code hl_variable" href="classCamera.html#a899f7576c33b2080b114d80749778103">avg</a> = 0;</div>
 <div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>    <span class="comment">// Treat Mono16 case</span></div>
-<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; height * width; i++) {</div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>; i++) {</div>
 <div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>      <span class="comment">//QLOG_INFO() &lt;&lt; &quot;CameraRAPTORNINOX640::acquireImage()&gt; image16[&quot; &lt;&lt; i &lt;&lt; &quot;]=&quot; &lt;&lt; image16[i];</span></div>
-<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>      <span class="keywordflow">if</span> (image16[i] &lt; min) {</div>
-<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>        min = image16[i];</div>
+<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>      <span class="keywordflow">if</span> (image16[i] &lt; <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>) {</div>
+<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>        <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a> = image16[i];</div>
 <div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>      }</div>
-<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (image16[i] &gt; max) {</div>
-<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>        max = image16[i];</div>
+<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (image16[i] &gt; <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a>) {</div>
+<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>        <a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a> = image16[i];</div>
 <div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>      }</div>
-<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>      avg+=image16[i];</div>
+<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>      <a class="code hl_variable" href="classCamera.html#a899f7576c33b2080b114d80749778103">avg</a>+=image16[i];</div>
 <div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>    }</div>
-<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>    avg/=(width*height);</div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>    <a class="code hl_variable" href="classCamera.html#a899f7576c33b2080b114d80749778103">avg</a>/=(<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>*<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>);</div>
 <div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span> </div>
 <div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>    <span class="comment">// Reset video image buffer (8-bit)</span></div>
-<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>    memset(buffer,0,height * width * <span class="keyword">sizeof</span>(uchar));</div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>    memset(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,0,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <span class="keyword">sizeof</span>(uchar));</div>
 <div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>    <span class="comment">// Reset 16-bit image buffer</span></div>
-<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>    memset(buffer16,0,height * width * <span class="keyword">sizeof</span>(ushort));</div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>    memset(<a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a>,0,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <span class="keyword">sizeof</span>(ushort));</div>
 <div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>    <span class="comment">// Reset 32-bit image buffer</span></div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>    memset(buffer32,0,height * width * <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>    memset(<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>,0,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> * <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
 <div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span> </div>
 <div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>    <span class="comment">// Treat buffer/buffer16/buffer32 case</span></div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; height * width; i++) {</div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>      buffer16[i] = image16[i];</div>
-<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>      buffer32[i] = image16[i];</div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>      <span class="keywordflow">if</span> ( (max - min) != 0 )</div>
-<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>       buffer[i] = (uchar) (( 255 * (image16[i] - min) ) / (max - min));</div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>; i++) {</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>      <a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a>[i] = image16[i];</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>      <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>[i] = image16[i];</div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>      <span class="keywordflow">if</span> ( (<a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a> - <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>) != 0 )</div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>       <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>[i] = (uchar) (( 255 * (image16[i] - <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>) ) / (<a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a> - <a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>));</div>
 <div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>      <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>       buffer[i] = 255;</div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>       <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>[i] = 255;</div>
 <div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>    }</div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>    <span class="keywordflow">if</span> (vflip) {</div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>      buffer = reversebytes(buffer,height * width);</div>
-<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>      buffer = fliphorizontal(buffer,height * width, width);</div>
-<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>      buffer16 = reversebytes(buffer16,height * width);</div>
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>      buffer16 = fliphorizontal(buffer16,height * width, width);</div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>      buffer32 = reversebytes(buffer32,height * width);</div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>      buffer32 = fliphorizontal(buffer32,height * width, width);</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a3141f66445a193e8f21455e4c06b86bf">vflip</a>) {</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>      <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = <a class="code hl_slot" href="classCamera.html#a941c13d84dc838b5b5594479fdafd594">reversebytes</a>(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>      <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = <a class="code hl_slot" href="classCamera.html#a7037d24df9894ca2d1623364c3476fad">fliphorizontal</a>(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>      <a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a> = <a class="code hl_slot" href="classCamera.html#a941c13d84dc838b5b5594479fdafd594">reversebytes</a>(<a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>      <a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a> = <a class="code hl_slot" href="classCamera.html#a7037d24df9894ca2d1623364c3476fad">fliphorizontal</a>(<a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>      <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = <a class="code hl_slot" href="classCamera.html#a941c13d84dc838b5b5594479fdafd594">reversebytes</a>(<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>      <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = <a class="code hl_slot" href="classCamera.html#a7037d24df9894ca2d1623364c3476fad">fliphorizontal</a>(<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a> * <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
 <div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>    }</div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>    <span class="keywordflow">if</span> (hflip) {</div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>     buffer = fliphorizontal(buffer,height*width, width);</div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>     buffer16 = fliphorizontal(buffer16,height*width, width);</div>
-<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>     buffer32 = fliphorizontal(buffer32,height*width, width);</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classCamera.html#a311d29c5e51e659f1de1b9f040047926">hflip</a>) {</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>     <a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a> = <a class="code hl_slot" href="classCamera.html#a7037d24df9894ca2d1623364c3476fad">fliphorizontal</a>(<a class="code hl_variable" href="classCamera.html#a1a61588434d31ab19764788000ab4924">buffer</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>*<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>     <a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a> = <a class="code hl_slot" href="classCamera.html#a7037d24df9894ca2d1623364c3476fad">fliphorizontal</a>(<a class="code hl_variable" href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">buffer16</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>*<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>     <a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a> = <a class="code hl_slot" href="classCamera.html#a7037d24df9894ca2d1623364c3476fad">fliphorizontal</a>(<a class="code hl_variable" href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">buffer32</a>,<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>*<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>, <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>);</div>
 <div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>    }</div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>    snapshotMutex-&gt;unlock();</div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>    <a class="code hl_variable" href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">snapshotMutex</a>-&gt;unlock();</div>
 <div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>    <span class="comment">// Format video image</span></div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>    QImage imagescaled = image-&gt;scaled(imageWidth,imageHeight);</div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>    QImage imagescaled = <a class="code hl_variable" href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">image</a>-&gt;scaled(imageWidth,imageHeight);</div>
 <div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>    QImage imagergb32 =  imagescaled.convertToFormat(QImage::Format_ARGB32_Premultiplied);</div>
-<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>    emit getImage(imagergb32);</div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>    emit updateMin(min);</div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>    emit updateMax(max);</div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>    emit updateAvg(avg);</div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>    acquireMutex-&gt;unlock();</div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>    emit <a class="code hl_signal" href="classCameraRAPTORNINOX640.html#ab91111a8e9763584c7a6537d53796b9b">getImage</a>(imagergb32);</div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>    emit <a class="code hl_signal" href="classCameraRAPTORNINOX640.html#aee47a01ef93a8b79d104fd843f8fae92">updateMin</a>(<a class="code hl_variable" href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">min</a>);</div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>    emit <a class="code hl_signal" href="classCameraRAPTORNINOX640.html#ac9716c2508ff9b15e9558ec6cc2297a8">updateMax</a>(<a class="code hl_variable" href="classCamera.html#a6398eb90f263077e353f910dcc893034">max</a>);</div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>    emit <a class="code hl_signal" href="classCamera.html#a865975bb5c3c981e285a71183f0879e2">updateAvg</a>(<a class="code hl_variable" href="classCamera.html#a899f7576c33b2080b114d80749778103">avg</a>);</div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>    <a class="code hl_variable" href="classCamera.html#af765862d776294761eb47f81e6682833">acquireMutex</a>-&gt;unlock();</div>
 <div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>    <span class="keywordflow">return</span> (1);</div>
 <div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>}</div>
 <div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span> </div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span><span class="keywordtype">void</span> CameraRAPTORNINOX640::setImageSize(<span class="keyword">const</span> <span class="keywordtype">int</span> &amp;_imageWidth, <span class="keyword">const</span> <span class="keywordtype">int</span> &amp;_imageHeight){</div>
+<div class="foldopen" id="foldopen00596" data-start="{" data-end="}">
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno"><a class="line" href="classCameraRAPTORNINOX640.html#a2c9169b5eeb32e8ebd485e540ab0c9d0">  596</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classCameraRAPTORNINOX640.html#a2c9169b5eeb32e8ebd485e540ab0c9d0">CameraRAPTORNINOX640::setImageSize</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> &amp;_imageWidth, <span class="keyword">const</span> <span class="keywordtype">int</span> &amp;_imageHeight){</div>
 <div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>  imageWidth = _imageWidth;</div>
 <div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>  imageHeight = _imageHeight;</div>
 <div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>  QLOG_DEBUG ( ) &lt;&lt;  <span class="stringliteral">&quot;emit new image with size &quot;</span> &lt;&lt; imageWidth  &lt;&lt; <span class="stringliteral">&quot;x&quot;</span> &lt;&lt; imageHeight;</div>
 <div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>}</div>
+</div>
 <div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span><span class="keywordtype">int</span> CameraRAPTORNINOX640::readFeature(<span class="keywordtype">char</span>* sendreg, <span class="keywordtype">int</span> size_sreg, <span class="keywordtype">char</span>* readreg, <span class="keywordtype">int</span> size_rreg, uchar* data, <span class="keywordtype">int</span> size_data) {</div>
 <div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>  <span class="keywordtype">int</span> error = 0;</div>
 <div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>  uchar tmp[] = { 0x0 };</div>
@@ -807,7 +833,7 @@ $(function(){initNavTree('CameraRAPTORNINOX640_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>}</div>
 <div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span><span class="keywordtype">void</span> CameraRAPTORNINOX640::setAOI(<span class="keywordtype">int</span> left, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> top, <span class="keywordtype">int</span> height) {</div>
 <div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;CameraRAPTORNINOX640::setAOI&gt; Set Raptor AOI left &quot;</span> &lt;&lt; left </div>
-<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>      &lt;&lt; <span class="stringliteral">&quot; width &quot;</span> &lt;&lt; width &lt;&lt; <span class="stringliteral">&quot; top &quot;</span> &lt;&lt; top &lt;&lt; <span class="stringliteral">&quot; height &quot;</span> &lt;&lt; height;</div>
+<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>      &lt;&lt; <span class="stringliteral">&quot; width &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a> &lt;&lt; <span class="stringliteral">&quot; top &quot;</span> &lt;&lt; top &lt;&lt; <span class="stringliteral">&quot; height &quot;</span> &lt;&lt; <a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>;</div>
 <div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>  <span class="keywordtype">char</span> setadrs1[]   = { 0x53, 0xE0, 0x02, 0xDD, 0, 0x50 };</div>
 <div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>  <span class="keywordtype">char</span> setadrs2[]   = { 0x53, 0xE0, 0x02, 0xDE, 0, 0x50 };</div>
 <div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>  <span class="keywordtype">char</span> setadrs3[]   = { 0x53, 0xE0, 0x02, 0xDF, 0, 0x50 };</div>
@@ -818,12 +844,12 @@ $(function(){initNavTree('CameraRAPTORNINOX640_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>  <span class="keywordtype">char</span> setadrs8[]   = { 0x53, 0xE0, 0x02, 0xDC, 0, 0x50 };</div>
 <div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>  setadrs1[4] = (left&gt;&gt;0);</div>
 <div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>  setadrs2[4] = (left&gt;&gt;8);</div>
-<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>  setadrs3[4] = (width&gt;&gt;0);</div>
-<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>  setadrs4[4] = (width&gt;&gt;8);</div>
+<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>  setadrs3[4] = (<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>&gt;&gt;0);</div>
+<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>  setadrs4[4] = (<a class="code hl_variable" href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">width</a>&gt;&gt;8);</div>
 <div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>  setadrs5[4] = (top&gt;&gt;0);</div>
 <div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span>  setadrs6[4] = (top&gt;&gt;8);</div>
-<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>  setadrs7[4] = (height&gt;&gt;0);</div>
-<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>  setadrs8[4] = (height&gt;&gt;8);</div>
+<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>  setadrs7[4] = (<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>&gt;&gt;0);</div>
+<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>  setadrs8[4] = (<a class="code hl_variable" href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">height</a>&gt;&gt;8);</div>
 <div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span>  writeFeature (setadrs1, 6);</div>
 <div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span>  writeFeature (setadrs2, 6);</div>
 <div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>  writeFeature (setadrs3, 6);</div>
@@ -1110,7 +1136,72 @@ $(function(){initNavTree('CameraRAPTORNINOX640_8cpp_source.html',''); initResiza
 <div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span>    <span class="keywordflow">return</span>(0);</div>
 <div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span>}</div>
 <div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassCamera_html"><div class="ttname"><a href="classCamera.html">Camera</a></div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00052">Camera.h:53</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_a1dea33c5d376a47e8deadd81fc98809f"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#a1dea33c5d376a47e8deadd81fc98809f">CameraRAPTORNINOX640::getSnapshot</a></div><div class="ttdeci">uchar * getSnapshot() override</div><div class="ttdoc">Acquire a single 8-bit image.</div><div class="ttdef"><b>Definition</b> <a href="#l00234">CameraRAPTORNINOX640.cpp:234</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_a202cfb7092df959ef1c195b7abd06946"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#a202cfb7092df959ef1c195b7abd06946">CameraRAPTORNINOX640::setCamera</a></div><div class="ttdeci">void setCamera(void *_camera, int _id) override</div><div class="ttdef"><b>Definition</b> <a href="#l00098">CameraRAPTORNINOX640.cpp:98</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_a2c9169b5eeb32e8ebd485e540ab0c9d0"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#a2c9169b5eeb32e8ebd485e540ab0c9d0">CameraRAPTORNINOX640::setImageSize</a></div><div class="ttdeci">void setImageSize(const int &amp;_imageWidth, const int &amp;_imageHeight) override</div><div class="ttdef"><b>Definition</b> <a href="#l00596">CameraRAPTORNINOX640.cpp:596</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_a54077ab63ec6d3feb6ba640ce858be0d"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#a54077ab63ec6d3feb6ba640ce858be0d">CameraRAPTORNINOX640::getProps</a></div><div class="ttdeci">void getProps() override</div><div class="ttdoc">Query the camera for its properties.</div><div class="ttdef"><b>Definition</b> <a href="#l00371">CameraRAPTORNINOX640.cpp:371</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_a7cf8c9eb311cded11e1298f834725d21"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#a7cf8c9eb311cded11e1298f834725d21">CameraRAPTORNINOX640::stop</a></div><div class="ttdeci">void stop() override</div><div class="ttdoc">Stop acquisition and release resources.</div><div class="ttdef"><b>Definition</b> <a href="#l00268">CameraRAPTORNINOX640.cpp:268</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_a88d7304e77516e1c85d0844bd1817363"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#a88d7304e77516e1c85d0844bd1817363">CameraRAPTORNINOX640::getSnapshot32</a></div><div class="ttdeci">int * getSnapshot32() override</div><div class="ttdoc">Acquire a single 32-bit image.</div><div class="ttdef"><b>Definition</b> <a href="#l00257">CameraRAPTORNINOX640.cpp:257</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_a8d7df3f336316f0cccf12c80fb820135"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#a8d7df3f336316f0cccf12c80fb820135">CameraRAPTORNINOX640::getSnapshot16</a></div><div class="ttdeci">ushort * getSnapshot16() override</div><div class="ttdoc">Acquire a single 16-bit image.</div><div class="ttdef"><b>Definition</b> <a href="#l00245">CameraRAPTORNINOX640.cpp:245</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_a95f5b471d2d7d899511fe9de8de28904"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#a95f5b471d2d7d899511fe9de8de28904">CameraRAPTORNINOX640::findCamera</a></div><div class="ttdeci">int findCamera() override</div><div class="ttdoc">Discover available cameras.</div><div class="ttdef"><b>Definition</b> <a href="#l00433">CameraRAPTORNINOX640.cpp:433</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_aa1ea1422825b903629f163503510f6fd"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#aa1ea1422825b903629f163503510f6fd">CameraRAPTORNINOX640::~CameraRAPTORNINOX640</a></div><div class="ttdeci">~CameraRAPTORNINOX640() override</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition</b> <a href="#l00086">CameraRAPTORNINOX640.cpp:86</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_ab91111a8e9763584c7a6537d53796b9b"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#ab91111a8e9763584c7a6537d53796b9b">CameraRAPTORNINOX640::getImage</a></div><div class="ttdeci">void getImage(const QImage &amp;image)</div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_ac753bafce0f3bdaf8342f2207c13be9a"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#ac753bafce0f3bdaf8342f2207c13be9a">CameraRAPTORNINOX640::getFeatures</a></div><div class="ttdeci">void getFeatures() override</div><div class="ttdoc">Query and cache camera features.</div><div class="ttdef"><b>Definition</b> <a href="#l00351">CameraRAPTORNINOX640.cpp:351</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_ac9716c2508ff9b15e9558ec6cc2297a8"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#ac9716c2508ff9b15e9558ec6cc2297a8">CameraRAPTORNINOX640::updateMax</a></div><div class="ttdeci">void updateMax(int max)</div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_acb6a0d173b5608f00b4fe66f4c7c8afd"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#acb6a0d173b5608f00b4fe66f4c7c8afd">CameraRAPTORNINOX640::CameraRAPTORNINOX640</a></div><div class="ttdeci">CameraRAPTORNINOX640()</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> <a href="#l00058">CameraRAPTORNINOX640.cpp:58</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_accada3211b52ecc710e60fe30295ae1e"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#accada3211b52ecc710e60fe30295ae1e">CameraRAPTORNINOX640::setMode</a></div><div class="ttdeci">void setMode(int feature, bool value) override</div><div class="ttdef"><b>Definition</b> <a href="#l00348">CameraRAPTORNINOX640.cpp:348</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_ade2607912df7ccb00db79ec26042f104"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#ade2607912df7ccb00db79ec26042f104">CameraRAPTORNINOX640::setFeature</a></div><div class="ttdeci">void setFeature(int feature, double value) override</div><div class="ttdef"><b>Definition</b> <a href="#l00319">CameraRAPTORNINOX640.cpp:319</a></div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_aed411b6d9662082bfd30ce5b77977dbd"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#aed411b6d9662082bfd30ce5b77977dbd">CameraRAPTORNINOX640::updateFeatures</a></div><div class="ttdeci">void updateFeatures()</div><div class="ttdoc">Notify UI to refresh feature values.</div></div>
+<div class="ttc" id="aclassCameraRAPTORNINOX640_html_aee47a01ef93a8b79d104fd843f8fae92"><div class="ttname"><a href="classCameraRAPTORNINOX640.html#aee47a01ef93a8b79d104fd843f8fae92">CameraRAPTORNINOX640::updateMin</a></div><div class="ttdeci">void updateMin(int min)</div></div>
+<div class="ttc" id="aclassCamera_html_a0db5c414ff3b1e98eaad9526f904936f"><div class="ttname"><a href="classCamera.html#a0db5c414ff3b1e98eaad9526f904936f">Camera::has_started</a></div><div class="ttdeci">bool has_started</div><div class="ttdoc">True if acquisition has started.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00356">Camera.h:356</a></div></div>
+<div class="ttc" id="aclassCamera_html_a1133b0dd29ddb1d9d716e8e47129e217"><div class="ttname"><a href="classCamera.html#a1133b0dd29ddb1d9d716e8e47129e217">Camera::mutex</a></div><div class="ttdeci">QMutex * mutex</div><div class="ttdoc">General mutex for camera operations.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00346">Camera.h:346</a></div></div>
+<div class="ttc" id="aclassCamera_html_a12dc0b68ba02316823fc75ae47e4f382"><div class="ttname"><a href="classCamera.html#a12dc0b68ba02316823fc75ae47e4f382">Camera::snapshotMutex</a></div><div class="ttdeci">QMutex * snapshotMutex</div><div class="ttdoc">Mutex for snapshot operations.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00348">Camera.h:348</a></div></div>
+<div class="ttc" id="aclassCamera_html_a184bbe6dca0b8478034497e486a00cd7"><div class="ttname"><a href="classCamera.html#a184bbe6dca0b8478034497e486a00cd7">Camera::snapshot32</a></div><div class="ttdeci">int * snapshot32</div><div class="ttdoc">32-bit snapshot buffer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00380">Camera.h:380</a></div></div>
+<div class="ttc" id="aclassCamera_html_a1a61588434d31ab19764788000ab4924"><div class="ttname"><a href="classCamera.html#a1a61588434d31ab19764788000ab4924">Camera::buffer</a></div><div class="ttdeci">uchar * buffer</div><div class="ttdoc">8-bit acquisition buffer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00370">Camera.h:370</a></div></div>
+<div class="ttc" id="aclassCamera_html_a21308d2be4c1a5433c7ee3b8630a3bbc"><div class="ttname"><a href="classCamera.html#a21308d2be4c1a5433c7ee3b8630a3bbc">Camera::propList</a></div><div class="ttdeci">QVector&lt; QString &gt; propList</div><div class="ttdoc">Available properties list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00433">Camera.h:433</a></div></div>
+<div class="ttc" id="aclassCamera_html_a21b164c6df511a8c3a56843641e21aca"><div class="ttname"><a href="classCamera.html#a21b164c6df511a8c3a56843641e21aca">Camera::featureAbsCapableList</a></div><div class="ttdeci">QVector&lt; int &gt; featureAbsCapableList</div><div class="ttdoc">Available feature abs capable list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00430">Camera.h:430</a></div></div>
+<div class="ttc" id="aclassCamera_html_a2ed3f9ca3ada391a955e9ecf711590b4"><div class="ttname"><a href="classCamera.html#a2ed3f9ca3ada391a955e9ecf711590b4">Camera::featureNameList</a></div><div class="ttdeci">QVector&lt; QString &gt; featureNameList</div><div class="ttdoc">Available feature list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00414">Camera.h:414</a></div></div>
+<div class="ttc" id="aclassCamera_html_a311d29c5e51e659f1de1b9f040047926"><div class="ttname"><a href="classCamera.html#a311d29c5e51e659f1de1b9f040047926">Camera::hflip</a></div><div class="ttdeci">int hflip</div><div class="ttdoc">Horizontal flip flag.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00621">Camera.h:621</a></div></div>
+<div class="ttc" id="aclassCamera_html_a3141f66445a193e8f21455e4c06b86bf"><div class="ttname"><a href="classCamera.html#a3141f66445a193e8f21455e4c06b86bf">Camera::vflip</a></div><div class="ttdeci">int vflip</div><div class="ttdoc">Vertical flip flag.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00619">Camera.h:619</a></div></div>
+<div class="ttc" id="aclassCamera_html_a33924d5eddaf9f897bed4e793407c4c7"><div class="ttname"><a href="classCamera.html#a33924d5eddaf9f897bed4e793407c4c7">Camera::acqend</a></div><div class="ttdeci">QWaitCondition * acqend</div><div class="ttdoc">Wait condition for acquisition end.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00354">Camera.h:354</a></div></div>
+<div class="ttc" id="aclassCamera_html_a33c6cb101766bb447cd58f553fdcdad5"><div class="ttname"><a href="classCamera.html#a33c6cb101766bb447cd58f553fdcdad5">Camera::featureMinList</a></div><div class="ttdeci">QVector&lt; double &gt; featureMinList</div><div class="ttdoc">Available feature min list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00420">Camera.h:420</a></div></div>
+<div class="ttc" id="aclassCamera_html_a4436c20cbd93809d4e50523b891b48bf"><div class="ttname"><a href="classCamera.html#a4436c20cbd93809d4e50523b891b48bf">Camera::snapShotAvg</a></div><div class="ttdeci">int snapShotAvg</div><div class="ttdoc">Snapshot average.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00388">Camera.h:388</a></div></div>
+<div class="ttc" id="aclassCamera_html_a4e4a46b74c5f7a1e7b6d2f1e0b9339d8"><div class="ttname"><a href="classCamera.html#a4e4a46b74c5f7a1e7b6d2f1e0b9339d8">Camera::snapshot16</a></div><div class="ttdeci">ushort * snapshot16</div><div class="ttdoc">16-bit snapshot buffer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00376">Camera.h:376</a></div></div>
+<div class="ttc" id="aclassCamera_html_a4e64c09c8af69c5b5e667cee4eb33ff6"><div class="ttname"><a href="classCamera.html#a4e64c09c8af69c5b5e667cee4eb33ff6">Camera::acqstart</a></div><div class="ttdeci">QWaitCondition * acqstart</div><div class="ttdoc">Wait condition for acquisition start.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00352">Camera.h:352</a></div></div>
+<div class="ttc" id="aclassCamera_html_a51a719b1126266e1bcb2fc7eb992fa8e"><div class="ttname"><a href="classCamera.html#a51a719b1126266e1bcb2fc7eb992fa8e">Camera::buffer16</a></div><div class="ttdeci">ushort * buffer16</div><div class="ttdoc">16-bit acquisition buffer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00374">Camera.h:374</a></div></div>
+<div class="ttc" id="aclassCamera_html_a56921e3621efce3412c57898e3f288d4"><div class="ttname"><a href="classCamera.html#a56921e3621efce3412c57898e3f288d4">Camera::featureModeAutoList</a></div><div class="ttdeci">QVector&lt; bool &gt; featureModeAutoList</div><div class="ttdoc">Available feature mode list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00424">Camera.h:424</a></div></div>
+<div class="ttc" id="aclassCamera_html_a57271306f031565b6e40f06786f9a015"><div class="ttname"><a href="classCamera.html#a57271306f031565b6e40f06786f9a015">Camera::featureValueList</a></div><div class="ttdeci">QVector&lt; double &gt; featureValueList</div><div class="ttdoc">Available feature value list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00418">Camera.h:418</a></div></div>
+<div class="ttc" id="aclassCamera_html_a5c60cfc59d9abffabd129eda4e576c6a"><div class="ttname"><a href="classCamera.html#a5c60cfc59d9abffabd129eda4e576c6a">Camera::num</a></div><div class="ttdeci">int num</div><div class="ttdoc">Camera total number for camera manager.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00398">Camera.h:398</a></div></div>
+<div class="ttc" id="aclassCamera_html_a5d83b6fb8ed1fe3753f1104109e70802"><div class="ttname"><a href="classCamera.html#a5d83b6fb8ed1fe3753f1104109e70802">Camera::eTimeTotal</a></div><div class="ttdeci">double eTimeTotal</div><div class="ttdoc">Total exposure time.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00623">Camera.h:623</a></div></div>
+<div class="ttc" id="aclassCamera_html_a5ec4351355ec887d929e879dc4201505"><div class="ttname"><a href="classCamera.html#a5ec4351355ec887d929e879dc4201505">Camera::featureAbsValueList</a></div><div class="ttdeci">QVector&lt; double &gt; featureAbsValueList</div><div class="ttdoc">Available feature abs value list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00428">Camera.h:428</a></div></div>
+<div class="ttc" id="aclassCamera_html_a6063bbec41b6b47fb080d280f00832bb"><div class="ttname"><a href="classCamera.html#a6063bbec41b6b47fb080d280f00832bb">Camera::cameralist</a></div><div class="ttdeci">QVector&lt; void * &gt; cameralist</div><div class="ttdoc">Available camera list for camera manager.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00402">Camera.h:402</a></div></div>
+<div class="ttc" id="aclassCamera_html_a616b41fa3ff47a04d7da36ab78e73e90"><div class="ttname"><a href="classCamera.html#a616b41fa3ff47a04d7da36ab78e73e90">Camera::modelist</a></div><div class="ttdeci">QVector&lt; QString &gt; modelist</div><div class="ttdoc">Available model list for camera manager.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00406">Camera.h:406</a></div></div>
+<div class="ttc" id="aclassCamera_html_a6398eb90f263077e353f910dcc893034"><div class="ttname"><a href="classCamera.html#a6398eb90f263077e353f910dcc893034">Camera::max</a></div><div class="ttdeci">int max</div><div class="ttdoc">Current maximum.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00392">Camera.h:392</a></div></div>
+<div class="ttc" id="aclassCamera_html_a6468d8a7c194ae93013a87541e40b7ad"><div class="ttname"><a href="classCamera.html#a6468d8a7c194ae93013a87541e40b7ad">Camera::min</a></div><div class="ttdeci">int min</div><div class="ttdoc">Current minimum.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00390">Camera.h:390</a></div></div>
+<div class="ttc" id="aclassCamera_html_a65227509a53627a5fc5caf7615aa345f"><div class="ttname"><a href="classCamera.html#a65227509a53627a5fc5caf7615aa345f">Camera::snapshot</a></div><div class="ttdeci">uchar * snapshot</div><div class="ttdoc">8-bit snapshot buffer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00372">Camera.h:372</a></div></div>
+<div class="ttc" id="aclassCamera_html_a66df10724d03b077fdb8c1477126d4c7"><div class="ttname"><a href="classCamera.html#a66df10724d03b077fdb8c1477126d4c7">Camera::modeCheckEnabled</a></div><div class="ttdeci">bool modeCheckEnabled</div><div class="ttdoc">AUTO/MANUAL mode check enabled.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00412">Camera.h:412</a></div></div>
+<div class="ttc" id="aclassCamera_html_a66e914bd0f8c274f824e2d9effb7bbb7"><div class="ttname"><a href="classCamera.html#a66e914bd0f8c274f824e2d9effb7bbb7">Camera::pixel_encoding</a></div><div class="ttdeci">unsigned int pixel_encoding</div><div class="ttdoc">Pixel encoding identifier.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00368">Camera.h:368</a></div></div>
+<div class="ttc" id="aclassCamera_html_a690c5440136c44bfb96e520bc6e80f07"><div class="ttname"><a href="classCamera.html#a690c5440136c44bfb96e520bc6e80f07">Camera::frequency</a></div><div class="ttdeci">double frequency</div><div class="ttdoc">Acquisition frequency.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00625">Camera.h:625</a></div></div>
+<div class="ttc" id="aclassCamera_html_a7037d24df9894ca2d1623364c3476fad"><div class="ttname"><a href="classCamera.html#a7037d24df9894ca2d1623364c3476fad">Camera::fliphorizontal</a></div><div class="ttdeci">virtual uchar * fliphorizontal(uchar *buffer, int buffersize, int width)</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00532">Camera.h:532</a></div></div>
+<div class="ttc" id="aclassCamera_html_a708e9972336d6a6587f3a70a39fe7862"><div class="ttname"><a href="classCamera.html#a708e9972336d6a6587f3a70a39fe7862">Camera::featureMaxList</a></div><div class="ttdeci">QVector&lt; double &gt; featureMaxList</div><div class="ttdoc">Available feature max list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00422">Camera.h:422</a></div></div>
+<div class="ttc" id="aclassCamera_html_a8152b3ad0d73754548a46e50b1a0148f"><div class="ttname"><a href="classCamera.html#a8152b3ad0d73754548a46e50b1a0148f">Camera::vendor</a></div><div class="ttdeci">QString vendor</div><div class="ttdoc">Current vendor.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00408">Camera.h:408</a></div></div>
+<div class="ttc" id="aclassCamera_html_a865975bb5c3c981e285a71183f0879e2"><div class="ttname"><a href="classCamera.html#a865975bb5c3c981e285a71183f0879e2">Camera::updateAvg</a></div><div class="ttdeci">void updateAvg(int avg)</div></div>
+<div class="ttc" id="aclassCamera_html_a899f7576c33b2080b114d80749778103"><div class="ttname"><a href="classCamera.html#a899f7576c33b2080b114d80749778103">Camera::avg</a></div><div class="ttdeci">int avg</div><div class="ttdoc">Current average.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00394">Camera.h:394</a></div></div>
+<div class="ttc" id="aclassCamera_html_a8ea245772da01fa88a9af64365b40beb"><div class="ttname"><a href="classCamera.html#a8ea245772da01fa88a9af64365b40beb">Camera::vendorlist</a></div><div class="ttdeci">QVector&lt; QString &gt; vendorlist</div><div class="ttdoc">Available vendor list for camera manager.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00404">Camera.h:404</a></div></div>
+<div class="ttc" id="aclassCamera_html_a941c13d84dc838b5b5594479fdafd594"><div class="ttname"><a href="classCamera.html#a941c13d84dc838b5b5594479fdafd594">Camera::reversebytes</a></div><div class="ttdeci">virtual uchar * reversebytes(uchar *buffer, int buffersize)</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00483">Camera.h:483</a></div></div>
+<div class="ttc" id="aclassCamera_html_a9431ced47ded96644b4ce9a9f6a0fb08"><div class="ttname"><a href="classCamera.html#a9431ced47ded96644b4ce9a9f6a0fb08">Camera::image</a></div><div class="ttdeci">QImage * image</div><div class="ttdoc">Image object for display.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00633">Camera.h:633</a></div></div>
+<div class="ttc" id="aclassCamera_html_aa18f0bf8b6e8cb661643d980a4484ac0"><div class="ttname"><a href="classCamera.html#aa18f0bf8b6e8cb661643d980a4484ac0">Camera::width</a></div><div class="ttdeci">unsigned int width</div><div class="ttdoc">Current image width.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00362">Camera.h:362</a></div></div>
+<div class="ttc" id="aclassCamera_html_aa4f9dfb25e1fd1d5df43a8bd98844994"><div class="ttname"><a href="classCamera.html#aa4f9dfb25e1fd1d5df43a8bd98844994">Camera::suspend</a></div><div class="ttdeci">bool suspend</div><div class="ttdoc">True if acquisition is suspended.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00358">Camera.h:358</a></div></div>
+<div class="ttc" id="aclassCamera_html_aae9d6cd8ee85da741728c7f3b3b4311f"><div class="ttname"><a href="classCamera.html#aae9d6cd8ee85da741728c7f3b3b4311f">Camera::camera_err</a></div><div class="ttdeci">int camera_err</div><div class="ttdoc">Error flag.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00396">Camera.h:396</a></div></div>
+<div class="ttc" id="aclassCamera_html_ab06db0796eb2f81f76af3daaf5e1d85d"><div class="ttname"><a href="classCamera.html#ab06db0796eb2f81f76af3daaf5e1d85d">Camera::updateProps</a></div><div class="ttdeci">void updateProps()</div><div class="ttdoc">Notify UI to refresh property values.</div></div>
+<div class="ttc" id="aclassCamera_html_ab7faaf71010d522f44c33a1cd6798049"><div class="ttname"><a href="classCamera.html#ab7faaf71010d522f44c33a1cd6798049">Camera::snapShotMax</a></div><div class="ttdeci">int snapShotMax</div><div class="ttdoc">Snapshot maximum.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00386">Camera.h:386</a></div></div>
+<div class="ttc" id="aclassCamera_html_ac7debddf30d07a115056facc32cd7cd0"><div class="ttname"><a href="classCamera.html#ac7debddf30d07a115056facc32cd7cd0">Camera::model</a></div><div class="ttdeci">QString model</div><div class="ttdoc">Current model.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00410">Camera.h:410</a></div></div>
+<div class="ttc" id="aclassCamera_html_ac91d6b8947853370603e26ebcf7cb53c"><div class="ttname"><a href="classCamera.html#ac91d6b8947853370603e26ebcf7cb53c">Camera::snapShotMin</a></div><div class="ttdeci">int snapShotMin</div><div class="ttdoc">Snapshot minimum.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00384">Camera.h:384</a></div></div>
+<div class="ttc" id="aclassCamera_html_ad886ab68c1f94916ed5aa37b6b4473fe"><div class="ttname"><a href="classCamera.html#ad886ab68c1f94916ed5aa37b6b4473fe">Camera::featureIdList</a></div><div class="ttdeci">QVector&lt; int &gt; featureIdList</div><div class="ttdoc">Available feature id list.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00416">Camera.h:416</a></div></div>
+<div class="ttc" id="aclassCamera_html_ada6182fea01bf1857c0b8d9ad18f4bd7"><div class="ttname"><a href="classCamera.html#ada6182fea01bf1857c0b8d9ad18f4bd7">Camera::table</a></div><div class="ttdeci">QVector&lt; QRgb &gt; * table</div><div class="ttdoc">Active color table pointer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00631">Camera.h:631</a></div></div>
+<div class="ttc" id="aclassCamera_html_adb678e500e52d67d34e54a953b994fbb"><div class="ttname"><a href="classCamera.html#adb678e500e52d67d34e54a953b994fbb">Camera::buffer32</a></div><div class="ttdeci">int * buffer32</div><div class="ttdoc">32-bit acquisition buffer.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00378">Camera.h:378</a></div></div>
+<div class="ttc" id="aclassCamera_html_ae9ed166dbbc8876027ecbec9af8761c4"><div class="ttname"><a href="classCamera.html#ae9ed166dbbc8876027ecbec9af8761c4">Camera::height</a></div><div class="ttdeci">unsigned int height</div><div class="ttdoc">Current image height.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00364">Camera.h:364</a></div></div>
+<div class="ttc" id="aclassCamera_html_af765862d776294761eb47f81e6682833"><div class="ttname"><a href="classCamera.html#af765862d776294761eb47f81e6682833">Camera::acquireMutex</a></div><div class="ttdeci">QMutex * acquireMutex</div><div class="ttdoc">Mutex for acquisition operations.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00350">Camera.h:350</a></div></div>
 <div class="ttc" id="anamespaceUtils_html_a80482614a1ae51bca37af587bb80188a"><div class="ttname"><a href="namespaceUtils.html#a80482614a1ae51bca37af587bb80188a">Utils::GetTimeMicroseconds</a></div><div class="ttdeci">double GetTimeMicroseconds()</div><div class="ttdoc">Return the current time in microseconds.</div><div class="ttdef"><b>Definition</b> <a href="Utils_8cpp_source.html#l00023">Utils.cpp:23</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

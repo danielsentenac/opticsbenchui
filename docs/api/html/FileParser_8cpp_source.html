@@ -362,7 +362,7 @@ $(function(){initNavTree('FileParser_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>     QString filename = fileinfo.fileName();</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>     QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;FileParser::getFileData&gt; treating file&quot;</span> &lt;&lt; filename;</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>     QDateTime date (fileinfo.lastModified());</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>     uint filetimeTmp = date.toTime_t();</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>     uint filetimeTmp = <span class="keyword">static_cast&lt;</span>uint<span class="keyword">&gt;</span>(date.toSecsSinceEpoch());</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>     <span class="keywordflow">if</span> ( filename.left(prefix.length()) == prefix &amp;&amp; </div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>          filename.right(suffix.length()) == suffix ) {</div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        <span class="keywordflow">if</span> ( order == <span class="stringliteral">&quot;FIRST&quot;</span> ) {</div>
@@ -504,7 +504,6 @@ $(function(){initNavTree('FileParser_8cpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>}</div>
 </div>
 <div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span> </div>
 <div class="ttc" id="aclassFileParser_html_a00eeec55b5114162be82c6c0b7476075"><div class="ttname"><a href="classFileParser.html#a00eeec55b5114162be82c6c0b7476075">FileParser::getPrefix</a></div><div class="ttdeci">QString getPrefix()</div><div class="ttdoc">Return the filename prefix.</div><div class="ttdef"><b>Definition</b> <a href="#l00118">FileParser.cpp:118</a></div></div>
 <div class="ttc" id="aclassFileParser_html_a1033ee2b595f8bf4c20a7665034303f8"><div class="ttname"><a href="classFileParser.html#a1033ee2b595f8bf4c20a7665034303f8">FileParser::getNameList</a></div><div class="ttdeci">QVector&lt; QString &gt; getNameList()</div><div class="ttdoc">Return the list of filenames.</div><div class="ttdef"><b>Definition</b> <a href="#l00163">FileParser.cpp:163</a></div></div>
 <div class="ttc" id="aclassFileParser_html_a19dd2105aba26aec1ae196030bb67bcf"><div class="ttname"><a href="classFileParser.html#a19dd2105aba26aec1ae196030bb67bcf">FileParser::getArrayHeight</a></div><div class="ttdeci">int getArrayHeight()</div><div class="ttdoc">Return the parsed array height.</div><div class="ttdef"><b>Definition</b> <a href="#l00325">FileParser.cpp:325</a></div></div>

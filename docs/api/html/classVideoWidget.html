@@ -122,14 +122,12 @@ Inheritance diagram for VideoWidget:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a31e7897e4abd9733d45753e4a2e25882" id="r_a31e7897e4abd9733d45753e4a2e25882"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31e7897e4abd9733d45753e4a2e25882">VideoWidget</a> (QWidget *parent=0)</td></tr>
-<tr class="memdesc:a31e7897e4abd9733d45753e4a2e25882"><td class="mdescLeft">&#160;</td><td class="mdescRight">[0]  <br /></td></tr>
 <tr class="separator:a31e7897e4abd9733d45753e4a2e25882"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77b8af4076f462cb5db7932e88d46829" id="r_a77b8af4076f462cb5db7932e88d46829"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77b8af4076f462cb5db7932e88d46829">~VideoWidget</a> ()</td></tr>
 <tr class="memdesc:a77b8af4076f462cb5db7932e88d46829"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="separator:a77b8af4076f462cb5db7932e88d46829"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3f80d790ab5ea47b968b62748af0637" id="r_ad3f80d790ab5ea47b968b62748af0637"><td class="memItemLeft" align="right" valign="top">QAbstractVideoSurface *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3f80d790ab5ea47b968b62748af0637">videoSurface</a> () const</td></tr>
-<tr class="memdesc:ad3f80d790ab5ea47b968b62748af0637"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the underlying video surface.  <br /></td></tr>
-<tr class="separator:ad3f80d790ab5ea47b968b62748af0637"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6272d89a0f6e68ed735f7449d5987140" id="r_a6272d89a0f6e68ed735f7449d5987140"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6272d89a0f6e68ed735f7449d5987140">setImage</a> (const QImage &amp;image)</td></tr>
+<tr class="separator:a6272d89a0f6e68ed735f7449d5987140"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac282629b2c0c2feeae99ec26fb60ddc9" id="r_ac282629b2c0c2feeae99ec26fb60ddc9"><td class="memItemLeft" align="right" valign="top">QSize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac282629b2c0c2feeae99ec26fb60ddc9">sizeHint</a> () const override</td></tr>
 <tr class="memdesc:ac282629b2c0c2feeae99ec26fb60ddc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recommended size for layout.  <br /></td></tr>
 <tr class="separator:ac282629b2c0c2feeae99ec26fb60ddc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,7 +143,7 @@ Protected Member Functions</h2></td></tr>
 <div class="textblock"><p>[0]</p>
 <p>Widget for rendering video frames from a surface. </p>
 
-<p class="definition">Definition at line <a class="el" href="VideoWidget_8h_source.html#l00008">8</a> of file <a class="el" href="VideoWidget_8h_source.html">VideoWidget.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VideoWidget_8h_source.html#l00016">16</a> of file <a class="el" href="VideoWidget_8h_source.html">VideoWidget.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a31e7897e4abd9733d45753e4a2e25882" name="a31e7897e4abd9733d45753e4a2e25882"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a31e7897e4abd9733d45753e4a2e25882">&#9670;&#160;</a></span>VideoWidget()</h2>
@@ -161,8 +159,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>[0] </p>
 <p>Construct a video widget. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">parent</td><td>Parent widget. </td></tr>
@@ -170,7 +166,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="VideoWidget_8cpp_source.html#l00006">6</a> of file <a class="el" href="VideoWidget_8cpp_source.html">VideoWidget.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VideoWidget_8cpp_source.html#l00062">62</a> of file <a class="el" href="VideoWidget_8cpp_source.html">VideoWidget.cpp</a>.</p>
 
 </div>
 </div>
@@ -190,9 +186,8 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Destructor. </p>
-<p>[0] [1] </p>
 
-<p class="definition">Definition at line <a class="el" href="VideoWidget_8cpp_source.html#l00020">20</a> of file <a class="el" href="VideoWidget_8cpp_source.html">VideoWidget.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VideoWidget_8cpp_source.html#l00073">73</a> of file <a class="el" href="VideoWidget_8cpp_source.html">VideoWidget.cpp</a>.</p>
 
 </div>
 </div>
@@ -221,13 +216,12 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Paint the current frame. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">event</td><td>Paint event.</td></tr>
+    <tr><td class="paramname">event</td><td>Paint event. </td></tr>
   </table>
   </dd>
 </dl>
-<p>[2] [3] </p>
 
-<p class="definition">Definition at line <a class="el" href="VideoWidget_8cpp_source.html#l00032">32</a> of file <a class="el" href="VideoWidget_8cpp_source.html">VideoWidget.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VideoWidget_8cpp_source.html#l00093">93</a> of file <a class="el" href="VideoWidget_8cpp_source.html">VideoWidget.cpp</a>.</p>
 
 </div>
 </div>
@@ -255,13 +249,37 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Handle resize events. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">event</td><td>Resize event.</td></tr>
+    <tr><td class="paramname">event</td><td>Resize event. </td></tr>
   </table>
   </dd>
 </dl>
-<p>[3] [4] </p>
 
-<p class="definition">Definition at line <a class="el" href="VideoWidget_8cpp_source.html#l00051">51</a> of file <a class="el" href="VideoWidget_8cpp_source.html">VideoWidget.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VideoWidget_8cpp_source.html#l00104">104</a> of file <a class="el" href="VideoWidget_8cpp_source.html">VideoWidget.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a6272d89a0f6e68ed735f7449d5987140" name="a6272d89a0f6e68ed735f7449d5987140"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6272d89a0f6e68ed735f7449d5987140">&#9670;&#160;</a></span>setImage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VideoWidget::setImage </td>
+          <td>(</td>
+          <td class="paramtype">const QImage &amp;</td>          <td class="paramname"><span class="paramname"><em>image</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the current image to display. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">image</td><td>Latest video frame. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="VideoWidget_8cpp_source.html#l00077">77</a> of file <a class="el" href="VideoWidget_8cpp_source.html">VideoWidget.cpp</a>.</p>
 
 </div>
 </div>
@@ -289,40 +307,8 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Recommended size for layout. </p>
-<p>[1] [2] </p>
 
-<p class="definition">Definition at line <a class="el" href="VideoWidget_8cpp_source.html#l00026">26</a> of file <a class="el" href="VideoWidget_8cpp_source.html">VideoWidget.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ad3f80d790ab5ea47b968b62748af0637" name="ad3f80d790ab5ea47b968b62748af0637"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3f80d790ab5ea47b968b62748af0637">&#9670;&#160;</a></span>videoSurface()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QAbstractVideoSurface * VideoWidget::videoSurface </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Return the underlying video surface. </p>
-
-<p class="definition">Definition at line <a class="el" href="VideoWidget_8h_source.html#l00018">18</a> of file <a class="el" href="VideoWidget_8h_source.html">VideoWidget.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="VideoPlayer_8cpp_source.html#l00005">VideoPlayer::VideoPlayer()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VideoWidget_8cpp_source.html#l00084">84</a> of file <a class="el" href="VideoWidget_8cpp_source.html">VideoWidget.cpp</a>.</p>
 
 </div>
 </div>

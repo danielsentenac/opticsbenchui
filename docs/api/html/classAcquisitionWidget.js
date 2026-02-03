@@ -14,6 +14,8 @@ var classAcquisitionWidget =
     [ "isopenCameraWindow", "classAcquisitionWidget.html#a64956d687b1e0e38c1783d4e6bcee157", null ],
     [ "reload", "classAcquisitionWidget.html#a560a54959e6833f22d4a86c0381d9183", null ],
     [ "remove", "classAcquisitionWidget.html#a9049c5959327a481327afabd87bee4b9", null ],
+    [ "requestAnalysis", "classAcquisitionWidget.html#ab3c30193159ef282fd3b77cbaceaacc5", null ],
+    [ "requestAnalysisFromThread", "classAcquisitionWidget.html#a538114f5a0300302795d256873ea0734", null ],
     [ "run", "classAcquisitionWidget.html#aac5152376c499940bd2ce3cbabe13e32", null ],
     [ "setAcqFile", "classAcquisitionWidget.html#aa946d8385c2d3449b779aff4cea688e2", null ],
     [ "setCamera", "classAcquisitionWidget.html#a44c6b4d3852b2b9fa5e0a56bbc92e312", null ],

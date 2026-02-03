@@ -107,131 +107,103 @@ $(function(){initNavTree('VideoWidgetSurface_8cpp_source.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;VideoWidgetSurface.h&quot;</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;qabstractvideosurface.h&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;qvideosurfaceformat.h&gt;</span></div>
-<div class="foldopen" id="foldopen00005" data-start="{" data-end="}">
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="classVideoWidgetSurface.html#a8c6f7e90845a02ba3a5754842c815115">    5</a></span><a class="code hl_function" href="classVideoWidgetSurface.html#a8c6f7e90845a02ba3a5754842c815115">VideoWidgetSurface::VideoWidgetSurface</a>(QWidget *widget, QObject *parent)</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    : QAbstractVideoSurface(parent)</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    , widget(widget)</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    , imageFormat(QImage::Format_Invalid)</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>{</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>}</div>
-</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span></div>
-<div class="foldopen" id="foldopen00012" data-start="{" data-end="}">
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classVideoWidgetSurface.html#ae461b2897ae3e44622b76fbffe19b0f3">   12</a></span>QList&lt;QVideoFrame::PixelFormat&gt; <a class="code hl_function" href="classVideoWidgetSurface.html#ae461b2897ae3e44622b76fbffe19b0f3">VideoWidgetSurface::supportedPixelFormats</a>(</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        QAbstractVideoBuffer::HandleType handleType)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordflow">if</span> (handleType == QAbstractVideoBuffer::NoHandle) {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <span class="keywordflow">return</span> QList&lt;QVideoFrame::PixelFormat&gt;()</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                &lt;&lt; QVideoFrame::Format_RGB32</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>                &lt;&lt; QVideoFrame::Format_ARGB32</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                &lt;&lt; QVideoFrame::Format_ARGB32_Premultiplied</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                &lt;&lt; QVideoFrame::Format_RGB565</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                &lt;&lt; QVideoFrame::Format_RGB555;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <span class="keywordflow">return</span> QList&lt;QVideoFrame::PixelFormat&gt;();</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    }</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>}</div>
-</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span></div>
-<div class="foldopen" id="foldopen00028" data-start="{" data-end="}">
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classVideoWidgetSurface.html#a261ea701ca4fd27784542a5b5f5242ac">   28</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classVideoWidgetSurface.html#a261ea701ca4fd27784542a5b5f5242ac">VideoWidgetSurface::isFormatSupported</a>(<span class="keyword">const</span> QVideoSurfaceFormat &amp;format)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">const</span> QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(format.pixelFormat());</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">const</span> QSize size = format.frameSize();</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">return</span> imageFormat != QImage::Format_Invalid</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            &amp;&amp; !size.isEmpty()</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>            &amp;&amp; format.handleType() == QAbstractVideoBuffer::NoHandle;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}</div>
-</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span></div>
-<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classVideoWidgetSurface.html#a1bd52a8b17ca889080d2723a7a1202bd">   38</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classVideoWidgetSurface.html#a1bd52a8b17ca889080d2723a7a1202bd">VideoWidgetSurface::start</a>(<span class="keyword">const</span> QVideoSurfaceFormat &amp;format)</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>{</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keyword">const</span> QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(format.pixelFormat());</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keyword">const</span> QSize size = format.frameSize();</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">if</span> (imageFormat != QImage::Format_Invalid &amp;&amp; !size.isEmpty()) {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        this-&gt;imageFormat = imageFormat;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        imageSize = size;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        sourceRect = format.viewport();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        QAbstractVideoSurface::start(format);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        widget-&gt;updateGeometry();</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <a class="code hl_function" href="classVideoWidgetSurface.html#afe083a4914338964b3a178d754d7b7a9">updateVideoRect</a>();</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    }</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
-</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span></div>
-<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classVideoWidgetSurface.html#ade446c36626d1379862ce590abaa263d">   56</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classVideoWidgetSurface.html#ade446c36626d1379862ce590abaa263d">VideoWidgetSurface::stop</a>()</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>{</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    currentFrame = QVideoFrame();</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    targetRect = QRect();</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    QAbstractVideoSurface::stop();</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    widget-&gt;update();</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}</div>
-</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span></div>
-<div class="foldopen" id="foldopen00065" data-start="{" data-end="}">
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classVideoWidgetSurface.html#adb3c9477fb878fc14e204190a5fc7ca7">   65</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classVideoWidgetSurface.html#adb3c9477fb878fc14e204190a5fc7ca7">VideoWidgetSurface::present</a>(<span class="keyword">const</span> QVideoFrame &amp;frame)</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>{</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">if</span> (surfaceFormat().pixelFormat() != frame.pixelFormat()</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            || surfaceFormat().frameSize() != frame.size()) {</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        setError(IncorrectFormatError);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <a class="code hl_function" href="classVideoWidgetSurface.html#ade446c36626d1379862ce590abaa263d">stop</a>();</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        currentFrame = frame;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        widget-&gt;repaint(targetRect);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    }</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>}</div>
-</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span></div>
-<div class="foldopen" id="foldopen00080" data-start="{" data-end="}">
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="classVideoWidgetSurface.html#afe083a4914338964b3a178d754d7b7a9">   80</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classVideoWidgetSurface.html#afe083a4914338964b3a178d754d7b7a9">VideoWidgetSurface::updateVideoRect</a>()</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>{</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    QSize size = surfaceFormat().sizeHint();</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    size.scale(widget-&gt;size().boundedTo(size), Qt::KeepAspectRatio);</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    targetRect = QRect(QPoint(0, 0), size);</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    targetRect.moveCenter(widget-&gt;rect().center());</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>}</div>
-</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span></div>
-<div class="foldopen" id="foldopen00089" data-start="{" data-end="}">
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="classVideoWidgetSurface.html#a7c549e193a9c991e212758e84da432b1">   89</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classVideoWidgetSurface.html#a7c549e193a9c991e212758e84da432b1">VideoWidgetSurface::paint</a>(QPainter *painter)</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>{</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordflow">if</span> (currentFrame.map(QAbstractVideoBuffer::ReadOnly)) {</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keyword">const</span> QTransform oldTransform = painter-&gt;transform();</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="keywordflow">if</span> (surfaceFormat().scanLineDirection() == QVideoSurfaceFormat::BottomToTop) {</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>           painter-&gt;scale(1, -1);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>           painter-&gt;translate(0, -widget-&gt;height());</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        }</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        QImage image(</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                currentFrame.bits(),</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                currentFrame.width(),</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                currentFrame.height(),</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                currentFrame.bytesPerLine(),</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                imageFormat);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        painter-&gt;drawImage(targetRect, image, sourceRect);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        painter-&gt;setTransform(oldTransform);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        currentFrame.unmap();</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    }</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
-</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span></div>
-<div class="ttc" id="aclassVideoWidgetSurface_html_a1bd52a8b17ca889080d2723a7a1202bd"><div class="ttname"><a href="classVideoWidgetSurface.html#a1bd52a8b17ca889080d2723a7a1202bd">VideoWidgetSurface::start</a></div><div class="ttdeci">bool start(const QVideoSurfaceFormat &amp;format) override</div><div class="ttdef"><b>Definition</b> <a href="#l00038">VideoWidgetSurface.cpp:38</a></div></div>
-<div class="ttc" id="aclassVideoWidgetSurface_html_a261ea701ca4fd27784542a5b5f5242ac"><div class="ttname"><a href="classVideoWidgetSurface.html#a261ea701ca4fd27784542a5b5f5242ac">VideoWidgetSurface::isFormatSupported</a></div><div class="ttdeci">bool isFormatSupported(const QVideoSurfaceFormat &amp;format) const override</div><div class="ttdef"><b>Definition</b> <a href="#l00028">VideoWidgetSurface.cpp:28</a></div></div>
-<div class="ttc" id="aclassVideoWidgetSurface_html_a7c549e193a9c991e212758e84da432b1"><div class="ttname"><a href="classVideoWidgetSurface.html#a7c549e193a9c991e212758e84da432b1">VideoWidgetSurface::paint</a></div><div class="ttdeci">void paint(QPainter *painter)</div><div class="ttdef"><b>Definition</b> <a href="#l00089">VideoWidgetSurface.cpp:89</a></div></div>
-<div class="ttc" id="aclassVideoWidgetSurface_html_a8c6f7e90845a02ba3a5754842c815115"><div class="ttname"><a href="classVideoWidgetSurface.html#a8c6f7e90845a02ba3a5754842c815115">VideoWidgetSurface::VideoWidgetSurface</a></div><div class="ttdeci">VideoWidgetSurface(QWidget *widget, QObject *parent=0)</div><div class="ttdef"><b>Definition</b> <a href="#l00005">VideoWidgetSurface.cpp:5</a></div></div>
-<div class="ttc" id="aclassVideoWidgetSurface_html_adb3c9477fb878fc14e204190a5fc7ca7"><div class="ttname"><a href="classVideoWidgetSurface.html#adb3c9477fb878fc14e204190a5fc7ca7">VideoWidgetSurface::present</a></div><div class="ttdeci">bool present(const QVideoFrame &amp;frame) override</div><div class="ttdef"><b>Definition</b> <a href="#l00065">VideoWidgetSurface.cpp:65</a></div></div>
-<div class="ttc" id="aclassVideoWidgetSurface_html_ade446c36626d1379862ce590abaa263d"><div class="ttname"><a href="classVideoWidgetSurface.html#ade446c36626d1379862ce590abaa263d">VideoWidgetSurface::stop</a></div><div class="ttdeci">void stop() override</div><div class="ttdoc">Stop rendering.</div><div class="ttdef"><b>Definition</b> <a href="#l00056">VideoWidgetSurface.cpp:56</a></div></div>
-<div class="ttc" id="aclassVideoWidgetSurface_html_ae461b2897ae3e44622b76fbffe19b0f3"><div class="ttname"><a href="classVideoWidgetSurface.html#ae461b2897ae3e44622b76fbffe19b0f3">VideoWidgetSurface::supportedPixelFormats</a></div><div class="ttdeci">QList&lt; QVideoFrame::PixelFormat &gt; supportedPixelFormats(QAbstractVideoBuffer::HandleType handleType=QAbstractVideoBuffer::NoHandle) const override</div><div class="ttdoc">[0]</div><div class="ttdef"><b>Definition</b> <a href="#l00012">VideoWidgetSurface.cpp:12</a></div></div>
-<div class="ttc" id="aclassVideoWidgetSurface_html_afe083a4914338964b3a178d754d7b7a9"><div class="ttname"><a href="classVideoWidgetSurface.html#afe083a4914338964b3a178d754d7b7a9">VideoWidgetSurface::updateVideoRect</a></div><div class="ttdeci">void updateVideoRect()</div><div class="ttdoc">Recompute the video rectangle.</div><div class="ttdef"><b>Definition</b> <a href="#l00080">VideoWidgetSurface.cpp:80</a></div></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;QtGlobal&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#if QT_VERSION &lt; QT_VERSION_CHECK(6, 0, 0) &amp;&amp; !defined(NO_MULTIMEDIA)</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;qabstractvideosurface.h&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;qvideosurfaceformat.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>VideoWidgetSurface::VideoWidgetSurface(QWidget *widget, QObject *parent)</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    : QAbstractVideoSurface(parent)</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    , widget(widget)</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    , imageFormat(QImage::Format_Invalid)</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>{</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>}</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>QList&lt;QVideoFrame::PixelFormat&gt; VideoWidgetSurface::supportedPixelFormats(</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        QAbstractVideoBuffer::HandleType handleType)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordflow">if</span> (handleType == QAbstractVideoBuffer::NoHandle) {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        <span class="keywordflow">return</span> QList&lt;QVideoFrame::PixelFormat&gt;()</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                &lt;&lt; QVideoFrame::Format_RGB32</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                &lt;&lt; QVideoFrame::Format_ARGB32</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                &lt;&lt; QVideoFrame::Format_ARGB32_Premultiplied</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                &lt;&lt; QVideoFrame::Format_RGB565</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                &lt;&lt; QVideoFrame::Format_RGB555;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordflow">return</span> QList&lt;QVideoFrame::PixelFormat&gt;();</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    }</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keywordtype">bool</span> VideoWidgetSurface::isFormatSupported(<span class="keyword">const</span> QVideoSurfaceFormat &amp;format)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">const</span> QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(format.pixelFormat());</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">const</span> QSize size = format.frameSize();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">return</span> imageFormat != QImage::Format_Invalid</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            &amp;&amp; !size.isEmpty()</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            &amp;&amp; format.handleType() == QAbstractVideoBuffer::NoHandle;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keywordtype">bool</span> VideoWidgetSurface::start(<span class="keyword">const</span> QVideoSurfaceFormat &amp;format)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">const</span> QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(format.pixelFormat());</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">const</span> QSize size = format.frameSize();</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">if</span> (imageFormat != QImage::Format_Invalid &amp;&amp; !size.isEmpty()) {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        this-&gt;imageFormat = imageFormat;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        imageSize = size;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        sourceRect = format.viewport();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        QAbstractVideoSurface::start(format);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        widget-&gt;updateGeometry();</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        updateVideoRect();</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>}</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="keywordtype">void</span> VideoWidgetSurface::stop()</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>{</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    currentFrame = QVideoFrame();</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    targetRect = QRect();</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    QAbstractVideoSurface::stop();</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    widget-&gt;update();</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keywordtype">bool</span> VideoWidgetSurface::present(<span class="keyword">const</span> QVideoFrame &amp;frame)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>{</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">if</span> (surfaceFormat().pixelFormat() != frame.pixelFormat()</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            || surfaceFormat().frameSize() != frame.size()) {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        setError(IncorrectFormatError);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        stop();</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        currentFrame = frame;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        widget-&gt;repaint(targetRect);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    }</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>}</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="keywordtype">void</span> VideoWidgetSurface::updateVideoRect()</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>{</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    QSize size = surfaceFormat().sizeHint();</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    size.scale(widget-&gt;size().boundedTo(size), Qt::KeepAspectRatio);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    targetRect = QRect(QPoint(0, 0), size);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    targetRect.moveCenter(widget-&gt;rect().center());</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="keywordtype">void</span> VideoWidgetSurface::paint(QPainter *painter)</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>{</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">if</span> (currentFrame.map(QAbstractVideoBuffer::ReadOnly)) {</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keyword">const</span> QTransform oldTransform = painter-&gt;transform();</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordflow">if</span> (surfaceFormat().scanLineDirection() == QVideoSurfaceFormat::BottomToTop) {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>           painter-&gt;scale(1, -1);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>           painter-&gt;translate(0, -widget-&gt;height());</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        QImage image(</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                currentFrame.bits(),</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                currentFrame.width(),</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                currentFrame.height(),</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                currentFrame.bytesPerLine(),</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                imageFormat);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        painter-&gt;drawImage(targetRect, image, sourceRect);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        painter-&gt;setTransform(oldTransform);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        currentFrame.unmap();</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    }</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>}</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -7,6 +7,7 @@
 /// - \ref dac "DAC/Comedi/Raspi": Analog output devices and counters.
 /// - \ref lasers "Lasers": Laser sources and their drivers.
 /// - \ref ui "UI": Widgets and windows used in the GUI.
+/// - \ref analysis "Analysis": Analysis workflow threads and helpers.
 /// - \ref utils "Utilities": Helpers, logging, and parsing.
 
 /// \page getting_started Getting Started
@@ -44,6 +45,12 @@
 /// \{
 /// \}
 
+/// \}
+
+/// \defgroup analysis Analysis
+/// Analysis threads and task definitions.
+/// \ingroup ui
+/// \{
 /// \}
 
 /// \defgroup ui UI

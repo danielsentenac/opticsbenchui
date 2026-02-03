@@ -9,6 +9,9 @@ var searchData=
   ['acrscom_6',['ACRSCom',['../classACRSCom.html#a0873e01ff68d41674c11d6fbd7f1d1f6',1,'ACRSCom::ACRSCom(string device, string settings)'],['../classACRSCom.html#ad3aced7b16525344aa5e7d903ea2c8f7',1,'ACRSCom::ACRSCom(const ACRSCom &amp;channel)']]],
   ['acusbcom_7',['ACUsbCom',['../classACUsbCom.html#af565174a3fba9768d5fda19d3d7d08a5',1,'ACUsbCom::ACUsbCom(string device, string settings)'],['../classACUsbCom.html#a41699b55fca881f2e84b890f24b68a71',1,'ACUsbCom::ACUsbCom(const ACUsbCom &amp;channel)']]],
   ['adddestination_8',['addDestination',['../classQsLogging_1_1Logger.html#ae624206f88bff47839aea47a06b96569',1,'QsLogging::Logger']]],
-  ['analysiswidget_9',['AnalysisWidget',['../classAnalysisWidget.html#a89ed31318503bb6e049c873ca965e6df',1,'AnalysisWidget']]],
-  ['assistant_10',['Assistant',['../classAssistant.html#ab6499e0f9f0792047f1f6bb109e7977e',1,'Assistant']]]
+  ['analysisfinished_9',['analysisFinished',['../classAnalysisThread.html#a9caca76f3ca148a99bf1d1c6bcdf8ba4',1,'AnalysisThread::analysisFinished()'],['../classAnalysisWidget.html#a0f280a63fa4a8ded04789112cea88b68',1,'AnalysisWidget::analysisFinished()']]],
+  ['analysisstarted_10',['analysisStarted',['../classAnalysisThread.html#adf523b25ba9e119733c7699c8f5817f8',1,'AnalysisThread::analysisStarted()'],['../classAnalysisWidget.html#a8c84b73b5ac067be1a7be27e4dfee941',1,'AnalysisWidget::analysisStarted()']]],
+  ['analysisthread_11',['AnalysisThread',['../classAnalysisThread.html#a78cd8278cbeb4a287014cef00f7572a3',1,'AnalysisThread']]],
+  ['analysiswidget_12',['AnalysisWidget',['../classAnalysisWidget.html#a967064cbeb7cc62daa72226030e027b7',1,'AnalysisWidget']]],
+  ['assistant_13',['Assistant',['../classAssistant.html#ab6499e0f9f0792047f1f6bb109e7977e',1,'Assistant']]]
 ];

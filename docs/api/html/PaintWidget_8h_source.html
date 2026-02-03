@@ -123,30 +123,39 @@ $(function(){initNavTree('PaintWidget_8h_source.html',''); initResizable(true); 
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">********************************************************************/</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;QGLWidget&gt;</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;QImage&gt;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span></div>
-<div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classPaintWidget.html">   23</a></span><span class="keyword">class </span><a class="code hl_function" href="classPaintWidget.html#ae6adf05aa99501c9309ca72ccbcafee4">PaintWidget</a> : <span class="keyword">public</span> QGLWidget</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  Q_OBJECT</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <a class="code hl_function" href="classPaintWidget.html#ae6adf05aa99501c9309ca72ccbcafee4">PaintWidget</a>(QWidget* parent = 0);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <a class="code hl_function" href="classPaintWidget.html#a3e529dfb5b20c8053531fe8c95861339">~PaintWidget</a>();</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classPaintWidget.html#a17266c609978d176c92e03531decf725">paintGL</a>(<span class="keyword">const</span> QImage &amp; data);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classPaintWidget.html#a8db48feee9c94428785ef60aa17f71f7">resizeGL</a>(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> <span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classPaintWidget.html#a609c3b951ae45a497393c001ca6470ab">   45</a></span>  QImage <a class="code hl_variable" href="classPaintWidget.html#a609c3b951ae45a497393c001ca6470ab">gldata</a>;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>};</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;QtGlobal&gt;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#if QT_VERSION &gt;= QT_VERSION_CHECK(6, 0, 0)</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;QOpenGLWidget&gt;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;QGLWidget&gt;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;QImage&gt;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#if QT_VERSION &gt;= QT_VERSION_CHECK(6, 0, 0)</span></div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="};">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classPaintWidget.html">   29</a></span><span class="keyword">class </span><a class="code hl_function" href="classPaintWidget.html#ae6adf05aa99501c9309ca72ccbcafee4">PaintWidget</a> : <span class="keyword">public</span> QOpenGLWidget</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>class <a class="code hl_function" href="classPaintWidget.html#ae6adf05aa99501c9309ca72ccbcafee4">PaintWidget</a> : <span class="keyword">public</span> QGLWidget</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  Q_OBJECT</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <a class="code hl_function" href="classPaintWidget.html#ae6adf05aa99501c9309ca72ccbcafee4">PaintWidget</a>(QWidget* parent = 0);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_function" href="classPaintWidget.html#a3e529dfb5b20c8053531fe8c95861339">~PaintWidget</a>();</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classPaintWidget.html#a17266c609978d176c92e03531decf725">paintGL</a>(<span class="keyword">const</span> QImage &amp; data);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classPaintWidget.html#a8db48feee9c94428785ef60aa17f71f7">resizeGL</a>(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classPaintWidget.html#a609c3b951ae45a497393c001ca6470ab">   54</a></span>  QImage <a class="code hl_variable" href="classPaintWidget.html#a609c3b951ae45a497393c001ca6470ab">gldata</a>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>};</div>
 </div>
-<div class="ttc" id="aclassPaintWidget_html_a17266c609978d176c92e03531decf725"><div class="ttname"><a href="classPaintWidget.html#a17266c609978d176c92e03531decf725">PaintWidget::paintGL</a></div><div class="ttdeci">void paintGL(const QImage &amp;data)</div><div class="ttdef"><b>Definition</b> <a href="PaintWidget_8cpp_source.html#l00028">PaintWidget.cpp:28</a></div></div>
-<div class="ttc" id="aclassPaintWidget_html_a3e529dfb5b20c8053531fe8c95861339"><div class="ttname"><a href="classPaintWidget.html#a3e529dfb5b20c8053531fe8c95861339">PaintWidget::~PaintWidget</a></div><div class="ttdeci">~PaintWidget()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition</b> <a href="PaintWidget_8cpp_source.html#l00025">PaintWidget.cpp:25</a></div></div>
-<div class="ttc" id="aclassPaintWidget_html_a609c3b951ae45a497393c001ca6470ab"><div class="ttname"><a href="classPaintWidget.html#a609c3b951ae45a497393c001ca6470ab">PaintWidget::gldata</a></div><div class="ttdeci">QImage gldata</div><div class="ttdoc">Current image data for rendering.</div><div class="ttdef"><b>Definition</b> <a href="#l00045">PaintWidget.h:45</a></div></div>
-<div class="ttc" id="aclassPaintWidget_html_a8db48feee9c94428785ef60aa17f71f7"><div class="ttname"><a href="classPaintWidget.html#a8db48feee9c94428785ef60aa17f71f7">PaintWidget::resizeGL</a></div><div class="ttdeci">void resizeGL(int w, int h)</div><div class="ttdef"><b>Definition</b> <a href="PaintWidget_8cpp_source.html#l00034">PaintWidget.cpp:34</a></div></div>
+<div class="ttc" id="aclassPaintWidget_html_a17266c609978d176c92e03531decf725"><div class="ttname"><a href="classPaintWidget.html#a17266c609978d176c92e03531decf725">PaintWidget::paintGL</a></div><div class="ttdeci">void paintGL(const QImage &amp;data)</div><div class="ttdef"><b>Definition</b> <a href="PaintWidget_8cpp_source.html#l00032">PaintWidget.cpp:32</a></div></div>
+<div class="ttc" id="aclassPaintWidget_html_a3e529dfb5b20c8053531fe8c95861339"><div class="ttname"><a href="classPaintWidget.html#a3e529dfb5b20c8053531fe8c95861339">PaintWidget::~PaintWidget</a></div><div class="ttdeci">~PaintWidget()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition</b> <a href="PaintWidget_8cpp_source.html#l00029">PaintWidget.cpp:29</a></div></div>
+<div class="ttc" id="aclassPaintWidget_html_a609c3b951ae45a497393c001ca6470ab"><div class="ttname"><a href="classPaintWidget.html#a609c3b951ae45a497393c001ca6470ab">PaintWidget::gldata</a></div><div class="ttdeci">QImage gldata</div><div class="ttdoc">Current image data for rendering.</div><div class="ttdef"><b>Definition</b> <a href="#l00054">PaintWidget.h:54</a></div></div>
+<div class="ttc" id="aclassPaintWidget_html_a8db48feee9c94428785ef60aa17f71f7"><div class="ttname"><a href="classPaintWidget.html#a8db48feee9c94428785ef60aa17f71f7">PaintWidget::resizeGL</a></div><div class="ttdeci">void resizeGL(int w, int h)</div><div class="ttdef"><b>Definition</b> <a href="PaintWidget_8cpp_source.html#l00042">PaintWidget.cpp:42</a></div></div>
 <div class="ttc" id="aclassPaintWidget_html_ae6adf05aa99501c9309ca72ccbcafee4"><div class="ttname"><a href="classPaintWidget.html#ae6adf05aa99501c9309ca72ccbcafee4">PaintWidget::PaintWidget</a></div><div class="ttdeci">PaintWidget(QWidget *parent=0)</div><div class="ttdef"><b>Definition</b> <a href="PaintWidget_8cpp_source.html#l00021">PaintWidget.cpp:21</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

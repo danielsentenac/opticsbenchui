@@ -6,6 +6,7 @@ var hierarchy =
       [ "ACUsbCom", "classACUsbCom.html", null ]
     ] ],
     [ "AcquisitionSequence", "classAcquisitionSequence.html", null ],
+    [ "AnalysisTask", "structAnalysisTask.html", null ],
     [ "Assistant", "classAssistant.html", null ],
     [ "QsLogging::Destination", "classQsLogging_1_1Destination.html", [
       [ "QsLogging::DebugOutputDestination", "classQsLogging_1_1DebugOutputDestination.html", null ],
@@ -30,12 +31,6 @@ var hierarchy =
     [ "QsLogging::Logger::Helper", "classQsLogging_1_1Logger_1_1Helper.html", null ],
     [ "QsLogging::Logger", "classQsLogging_1_1Logger.html", null ],
     [ "QsLogging::LoggerImpl", "classQsLogging_1_1LoggerImpl.html", null ],
-    [ "QAbstractVideoSurface", null, [
-      [ "VideoWidgetSurface", "classVideoWidgetSurface.html", null ]
-    ] ],
-    [ "QGLWidget", null, [
-      [ "PaintWidget", "classPaintWidget.html", null ]
-    ] ],
     [ "QItemDelegate", null, [
       [ "ComboBoxDelegate", "classComboBoxDelegate.html", null ]
     ] ],
@@ -55,10 +50,24 @@ var hierarchy =
       [ "Raspi", "classRaspi.html", null ],
       [ "SuperK", "classSuperK.html", null ]
     ] ],
+    [ "QOpenGLWidget", null, [
+      [ "PaintWidget", "classPaintWidget.html", null ]
+    ] ],
     [ "QsDebugOutput", "classQsDebugOutput.html", null ],
     [ "QThread", null, [
       [ "AcquisitionThread", "classAcquisitionThread.html", null ],
-      [ "Camera", "classCamera.html", null ]
+      [ "AnalysisThread", "classAnalysisThread.html", null ],
+      [ "Camera", "classCamera.html", [
+        [ "CameraAlliedVision", "classCameraAlliedVision.html", null ],
+        [ "CameraGiGE", "classCameraGiGE.html", null ],
+        [ "CameraIEEE1394", "classCameraIEEE1394.html", null ],
+        [ "CameraNeo", "classCameraNeo.html", null ],
+        [ "CameraRAPTORFALCON", "classCameraRAPTORFALCON.html", null ],
+        [ "CameraRAPTORNINOX640", "classCameraRAPTORNINOX640.html", null ],
+        [ "CameraRaspi", "classCameraRaspi.html", null ],
+        [ "CameraUSB", "classCameraUSB.html", null ],
+        [ "CameraZyla", "classCameraZyla.html", null ]
+      ] ]
     ] ],
     [ "QWidget", null, [
       [ "AcquisitionWidget", "classAcquisitionWidget.html", null ],

@@ -120,8 +120,19 @@ $(function(){initNavTree('classCamera.html',''); initResizable(true); });
 Inheritance diagram for Camera:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="classCamera.png" alt=""/>
- </div></div>
+  <img src="classCamera.png" usemap="#Camera_map" alt=""/>
+  <map id="Camera_map" name="Camera_map">
+<area href="classCameraAlliedVision.html" alt="CameraAlliedVision" shape="rect" coords="177,112,344,136"/>
+<area href="classCameraGiGE.html" alt="CameraGiGE" shape="rect" coords="177,168,344,192"/>
+<area href="classCameraIEEE1394.html" alt="CameraIEEE1394" shape="rect" coords="177,224,344,248"/>
+<area href="classCameraNeo.html" alt="CameraNeo" shape="rect" coords="177,280,344,304"/>
+<area href="classCameraRAPTORFALCON.html" alt="CameraRAPTORFALCON" shape="rect" coords="177,336,344,360"/>
+<area href="classCameraRAPTORNINOX640.html" alt="CameraRAPTORNINOX640" shape="rect" coords="177,392,344,416"/>
+<area href="classCameraRaspi.html" alt="CameraRaspi" shape="rect" coords="177,448,344,472"/>
+<area href="classCameraUSB.html" alt="CameraUSB" shape="rect" coords="177,504,344,528"/>
+<area href="classCameraZyla.html" alt="CameraZyla" shape="rect" coords="177,560,344,584"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-slots" name="pub-slots"></a>
 Public Slots</h2></td></tr>
@@ -173,35 +184,29 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>updateProps</b> ()</t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad37397588aede3d02dac11ba4780bb0f" id="r_ad37397588aede3d02dac11ba4780bb0f"><td class="memItemLeft" align="right" valign="top"><a id="ad37397588aede3d02dac11ba4780bb0f" name="ad37397588aede3d02dac11ba4780bb0f"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>stop</b> ()=0</td></tr>
-<tr class="memdesc:ad37397588aede3d02dac11ba4780bb0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop acquisition and release resources. <br /></td></tr>
+<tr class="memitem:ad37397588aede3d02dac11ba4780bb0f" id="r_ad37397588aede3d02dac11ba4780bb0f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad37397588aede3d02dac11ba4780bb0f">stop</a> ()=0</td></tr>
+<tr class="memdesc:ad37397588aede3d02dac11ba4780bb0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop acquisition and release resources.  <br /></td></tr>
 <tr class="separator:ad37397588aede3d02dac11ba4780bb0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1dea7426a4bed21a06b2408beaace24" id="r_ae1dea7426a4bed21a06b2408beaace24"><td class="memItemLeft" align="right" valign="top"><a id="ae1dea7426a4bed21a06b2408beaace24" name="ae1dea7426a4bed21a06b2408beaace24"></a>
-virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>findCamera</b> ()=0</td></tr>
-<tr class="memdesc:ae1dea7426a4bed21a06b2408beaace24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Discover available cameras. <br /></td></tr>
+<tr class="memitem:ae1dea7426a4bed21a06b2408beaace24" id="r_ae1dea7426a4bed21a06b2408beaace24"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1dea7426a4bed21a06b2408beaace24">findCamera</a> ()=0</td></tr>
+<tr class="memdesc:ae1dea7426a4bed21a06b2408beaace24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Discover available cameras.  <br /></td></tr>
 <tr class="separator:ae1dea7426a4bed21a06b2408beaace24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab79a575684b34254b61255ac77cf0809" id="r_ab79a575684b34254b61255ac77cf0809"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab79a575684b34254b61255ac77cf0809">setCamera</a> (void *_camera, int _id)=0</td></tr>
 <tr class="separator:ab79a575684b34254b61255ac77cf0809"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e6304936e8f868ec284b10668fdc13a" id="r_a8e6304936e8f868ec284b10668fdc13a"><td class="memItemLeft" align="right" valign="top"><a id="a8e6304936e8f868ec284b10668fdc13a" name="a8e6304936e8f868ec284b10668fdc13a"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>getFeatures</b> ()=0</td></tr>
-<tr class="memdesc:a8e6304936e8f868ec284b10668fdc13a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query and cache camera features. <br /></td></tr>
+<tr class="memitem:a8e6304936e8f868ec284b10668fdc13a" id="r_a8e6304936e8f868ec284b10668fdc13a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e6304936e8f868ec284b10668fdc13a">getFeatures</a> ()=0</td></tr>
+<tr class="memdesc:a8e6304936e8f868ec284b10668fdc13a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query and cache camera features.  <br /></td></tr>
 <tr class="separator:a8e6304936e8f868ec284b10668fdc13a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afff93d7a9823d54319b88362798d6b44" id="r_afff93d7a9823d54319b88362798d6b44"><td class="memItemLeft" align="right" valign="top"><a id="afff93d7a9823d54319b88362798d6b44" name="afff93d7a9823d54319b88362798d6b44"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>getProps</b> ()=0</td></tr>
 <tr class="memdesc:afff93d7a9823d54319b88362798d6b44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query and cache camera properties. <br /></td></tr>
 <tr class="separator:afff93d7a9823d54319b88362798d6b44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a99d951d86300ddafb19a68a04d6193" id="r_a3a99d951d86300ddafb19a68a04d6193"><td class="memItemLeft" align="right" valign="top"><a id="a3a99d951d86300ddafb19a68a04d6193" name="a3a99d951d86300ddafb19a68a04d6193"></a>
-virtual uchar *&#160;</td><td class="memItemRight" valign="bottom"><b>getSnapshot</b> ()=0</td></tr>
-<tr class="memdesc:a3a99d951d86300ddafb19a68a04d6193"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acquire a single 8-bit snapshot. <br /></td></tr>
+<tr class="memitem:a3a99d951d86300ddafb19a68a04d6193" id="r_a3a99d951d86300ddafb19a68a04d6193"><td class="memItemLeft" align="right" valign="top">virtual uchar *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a99d951d86300ddafb19a68a04d6193">getSnapshot</a> ()=0</td></tr>
+<tr class="memdesc:a3a99d951d86300ddafb19a68a04d6193"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acquire a single 8-bit snapshot.  <br /></td></tr>
 <tr class="separator:a3a99d951d86300ddafb19a68a04d6193"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9108f0c0d71c25a4334f47d218874853" id="r_a9108f0c0d71c25a4334f47d218874853"><td class="memItemLeft" align="right" valign="top"><a id="a9108f0c0d71c25a4334f47d218874853" name="a9108f0c0d71c25a4334f47d218874853"></a>
-virtual ushort *&#160;</td><td class="memItemRight" valign="bottom"><b>getSnapshot16</b> ()=0</td></tr>
-<tr class="memdesc:a9108f0c0d71c25a4334f47d218874853"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acquire a single 16-bit snapshot. <br /></td></tr>
+<tr class="memitem:a9108f0c0d71c25a4334f47d218874853" id="r_a9108f0c0d71c25a4334f47d218874853"><td class="memItemLeft" align="right" valign="top">virtual ushort *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9108f0c0d71c25a4334f47d218874853">getSnapshot16</a> ()=0</td></tr>
+<tr class="memdesc:a9108f0c0d71c25a4334f47d218874853"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acquire a single 16-bit snapshot.  <br /></td></tr>
 <tr class="separator:a9108f0c0d71c25a4334f47d218874853"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4db73fc914d5b317f816f6b8a5a72532" id="r_a4db73fc914d5b317f816f6b8a5a72532"><td class="memItemLeft" align="right" valign="top"><a id="a4db73fc914d5b317f816f6b8a5a72532" name="a4db73fc914d5b317f816f6b8a5a72532"></a>
-virtual int *&#160;</td><td class="memItemRight" valign="bottom"><b>getSnapshot32</b> ()=0</td></tr>
-<tr class="memdesc:a4db73fc914d5b317f816f6b8a5a72532"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acquire a single 32-bit snapshot. <br /></td></tr>
+<tr class="memitem:a4db73fc914d5b317f816f6b8a5a72532" id="r_a4db73fc914d5b317f816f6b8a5a72532"><td class="memItemLeft" align="right" valign="top">virtual int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4db73fc914d5b317f816f6b8a5a72532">getSnapshot32</a> ()=0</td></tr>
+<tr class="memdesc:a4db73fc914d5b317f816f6b8a5a72532"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acquire a single 32-bit snapshot.  <br /></td></tr>
 <tr class="separator:a4db73fc914d5b317f816f6b8a5a72532"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -419,6 +424,35 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae1dea7426a4bed21a06b2408beaace24" name="ae1dea7426a4bed21a06b2408beaace24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1dea7426a4bed21a06b2408beaace24">&#9670;&#160;</a></span>findCamera()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int Camera::findCamera </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Discover available cameras. </p>
+
+<p>Implemented in <a class="el" href="classCameraAlliedVision.html#a3b6ee9eb37179403226c117cea0412fa">CameraAlliedVision</a>, <a class="el" href="classCameraGiGE.html#aee9ec5a805b7aded05b7f29b88e5e5e8">CameraGiGE</a>, <a class="el" href="classCameraIEEE1394.html#a17969a192ece071adbc9da916e7834eb">CameraIEEE1394</a>, <a class="el" href="classCameraNeo.html#a4b06bca5aa524c5c9dae73484ba4fd74">CameraNeo</a>, <a class="el" href="classCameraRAPTORFALCON.html#a8032c20590bb6ad2d51cfa71d4e97e0c">CameraRAPTORFALCON</a>, <a class="el" href="classCameraRAPTORNINOX640.html#a95f5b471d2d7d899511fe9de8de28904">CameraRAPTORNINOX640</a>, <a class="el" href="classCameraRaspi.html#a6a47655c57e05211be09840acb67ff84">CameraRaspi</a>, <a class="el" href="classCameraUSB.html#a9af1d414e5a8004519ce7be011df663a">CameraUSB</a>, and <a class="el" href="classCameraZyla.html#a980b0cf3b5e6735fb8b764bd01a579e6">CameraZyla</a>.</p>
+
+</div>
+</div>
 <a id="ad9f9ecb533373ef19474928e81aabee7" name="ad9f9ecb533373ef19474928e81aabee7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9f9ecb533373ef19474928e81aabee7">&#9670;&#160;</a></span>fliphorizontal <span class="overload">[1/3]</span></h2>
 
@@ -560,6 +594,35 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a8e6304936e8f868ec284b10668fdc13a" name="a8e6304936e8f868ec284b10668fdc13a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e6304936e8f868ec284b10668fdc13a">&#9670;&#160;</a></span>getFeatures()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Camera::getFeatures </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Query and cache camera features. </p>
+
+<p>Implemented in <a class="el" href="classCameraAlliedVision.html#a7c6c9add7c3e3eb27214870209ab2085">CameraAlliedVision</a>, <a class="el" href="classCameraGiGE.html#a3887292ec688187f4ff2579cbae4d6a8">CameraGiGE</a>, <a class="el" href="classCameraIEEE1394.html#aecc3120d5eaf9887e5540382c5648677">CameraIEEE1394</a>, <a class="el" href="classCameraNeo.html#a5da6afad8e93a2ff06fc8edf0e0bb28c">CameraNeo</a>, <a class="el" href="classCameraRAPTORFALCON.html#a44d918caf0aaa1f73876b7b8055f0dd7">CameraRAPTORFALCON</a>, <a class="el" href="classCameraRAPTORNINOX640.html#ac753bafce0f3bdaf8342f2207c13be9a">CameraRAPTORNINOX640</a>, <a class="el" href="classCameraRaspi.html#a1638c7a7a03531ba5a96b81d7ed3005a">CameraRaspi</a>, <a class="el" href="classCameraUSB.html#aa509a51a889307102376acdf237fc926">CameraUSB</a>, and <a class="el" href="classCameraZyla.html#ae85ef9e750e9fc2de59faf45b30fe7d7">CameraZyla</a>.</p>
+
+</div>
+</div>
 <a id="ac0b619d963f24a4dc423f22be8e70708" name="ac0b619d963f24a4dc423f22be8e70708"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac0b619d963f24a4dc423f22be8e70708">&#9670;&#160;</a></span>getImage</h2>
 
@@ -590,6 +653,93 @@ Protected Attributes</h2></td></tr>
 </dl>
 
 <p class="reference">References <a class="el" href="Camera_8h_source.html#l00633">image</a>.</p>
+
+</div>
+</div>
+<a id="a3a99d951d86300ddafb19a68a04d6193" name="a3a99d951d86300ddafb19a68a04d6193"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a99d951d86300ddafb19a68a04d6193">&#9670;&#160;</a></span>getSnapshot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual uchar * Camera::getSnapshot </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Acquire a single 8-bit snapshot. </p>
+
+<p>Implemented in <a class="el" href="classCameraAlliedVision.html#a5f0bac8da860893724a58a33adc406d4">CameraAlliedVision</a>, <a class="el" href="classCameraGiGE.html#ae34901ae349f2dacfd5365ab97d04b11">CameraGiGE</a>, <a class="el" href="classCameraIEEE1394.html#aed2d97a10ceab5f2afddc8e1b4a2f698">CameraIEEE1394</a>, <a class="el" href="classCameraNeo.html#aa7efd1e62a0fe7aa242911508b1c1feb">CameraNeo</a>, <a class="el" href="classCameraRAPTORFALCON.html#a7f85ce5e2cce89d6b015d64a9715dd47">CameraRAPTORFALCON</a>, <a class="el" href="classCameraRAPTORNINOX640.html#a1dea33c5d376a47e8deadd81fc98809f">CameraRAPTORNINOX640</a>, <a class="el" href="classCameraRaspi.html#a0466eac4b498916ed3e002a8bfe8bac9">CameraRaspi</a>, <a class="el" href="classCameraUSB.html#a74cdf5453005695cb084c0ee24d93b12">CameraUSB</a>, and <a class="el" href="classCameraZyla.html#acfaf6413b7c889874241e6948dfdab7a">CameraZyla</a>.</p>
+
+</div>
+</div>
+<a id="a9108f0c0d71c25a4334f47d218874853" name="a9108f0c0d71c25a4334f47d218874853"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9108f0c0d71c25a4334f47d218874853">&#9670;&#160;</a></span>getSnapshot16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ushort * Camera::getSnapshot16 </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Acquire a single 16-bit snapshot. </p>
+
+<p>Implemented in <a class="el" href="classCameraAlliedVision.html#a2f93388e35f026e82641cf8fe95e7e2a">CameraAlliedVision</a>, <a class="el" href="classCameraGiGE.html#afd00cf6a81ed6e7083687cea7435c1e9">CameraGiGE</a>, <a class="el" href="classCameraIEEE1394.html#ac08b5b6ee71ea8d73c8a73bf269f2094">CameraIEEE1394</a>, <a class="el" href="classCameraNeo.html#ab84c4367c826feb3feeeea011e78c8b8">CameraNeo</a>, <a class="el" href="classCameraRAPTORFALCON.html#a3b4637658ee54ee81d0b1ad64ade7b13">CameraRAPTORFALCON</a>, <a class="el" href="classCameraRAPTORNINOX640.html#a8d7df3f336316f0cccf12c80fb820135">CameraRAPTORNINOX640</a>, <a class="el" href="classCameraRaspi.html#aef1388f2a55c3d829d9d74302c9d0a5c">CameraRaspi</a>, <a class="el" href="classCameraUSB.html#aa0bc4e874d56a0d0efee36f14a3115c8">CameraUSB</a>, and <a class="el" href="classCameraZyla.html#a6e3a4e3e4050d7b10f0da4607ff39c4b">CameraZyla</a>.</p>
+
+</div>
+</div>
+<a id="a4db73fc914d5b317f816f6b8a5a72532" name="a4db73fc914d5b317f816f6b8a5a72532"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4db73fc914d5b317f816f6b8a5a72532">&#9670;&#160;</a></span>getSnapshot32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int * Camera::getSnapshot32 </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Acquire a single 32-bit snapshot. </p>
+
+<p>Implemented in <a class="el" href="classCameraAlliedVision.html#afa61021061f7a31802ebb1633e1c4e10">CameraAlliedVision</a>, <a class="el" href="classCameraGiGE.html#a014826b641431d134580a0efe77d2f3b">CameraGiGE</a>, <a class="el" href="classCameraIEEE1394.html#af670d97a0882f8d046cdb1361e04b5e2">CameraIEEE1394</a>, <a class="el" href="classCameraNeo.html#a021c117f56df366dbc0ae8d72945305a">CameraNeo</a>, <a class="el" href="classCameraRAPTORFALCON.html#a20d1f19cd776114f5fded0d7c4b90fed">CameraRAPTORFALCON</a>, <a class="el" href="classCameraRAPTORNINOX640.html#a88d7304e77516e1c85d0844bd1817363">CameraRAPTORNINOX640</a>, <a class="el" href="classCameraRaspi.html#a77f16f2dc80e4670c01fbe0b54974905">CameraRaspi</a>, <a class="el" href="classCameraUSB.html#af1ed256ba3450cba4e98760daffdf424">CameraUSB</a>, and <a class="el" href="classCameraZyla.html#a0b46043650b0f0dec736ae02b06292f3">CameraZyla</a>.</p>
 
 </div>
 </div>
@@ -785,6 +935,8 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
+<p>Implemented in <a class="el" href="classCameraAlliedVision.html#aa5f065dd7e2a011e7fbef6d4daa414dc">CameraAlliedVision</a>, <a class="el" href="classCameraGiGE.html#abbd26064a1cc38bb923d2936a339ef4d">CameraGiGE</a>, <a class="el" href="classCameraIEEE1394.html#af0015f318d94edf8e83a345ae71da9ac">CameraIEEE1394</a>, <a class="el" href="classCameraNeo.html#a962823299a4282c8ac5ed530d53a15cf">CameraNeo</a>, <a class="el" href="classCameraRAPTORFALCON.html#a31a8af76f79f16227922406e63829296">CameraRAPTORFALCON</a>, <a class="el" href="classCameraRAPTORNINOX640.html#a202cfb7092df959ef1c195b7abd06946">CameraRAPTORNINOX640</a>, <a class="el" href="classCameraRaspi.html#aa27fa3da3d651743b074e2668af56f5d">CameraRaspi</a>, <a class="el" href="classCameraUSB.html#a7ae1d02ed6acbb6b0ae367dad0dc868e">CameraUSB</a>, and <a class="el" href="classCameraZyla.html#ac6519fc7d20fa335120d70fd59f7d404">CameraZyla</a>.</p>
+
 </div>
 </div>
 <a id="aa74bd865b45786269b6c030bde1e2ca5" name="aa74bd865b45786269b6c030bde1e2ca5"></a>
@@ -961,6 +1113,37 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ad37397588aede3d02dac11ba4780bb0f" name="ad37397588aede3d02dac11ba4780bb0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad37397588aede3d02dac11ba4780bb0f">&#9670;&#160;</a></span>stop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Camera::stop </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stop acquisition and release resources. </p>
+
+<p>Implemented in <a class="el" href="classCameraAlliedVision.html#abe66c30ae978ea0d2feb7037789523ce">CameraAlliedVision</a>, <a class="el" href="classCameraGiGE.html#a481e05f97483487476702db2b822e209">CameraGiGE</a>, <a class="el" href="classCameraIEEE1394.html#a430aa5143b4ef9810202e73184f8740d">CameraIEEE1394</a>, <a class="el" href="classCameraNeo.html#acbbd71ef31da3da1faef0bef06943526">CameraNeo</a>, <a class="el" href="classCameraRAPTORFALCON.html#ab554f75f4353815f98432d34ce63a39b">CameraRAPTORFALCON</a>, <a class="el" href="classCameraRAPTORNINOX640.html#a7cf8c9eb311cded11e1298f834725d21">CameraRAPTORNINOX640</a>, <a class="el" href="classCameraRaspi.html#ade76e42732cc22daf7a1120e90a6691a">CameraRaspi</a>, <a class="el" href="classCameraUSB.html#afabcd0b43346c0e2de29c01d539eba1f">CameraUSB</a>, and <a class="el" href="classCameraZyla.html#a50507b96204abeec583783af9bd9d6ec">CameraZyla</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="AcquisitionThread_8cpp_source.html#l00123">AcquisitionThread::run()</a>.</p>
+
+</div>
+</div>
 <a id="a865975bb5c3c981e285a71183f0879e2" name="a865975bb5c3c981e285a71183f0879e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a865975bb5c3c981e285a71183f0879e2">&#9670;&#160;</a></span>updateAvg</h2>
 
@@ -1112,6 +1295,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00354">354</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00126">CameraAlliedVision::~CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00119">CameraGiGE::~CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00126">CameraIEEE1394::~CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00149">CameraNeo::~CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00086">CameraRAPTORFALCON::~CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00086">CameraRAPTORNINOX640::~CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00122">CameraRaspi::~CameraRaspi()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00164">CameraZyla::~CameraZyla()</a>.</p>
+
 </div>
 </div>
 <a id="a4e64c09c8af69c5b5e667cee4eb33ff6" name="a4e64c09c8af69c5b5e667cee4eb33ff6"></a>
@@ -1129,6 +1314,8 @@ Protected Attributes</h2></td></tr>
 <p>Wait condition for acquisition start. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00352">352</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00126">CameraAlliedVision::~CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00119">CameraGiGE::~CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00126">CameraIEEE1394::~CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00149">CameraNeo::~CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00086">CameraRAPTORFALCON::~CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00086">CameraRAPTORNINOX640::~CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00122">CameraRaspi::~CameraRaspi()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00164">CameraZyla::~CameraZyla()</a>.</p>
 
 </div>
 </div>
@@ -1148,7 +1335,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00350">350</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Camera_8h_source.html#l00592">setColorTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="Camera_8h_source.html#l00592">setColorTable()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00322">CameraRAPTORFALCON::setFeature()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00126">CameraAlliedVision::~CameraAlliedVision()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00126">CameraIEEE1394::~CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00149">CameraNeo::~CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00086">CameraRAPTORFALCON::~CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00086">CameraRAPTORNINOX640::~CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00122">CameraRaspi::~CameraRaspi()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00164">CameraZyla::~CameraZyla()</a>.</p>
 
 </div>
 </div>
@@ -1168,7 +1355,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00394">394</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#a865975bb5c3c981e285a71183f0879e2">updateAvg()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="CameraNeo_8cpp_source.html#l00509">CameraNeo::getSnapshot()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00234">CameraRAPTORNINOX640::getSnapshot()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00541">CameraZyla::getSnapshot()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00245">CameraRAPTORNINOX640::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00520">CameraZyla::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00532">CameraNeo::getSnapshot32()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00257">CameraRAPTORNINOX640::getSnapshot32()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00564">CameraZyla::getSnapshot32()</a>, and <a class="el" href="#a865975bb5c3c981e285a71183f0879e2">updateAvg()</a>.</p>
 
 </div>
 </div>
@@ -1188,7 +1375,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00370">370</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Camera_8h_source.html#l00574">fliphorizontal()</a>, <a class="el" href="Camera_8h_source.html#l00532">fliphorizontal()</a>, <a class="el" href="Camera_8h_source.html#l00553">fliphorizontal()</a>, <a class="el" href="Camera_8h_source.html#l00515">reversebytes()</a>, <a class="el" href="Camera_8h_source.html#l00483">reversebytes()</a>, <a class="el" href="Camera_8h_source.html#l00499">reversebytes()</a>, and <a class="el" href="Camera_8h_source.html#l00592">setColorTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="Camera_8h_source.html#l00574">fliphorizontal()</a>, <a class="el" href="Camera_8h_source.html#l00532">fliphorizontal()</a>, <a class="el" href="Camera_8h_source.html#l00553">fliphorizontal()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00330">CameraAlliedVision::getSnapshot()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00264">CameraGiGE::getSnapshot()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00325">CameraIEEE1394::getSnapshot()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00509">CameraNeo::getSnapshot()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00242">CameraRAPTORFALCON::getSnapshot()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00234">CameraRAPTORNINOX640::getSnapshot()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00451">CameraRaspi::getSnapshot()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00541">CameraZyla::getSnapshot()</a>, <a class="el" href="Camera_8h_source.html#l00515">reversebytes()</a>, <a class="el" href="Camera_8h_source.html#l00483">reversebytes()</a>, <a class="el" href="Camera_8h_source.html#l00499">reversebytes()</a>, <a class="el" href="Camera_8h_source.html#l00592">setColorTable()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00342">CameraGiGE::setFeature()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00399">CameraIEEE1394::setFeature()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00588">CameraNeo::setFeature()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00322">CameraRAPTORFALCON::setFeature()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00527">CameraRaspi::setFeature()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00620">CameraZyla::setFeature()</a>.</p>
 
 </div>
 </div>
@@ -1208,6 +1395,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00374">374</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00340">CameraAlliedVision::getSnapshot16()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00273">CameraGiGE::getSnapshot16()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00334">CameraIEEE1394::getSnapshot16()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00251">CameraRAPTORFALCON::getSnapshot16()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00245">CameraRAPTORNINOX640::getSnapshot16()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00461">CameraRaspi::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00520">CameraZyla::getSnapshot16()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00322">CameraRAPTORFALCON::setFeature()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00620">CameraZyla::setFeature()</a>.</p>
+
 </div>
 </div>
 <a id="adb678e500e52d67d34e54a953b994fbb" name="adb678e500e52d67d34e54a953b994fbb"></a>
@@ -1225,6 +1414,8 @@ Protected Attributes</h2></td></tr>
 <p>32-bit acquisition buffer. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00378">378</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00351">CameraAlliedVision::getSnapshot32()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00284">CameraGiGE::getSnapshot32()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00345">CameraIEEE1394::getSnapshot32()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00532">CameraNeo::getSnapshot32()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00262">CameraRAPTORFALCON::getSnapshot32()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00257">CameraRAPTORNINOX640::getSnapshot32()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00472">CameraRaspi::getSnapshot32()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00564">CameraZyla::getSnapshot32()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00342">CameraGiGE::setFeature()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00399">CameraIEEE1394::setFeature()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00588">CameraNeo::setFeature()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00322">CameraRAPTORFALCON::setFeature()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00527">CameraRaspi::setFeature()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00620">CameraZyla::setFeature()</a>.</p>
 
 </div>
 </div>
@@ -1262,6 +1453,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00396">396</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00148">CameraAlliedVision::setCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00130">CameraGiGE::setCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>.</p>
+
 </div>
 </div>
 <a id="a6063bbec41b6b47fb080d280f00832bb" name="a6063bbec41b6b47fb080d280f00832bb"></a>
@@ -1279,6 +1472,8 @@ Protected Attributes</h2></td></tr>
 <p>Available camera list for camera manager. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00402">402</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00616">CameraAlliedVision::findCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00648">CameraGiGE::findCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00687">CameraIEEE1394::findCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00970">CameraNeo::findCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00538">CameraRAPTORFALCON::findCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00433">CameraRAPTORNINOX640::findCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00831">CameraRaspi::findCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l01030">CameraZyla::findCamera()</a>.</p>
 
 </div>
 </div>
@@ -1324,6 +1519,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00430">430</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00148">CameraAlliedVision::setCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00130">CameraGiGE::setCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>.</p>
+
 </div>
 </div>
 <a id="a5ec4351355ec887d929e879dc4201505" name="a5ec4351355ec887d929e879dc4201505"></a>
@@ -1341,6 +1538,8 @@ Protected Attributes</h2></td></tr>
 <p>Available feature abs value list. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00428">428</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00563">CameraAlliedVision::getFeatures()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00519">CameraGiGE::getFeatures()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00575">CameraIEEE1394::getFeatures()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00838">CameraNeo::getFeatures()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00351">CameraRAPTORNINOX640::getFeatures()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00750">CameraRaspi::getFeatures()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00898">CameraZyla::getFeatures()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00148">CameraAlliedVision::setCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00130">CameraGiGE::setCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>.</p>
 
 </div>
 </div>
@@ -1378,6 +1577,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00416">416</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00148">CameraAlliedVision::setCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00130">CameraGiGE::setCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>.</p>
+
 </div>
 </div>
 <a id="a708e9972336d6a6587f3a70a39fe7862" name="a708e9972336d6a6587f3a70a39fe7862"></a>
@@ -1395,6 +1596,8 @@ Protected Attributes</h2></td></tr>
 <p>Available feature max list. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00422">422</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraGiGE_8cpp_source.html#l00519">CameraGiGE::getFeatures()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00838">CameraNeo::getFeatures()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00898">CameraZyla::getFeatures()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00148">CameraAlliedVision::setCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00130">CameraGiGE::setCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>.</p>
 
 </div>
 </div>
@@ -1414,6 +1617,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00420">420</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraGiGE_8cpp_source.html#l00519">CameraGiGE::getFeatures()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00838">CameraNeo::getFeatures()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00898">CameraZyla::getFeatures()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00148">CameraAlliedVision::setCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00130">CameraGiGE::setCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>.</p>
+
 </div>
 </div>
 <a id="a56921e3621efce3412c57898e3f288d4" name="a56921e3621efce3412c57898e3f288d4"></a>
@@ -1431,6 +1636,8 @@ Protected Attributes</h2></td></tr>
 <p>Available feature mode list. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00424">424</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraIEEE1394_8cpp_source.html#l00575">CameraIEEE1394::getFeatures()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00148">CameraAlliedVision::setCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00130">CameraGiGE::setCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>.</p>
 
 </div>
 </div>
@@ -1450,6 +1657,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00414">414</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraGiGE_8cpp_source.html#l00519">CameraGiGE::getFeatures()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00575">CameraIEEE1394::getFeatures()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00838">CameraNeo::getFeatures()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00898">CameraZyla::getFeatures()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00148">CameraAlliedVision::setCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00130">CameraGiGE::setCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>, and <a class="el" href="CameraGiGE_8cpp_source.html#l00342">CameraGiGE::setFeature()</a>.</p>
+
 </div>
 </div>
 <a id="a57271306f031565b6e40f06786f9a015" name="a57271306f031565b6e40f06786f9a015"></a>
@@ -1467,6 +1676,8 @@ Protected Attributes</h2></td></tr>
 <p>Available feature value list. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00418">418</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00563">CameraAlliedVision::getFeatures()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00519">CameraGiGE::getFeatures()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00575">CameraIEEE1394::getFeatures()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00838">CameraNeo::getFeatures()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00433">CameraRAPTORFALCON::getFeatures()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00750">CameraRaspi::getFeatures()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00898">CameraZyla::getFeatures()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00148">CameraAlliedVision::setCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00130">CameraGiGE::setCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>.</p>
 
 </div>
 </div>
@@ -1493,6 +1704,8 @@ Protected Attributes</h2></td></tr>
 <p>Acquisition frequency. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00625">625</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraGiGE_8cpp_source.html#l00590">CameraGiGE::getProps()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00644">CameraIEEE1394::getProps()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00476">CameraRAPTORFALCON::getProps()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00371">CameraRAPTORNINOX640::getProps()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, and <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>.</p>
 
 </div>
 </div>
@@ -1540,6 +1753,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00356">356</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00361">CameraAlliedVision::stop()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00294">CameraGiGE::stop()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00354">CameraIEEE1394::stop()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00543">CameraNeo::stop()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00271">CameraRAPTORFALCON::stop()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00268">CameraRAPTORNINOX640::stop()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00482">CameraRaspi::stop()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00575">CameraZyla::stop()</a>.</p>
+
 </div>
 </div>
 <a id="ae9ed166dbbc8876027ecbec9af8761c4" name="ae9ed166dbbc8876027ecbec9af8761c4"></a>
@@ -1558,7 +1773,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00364">364</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Camera_8h_source.html#l00592">setColorTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="CameraIEEE1394_8cpp_source.html#l00575">CameraIEEE1394::getFeatures()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00750">CameraRaspi::getFeatures()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00644">CameraIEEE1394::getProps()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00645">CameraRaspi::getProps()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00330">CameraAlliedVision::getSnapshot()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00264">CameraGiGE::getSnapshot()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00325">CameraIEEE1394::getSnapshot()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00509">CameraNeo::getSnapshot()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00242">CameraRAPTORFALCON::getSnapshot()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00234">CameraRAPTORNINOX640::getSnapshot()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00451">CameraRaspi::getSnapshot()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00541">CameraZyla::getSnapshot()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00340">CameraAlliedVision::getSnapshot16()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00273">CameraGiGE::getSnapshot16()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00334">CameraIEEE1394::getSnapshot16()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00251">CameraRAPTORFALCON::getSnapshot16()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00245">CameraRAPTORNINOX640::getSnapshot16()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00461">CameraRaspi::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00520">CameraZyla::getSnapshot16()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00351">CameraAlliedVision::getSnapshot32()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00284">CameraGiGE::getSnapshot32()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00345">CameraIEEE1394::getSnapshot32()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00532">CameraNeo::getSnapshot32()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00262">CameraRAPTORFALCON::getSnapshot32()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00257">CameraRAPTORNINOX640::getSnapshot32()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00472">CameraRaspi::getSnapshot32()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00564">CameraZyla::getSnapshot32()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, <a class="el" href="Camera_8h_source.html#l00592">setColorTable()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00342">CameraGiGE::setFeature()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00399">CameraIEEE1394::setFeature()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00588">CameraNeo::setFeature()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00322">CameraRAPTORFALCON::setFeature()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00527">CameraRaspi::setFeature()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00620">CameraZyla::setFeature()</a>, <a class="el" href="classCameraRAPTORFALCON.html#aba6b3b18f3635d698fd7a8c1933f3bdf">CameraRAPTORFALCON::updateMax()</a>, and <a class="el" href="classCameraRAPTORNINOX640.html#ac9716c2508ff9b15e9558ec6cc2297a8">CameraRAPTORNINOX640::updateMax()</a>.</p>
 
 </div>
 </div>
@@ -1586,7 +1801,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00621">621</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Camera_8h_source.html#l00476">hflipImage()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, and <a class="el" href="Camera_8h_source.html#l00476">hflipImage()</a>.</p>
 
 </div>
 </div>
@@ -1634,6 +1849,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00400">400</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraNeo_8cpp_source.html#l00970">CameraNeo::findCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00831">CameraRaspi::findCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l01030">CameraZyla::findCamera()</a>.</p>
+
 </div>
 </div>
 <a id="a9431ced47ded96644b4ce9a9f6a0fb08" name="a9431ced47ded96644b4ce9a9f6a0fb08"></a>
@@ -1660,7 +1877,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00633">633</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#ac0b619d963f24a4dc423f22be8e70708">getImage()</a>, and <a class="el" href="Camera_8h_source.html#l00592">setColorTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="#ac0b619d963f24a4dc423f22be8e70708">getImage()</a>, <a class="el" href="classCameraAlliedVision.html#ae4bc4454938e11b4bb33fc7bb3f7554c">CameraAlliedVision::getImage()</a>, <a class="el" href="classCameraGiGE.html#adf48a9fe658883b3a45ead9d3ea682c5">CameraGiGE::getImage()</a>, <a class="el" href="classCameraIEEE1394.html#a74e52c43a8d25a2fb8dd7d7dcb9feea1">CameraIEEE1394::getImage()</a>, <a class="el" href="classCameraNeo.html#abfc3f07befffd1946383e62a04bf9c2c">CameraNeo::getImage()</a>, <a class="el" href="classCameraRAPTORFALCON.html#a4b51043656ad13ad10aa3e1c2b24a221">CameraRAPTORFALCON::getImage()</a>, <a class="el" href="classCameraRAPTORNINOX640.html#ab91111a8e9763584c7a6537d53796b9b">CameraRAPTORNINOX640::getImage()</a>, <a class="el" href="classCameraRaspi.html#a91bf4f04d4df61db673e78a90315e00e">CameraRaspi::getImage()</a>, <a class="el" href="classCameraUSB.html#a3ee45d3fcae7e231372da897af06359d">CameraUSB::getImage()</a>, <a class="el" href="classCameraZyla.html#a73154458deab3eae0e3da88cb486deae">CameraZyla::getImage()</a>, <a class="el" href="Camera_8h_source.html#l00592">setColorTable()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00342">CameraGiGE::setFeature()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00399">CameraIEEE1394::setFeature()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00588">CameraNeo::setFeature()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00322">CameraRAPTORFALCON::setFeature()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00527">CameraRaspi::setFeature()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00620">CameraZyla::setFeature()</a>.</p>
 
 </div>
 </div>
@@ -1680,7 +1897,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00392">392</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#a46feced7d3fdf6c1aa68d2f7490fce61">updateMax()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00330">CameraAlliedVision::getSnapshot()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00264">CameraGiGE::getSnapshot()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00325">CameraIEEE1394::getSnapshot()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00509">CameraNeo::getSnapshot()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00242">CameraRAPTORFALCON::getSnapshot()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00234">CameraRAPTORNINOX640::getSnapshot()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00451">CameraRaspi::getSnapshot()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00541">CameraZyla::getSnapshot()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00340">CameraAlliedVision::getSnapshot16()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00273">CameraGiGE::getSnapshot16()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00334">CameraIEEE1394::getSnapshot16()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00251">CameraRAPTORFALCON::getSnapshot16()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00245">CameraRAPTORNINOX640::getSnapshot16()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00461">CameraRaspi::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00520">CameraZyla::getSnapshot16()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00351">CameraAlliedVision::getSnapshot32()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00284">CameraGiGE::getSnapshot32()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00345">CameraIEEE1394::getSnapshot32()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00532">CameraNeo::getSnapshot32()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00262">CameraRAPTORFALCON::getSnapshot32()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00257">CameraRAPTORNINOX640::getSnapshot32()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00472">CameraRaspi::getSnapshot32()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00564">CameraZyla::getSnapshot32()</a>, <a class="el" href="#a46feced7d3fdf6c1aa68d2f7490fce61">updateMax()</a>, <a class="el" href="classCameraAlliedVision.html#ae2d78320056321541ac27d9877c25c1f">CameraAlliedVision::updateMax()</a>, <a class="el" href="classCameraGiGE.html#acb276745c902d3addd1d01bc61a96776">CameraGiGE::updateMax()</a>, <a class="el" href="classCameraIEEE1394.html#a4d16be1e7d74be284a663aa0f83a727a">CameraIEEE1394::updateMax()</a>, <a class="el" href="classCameraNeo.html#ae74184c03ba0a24cca28b04bc827a242">CameraNeo::updateMax()</a>, <a class="el" href="classCameraRAPTORFALCON.html#aba6b3b18f3635d698fd7a8c1933f3bdf">CameraRAPTORFALCON::updateMax()</a>, <a class="el" href="classCameraRAPTORNINOX640.html#ac9716c2508ff9b15e9558ec6cc2297a8">CameraRAPTORNINOX640::updateMax()</a>, <a class="el" href="classCameraRaspi.html#a0d473544b83d085afea74297e5614598">CameraRaspi::updateMax()</a>, <a class="el" href="classCameraUSB.html#a0cd5d99028dc575fc017389cb0e316d9">CameraUSB::updateMax()</a>, and <a class="el" href="classCameraZyla.html#a3151fa2de0a937ce2fdfb773dcf23d21">CameraZyla::updateMax()</a>.</p>
 
 </div>
 </div>
@@ -1700,7 +1917,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00390">390</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#a642f23e46f19df88b2467895be43780d">updateMin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00330">CameraAlliedVision::getSnapshot()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00264">CameraGiGE::getSnapshot()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00325">CameraIEEE1394::getSnapshot()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00509">CameraNeo::getSnapshot()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00242">CameraRAPTORFALCON::getSnapshot()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00234">CameraRAPTORNINOX640::getSnapshot()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00451">CameraRaspi::getSnapshot()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00541">CameraZyla::getSnapshot()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00340">CameraAlliedVision::getSnapshot16()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00273">CameraGiGE::getSnapshot16()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00334">CameraIEEE1394::getSnapshot16()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00251">CameraRAPTORFALCON::getSnapshot16()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00245">CameraRAPTORNINOX640::getSnapshot16()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00461">CameraRaspi::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00520">CameraZyla::getSnapshot16()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00351">CameraAlliedVision::getSnapshot32()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00284">CameraGiGE::getSnapshot32()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00345">CameraIEEE1394::getSnapshot32()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00532">CameraNeo::getSnapshot32()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00262">CameraRAPTORFALCON::getSnapshot32()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00257">CameraRAPTORNINOX640::getSnapshot32()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00472">CameraRaspi::getSnapshot32()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00564">CameraZyla::getSnapshot32()</a>, <a class="el" href="#a642f23e46f19df88b2467895be43780d">updateMin()</a>, <a class="el" href="classCameraAlliedVision.html#a7da473f48a1d55093eac948e68e43a67">CameraAlliedVision::updateMin()</a>, <a class="el" href="classCameraGiGE.html#a055492b2b751e3ef129112d83da04758">CameraGiGE::updateMin()</a>, <a class="el" href="classCameraIEEE1394.html#a8e4533db5bdf8d019da0aec9055a8808">CameraIEEE1394::updateMin()</a>, <a class="el" href="classCameraNeo.html#a3d7af6c86c418c756644ceaf3ea04cbc">CameraNeo::updateMin()</a>, <a class="el" href="classCameraRAPTORFALCON.html#a3fb1a77140ddb5de44a631ddfbf1fdff">CameraRAPTORFALCON::updateMin()</a>, <a class="el" href="classCameraRAPTORNINOX640.html#aee47a01ef93a8b79d104fd843f8fae92">CameraRAPTORNINOX640::updateMin()</a>, <a class="el" href="classCameraRaspi.html#a9fcffa8c8bba2eee3d053ba45c5dda8c">CameraRaspi::updateMin()</a>, <a class="el" href="classCameraUSB.html#a313364c4c7499afde23aaa5573882bf9">CameraUSB::updateMin()</a>, and <a class="el" href="classCameraZyla.html#a5e15d17d4fb2497262dfd94592a95c45">CameraZyla::updateMin()</a>.</p>
 
 </div>
 </div>
@@ -1720,6 +1937,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00412">412</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>.</p>
+
 </div>
 </div>
 <a id="ac7debddf30d07a115056facc32cd7cd0" name="ac7debddf30d07a115056facc32cd7cd0"></a>
@@ -1738,7 +1957,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00410">410</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="AcquisitionWidget_8cpp_source.html#l00173">AcquisitionWidget::setDelegates()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00148">CameraAlliedVision::setCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00130">CameraGiGE::setCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>, and <a class="el" href="AcquisitionWidget_8cpp_source.html#l00175">AcquisitionWidget::setDelegates()</a>.</p>
 
 </div>
 </div>
@@ -1758,6 +1977,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00406">406</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00616">CameraAlliedVision::findCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00648">CameraGiGE::findCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00687">CameraIEEE1394::findCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00970">CameraNeo::findCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00538">CameraRAPTORFALCON::findCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00433">CameraRAPTORNINOX640::findCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00831">CameraRaspi::findCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l01030">CameraZyla::findCamera()</a>.</p>
+
 </div>
 </div>
 <a id="a1133b0dd29ddb1d9d716e8e47129e217" name="a1133b0dd29ddb1d9d716e8e47129e217"></a>
@@ -1775,6 +1996,8 @@ Protected Attributes</h2></td></tr>
 <p>General mutex for camera operations. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00346">346</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00126">CameraAlliedVision::~CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00119">CameraGiGE::~CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00126">CameraIEEE1394::~CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00149">CameraNeo::~CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00086">CameraRAPTORFALCON::~CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00086">CameraRAPTORNINOX640::~CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00122">CameraRaspi::~CameraRaspi()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00164">CameraZyla::~CameraZyla()</a>.</p>
 
 </div>
 </div>
@@ -1794,6 +2017,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00398">398</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00616">CameraAlliedVision::findCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00648">CameraGiGE::findCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00687">CameraIEEE1394::findCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00970">CameraNeo::findCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00538">CameraRAPTORFALCON::findCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00433">CameraRAPTORNINOX640::findCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00831">CameraRaspi::findCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l01030">CameraZyla::findCamera()</a>.</p>
+
 </div>
 </div>
 <a id="a75b59127a1bcdf7dc53cb30108d153a0" name="a75b59127a1bcdf7dc53cb30108d153a0"></a>
@@ -1811,6 +2036,8 @@ Protected Attributes</h2></td></tr>
 <p>True if acquisition optimization is enabled. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00360">360</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>.</p>
 
 </div>
 </div>
@@ -1830,6 +2057,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00368">368</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraIEEE1394_8cpp_source.html#l00575">CameraIEEE1394::getFeatures()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00838">CameraNeo::getFeatures()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00898">CameraZyla::getFeatures()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00644">CameraIEEE1394::getProps()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00130">CameraGiGE::setCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00342">CameraGiGE::setFeature()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00399">CameraIEEE1394::setFeature()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00588">CameraNeo::setFeature()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00527">CameraRaspi::setFeature()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00620">CameraZyla::setFeature()</a>.</p>
+
 </div>
 </div>
 <a id="a21308d2be4c1a5433c7ee3b8630a3bbc" name="a21308d2be4c1a5433c7ee3b8630a3bbc"></a>
@@ -1847,6 +2076,8 @@ Protected Attributes</h2></td></tr>
 <p>Available properties list. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00433">433</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00516">CameraAlliedVision::getProps()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00590">CameraGiGE::getProps()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00644">CameraIEEE1394::getProps()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00743">CameraNeo::getProps()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00476">CameraRAPTORFALCON::getProps()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00371">CameraRAPTORNINOX640::getProps()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00645">CameraRaspi::getProps()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00780">CameraZyla::getProps()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00148">CameraAlliedVision::setCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00130">CameraGiGE::setCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>.</p>
 
 </div>
 </div>
@@ -1866,6 +2097,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00372">372</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00330">CameraAlliedVision::getSnapshot()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00264">CameraGiGE::getSnapshot()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00325">CameraIEEE1394::getSnapshot()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00509">CameraNeo::getSnapshot()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00242">CameraRAPTORFALCON::getSnapshot()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00234">CameraRAPTORNINOX640::getSnapshot()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00451">CameraRaspi::getSnapshot()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00541">CameraZyla::getSnapshot()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00342">CameraGiGE::setFeature()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00399">CameraIEEE1394::setFeature()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00588">CameraNeo::setFeature()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00322">CameraRAPTORFALCON::setFeature()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00527">CameraRaspi::setFeature()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00620">CameraZyla::setFeature()</a>.</p>
+
 </div>
 </div>
 <a id="a4e4a46b74c5f7a1e7b6d2f1e0b9339d8" name="a4e4a46b74c5f7a1e7b6d2f1e0b9339d8"></a>
@@ -1883,6 +2116,8 @@ Protected Attributes</h2></td></tr>
 <p>16-bit snapshot buffer. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00376">376</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00340">CameraAlliedVision::getSnapshot16()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00273">CameraGiGE::getSnapshot16()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00334">CameraIEEE1394::getSnapshot16()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00251">CameraRAPTORFALCON::getSnapshot16()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00245">CameraRAPTORNINOX640::getSnapshot16()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00461">CameraRaspi::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00520">CameraZyla::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00588">CameraNeo::setFeature()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00322">CameraRAPTORFALCON::setFeature()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00620">CameraZyla::setFeature()</a>.</p>
 
 </div>
 </div>
@@ -1902,6 +2137,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00380">380</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00351">CameraAlliedVision::getSnapshot32()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00284">CameraGiGE::getSnapshot32()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00345">CameraIEEE1394::getSnapshot32()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00532">CameraNeo::getSnapshot32()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00262">CameraRAPTORFALCON::getSnapshot32()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00257">CameraRAPTORNINOX640::getSnapshot32()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00472">CameraRaspi::getSnapshot32()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00564">CameraZyla::getSnapshot32()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00342">CameraGiGE::setFeature()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00399">CameraIEEE1394::setFeature()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00588">CameraNeo::setFeature()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00322">CameraRAPTORFALCON::setFeature()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00527">CameraRaspi::setFeature()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00620">CameraZyla::setFeature()</a>.</p>
+
 </div>
 </div>
 <a id="a4436c20cbd93809d4e50523b891b48bf" name="a4436c20cbd93809d4e50523b891b48bf"></a>
@@ -1919,6 +2156,8 @@ Protected Attributes</h2></td></tr>
 <p>Snapshot average. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00388">388</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraNeo_8cpp_source.html#l00509">CameraNeo::getSnapshot()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00234">CameraRAPTORNINOX640::getSnapshot()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00541">CameraZyla::getSnapshot()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00245">CameraRAPTORNINOX640::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00520">CameraZyla::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00532">CameraNeo::getSnapshot32()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00257">CameraRAPTORNINOX640::getSnapshot32()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00564">CameraZyla::getSnapshot32()</a>.</p>
 
 </div>
 </div>
@@ -1938,6 +2177,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00386">386</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00330">CameraAlliedVision::getSnapshot()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00264">CameraGiGE::getSnapshot()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00325">CameraIEEE1394::getSnapshot()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00509">CameraNeo::getSnapshot()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00242">CameraRAPTORFALCON::getSnapshot()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00234">CameraRAPTORNINOX640::getSnapshot()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00451">CameraRaspi::getSnapshot()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00541">CameraZyla::getSnapshot()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00340">CameraAlliedVision::getSnapshot16()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00273">CameraGiGE::getSnapshot16()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00334">CameraIEEE1394::getSnapshot16()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00251">CameraRAPTORFALCON::getSnapshot16()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00245">CameraRAPTORNINOX640::getSnapshot16()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00461">CameraRaspi::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00520">CameraZyla::getSnapshot16()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00351">CameraAlliedVision::getSnapshot32()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00284">CameraGiGE::getSnapshot32()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00345">CameraIEEE1394::getSnapshot32()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00532">CameraNeo::getSnapshot32()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00262">CameraRAPTORFALCON::getSnapshot32()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00257">CameraRAPTORNINOX640::getSnapshot32()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00472">CameraRaspi::getSnapshot32()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00564">CameraZyla::getSnapshot32()</a>.</p>
+
 </div>
 </div>
 <a id="ac91d6b8947853370603e26ebcf7cb53c" name="ac91d6b8947853370603e26ebcf7cb53c"></a>
@@ -1955,6 +2196,8 @@ Protected Attributes</h2></td></tr>
 <p>Snapshot minimum. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00384">384</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00330">CameraAlliedVision::getSnapshot()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00264">CameraGiGE::getSnapshot()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00325">CameraIEEE1394::getSnapshot()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00509">CameraNeo::getSnapshot()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00242">CameraRAPTORFALCON::getSnapshot()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00234">CameraRAPTORNINOX640::getSnapshot()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00451">CameraRaspi::getSnapshot()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00541">CameraZyla::getSnapshot()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00340">CameraAlliedVision::getSnapshot16()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00273">CameraGiGE::getSnapshot16()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00334">CameraIEEE1394::getSnapshot16()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00251">CameraRAPTORFALCON::getSnapshot16()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00245">CameraRAPTORNINOX640::getSnapshot16()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00461">CameraRaspi::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00520">CameraZyla::getSnapshot16()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00351">CameraAlliedVision::getSnapshot32()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00284">CameraGiGE::getSnapshot32()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00345">CameraIEEE1394::getSnapshot32()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00532">CameraNeo::getSnapshot32()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00262">CameraRAPTORFALCON::getSnapshot32()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00257">CameraRAPTORNINOX640::getSnapshot32()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00472">CameraRaspi::getSnapshot32()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00564">CameraZyla::getSnapshot32()</a>.</p>
 
 </div>
 </div>
@@ -1974,6 +2217,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00348">348</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00330">CameraAlliedVision::getSnapshot()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00264">CameraGiGE::getSnapshot()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00325">CameraIEEE1394::getSnapshot()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00509">CameraNeo::getSnapshot()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00242">CameraRAPTORFALCON::getSnapshot()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00234">CameraRAPTORNINOX640::getSnapshot()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00451">CameraRaspi::getSnapshot()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00541">CameraZyla::getSnapshot()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00340">CameraAlliedVision::getSnapshot16()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00273">CameraGiGE::getSnapshot16()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00334">CameraIEEE1394::getSnapshot16()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00251">CameraRAPTORFALCON::getSnapshot16()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00245">CameraRAPTORNINOX640::getSnapshot16()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00461">CameraRaspi::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00520">CameraZyla::getSnapshot16()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00351">CameraAlliedVision::getSnapshot32()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00284">CameraGiGE::getSnapshot32()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00345">CameraIEEE1394::getSnapshot32()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00532">CameraNeo::getSnapshot32()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00262">CameraRAPTORFALCON::getSnapshot32()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00257">CameraRAPTORNINOX640::getSnapshot32()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00472">CameraRaspi::getSnapshot32()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00564">CameraZyla::getSnapshot32()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00126">CameraAlliedVision::~CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00119">CameraGiGE::~CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00126">CameraIEEE1394::~CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00149">CameraNeo::~CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00086">CameraRAPTORFALCON::~CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00086">CameraRAPTORNINOX640::~CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00122">CameraRaspi::~CameraRaspi()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00164">CameraZyla::~CameraZyla()</a>.</p>
+
 </div>
 </div>
 <a id="aa4f9dfb25e1fd1d5df43a8bd98844994" name="aa4f9dfb25e1fd1d5df43a8bd98844994"></a>
@@ -1991,6 +2236,8 @@ Protected Attributes</h2></td></tr>
 <p>True if acquisition is suspended. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00358">358</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00361">CameraAlliedVision::stop()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00294">CameraGiGE::stop()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00354">CameraIEEE1394::stop()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00543">CameraNeo::stop()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00271">CameraRAPTORFALCON::stop()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00268">CameraRAPTORNINOX640::stop()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00482">CameraRaspi::stop()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00575">CameraZyla::stop()</a>.</p>
 
 </div>
 </div>
@@ -2018,7 +2265,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00631">631</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Camera_8h_source.html#l00592">setColorTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Camera_8h_source.html#l00592">setColorTable()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00342">CameraGiGE::setFeature()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00399">CameraIEEE1394::setFeature()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00588">CameraNeo::setFeature()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00322">CameraRAPTORFALCON::setFeature()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00527">CameraRaspi::setFeature()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00620">CameraZyla::setFeature()</a>.</p>
 
 </div>
 </div>
@@ -2038,6 +2285,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00408">408</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00148">CameraAlliedVision::setCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00130">CameraGiGE::setCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00098">CameraRAPTORFALCON::setCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00098">CameraRAPTORNINOX640::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>.</p>
+
 </div>
 </div>
 <a id="a8ea245772da01fa88a9af64365b40beb" name="a8ea245772da01fa88a9af64365b40beb"></a>
@@ -2055,6 +2304,8 @@ Protected Attributes</h2></td></tr>
 <p>Available vendor list for camera manager. </p>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00404">404</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00616">CameraAlliedVision::findCamera()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00648">CameraGiGE::findCamera()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00687">CameraIEEE1394::findCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00970">CameraNeo::findCamera()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00538">CameraRAPTORFALCON::findCamera()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00433">CameraRAPTORNINOX640::findCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00831">CameraRaspi::findCamera()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l01030">CameraZyla::findCamera()</a>.</p>
 
 </div>
 </div>
@@ -2082,7 +2333,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00619">619</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Camera_8h_source.html#l00471">vflipImage()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="CameraAlliedVision_8cpp_source.html#l00103">CameraAlliedVision::CameraAlliedVision()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00098">CameraGiGE::CameraGiGE()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00105">CameraIEEE1394::CameraIEEE1394()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00125">CameraNeo::CameraNeo()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00062">CameraRAPTORFALCON::CameraRAPTORFALCON()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00058">CameraRAPTORNINOX640::CameraRAPTORNINOX640()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00099">CameraRaspi::CameraRaspi()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00138">CameraZyla::CameraZyla()</a>, and <a class="el" href="Camera_8h_source.html#l00471">vflipImage()</a>.</p>
 
 </div>
 </div>
@@ -2102,6 +2353,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00366">366</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="CameraNeo_8cpp_source.html#l00838">CameraNeo::getFeatures()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00898">CameraZyla::getFeatures()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00161">CameraNeo::setCamera()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00176">CameraZyla::setCamera()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00588">CameraNeo::setFeature()</a>, and <a class="el" href="CameraZyla_8cpp_source.html#l00620">CameraZyla::setFeature()</a>.</p>
+
 </div>
 </div>
 <a id="aa18f0bf8b6e8cb661643d980a4484ac0" name="aa18f0bf8b6e8cb661643d980a4484ac0"></a>
@@ -2120,7 +2373,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Camera_8h_source.html#l00362">362</a> of file <a class="el" href="Camera_8h_source.html">Camera.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Camera_8h_source.html#l00574">fliphorizontal()</a>, <a class="el" href="Camera_8h_source.html#l00532">fliphorizontal()</a>, <a class="el" href="Camera_8h_source.html#l00553">fliphorizontal()</a>, and <a class="el" href="Camera_8h_source.html#l00592">setColorTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Camera_8h_source.html#l00574">fliphorizontal()</a>, <a class="el" href="Camera_8h_source.html#l00532">fliphorizontal()</a>, <a class="el" href="Camera_8h_source.html#l00553">fliphorizontal()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00575">CameraIEEE1394::getFeatures()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00433">CameraRAPTORFALCON::getFeatures()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00750">CameraRaspi::getFeatures()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00644">CameraIEEE1394::getProps()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00645">CameraRaspi::getProps()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00330">CameraAlliedVision::getSnapshot()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00264">CameraGiGE::getSnapshot()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00325">CameraIEEE1394::getSnapshot()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00509">CameraNeo::getSnapshot()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00242">CameraRAPTORFALCON::getSnapshot()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00234">CameraRAPTORNINOX640::getSnapshot()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00451">CameraRaspi::getSnapshot()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00541">CameraZyla::getSnapshot()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00340">CameraAlliedVision::getSnapshot16()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00273">CameraGiGE::getSnapshot16()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00334">CameraIEEE1394::getSnapshot16()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00251">CameraRAPTORFALCON::getSnapshot16()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00245">CameraRAPTORNINOX640::getSnapshot16()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00461">CameraRaspi::getSnapshot16()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00520">CameraZyla::getSnapshot16()</a>, <a class="el" href="CameraAlliedVision_8cpp_source.html#l00351">CameraAlliedVision::getSnapshot32()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00284">CameraGiGE::getSnapshot32()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00345">CameraIEEE1394::getSnapshot32()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00532">CameraNeo::getSnapshot32()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00262">CameraRAPTORFALCON::getSnapshot32()</a>, <a class="el" href="CameraRAPTORNINOX640_8cpp_source.html#l00257">CameraRAPTORNINOX640::getSnapshot32()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00472">CameraRaspi::getSnapshot32()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00564">CameraZyla::getSnapshot32()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00138">CameraIEEE1394::setCamera()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00134">CameraRaspi::setCamera()</a>, <a class="el" href="Camera_8h_source.html#l00592">setColorTable()</a>, <a class="el" href="CameraGiGE_8cpp_source.html#l00342">CameraGiGE::setFeature()</a>, <a class="el" href="CameraIEEE1394_8cpp_source.html#l00399">CameraIEEE1394::setFeature()</a>, <a class="el" href="CameraNeo_8cpp_source.html#l00588">CameraNeo::setFeature()</a>, <a class="el" href="CameraRAPTORFALCON_8cpp_source.html#l00322">CameraRAPTORFALCON::setFeature()</a>, <a class="el" href="CameraRaspi_8cpp_source.html#l00527">CameraRaspi::setFeature()</a>, <a class="el" href="CameraZyla_8cpp_source.html#l00620">CameraZyla::setFeature()</a>, <a class="el" href="classCameraRAPTORFALCON.html#aba6b3b18f3635d698fd7a8c1933f3bdf">CameraRAPTORFALCON::updateMax()</a>, and <a class="el" href="classCameraRAPTORNINOX640.html#ac9716c2508ff9b15e9558ec6cc2297a8">CameraRAPTORNINOX640::updateMax()</a>.</p>
 
 </div>
 </div>

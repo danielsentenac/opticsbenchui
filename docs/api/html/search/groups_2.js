@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hardware_0',['Hardware',['../group__hardware.html',1,'']]]
+  ['dac_0',['Dac',['../group__dac.html',1,'']]]
 ];

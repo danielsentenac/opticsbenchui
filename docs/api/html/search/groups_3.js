@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lasers_0',['Lasers',['../group__lasers.html',1,'']]]
+  ['hardware_0',['Hardware',['../group__hardware.html',1,'']]]
 ];

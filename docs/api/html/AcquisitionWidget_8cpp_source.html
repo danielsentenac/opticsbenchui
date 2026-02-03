@@ -216,446 +216,477 @@ $(function(){initNavTree('AcquisitionWidget_8cpp_source.html',''); initResizable
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>          SLOT(<a class="code hl_slot" href="classAcquisitionWidget.html#a93526023269eb57eb4b700d2b0f45654">showAcquisitionWarning</a>(QString)));</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  connect(acquisition, SIGNAL(<a class="code hl_slot" href="classAcquisitionWidget.html#ab8a888f509b99ce1ba37e1cc142f2bf6">splashScreen</a>(QString, <span class="keywordtype">int</span>, <span class="keywordtype">int</span>)), <span class="keyword">this</span>,</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>          SLOT(<a class="code hl_slot" href="classAcquisitionWidget.html#ab8a888f509b99ce1ba37e1cc142f2bf6">splashScreen</a>(QString, <span class="keywordtype">int</span>, <span class="keywordtype">int</span>)));</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>}</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  connect(acquisition, SIGNAL(<a class="code hl_signal" href="classAcquisitionWidget.html#ab3c30193159ef282fd3b77cbaceaacc5">requestAnalysis</a>()), <span class="keyword">this</span>,</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>          SLOT(<a class="code hl_slot" href="classAcquisitionWidget.html#a538114f5a0300302795d256873ea0734">requestAnalysisFromThread</a>()));</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>}</div>
 </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="foldopen" id="foldopen00112" data-start="{" data-end="}">
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#acd075e4e967badd0298fdcf4afc04a02">  112</a></span><a class="code hl_function" href="classAcquisitionWidget.html#acd075e4e967badd0298fdcf4afc04a02">AcquisitionWidget::~AcquisitionWidget</a>() {</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keyword">delete</span> splashLabel;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keyword">delete</span> acquisition;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  QSqlDatabase db = QSqlDatabase::database(path);</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  db.close();</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keyword">delete</span> acquisitiontable;</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  QSqlDatabase::removeDatabase(path);</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;Deleting AcquisitionWidget&quot;</span>;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>}</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="foldopen" id="foldopen00114" data-start="{" data-end="}">
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#acd075e4e967badd0298fdcf4afc04a02">  114</a></span><a class="code hl_function" href="classAcquisitionWidget.html#acd075e4e967badd0298fdcf4afc04a02">AcquisitionWidget::~AcquisitionWidget</a>() {</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keyword">delete</span> splashLabel;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keyword">delete</span> acquisition;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  QSqlDatabase db = QSqlDatabase::database(path);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  db.close();</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keyword">delete</span> acquisitiontable;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  QSqlDatabase::removeDatabase(path);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;Deleting AcquisitionWidget&quot;</span>;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>}</div>
 </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="foldopen" id="foldopen00122" data-start="{" data-end="}">
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#aa946d8385c2d3449b779aff4cea688e2">  122</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#aa946d8385c2d3449b779aff4cea688e2">AcquisitionWidget::setAcqFile</a>(QString acqfile) {</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  this-&gt;acqfile = acqfile;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  filenumber = <span class="stringliteral">&quot;0&quot;</span>;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>}</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="foldopen" id="foldopen00124" data-start="{" data-end="}">
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#aa946d8385c2d3449b779aff4cea688e2">  124</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#aa946d8385c2d3449b779aff4cea688e2">AcquisitionWidget::setAcqFile</a>(QString acqfile) {</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  this-&gt;acqfile = acqfile;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  filenumber = <span class="stringliteral">&quot;0&quot;</span>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>}</div>
 </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
-<div class="foldopen" id="foldopen00127" data-start="{" data-end="}">
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ab4a3398cdb02c5c29bd33fa37b8ffc00">  127</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#ab4a3398cdb02c5c29bd33fa37b8ffc00">AcquisitionWidget::setDbPath</a>(QString path) {</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  {</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    QSqlDatabase db = QSqlDatabase::database(this-&gt;path);</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    db.close();</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keyword">delete</span> acquisitiontable;</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  }</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  QSqlDatabase::removeDatabase(this-&gt;path);</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  appDirPath = path;</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  dbConnexion();</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  acquisitiontable = <span class="keyword">new</span> QSqlTableModel(<span class="keyword">this</span>, QSqlDatabase::database(this-&gt;path));</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  acquisitionview-&gt;setModel(acquisitiontable);</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  acquisitionview-&gt;verticalHeader()-&gt;hide();</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  setupAcquisitionTable();</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  InitConfig();</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>}</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="foldopen" id="foldopen00129" data-start="{" data-end="}">
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ab4a3398cdb02c5c29bd33fa37b8ffc00">  129</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#ab4a3398cdb02c5c29bd33fa37b8ffc00">AcquisitionWidget::setDbPath</a>(QString path) {</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  {</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    QSqlDatabase db = QSqlDatabase::database(this-&gt;path);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    db.close();</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keyword">delete</span> acquisitiontable;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  }</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  QSqlDatabase::removeDatabase(this-&gt;path);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  appDirPath = path;</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  dbConnexion();</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  acquisitiontable = <span class="keyword">new</span> QSqlTableModel(<span class="keyword">this</span>, QSqlDatabase::database(this-&gt;path));</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  acquisitionview-&gt;setModel(acquisitiontable);</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  acquisitionview-&gt;verticalHeader()-&gt;hide();</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  setupAcquisitionTable();</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  InitConfig();</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>}</div>
 </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
-<div class="foldopen" id="foldopen00145" data-start="{" data-end="}">
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a44c6b4d3852b2b9fa5e0a56bbc92e312">  145</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#a44c6b4d3852b2b9fa5e0a56bbc92e312">AcquisitionWidget::setCamera</a>(QVector&lt;Camera*&gt; cameraList) {</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  this-&gt;cameraList = cameraList;</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>}</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="foldopen" id="foldopen00147" data-start="{" data-end="}">
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a44c6b4d3852b2b9fa5e0a56bbc92e312">  147</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#a44c6b4d3852b2b9fa5e0a56bbc92e312">AcquisitionWidget::setCamera</a>(QVector&lt;Camera*&gt; cameraList) {</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  this-&gt;cameraList = cameraList;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>}</div>
 </div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="foldopen" id="foldopen00149" data-start="{" data-end="}">
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a0153a7e3d72cf3e4a7a57aa80ab73a9c">  149</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#a0153a7e3d72cf3e4a7a57aa80ab73a9c">AcquisitionWidget::setMotor</a>(<a class="code hl_class" href="classMotor.html">Motor</a>* motor) {</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  this-&gt;motor = motor;</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>}</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="foldopen" id="foldopen00151" data-start="{" data-end="}">
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a0153a7e3d72cf3e4a7a57aa80ab73a9c">  151</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#a0153a7e3d72cf3e4a7a57aa80ab73a9c">AcquisitionWidget::setMotor</a>(<a class="code hl_class" href="classMotor.html">Motor</a>* motor) {</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  this-&gt;motor = motor;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>}</div>
 </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
-<div class="foldopen" id="foldopen00153" data-start="{" data-end="}">
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a6d68fd28914ddbe7d602993b8662ea6a">  153</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#a6d68fd28914ddbe7d602993b8662ea6a">AcquisitionWidget::setSuperK</a>(<a class="code hl_class" href="classSuperK.html">SuperK</a>* superk) {</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  this-&gt;superk = superk;</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>}</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="foldopen" id="foldopen00155" data-start="{" data-end="}">
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a6d68fd28914ddbe7d602993b8662ea6a">  155</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#a6d68fd28914ddbe7d602993b8662ea6a">AcquisitionWidget::setSuperK</a>(<a class="code hl_class" href="classSuperK.html">SuperK</a>* superk) {</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  this-&gt;superk = superk;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>}</div>
 </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="foldopen" id="foldopen00157" data-start="{" data-end="}">
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ad24820e7df2349a59bf93abf27e1dd59">  157</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#ad24820e7df2349a59bf93abf27e1dd59">AcquisitionWidget::setDac</a>(<a class="code hl_class" href="classDac.html">Dac</a>* dac) {</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  this-&gt;dac = dac;</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>}</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="foldopen" id="foldopen00159" data-start="{" data-end="}">
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ad24820e7df2349a59bf93abf27e1dd59">  159</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#ad24820e7df2349a59bf93abf27e1dd59">AcquisitionWidget::setDac</a>(<a class="code hl_class" href="classDac.html">Dac</a>* dac) {</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  this-&gt;dac = dac;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>}</div>
 </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="foldopen" id="foldopen00161" data-start="{" data-end="}">
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ac9552cf19215c5e2cfaee3094e3599ec">  161</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#ac9552cf19215c5e2cfaee3094e3599ec">AcquisitionWidget::setComediCounter</a>(<a class="code hl_class" href="classComedi.html">Comedi</a>* comedi) {</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  comedicounter = comedi;</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>}</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="foldopen" id="foldopen00163" data-start="{" data-end="}">
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ac9552cf19215c5e2cfaee3094e3599ec">  163</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#ac9552cf19215c5e2cfaee3094e3599ec">AcquisitionWidget::setComediCounter</a>(<a class="code hl_class" href="classComedi.html">Comedi</a>* comedi) {</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  comedicounter = comedi;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>}</div>
 </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
-<div class="foldopen" id="foldopen00165" data-start="{" data-end="}">
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a0e34a567dff3f47c135d71e7e2a604d0">  165</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#a0e34a567dff3f47c135d71e7e2a604d0">AcquisitionWidget::setComediDac</a>(<a class="code hl_class" href="classComedi.html">Comedi</a>* comedi) {</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  comedidac = comedi;</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>}</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="foldopen" id="foldopen00167" data-start="{" data-end="}">
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a0e34a567dff3f47c135d71e7e2a604d0">  167</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#a0e34a567dff3f47c135d71e7e2a604d0">AcquisitionWidget::setComediDac</a>(<a class="code hl_class" href="classComedi.html">Comedi</a>* comedi) {</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  comedidac = comedi;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>}</div>
 </div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
-<div class="foldopen" id="foldopen00169" data-start="{" data-end="}">
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a0602fe0952da6c2db52696aa64caa63b">  169</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#a0602fe0952da6c2db52696aa64caa63b">AcquisitionWidget::setRaspiDac</a>(<a class="code hl_class" href="classRaspi.html">Raspi</a>* raspi) {</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  raspidac = raspi;</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>}</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="foldopen" id="foldopen00171" data-start="{" data-end="}">
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a0602fe0952da6c2db52696aa64caa63b">  171</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#a0602fe0952da6c2db52696aa64caa63b">AcquisitionWidget::setRaspiDac</a>(<a class="code hl_class" href="classRaspi.html">Raspi</a>* raspi) {</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  raspidac = raspi;</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>}</div>
 </div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="foldopen" id="foldopen00173" data-start="{" data-end="}">
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a00f21ea2b6f657253751e32e7b6f0e14">  173</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#a00f21ea2b6f657253751e32e7b6f0e14">AcquisitionWidget::setDelegates</a>() {</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  <span class="comment">// Populate types</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  QStringList *typeList = <span class="keyword">new</span> QStringList();</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  typeList-&gt;append(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  typeList-&gt;append(<span class="stringliteral">&quot;MOTOR&quot;</span>);</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  typeList-&gt;append(<span class="stringliteral">&quot;DAC&quot;</span>);</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  typeList-&gt;append(<span class="stringliteral">&quot;COMEDIDAC&quot;</span>);</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  typeList-&gt;append(<span class="stringliteral">&quot;COMEDICOUNTER&quot;</span>);</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  typeList-&gt;append(<span class="stringliteral">&quot;RASPIDAC&quot;</span>);</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  typeList-&gt;append(<span class="stringliteral">&quot;SUPERK&quot;</span>);</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  typeList-&gt;append(<span class="stringliteral">&quot;CAMERA&quot;</span>);</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  typeList-&gt;append(<span class="stringliteral">&quot;SLM&quot;</span>);</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  typeList-&gt;append(<span class="stringliteral">&quot;FILE&quot;</span>);</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  typeList-&gt;append(<span class="stringliteral">&quot;TREATMENT&quot;</span>);</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <a class="code hl_class" href="classComboBoxDelegate.html">ComboBoxDelegate</a> *typeCombo = <span class="keyword">new</span> <a class="code hl_class" href="classComboBoxDelegate.html">ComboBoxDelegate</a>(<span class="keyword">this</span>, typeList);</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <span class="comment">// Populate instrument list from motor database</span></div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  QString motordb = <a class="code hl_function" href="namespaceUtils.html#a462dc923fdeb99b5f293b9ae5232d7e9">Utils::BuildDbPath</a>(appDirPath, <span class="stringliteral">&quot;motor.db3&quot;</span>);</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  QSqlQuery querymotor(QSqlDatabase::database(motordb));</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  QStringList *instrumentList = <span class="keyword">new</span> QStringList();</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  instrumentList-&gt;append(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  querymotor.exec(<span class="stringliteral">&quot;select * from motor_actuator&quot;</span>);</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <span class="keywordflow">while</span> (querymotor.next()) {</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    instrumentList-&gt;append(querymotor.value(0).toString());</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  }</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="comment">// Populate instrument list from dac database</span></div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  QString dacdb = <a class="code hl_function" href="namespaceUtils.html#a462dc923fdeb99b5f293b9ae5232d7e9">Utils::BuildDbPath</a>(appDirPath, <span class="stringliteral">&quot;dac.db3&quot;</span>);</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  QSqlQuery querydac(QSqlDatabase::database(dacdb));</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  querydac.exec(<span class="stringliteral">&quot;select name from dac_settings&quot;</span>);</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  <span class="keywordflow">while</span> (querydac.next()) {</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    instrumentList-&gt;append(querydac.value(0).toString());</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  }</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  <span class="comment">// Populate instrument list from comedi counter database</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  QString comedicounterdb = <a class="code hl_function" href="namespaceUtils.html#a462dc923fdeb99b5f293b9ae5232d7e9">Utils::BuildDbPath</a>(appDirPath, <span class="stringliteral">&quot;comedicounter.db3&quot;</span>);</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  QSqlQuery querycomedicounter(QSqlDatabase::database(comedicounterdb));</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  querycomedicounter.exec(<span class="stringliteral">&quot;select name from comedi_settings&quot;</span>);</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  <span class="keywordflow">while</span> (querycomedicounter.next()) {</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    instrumentList-&gt;append(querycomedicounter.value(0).toString());</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  }</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  <span class="comment">// Populate instrument list from comedi dac database</span></div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  QString comedidacdb = <a class="code hl_function" href="namespaceUtils.html#a462dc923fdeb99b5f293b9ae5232d7e9">Utils::BuildDbPath</a>(appDirPath, <span class="stringliteral">&quot;comedidac.db3&quot;</span>);</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  QSqlQuery querycomedidac(QSqlDatabase::database(comedidacdb));</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  querycomedidac.exec(<span class="stringliteral">&quot;select name from comedi_settings&quot;</span>);</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  <span class="keywordflow">while</span> (querycomedidac.next()) {</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    instrumentList-&gt;append(querycomedidac.value(0).toString());</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  }</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span> </div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  <span class="comment">// Populate instrument list from superk database</span></div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  QString superkdb = <a class="code hl_function" href="namespaceUtils.html#a462dc923fdeb99b5f293b9ae5232d7e9">Utils::BuildDbPath</a>(appDirPath, <span class="stringliteral">&quot;superk.db3&quot;</span>);</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  QSqlQuery querysuperk(QSqlDatabase::database(superkdb));</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  querysuperk.exec(<span class="stringliteral">&quot;select name from superk_driver&quot;</span>);</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <span class="keywordflow">while</span> (querysuperk.next()) {</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    instrumentList-&gt;append(querysuperk.value(0).toString());</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  }</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  <span class="comment">// Populate instrument list from cameraList</span></div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; cameraList.size(); i++) {</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <a class="code hl_class" href="classCamera.html">Camera</a>* camera = cameraList.at(i);</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    instrumentList-&gt;append(camera-&gt;<a class="code hl_variable" href="classCamera.html#ac7debddf30d07a115056facc32cd7cd0">model</a>);</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  }</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  <a class="code hl_class" href="classComboBoxDelegate.html">ComboBoxDelegate</a> *instrumentCombo = <span class="keyword">new</span> <a class="code hl_class" href="classComboBoxDelegate.html">ComboBoxDelegate</a>(<span class="keyword">this</span>, instrumentList);</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  </div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  acquisitionview-&gt;setItemDelegateForColumn(1, typeCombo);</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  acquisitionview-&gt;setItemDelegateForColumn(2, instrumentCombo);</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>}</div>
-</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="foldopen" id="foldopen00175" data-start="{" data-end="}">
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a00f21ea2b6f657253751e32e7b6f0e14">  175</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classAcquisitionWidget.html#a00f21ea2b6f657253751e32e7b6f0e14">AcquisitionWidget::setDelegates</a>() {</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <span class="comment">// Populate types</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  QStringList *typeList = <span class="keyword">new</span> QStringList();</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  typeList-&gt;append(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  typeList-&gt;append(<span class="stringliteral">&quot;MOTOR&quot;</span>);</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  typeList-&gt;append(<span class="stringliteral">&quot;DAC&quot;</span>);</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  typeList-&gt;append(<span class="stringliteral">&quot;COMEDIDAC&quot;</span>);</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  typeList-&gt;append(<span class="stringliteral">&quot;COMEDICOUNTER&quot;</span>);</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  typeList-&gt;append(<span class="stringliteral">&quot;RASPIDAC&quot;</span>);</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  typeList-&gt;append(<span class="stringliteral">&quot;SUPERK&quot;</span>);</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  typeList-&gt;append(<span class="stringliteral">&quot;CAMERA&quot;</span>);</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  typeList-&gt;append(<span class="stringliteral">&quot;SLM&quot;</span>);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  typeList-&gt;append(<span class="stringliteral">&quot;FILE&quot;</span>);</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  typeList-&gt;append(<span class="stringliteral">&quot;TREATMENT&quot;</span>);</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <a class="code hl_class" href="classComboBoxDelegate.html">ComboBoxDelegate</a> *typeCombo = <span class="keyword">new</span> <a class="code hl_class" href="classComboBoxDelegate.html">ComboBoxDelegate</a>(<span class="keyword">this</span>, typeList);</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  <span class="comment">// Populate instrument list from motor database</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  QString motordb = <a class="code hl_function" href="namespaceUtils.html#a462dc923fdeb99b5f293b9ae5232d7e9">Utils::BuildDbPath</a>(appDirPath, <span class="stringliteral">&quot;motor.db3&quot;</span>);</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  QSqlQuery querymotor(QSqlDatabase::database(motordb));</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  QStringList *instrumentList = <span class="keyword">new</span> QStringList();</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  instrumentList-&gt;append(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  querymotor.exec(<span class="stringliteral">&quot;select * from motor_actuator&quot;</span>);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  <span class="keywordflow">while</span> (querymotor.next()) {</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    instrumentList-&gt;append(querymotor.value(0).toString());</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  }</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  </div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="comment">// Populate instrument list from dac database</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  QString dacdb = <a class="code hl_function" href="namespaceUtils.html#a462dc923fdeb99b5f293b9ae5232d7e9">Utils::BuildDbPath</a>(appDirPath, <span class="stringliteral">&quot;dac.db3&quot;</span>);</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  QSqlQuery querydac(QSqlDatabase::database(dacdb));</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  querydac.exec(<span class="stringliteral">&quot;select name from dac_settings&quot;</span>);</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <span class="keywordflow">while</span> (querydac.next()) {</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    instrumentList-&gt;append(querydac.value(0).toString());</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  }</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="comment">// Populate instrument list from comedi counter database</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  QString comedicounterdb = <a class="code hl_function" href="namespaceUtils.html#a462dc923fdeb99b5f293b9ae5232d7e9">Utils::BuildDbPath</a>(appDirPath, <span class="stringliteral">&quot;comedicounter.db3&quot;</span>);</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  QSqlQuery querycomedicounter(QSqlDatabase::database(comedicounterdb));</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  querycomedicounter.exec(<span class="stringliteral">&quot;select name from comedi_settings&quot;</span>);</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  <span class="keywordflow">while</span> (querycomedicounter.next()) {</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    instrumentList-&gt;append(querycomedicounter.value(0).toString());</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  }</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  <span class="comment">// Populate instrument list from comedi dac database</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  QString comedidacdb = <a class="code hl_function" href="namespaceUtils.html#a462dc923fdeb99b5f293b9ae5232d7e9">Utils::BuildDbPath</a>(appDirPath, <span class="stringliteral">&quot;comedidac.db3&quot;</span>);</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  QSqlQuery querycomedidac(QSqlDatabase::database(comedidacdb));</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  querycomedidac.exec(<span class="stringliteral">&quot;select name from comedi_settings&quot;</span>);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <span class="keywordflow">while</span> (querycomedidac.next()) {</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    instrumentList-&gt;append(querycomedidac.value(0).toString());</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  }</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  <span class="comment">// Populate instrument list from superk database</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  QString superkdb = <a class="code hl_function" href="namespaceUtils.html#a462dc923fdeb99b5f293b9ae5232d7e9">Utils::BuildDbPath</a>(appDirPath, <span class="stringliteral">&quot;superk.db3&quot;</span>);</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  QSqlQuery querysuperk(QSqlDatabase::database(superkdb));</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  querysuperk.exec(<span class="stringliteral">&quot;select name from superk_driver&quot;</span>);</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  <span class="keywordflow">while</span> (querysuperk.next()) {</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    instrumentList-&gt;append(querysuperk.value(0).toString());</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  }</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  <span class="comment">// Populate instrument list from cameraList</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; cameraList.size(); i++) {</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <a class="code hl_class" href="classCamera.html">Camera</a>* camera = cameraList.at(i);</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    instrumentList-&gt;append(camera-&gt;<a class="code hl_variable" href="classCamera.html#ac7debddf30d07a115056facc32cd7cd0">model</a>);</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  }</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  <a class="code hl_class" href="classComboBoxDelegate.html">ComboBoxDelegate</a> *instrumentCombo = <span class="keyword">new</span> <a class="code hl_class" href="classComboBoxDelegate.html">ComboBoxDelegate</a>(<span class="keyword">this</span>, instrumentList);</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  </div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  acquisitionview-&gt;setItemDelegateForColumn(1, typeCombo);</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  acquisitionview-&gt;setItemDelegateForColumn(2, instrumentCombo);</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span><span class="keywordtype">void</span> AcquisitionWidget::InitConfig() {</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  acquisitiontable-&gt;setSort(0, Qt::AscendingOrder);</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  acquisitiontable-&gt;select();</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  acquisitionrow = acquisitiontable-&gt;rowCount();</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  acquisitiontable-&gt;insertRow(acquisitionrow);</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  acquisitionview-&gt;resizeColumnsToContents();</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  acquisitionview-&gt;resizeRowsToContents();</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>}</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="keywordtype">void</span> AcquisitionWidget::setupAcquisitionTable() {</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  acquisitiontable-&gt;setTable(<span class="stringliteral">&quot;acquisition_sequence&quot;</span>);</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  acquisitiontable-&gt;setEditStrategy(QSqlTableModel::OnManualSubmit);</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  acquisitiontable-&gt;setHeaderData(0, Qt::Horizontal, tr(<span class="stringliteral">&quot;record&quot;</span>));</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  acquisitiontable-&gt;setHeaderData(1, Qt::Horizontal, tr(<span class="stringliteral">&quot;type&quot;</span>));</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  acquisitiontable-&gt;setHeaderData(2, Qt::Horizontal, tr(<span class="stringliteral">&quot;instrument&quot;</span>));</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  acquisitiontable-&gt;setHeaderData(3, Qt::Horizontal, tr(<span class="stringliteral">&quot;settings&quot;</span>));</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  acquisitiontable-&gt;setHeaderData(4, Qt::Horizontal, tr(<span class="stringliteral">&quot;scanplan&quot;</span>));</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  acquisitiontable-&gt;setHeaderData(5, Qt::Horizontal, tr(<span class="stringliteral">&quot;status&quot;</span>));</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  acquisitiontable-&gt;setHeaderData(6, Qt::Horizontal, tr(<span class="stringliteral">&quot;acquiring&quot;</span>));</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>}</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
-<div class="foldopen" id="foldopen00264" data-start="{" data-end="}">
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#aac224bb734fac1fd52909da07ac9838d">  264</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#aac224bb734fac1fd52909da07ac9838d">AcquisitionWidget::update</a>() {</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  acquisitiontable-&gt;submitAll();</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  InitConfig();</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>}</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>}</div>
 </div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
-<div class="foldopen" id="foldopen00269" data-start="{" data-end="}">
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a560a54959e6833f22d4a86c0381d9183">  269</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a560a54959e6833f22d4a86c0381d9183">AcquisitionWidget::reload</a>() {</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  InitConfig();</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>}</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span><span class="keywordtype">void</span> AcquisitionWidget::InitConfig() {</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  acquisitiontable-&gt;setSort(0, Qt::AscendingOrder);</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  acquisitiontable-&gt;select();</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  acquisitionrow = acquisitiontable-&gt;rowCount();</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  acquisitiontable-&gt;insertRow(acquisitionrow);</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  acquisitionview-&gt;resizeColumnsToContents();</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  acquisitionview-&gt;resizeRowsToContents();</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>}</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="keywordtype">void</span> AcquisitionWidget::setupAcquisitionTable() {</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  acquisitiontable-&gt;setTable(<span class="stringliteral">&quot;acquisition_sequence&quot;</span>);</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  acquisitiontable-&gt;setEditStrategy(QSqlTableModel::OnManualSubmit);</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  acquisitiontable-&gt;setHeaderData(0, Qt::Horizontal, tr(<span class="stringliteral">&quot;record&quot;</span>));</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  acquisitiontable-&gt;setHeaderData(1, Qt::Horizontal, tr(<span class="stringliteral">&quot;type&quot;</span>));</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  acquisitiontable-&gt;setHeaderData(2, Qt::Horizontal, tr(<span class="stringliteral">&quot;instrument&quot;</span>));</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  acquisitiontable-&gt;setHeaderData(3, Qt::Horizontal, tr(<span class="stringliteral">&quot;settings&quot;</span>));</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  acquisitiontable-&gt;setHeaderData(4, Qt::Horizontal, tr(<span class="stringliteral">&quot;scanplan&quot;</span>));</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  acquisitiontable-&gt;setHeaderData(5, Qt::Horizontal, tr(<span class="stringliteral">&quot;status&quot;</span>));</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  acquisitiontable-&gt;setHeaderData(6, Qt::Horizontal, tr(<span class="stringliteral">&quot;acquiring&quot;</span>));</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>}</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
+<div class="foldopen" id="foldopen00266" data-start="{" data-end="}">
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#aac224bb734fac1fd52909da07ac9838d">  266</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#aac224bb734fac1fd52909da07ac9838d">AcquisitionWidget::update</a>() {</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  acquisitiontable-&gt;submitAll();</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  InitConfig();</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>}</div>
 </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
-<div class="foldopen" id="foldopen00273" data-start="{" data-end="}">
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a9049c5959327a481327afabd87bee4b9">  273</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a9049c5959327a481327afabd87bee4b9">AcquisitionWidget::remove</a>() {</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  QModelIndexList selected;</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  QItemSelectionModel *selmodel;</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  selmodel = acquisitionview-&gt;selectionModel();</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  selected = selmodel-&gt;selectedIndexes();</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = selected.size() - 1; i &gt;= 0; i--) {</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    acquisitiontable-&gt;removeRow(selected.at(i).row());</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  }</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  acquisitiontable-&gt;submitAll();</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  InitConfig();</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>}</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="foldopen" id="foldopen00271" data-start="{" data-end="}">
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a560a54959e6833f22d4a86c0381d9183">  271</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a560a54959e6833f22d4a86c0381d9183">AcquisitionWidget::reload</a>() {</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  InitConfig();</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>}</div>
 </div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
-<div class="foldopen" id="foldopen00285" data-start="{" data-end="}">
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#aac5152376c499940bd2ce3cbabe13e32">  285</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#aac5152376c499940bd2ce3cbabe13e32">AcquisitionWidget::run</a>() {</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  this-&gt;<a class="code hl_slot" href="classAcquisitionWidget.html#af302f1ffaff24f597462939e01e56805">stop</a>();</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  QSqlQuery query(QSqlDatabase::database(path));</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  query.exec(<span class="stringliteral">&quot;update acquisition_sequence set status = &#39;&#39;&quot;</span>);</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  query.exec(<span class="stringliteral">&quot;update acquisition_sequence set acquiring = &#39;&#39;&quot;</span>);</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  query.exec(<span class="stringliteral">&quot;select record,type,instrument,settings,scanplan from acquisition_sequence &quot;</span></div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>         <span class="stringliteral">&quot;order by record&quot;</span>);</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  </div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  <span class="comment">// Store acquisition sequence</span></div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  sequenceList.clear();</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  cur_record = 0;</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  <span class="keywordflow">while</span> (query.next()) {</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    <span class="keywordtype">int</span> seq_record = query.value(0).toInt();</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    <span class="keywordflow">if</span> (seq_record &lt; 0) {</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    }</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <a class="code hl_class" href="classAcquisitionSequence.html">AcquisitionSequence</a> *sequence = <span class="keyword">new</span> <a class="code hl_class" href="classAcquisitionSequence.html">AcquisitionSequence</a>();</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    sequence-&gt;<a class="code hl_variable" href="classAcquisitionSequence.html#a90d03b6a49a7fee01486bc6e538ad5cf">record</a> = cur_record++;</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    sequence-&gt;<a class="code hl_variable" href="classAcquisitionSequence.html#a9a15a40ea25499a85709ff9845c4933e">seq_record</a> = seq_record;</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    sequence-&gt;<a class="code hl_variable" href="classAcquisitionSequence.html#a7b1269c8636d378e7aede2aaef177fe9">instrumentType</a> = query.value(1).toString();</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    sequence-&gt;<a class="code hl_variable" href="classAcquisitionSequence.html#a0e636cbd7fb41f0710abcb4748e57e30">instrumentName</a> = query.value(2).toString();</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    sequence-&gt;<a class="code hl_variable" href="classAcquisitionSequence.html#a1c4e9db064c169bb08a4b3cbe39c0db5">settings</a> = query.value(3).toString();</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    sequence-&gt;<a class="code hl_variable" href="classAcquisitionSequence.html#a519c0465077709f2de999bbd7acc2647">scanplan</a> = query.value(4).toString();</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    sequenceList.append(sequence);</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  }</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  </div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="comment">// Prepare sequence</span></div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; sequenceList.size(); i++) {</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    <a class="code hl_class" href="classAcquisitionSequence.html">AcquisitionSequence</a> *sequence = sequenceList.at(i);</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    sequence-&gt;<a class="code hl_function" href="classAcquisitionSequence.html#a5cb42a054b5020184bd922c3ae9c4a0e">prepare</a>();</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  }</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>  <span class="comment">// Set File name and number from widget</span></div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  QString filepath = acqfile + <span class="stringliteral">&quot;_&quot;</span> + filenumber + <span class="stringliteral">&quot;.h5&quot;</span>;</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  acquisition-&gt;setFile(filepath, filenumber.toInt());</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  acquisition-&gt;setCamera(cameraList);</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  acquisition-&gt;setMotor(motor);</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  acquisition-&gt;setSuperK(superk);</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  acquisition-&gt;setDac(dac);</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  acquisition-&gt;setComediCounter(comedicounter);</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  acquisition-&gt;setComediDac(comedidac);</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  acquisition-&gt;setRaspiDac(raspidac);</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  acquisition-&gt;setSequenceList(sequenceList);</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  acquisition-&gt;start();</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;AcquisitionWidget::run started&quot;</span>;</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>}</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
+<div class="foldopen" id="foldopen00275" data-start="{" data-end="}">
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a9049c5959327a481327afabd87bee4b9">  275</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a9049c5959327a481327afabd87bee4b9">AcquisitionWidget::remove</a>() {</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  QModelIndexList selected;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  QItemSelectionModel *selmodel;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  selmodel = acquisitionview-&gt;selectionModel();</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  selected = selmodel-&gt;selectedIndexes();</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = selected.size() - 1; i &gt;= 0; i--) {</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    acquisitiontable-&gt;removeRow(selected.at(i).row());</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  }</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  acquisitiontable-&gt;submitAll();</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  InitConfig();</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>}</div>
 </div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
-<div class="foldopen" id="foldopen00331" data-start="{" data-end="}">
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#af302f1ffaff24f597462939e01e56805">  331</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#af302f1ffaff24f597462939e01e56805">AcquisitionWidget::stop</a>() {</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>  acquisition-&gt;stop();</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>}</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
+<div class="foldopen" id="foldopen00287" data-start="{" data-end="}">
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#aac5152376c499940bd2ce3cbabe13e32">  287</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#aac5152376c499940bd2ce3cbabe13e32">AcquisitionWidget::run</a>() {</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  this-&gt;<a class="code hl_slot" href="classAcquisitionWidget.html#af302f1ffaff24f597462939e01e56805">stop</a>();</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  QSqlQuery query(QSqlDatabase::database(path));</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  query.exec(<span class="stringliteral">&quot;update acquisition_sequence set status = &#39;&#39;&quot;</span>);</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  query.exec(<span class="stringliteral">&quot;update acquisition_sequence set acquiring = &#39;&#39;&quot;</span>);</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  query.exec(<span class="stringliteral">&quot;select record,type,instrument,settings,scanplan from acquisition_sequence &quot;</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>         <span class="stringliteral">&quot;order by record&quot;</span>);</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  </div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <span class="comment">// Store acquisition sequence</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  sequenceList.clear();</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  cur_record = 0;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>  <span class="keywordflow">while</span> (query.next()) {</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    <span class="keywordtype">int</span> seq_record = query.value(0).toInt();</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    <span class="keywordflow">if</span> (seq_record &lt; 0) {</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    }</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    <a class="code hl_class" href="classAcquisitionSequence.html">AcquisitionSequence</a> *sequence = <span class="keyword">new</span> <a class="code hl_class" href="classAcquisitionSequence.html">AcquisitionSequence</a>();</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    sequence-&gt;<a class="code hl_variable" href="classAcquisitionSequence.html#a90d03b6a49a7fee01486bc6e538ad5cf">record</a> = cur_record++;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    sequence-&gt;<a class="code hl_variable" href="classAcquisitionSequence.html#a9a15a40ea25499a85709ff9845c4933e">seq_record</a> = seq_record;</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    sequence-&gt;<a class="code hl_variable" href="classAcquisitionSequence.html#a7b1269c8636d378e7aede2aaef177fe9">instrumentType</a> = query.value(1).toString();</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    sequence-&gt;<a class="code hl_variable" href="classAcquisitionSequence.html#a0e636cbd7fb41f0710abcb4748e57e30">instrumentName</a> = query.value(2).toString();</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    sequence-&gt;<a class="code hl_variable" href="classAcquisitionSequence.html#a1c4e9db064c169bb08a4b3cbe39c0db5">settings</a> = query.value(3).toString();</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    sequence-&gt;<a class="code hl_variable" href="classAcquisitionSequence.html#a519c0465077709f2de999bbd7acc2647">scanplan</a> = query.value(4).toString();</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    sequenceList.append(sequence);</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  }</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  </div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  <span class="comment">// Prepare sequence</span></div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; sequenceList.size(); i++) {</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>    <a class="code hl_class" href="classAcquisitionSequence.html">AcquisitionSequence</a> *sequence = sequenceList.at(i);</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    sequence-&gt;<a class="code hl_function" href="classAcquisitionSequence.html#a5cb42a054b5020184bd922c3ae9c4a0e">prepare</a>();</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  }</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  <span class="comment">// Set File name and number from widget</span></div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  QString filepath = acqfile + <span class="stringliteral">&quot;_&quot;</span> + filenumber + <span class="stringliteral">&quot;.h5&quot;</span>;</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  acquisition-&gt;setFile(filepath, filenumber.toInt());</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  acquisition-&gt;setCamera(cameraList);</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  acquisition-&gt;setMotor(motor);</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  acquisition-&gt;setSuperK(superk);</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  acquisition-&gt;setDac(dac);</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  acquisition-&gt;setComediCounter(comedicounter);</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  acquisition-&gt;setComediDac(comedidac);</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  acquisition-&gt;setRaspiDac(raspidac);</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  acquisition-&gt;setSequenceList(sequenceList);</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  acquisition-&gt;start();</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;AcquisitionWidget::run started&quot;</span>;</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>}</div>
 </div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
-<div class="foldopen" id="foldopen00335" data-start="{" data-end="}">
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ab8a888f509b99ce1ba37e1cc142f2bf6">  335</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#ab8a888f509b99ce1ba37e1cc142f2bf6">AcquisitionWidget::splashScreen</a>(QString imagepath, <span class="keywordtype">int</span> screen_x,</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>                                     <span class="keywordtype">int</span> screen_y) {</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>  QPixmap pixmap(imagepath);</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  splashLabel-&gt;setPixmap(pixmap);</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  splashLabel-&gt;setWindowState(Qt::WindowFullScreen);</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>  splashLabel-&gt;move(screen_x, screen_y);</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  splashLabel-&gt;show();</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;AcquisitionWidget::splashScreen&gt; Show splash screen &quot;</span></div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>              &lt;&lt; imagepath &lt;&lt; <span class="stringliteral">&quot; done&quot;</span>;</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  acquisition-&gt;wakeSplashScreen();</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>}</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span> </div>
+<div class="foldopen" id="foldopen00333" data-start="{" data-end="}">
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#af302f1ffaff24f597462939e01e56805">  333</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#af302f1ffaff24f597462939e01e56805">AcquisitionWidget::stop</a>() {</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  acquisition-&gt;stop();</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>  setAcquiringToLastRecord();</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>}</div>
 </div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
-<div class="foldopen" id="foldopen00347" data-start="{" data-end="}">
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#abc7c11f13fd726c2fdcacc5866eca9c2">  347</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#abc7c11f13fd726c2fdcacc5866eca9c2">AcquisitionWidget::getPosition</a>(QString positionQString) {</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>  updateStatusForRecord(<span class="stringliteral">&quot;POS:&quot;</span> + positionQString, cur_record);</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>}</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
+<div class="foldopen" id="foldopen00338" data-start="{" data-end="}">
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ab8a888f509b99ce1ba37e1cc142f2bf6">  338</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#ab8a888f509b99ce1ba37e1cc142f2bf6">AcquisitionWidget::splashScreen</a>(QString imagepath, <span class="keywordtype">int</span> screen_x,</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>                                     <span class="keywordtype">int</span> screen_y) {</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>  QPixmap pixmap(imagepath);</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  splashLabel-&gt;setPixmap(pixmap);</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>  splashLabel-&gt;setWindowState(Qt::WindowFullScreen);</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>  splashLabel-&gt;move(screen_x, screen_y);</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  splashLabel-&gt;show();</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;AcquisitionWidget::splashScreen&gt; Show splash screen &quot;</span></div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>              &lt;&lt; imagepath &lt;&lt; <span class="stringliteral">&quot; done&quot;</span>;</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>  acquisition-&gt;wakeSplashScreen();</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>}</div>
 </div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
-<div class="foldopen" id="foldopen00351" data-start="{" data-end="}">
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a4f2e666cee23844b4b9cf604e346a011">  351</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a4f2e666cee23844b4b9cf604e346a011">AcquisitionWidget::getSuperKData</a>(QString dataStr) {</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>  updateStatusForRecord(<span class="stringliteral">&quot;Data:&quot;</span> + dataStr, cur_record);</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>}</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
+<div class="foldopen" id="foldopen00350" data-start="{" data-end="}">
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#abc7c11f13fd726c2fdcacc5866eca9c2">  350</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#abc7c11f13fd726c2fdcacc5866eca9c2">AcquisitionWidget::getPosition</a>(QString positionQString) {</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>  updateStatusForRecord(<span class="stringliteral">&quot;POS:&quot;</span> + positionQString, cur_record);</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>}</div>
 </div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>QString AcquisitionWidget::statusFromSuccess(<span class="keywordtype">bool</span> success)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>  <span class="keywordflow">return</span> success ? <span class="stringliteral">&quot;OK&quot;</span> : <span class="stringliteral">&quot;FAIL&quot;</span>;</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>}</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span> </div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span><span class="keywordtype">void</span> AcquisitionWidget::updateStatusForRecord(<span class="keyword">const</span> QString&amp; status,</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>                                              <span class="keywordtype">int</span> record) {</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  QSqlQuery query(QSqlDatabase::database(path));</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>  query.prepare(<span class="stringliteral">&quot;update acquisition_sequence set status = ? where record = ?&quot;</span>);</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>  query.addBindValue(status);</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>  query.addBindValue(record);</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>  query.exec();</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;AcquisitionWidget::statusUpdate&quot;</span></div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>               &lt;&lt; query.lastError().text();</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>  InitConfig();</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>}</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
-<div class="foldopen" id="foldopen00371" data-start="{" data-end="}">
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#aa81ab242e09df01b0c8478d254502996">  371</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#aa81ab242e09df01b0c8478d254502996">AcquisitionWidget::getCameraStatus</a>(<span class="keywordtype">bool</span> imagesuccess) {</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>  updateStatusForRecord(statusFromSuccess(imagesuccess), cur_record);</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>}</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span> </div>
+<div class="foldopen" id="foldopen00354" data-start="{" data-end="}">
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a4f2e666cee23844b4b9cf604e346a011">  354</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a4f2e666cee23844b4b9cf604e346a011">AcquisitionWidget::getSuperKData</a>(QString dataStr) {</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>  updateStatusForRecord(<span class="stringliteral">&quot;Data:&quot;</span> + dataStr, cur_record);</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>}</div>
 </div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span> </div>
-<div class="foldopen" id="foldopen00375" data-start="{" data-end="}">
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ae50d846f8aea7c17c63896525dfad3af">  375</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#ae50d846f8aea7c17c63896525dfad3af">AcquisitionWidget::getDacStatus</a>(<span class="keywordtype">bool</span> dacsuccess) {</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>  updateStatusForRecord(statusFromSuccess(dacsuccess), cur_record);</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>}</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span> </div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>QString AcquisitionWidget::statusFromSuccess(<span class="keywordtype">bool</span> success)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>  <span class="keywordflow">return</span> success ? <span class="stringliteral">&quot;OK&quot;</span> : <span class="stringliteral">&quot;FAIL&quot;</span>;</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>}</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span> </div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span><span class="keywordtype">void</span> AcquisitionWidget::updateStatusForRecord(<span class="keyword">const</span> QString&amp; status,</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>                                              <span class="keywordtype">int</span> record) {</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>  QSqlQuery query(QSqlDatabase::database(path));</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>  query.prepare(<span class="stringliteral">&quot;update acquisition_sequence set status = ? where record = ?&quot;</span>);</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>  query.addBindValue(status);</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>  query.addBindValue(record);</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>  query.exec();</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;AcquisitionWidget::statusUpdate&quot;</span></div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>               &lt;&lt; query.lastError().text();</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>  InitConfig();</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>}</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span> </div>
+<div class="foldopen" id="foldopen00374" data-start="{" data-end="}">
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#aa81ab242e09df01b0c8478d254502996">  374</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#aa81ab242e09df01b0c8478d254502996">AcquisitionWidget::getCameraStatus</a>(<span class="keywordtype">bool</span> imagesuccess) {</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  updateStatusForRecord(statusFromSuccess(imagesuccess), cur_record);</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>}</div>
 </div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span> </div>
-<div class="foldopen" id="foldopen00379" data-start="{" data-end="}">
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#aa64cd52d5904b3438815351417c47712">  379</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#aa64cd52d5904b3438815351417c47712">AcquisitionWidget::getMotorStatus</a>(<span class="keywordtype">bool</span> motorsuccess) {</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  updateStatusForRecord(statusFromSuccess(motorsuccess), cur_record);</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>}</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
+<div class="foldopen" id="foldopen00378" data-start="{" data-end="}">
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ae50d846f8aea7c17c63896525dfad3af">  378</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#ae50d846f8aea7c17c63896525dfad3af">AcquisitionWidget::getDacStatus</a>(<span class="keywordtype">bool</span> dacsuccess) {</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>  updateStatusForRecord(statusFromSuccess(dacsuccess), cur_record);</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>}</div>
 </div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span> </div>
-<div class="foldopen" id="foldopen00383" data-start="{" data-end="}">
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a4fe33f079c5d334bda53c621cd312e96">  383</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a4fe33f079c5d334bda53c621cd312e96">AcquisitionWidget::getSuperKStatus</a>(<span class="keywordtype">bool</span> superksuccess) {</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  updateStatusForRecord(statusFromSuccess(superksuccess), cur_record);</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>}</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span> </div>
+<div class="foldopen" id="foldopen00382" data-start="{" data-end="}">
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#aa64cd52d5904b3438815351417c47712">  382</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#aa64cd52d5904b3438815351417c47712">AcquisitionWidget::getMotorStatus</a>(<span class="keywordtype">bool</span> motorsuccess) {</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>  updateStatusForRecord(statusFromSuccess(motorsuccess), cur_record);</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>}</div>
 </div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
-<div class="foldopen" id="foldopen00387" data-start="{" data-end="}">
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ae46764c7e74366e7b04970887fc610f9">  387</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#ae46764c7e74366e7b04970887fc610f9">AcquisitionWidget::getTreatmentStatus</a>(<span class="keywordtype">bool</span> treatmentsuccess) {</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  updateStatusForRecord(statusFromSuccess(treatmentsuccess), cur_record);</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>}</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span> </div>
+<div class="foldopen" id="foldopen00386" data-start="{" data-end="}">
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a4fe33f079c5d334bda53c621cd312e96">  386</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a4fe33f079c5d334bda53c621cd312e96">AcquisitionWidget::getSuperKStatus</a>(<span class="keywordtype">bool</span> superksuccess) {</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>  updateStatusForRecord(statusFromSuccess(superksuccess), cur_record);</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>}</div>
 </div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span> </div>
-<div class="foldopen" id="foldopen00391" data-start="{" data-end="}">
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ab5a2a4d784b448170fdf2afee006f53a">  391</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#ab5a2a4d784b448170fdf2afee006f53a">AcquisitionWidget::getAcquiring</a>(<span class="keywordtype">int</span> record) {</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>  QSqlQuery query(QSqlDatabase::database(path));</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span> </div>
+<div class="foldopen" id="foldopen00390" data-start="{" data-end="}">
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ae46764c7e74366e7b04970887fc610f9">  390</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#ae46764c7e74366e7b04970887fc610f9">AcquisitionWidget::getTreatmentStatus</a>(<span class="keywordtype">bool</span> treatmentsuccess) {</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>  updateStatusForRecord(statusFromSuccess(treatmentsuccess), cur_record);</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>}</div>
+</div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span> </div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>  query.exec(<span class="stringliteral">&quot;update acquisition_sequence set acquiring = &#39;&#39;&quot;</span>);</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>  query.exec(<span class="stringliteral">&quot;select record from acquisition_sequence order by record&quot;</span>);</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>  QLOG_DEBUG() &lt;&lt; query.lastError().text();</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  <span class="keywordtype">int</span> seq_record = 0;</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  <span class="keywordtype">int</span> count = 0;</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  <span class="keywordflow">while</span> (query.next()) {</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>    seq_record = query.value(0).toInt();</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>    <span class="keywordflow">if</span> (seq_record &lt; 0) {</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>    }</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>    <span class="keywordflow">if</span> (count == record) {</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>      <span class="keywordflow">break</span>;</div>
+<div class="foldopen" id="foldopen00394" data-start="{" data-end="}">
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#ab5a2a4d784b448170fdf2afee006f53a">  394</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#ab5a2a4d784b448170fdf2afee006f53a">AcquisitionWidget::getAcquiring</a>(<span class="keywordtype">int</span> record) {</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>  QSqlQuery query(QSqlDatabase::database(path));</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span> </div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  query.exec(<span class="stringliteral">&quot;update acquisition_sequence set acquiring = &#39;&#39;&quot;</span>);</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  query.exec(<span class="stringliteral">&quot;select record from acquisition_sequence order by record&quot;</span>);</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  QLOG_DEBUG() &lt;&lt; query.lastError().text();</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>  <span class="keywordtype">int</span> seq_record = 0;</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>  <span class="keywordtype">int</span> count = 0;</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>  <span class="keywordflow">while</span> (query.next()) {</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>    seq_record = query.value(0).toInt();</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>    <span class="keywordflow">if</span> (seq_record &lt; 0) {</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>      <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>    }</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    count++;</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>  }</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>  QLOG_DEBUG() &lt;&lt; seq_record;</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>  query.prepare(<span class="stringliteral">&quot;update acquisition_sequence set acquiring = &#39;*&#39; where record = ?&quot;</span>);</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>  query.addBindValue(seq_record);</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  query.exec();</div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>  InitConfig();</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>  cur_record = seq_record;</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>}</div>
-</div>
-<div class="foldopen" id="foldopen00416" data-start="{" data-end="}">
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a4bdb63a5fc3388ae315ca35a157d805e">  416</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a4bdb63a5fc3388ae315ca35a157d805e">AcquisitionWidget::getFilenumber</a>(<span class="keywordtype">int</span> number) {</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>  filenumber = QString::number(number);</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    <span class="keywordflow">if</span> (count == record) {</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>    }</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>    count++;</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>  }</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  QLOG_DEBUG() &lt;&lt; seq_record;</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>  query.prepare(<span class="stringliteral">&quot;update acquisition_sequence set acquiring = &#39;*&#39; where record = ?&quot;</span>);</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>  query.addBindValue(seq_record);</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>  query.exec();</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>  InitConfig();</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>  cur_record = seq_record;</div>
 <div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>}</div>
 </div>
 <div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span> </div>
-<div class="foldopen" id="foldopen00420" data-start="{" data-end="}">
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a64956d687b1e0e38c1783d4e6bcee157">  420</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a64956d687b1e0e38c1783d4e6bcee157">AcquisitionWidget::isopenCameraWindow</a>(QVector&lt;bool&gt; isopencamerawindow) {</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>  acquisition-&gt;setIsOpenCameraWindow(isopencamerawindow);</div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>}</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span><span class="keywordtype">void</span> AcquisitionWidget::setAcquiringToLastRecord() {</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>  QSqlQuery query(QSqlDatabase::database(path));</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>  query.exec(<span class="stringliteral">&quot;update acquisition_sequence set acquiring = &#39;&#39;&quot;</span>);</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>  <span class="keywordflow">if</span> (!query.exec(<span class="stringliteral">&quot;select record from acquisition_sequence &quot;</span></div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>                  <span class="stringliteral">&quot;where record &gt;= 0 order by record desc limit 1&quot;</span>)) {</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>    QLOG_WARN() &lt;&lt; <span class="stringliteral">&quot;AcquisitionWidget::setAcquiringToLastRecord&quot;</span></div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>                &lt;&lt; query.lastError().text();</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>    InitConfig();</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>  }</div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>  <span class="keywordflow">if</span> (query.next()) {</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> lastRecord = query.value(0).toInt();</div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>    QSqlQuery <a class="code hl_slot" href="classAcquisitionWidget.html#aac224bb734fac1fd52909da07ac9838d">update</a>(QSqlDatabase::database(path));</div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>    <a class="code hl_slot" href="classAcquisitionWidget.html#aac224bb734fac1fd52909da07ac9838d">update</a>.prepare(<span class="stringliteral">&quot;update acquisition_sequence set acquiring = &#39;*&#39; where record = ?&quot;</span>);</div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>    <a class="code hl_slot" href="classAcquisitionWidget.html#aac224bb734fac1fd52909da07ac9838d">update</a>.addBindValue(lastRecord);</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>    <a class="code hl_slot" href="classAcquisitionWidget.html#aac224bb734fac1fd52909da07ac9838d">update</a>.exec();</div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>  }</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>  InitConfig();</div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>}</div>
+<div class="foldopen" id="foldopen00439" data-start="{" data-end="}">
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a4bdb63a5fc3388ae315ca35a157d805e">  439</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a4bdb63a5fc3388ae315ca35a157d805e">AcquisitionWidget::getFilenumber</a>(<span class="keywordtype">int</span> number) {</div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>  filenumber = QString::number(number);</div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>}</div>
 </div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span> </div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span><span class="keywordtype">void</span> AcquisitionWidget::dbConnexion() {</div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;AcquisitionWidget::dbConnexion&quot;</span>;</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>  path = <a class="code hl_function" href="namespaceUtils.html#a462dc923fdeb99b5f293b9ae5232d7e9">Utils::BuildDbPath</a>(appDirPath, <span class="stringliteral">&quot;acquisition.db3&quot;</span>);</div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>  QSqlDatabase db = <a class="code hl_function" href="namespaceUtils.html#a60bb559c4db2dd3f20088e0d41bfce64">Utils::ConnectSqliteDb</a>(path,</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>                                           <span class="stringliteral">&quot;AcquisitionWidget::dbConnexion&gt;&quot;</span>);</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>  <span class="keywordflow">if</span> (!db.isOpen()) {</div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>    <a class="code hl_function" href="namespaceUtils.html#aabbadc0951239409e666e7651dd510e4">Utils::EmitWarning</a>(<span class="keyword">this</span>, __FUNCTION__,</div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>                       db.lastError().text());</div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>  }</div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>  <span class="comment">// Create acquisition tables</span></div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>  QSqlQuery query(QSqlDatabase::database(path));</div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>  <a class="code hl_function" href="namespaceUtils.html#a8504378d35df860757f10bf3ba550a00">Utils::ExecSql</a>(</div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>      query,</div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>      <span class="stringliteral">&quot;create table if not exists acquisition_sequence &quot;</span></div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>      <span class="stringliteral">&quot;(record int primary key, &quot;</span></div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>      <span class="stringliteral">&quot;type varchar(128), &quot;</span></div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>      <span class="stringliteral">&quot;instrument varchar(128), &quot;</span></div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>      <span class="stringliteral">&quot;settings varchar(255), &quot;</span></div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>      <span class="stringliteral">&quot;scanplan varchar(128), &quot;</span></div>
-<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>      <span class="stringliteral">&quot;status varchar(128), &quot;</span></div>
-<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>      <span class="stringliteral">&quot;acquiring varchar(64))&quot;</span>,</div>
-<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>      <span class="stringliteral">&quot;AcquisitionWidget::dbConnexion&gt;&quot;</span>);</div>
-<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>  <a class="code hl_function" href="namespaceUtils.html#a8504378d35df860757f10bf3ba550a00">Utils::ExecSql</a>(query, <span class="stringliteral">&quot;update acquisition_sequence set status = &#39;&#39;&quot;</span>,</div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>                 <span class="stringliteral">&quot;AcquisitionWidget::dbConnexion&gt;&quot;</span>);</div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>  <a class="code hl_function" href="namespaceUtils.html#a8504378d35df860757f10bf3ba550a00">Utils::ExecSql</a>(query, <span class="stringliteral">&quot;update acquisition_sequence set acquiring = &#39;&#39;&quot;</span>,</div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>                 <span class="stringliteral">&quot;AcquisitionWidget::dbConnexion&gt;&quot;</span>);</div>
-<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>}</div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span> </div>
-<div class="foldopen" id="foldopen00452" data-start="{" data-end="}">
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a93526023269eb57eb4b700d2b0f45654">  452</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a93526023269eb57eb4b700d2b0f45654">AcquisitionWidget::showAcquisitionWarning</a>(QString message) {</div>
-<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>  <a class="code hl_function" href="namespaceUtils.html#aabbadc0951239409e666e7651dd510e4">Utils::EmitWarning</a>(<span class="keyword">this</span>, __FUNCTION__, message);</div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>}</div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span> </div>
+<div class="foldopen" id="foldopen00443" data-start="{" data-end="}">
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a64956d687b1e0e38c1783d4e6bcee157">  443</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a64956d687b1e0e38c1783d4e6bcee157">AcquisitionWidget::isopenCameraWindow</a>(QVector&lt;bool&gt; isopencamerawindow) {</div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>  acquisition-&gt;setIsOpenCameraWindow(isopencamerawindow);</div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>}</div>
 </div>
-<div class="ttc" id="aclassAcquisitionSequence_html"><div class="ttname"><a href="classAcquisitionSequence.html">AcquisitionSequence</a></div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00034">AcquisitionSequence.h:35</a></div></div>
-<div class="ttc" id="aclassAcquisitionSequence_html_a0e636cbd7fb41f0710abcb4748e57e30"><div class="ttname"><a href="classAcquisitionSequence.html#a0e636cbd7fb41f0710abcb4748e57e30">AcquisitionSequence::instrumentName</a></div><div class="ttdeci">QString instrumentName</div><div class="ttdoc">Instrument name.</div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00058">AcquisitionSequence.h:58</a></div></div>
-<div class="ttc" id="aclassAcquisitionSequence_html_a1c4e9db064c169bb08a4b3cbe39c0db5"><div class="ttname"><a href="classAcquisitionSequence.html#a1c4e9db064c169bb08a4b3cbe39c0db5">AcquisitionSequence::settings</a></div><div class="ttdeci">QString settings</div><div class="ttdoc">Settings string.</div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00062">AcquisitionSequence.h:62</a></div></div>
-<div class="ttc" id="aclassAcquisitionSequence_html_a519c0465077709f2de999bbd7acc2647"><div class="ttname"><a href="classAcquisitionSequence.html#a519c0465077709f2de999bbd7acc2647">AcquisitionSequence::scanplan</a></div><div class="ttdeci">QString scanplan</div><div class="ttdoc">Scan plan description.</div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00064">AcquisitionSequence.h:64</a></div></div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span> </div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span><span class="keywordtype">void</span> AcquisitionWidget::dbConnexion() {</div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;AcquisitionWidget::dbConnexion&quot;</span>;</div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>  path = <a class="code hl_function" href="namespaceUtils.html#a462dc923fdeb99b5f293b9ae5232d7e9">Utils::BuildDbPath</a>(appDirPath, <span class="stringliteral">&quot;acquisition.db3&quot;</span>);</div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>  QSqlDatabase db = <a class="code hl_function" href="namespaceUtils.html#a60bb559c4db2dd3f20088e0d41bfce64">Utils::ConnectSqliteDb</a>(path,</div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>                                           <span class="stringliteral">&quot;AcquisitionWidget::dbConnexion&gt;&quot;</span>);</div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>  <span class="keywordflow">if</span> (!db.isOpen()) {</div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>    <a class="code hl_function" href="namespaceUtils.html#aabbadc0951239409e666e7651dd510e4">Utils::EmitWarning</a>(<span class="keyword">this</span>, __FUNCTION__,</div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>                       db.lastError().text());</div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>  }</div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>  <span class="comment">// Create acquisition tables</span></div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>  QSqlQuery query(QSqlDatabase::database(path));</div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>  <a class="code hl_function" href="namespaceUtils.html#a8504378d35df860757f10bf3ba550a00">Utils::ExecSql</a>(</div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>      query,</div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>      <span class="stringliteral">&quot;create table if not exists acquisition_sequence &quot;</span></div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>      <span class="stringliteral">&quot;(record int primary key, &quot;</span></div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>      <span class="stringliteral">&quot;type varchar(128), &quot;</span></div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>      <span class="stringliteral">&quot;instrument varchar(128), &quot;</span></div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>      <span class="stringliteral">&quot;settings varchar(255), &quot;</span></div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>      <span class="stringliteral">&quot;scanplan varchar(128), &quot;</span></div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>      <span class="stringliteral">&quot;status varchar(128), &quot;</span></div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>      <span class="stringliteral">&quot;acquiring varchar(64))&quot;</span>,</div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>      <span class="stringliteral">&quot;AcquisitionWidget::dbConnexion&gt;&quot;</span>);</div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>  <a class="code hl_function" href="namespaceUtils.html#a8504378d35df860757f10bf3ba550a00">Utils::ExecSql</a>(query, <span class="stringliteral">&quot;update acquisition_sequence set status = &#39;&#39;&quot;</span>,</div>
+<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>                 <span class="stringliteral">&quot;AcquisitionWidget::dbConnexion&gt;&quot;</span>);</div>
+<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span>  <a class="code hl_function" href="namespaceUtils.html#a8504378d35df860757f10bf3ba550a00">Utils::ExecSql</a>(query, <span class="stringliteral">&quot;update acquisition_sequence set acquiring = &#39;&#39;&quot;</span>,</div>
+<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>                 <span class="stringliteral">&quot;AcquisitionWidget::dbConnexion&gt;&quot;</span>);</div>
+<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>}</div>
+<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span> </div>
+<div class="foldopen" id="foldopen00475" data-start="{" data-end="}">
+<div class="line"><a id="l00475" name="l00475"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a93526023269eb57eb4b700d2b0f45654">  475</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a93526023269eb57eb4b700d2b0f45654">AcquisitionWidget::showAcquisitionWarning</a>(QString message) {</div>
+<div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span>  <a class="code hl_function" href="namespaceUtils.html#aabbadc0951239409e666e7651dd510e4">Utils::EmitWarning</a>(<span class="keyword">this</span>, __FUNCTION__, message);</div>
+<div class="line"><a id="l00477" name="l00477"></a><span class="lineno">  477</span>}</div>
+</div>
+<div class="line"><a id="l00478" name="l00478"></a><span class="lineno">  478</span> </div>
+<div class="foldopen" id="foldopen00479" data-start="{" data-end="}">
+<div class="line"><a id="l00479" name="l00479"></a><span class="lineno"><a class="line" href="classAcquisitionWidget.html#a538114f5a0300302795d256873ea0734">  479</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classAcquisitionWidget.html#a538114f5a0300302795d256873ea0734">AcquisitionWidget::requestAnalysisFromThread</a>() {</div>
+<div class="line"><a id="l00480" name="l00480"></a><span class="lineno">  480</span>  emit <a class="code hl_signal" href="classAcquisitionWidget.html#ab3c30193159ef282fd3b77cbaceaacc5">requestAnalysis</a>();</div>
+<div class="line"><a id="l00481" name="l00481"></a><span class="lineno">  481</span>}</div>
+</div>
+<div class="ttc" id="aclassAcquisitionSequence_html"><div class="ttname"><a href="classAcquisitionSequence.html">AcquisitionSequence</a></div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00039">AcquisitionSequence.h:40</a></div></div>
+<div class="ttc" id="aclassAcquisitionSequence_html_a0e636cbd7fb41f0710abcb4748e57e30"><div class="ttname"><a href="classAcquisitionSequence.html#a0e636cbd7fb41f0710abcb4748e57e30">AcquisitionSequence::instrumentName</a></div><div class="ttdeci">QString instrumentName</div><div class="ttdoc">Instrument name.</div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00063">AcquisitionSequence.h:63</a></div></div>
+<div class="ttc" id="aclassAcquisitionSequence_html_a1c4e9db064c169bb08a4b3cbe39c0db5"><div class="ttname"><a href="classAcquisitionSequence.html#a1c4e9db064c169bb08a4b3cbe39c0db5">AcquisitionSequence::settings</a></div><div class="ttdeci">QString settings</div><div class="ttdoc">Settings string.</div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00067">AcquisitionSequence.h:67</a></div></div>
+<div class="ttc" id="aclassAcquisitionSequence_html_a519c0465077709f2de999bbd7acc2647"><div class="ttname"><a href="classAcquisitionSequence.html#a519c0465077709f2de999bbd7acc2647">AcquisitionSequence::scanplan</a></div><div class="ttdeci">QString scanplan</div><div class="ttdoc">Scan plan description.</div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00069">AcquisitionSequence.h:69</a></div></div>
 <div class="ttc" id="aclassAcquisitionSequence_html_a5cb42a054b5020184bd922c3ae9c4a0e"><div class="ttname"><a href="classAcquisitionSequence.html#a5cb42a054b5020184bd922c3ae9c4a0e">AcquisitionSequence::prepare</a></div><div class="ttdeci">void prepare()</div><div class="ttdoc">Prepare transient buffers and derived data before acquisition.</div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8cpp_source.html#l00199">AcquisitionSequence.cpp:199</a></div></div>
-<div class="ttc" id="aclassAcquisitionSequence_html_a7b1269c8636d378e7aede2aaef177fe9"><div class="ttname"><a href="classAcquisitionSequence.html#a7b1269c8636d378e7aede2aaef177fe9">AcquisitionSequence::instrumentType</a></div><div class="ttdeci">QString instrumentType</div><div class="ttdoc">Instrument type identifier.</div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00060">AcquisitionSequence.h:60</a></div></div>
-<div class="ttc" id="aclassAcquisitionSequence_html_a90d03b6a49a7fee01486bc6e538ad5cf"><div class="ttname"><a href="classAcquisitionSequence.html#a90d03b6a49a7fee01486bc6e538ad5cf">AcquisitionSequence::record</a></div><div class="ttdeci">int record</div><div class="ttdoc">Current record index.</div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00051">AcquisitionSequence.h:51</a></div></div>
-<div class="ttc" id="aclassAcquisitionSequence_html_a9a15a40ea25499a85709ff9845c4933e"><div class="ttname"><a href="classAcquisitionSequence.html#a9a15a40ea25499a85709ff9845c4933e">AcquisitionSequence::seq_record</a></div><div class="ttdeci">int seq_record</div><div class="ttdoc">Sequence record index.</div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00053">AcquisitionSequence.h:53</a></div></div>
+<div class="ttc" id="aclassAcquisitionSequence_html_a7b1269c8636d378e7aede2aaef177fe9"><div class="ttname"><a href="classAcquisitionSequence.html#a7b1269c8636d378e7aede2aaef177fe9">AcquisitionSequence::instrumentType</a></div><div class="ttdeci">QString instrumentType</div><div class="ttdoc">Instrument type identifier.</div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00065">AcquisitionSequence.h:65</a></div></div>
+<div class="ttc" id="aclassAcquisitionSequence_html_a90d03b6a49a7fee01486bc6e538ad5cf"><div class="ttname"><a href="classAcquisitionSequence.html#a90d03b6a49a7fee01486bc6e538ad5cf">AcquisitionSequence::record</a></div><div class="ttdeci">int record</div><div class="ttdoc">Current record index.</div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00056">AcquisitionSequence.h:56</a></div></div>
+<div class="ttc" id="aclassAcquisitionSequence_html_a9a15a40ea25499a85709ff9845c4933e"><div class="ttname"><a href="classAcquisitionSequence.html#a9a15a40ea25499a85709ff9845c4933e">AcquisitionSequence::seq_record</a></div><div class="ttdeci">int seq_record</div><div class="ttdoc">Sequence record index.</div><div class="ttdef"><b>Definition</b> <a href="AcquisitionSequence_8h_source.html#l00058">AcquisitionSequence.h:58</a></div></div>
 <div class="ttc" id="aclassAcquisitionThread_html"><div class="ttname"><a href="classAcquisitionThread.html">AcquisitionThread</a></div><div class="ttdef"><b>Definition</b> <a href="AcquisitionThread_8h_source.html#l00035">AcquisitionThread.h:36</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_a00f21ea2b6f657253751e32e7b6f0e14"><div class="ttname"><a href="classAcquisitionWidget.html#a00f21ea2b6f657253751e32e7b6f0e14">AcquisitionWidget::setDelegates</a></div><div class="ttdeci">void setDelegates()</div><div class="ttdoc">Create and apply table delegates.</div><div class="ttdef"><b>Definition</b> <a href="#l00173">AcquisitionWidget.cpp:173</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_a0153a7e3d72cf3e4a7a57aa80ab73a9c"><div class="ttname"><a href="classAcquisitionWidget.html#a0153a7e3d72cf3e4a7a57aa80ab73a9c">AcquisitionWidget::setMotor</a></div><div class="ttdeci">void setMotor(Motor *motor)</div><div class="ttdef"><b>Definition</b> <a href="#l00149">AcquisitionWidget.cpp:149</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_a0602fe0952da6c2db52696aa64caa63b"><div class="ttname"><a href="classAcquisitionWidget.html#a0602fe0952da6c2db52696aa64caa63b">AcquisitionWidget::setRaspiDac</a></div><div class="ttdeci">void setRaspiDac(Raspi *raspi)</div><div class="ttdef"><b>Definition</b> <a href="#l00169">AcquisitionWidget.cpp:169</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_a0e34a567dff3f47c135d71e7e2a604d0"><div class="ttname"><a href="classAcquisitionWidget.html#a0e34a567dff3f47c135d71e7e2a604d0">AcquisitionWidget::setComediDac</a></div><div class="ttdeci">void setComediDac(Comedi *comedi)</div><div class="ttdef"><b>Definition</b> <a href="#l00165">AcquisitionWidget.cpp:165</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_a44c6b4d3852b2b9fa5e0a56bbc92e312"><div class="ttname"><a href="classAcquisitionWidget.html#a44c6b4d3852b2b9fa5e0a56bbc92e312">AcquisitionWidget::setCamera</a></div><div class="ttdeci">void setCamera(QVector&lt; Camera * &gt; cameraList)</div><div class="ttdef"><b>Definition</b> <a href="#l00145">AcquisitionWidget.cpp:145</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_a4bdb63a5fc3388ae315ca35a157d805e"><div class="ttname"><a href="classAcquisitionWidget.html#a4bdb63a5fc3388ae315ca35a157d805e">AcquisitionWidget::getFilenumber</a></div><div class="ttdeci">void getFilenumber(int number)</div><div class="ttdef"><b>Definition</b> <a href="#l00416">AcquisitionWidget.cpp:416</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_a4f2e666cee23844b4b9cf604e346a011"><div class="ttname"><a href="classAcquisitionWidget.html#a4f2e666cee23844b4b9cf604e346a011">AcquisitionWidget::getSuperKData</a></div><div class="ttdeci">void getSuperKData(QString dataStr)</div><div class="ttdef"><b>Definition</b> <a href="#l00351">AcquisitionWidget.cpp:351</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_a4fe33f079c5d334bda53c621cd312e96"><div class="ttname"><a href="classAcquisitionWidget.html#a4fe33f079c5d334bda53c621cd312e96">AcquisitionWidget::getSuperKStatus</a></div><div class="ttdeci">void getSuperKStatus(bool superksuccess)</div><div class="ttdef"><b>Definition</b> <a href="#l00383">AcquisitionWidget.cpp:383</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_a560a54959e6833f22d4a86c0381d9183"><div class="ttname"><a href="classAcquisitionWidget.html#a560a54959e6833f22d4a86c0381d9183">AcquisitionWidget::reload</a></div><div class="ttdeci">void reload()</div><div class="ttdoc">Reload the acquisition table.</div><div class="ttdef"><b>Definition</b> <a href="#l00269">AcquisitionWidget.cpp:269</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_a64956d687b1e0e38c1783d4e6bcee157"><div class="ttname"><a href="classAcquisitionWidget.html#a64956d687b1e0e38c1783d4e6bcee157">AcquisitionWidget::isopenCameraWindow</a></div><div class="ttdeci">void isopenCameraWindow(QVector&lt; bool &gt; isopencamerawindow)</div><div class="ttdef"><b>Definition</b> <a href="#l00420">AcquisitionWidget.cpp:420</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_a6d68fd28914ddbe7d602993b8662ea6a"><div class="ttname"><a href="classAcquisitionWidget.html#a6d68fd28914ddbe7d602993b8662ea6a">AcquisitionWidget::setSuperK</a></div><div class="ttdeci">void setSuperK(SuperK *superk)</div><div class="ttdef"><b>Definition</b> <a href="#l00153">AcquisitionWidget.cpp:153</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a00f21ea2b6f657253751e32e7b6f0e14"><div class="ttname"><a href="classAcquisitionWidget.html#a00f21ea2b6f657253751e32e7b6f0e14">AcquisitionWidget::setDelegates</a></div><div class="ttdeci">void setDelegates()</div><div class="ttdoc">Create and apply table delegates.</div><div class="ttdef"><b>Definition</b> <a href="#l00175">AcquisitionWidget.cpp:175</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a0153a7e3d72cf3e4a7a57aa80ab73a9c"><div class="ttname"><a href="classAcquisitionWidget.html#a0153a7e3d72cf3e4a7a57aa80ab73a9c">AcquisitionWidget::setMotor</a></div><div class="ttdeci">void setMotor(Motor *motor)</div><div class="ttdef"><b>Definition</b> <a href="#l00151">AcquisitionWidget.cpp:151</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a0602fe0952da6c2db52696aa64caa63b"><div class="ttname"><a href="classAcquisitionWidget.html#a0602fe0952da6c2db52696aa64caa63b">AcquisitionWidget::setRaspiDac</a></div><div class="ttdeci">void setRaspiDac(Raspi *raspi)</div><div class="ttdef"><b>Definition</b> <a href="#l00171">AcquisitionWidget.cpp:171</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a0e34a567dff3f47c135d71e7e2a604d0"><div class="ttname"><a href="classAcquisitionWidget.html#a0e34a567dff3f47c135d71e7e2a604d0">AcquisitionWidget::setComediDac</a></div><div class="ttdeci">void setComediDac(Comedi *comedi)</div><div class="ttdef"><b>Definition</b> <a href="#l00167">AcquisitionWidget.cpp:167</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a44c6b4d3852b2b9fa5e0a56bbc92e312"><div class="ttname"><a href="classAcquisitionWidget.html#a44c6b4d3852b2b9fa5e0a56bbc92e312">AcquisitionWidget::setCamera</a></div><div class="ttdeci">void setCamera(QVector&lt; Camera * &gt; cameraList)</div><div class="ttdef"><b>Definition</b> <a href="#l00147">AcquisitionWidget.cpp:147</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a4bdb63a5fc3388ae315ca35a157d805e"><div class="ttname"><a href="classAcquisitionWidget.html#a4bdb63a5fc3388ae315ca35a157d805e">AcquisitionWidget::getFilenumber</a></div><div class="ttdeci">void getFilenumber(int number)</div><div class="ttdef"><b>Definition</b> <a href="#l00439">AcquisitionWidget.cpp:439</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a4f2e666cee23844b4b9cf604e346a011"><div class="ttname"><a href="classAcquisitionWidget.html#a4f2e666cee23844b4b9cf604e346a011">AcquisitionWidget::getSuperKData</a></div><div class="ttdeci">void getSuperKData(QString dataStr)</div><div class="ttdef"><b>Definition</b> <a href="#l00354">AcquisitionWidget.cpp:354</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a4fe33f079c5d334bda53c621cd312e96"><div class="ttname"><a href="classAcquisitionWidget.html#a4fe33f079c5d334bda53c621cd312e96">AcquisitionWidget::getSuperKStatus</a></div><div class="ttdeci">void getSuperKStatus(bool superksuccess)</div><div class="ttdef"><b>Definition</b> <a href="#l00386">AcquisitionWidget.cpp:386</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a538114f5a0300302795d256873ea0734"><div class="ttname"><a href="classAcquisitionWidget.html#a538114f5a0300302795d256873ea0734">AcquisitionWidget::requestAnalysisFromThread</a></div><div class="ttdeci">void requestAnalysisFromThread()</div><div class="ttdoc">Relay analysis request from acquisition thread.</div><div class="ttdef"><b>Definition</b> <a href="#l00479">AcquisitionWidget.cpp:479</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a560a54959e6833f22d4a86c0381d9183"><div class="ttname"><a href="classAcquisitionWidget.html#a560a54959e6833f22d4a86c0381d9183">AcquisitionWidget::reload</a></div><div class="ttdeci">void reload()</div><div class="ttdoc">Reload the acquisition table.</div><div class="ttdef"><b>Definition</b> <a href="#l00271">AcquisitionWidget.cpp:271</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a64956d687b1e0e38c1783d4e6bcee157"><div class="ttname"><a href="classAcquisitionWidget.html#a64956d687b1e0e38c1783d4e6bcee157">AcquisitionWidget::isopenCameraWindow</a></div><div class="ttdeci">void isopenCameraWindow(QVector&lt; bool &gt; isopencamerawindow)</div><div class="ttdef"><b>Definition</b> <a href="#l00443">AcquisitionWidget.cpp:443</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a6d68fd28914ddbe7d602993b8662ea6a"><div class="ttname"><a href="classAcquisitionWidget.html#a6d68fd28914ddbe7d602993b8662ea6a">AcquisitionWidget::setSuperK</a></div><div class="ttdeci">void setSuperK(SuperK *superk)</div><div class="ttdef"><b>Definition</b> <a href="#l00155">AcquisitionWidget.cpp:155</a></div></div>
 <div class="ttc" id="aclassAcquisitionWidget_html_a7cfa4511b1126f95c8c3ea03ad812fd8"><div class="ttname"><a href="classAcquisitionWidget.html#a7cfa4511b1126f95c8c3ea03ad812fd8">AcquisitionWidget::AcquisitionWidget</a></div><div class="ttdeci">AcquisitionWidget(QString appDirPath=QString())</div><div class="ttdef"><b>Definition</b> <a href="#l00027">AcquisitionWidget.cpp:27</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_a9049c5959327a481327afabd87bee4b9"><div class="ttname"><a href="classAcquisitionWidget.html#a9049c5959327a481327afabd87bee4b9">AcquisitionWidget::remove</a></div><div class="ttdeci">void remove()</div><div class="ttdoc">Remove the selected acquisition row.</div><div class="ttdef"><b>Definition</b> <a href="#l00273">AcquisitionWidget.cpp:273</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_a93526023269eb57eb4b700d2b0f45654"><div class="ttname"><a href="classAcquisitionWidget.html#a93526023269eb57eb4b700d2b0f45654">AcquisitionWidget::showAcquisitionWarning</a></div><div class="ttdeci">void showAcquisitionWarning(QString message)</div><div class="ttdef"><b>Definition</b> <a href="#l00452">AcquisitionWidget.cpp:452</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_aa64cd52d5904b3438815351417c47712"><div class="ttname"><a href="classAcquisitionWidget.html#aa64cd52d5904b3438815351417c47712">AcquisitionWidget::getMotorStatus</a></div><div class="ttdeci">void getMotorStatus(bool motorsuccess)</div><div class="ttdef"><b>Definition</b> <a href="#l00379">AcquisitionWidget.cpp:379</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_aa81ab242e09df01b0c8478d254502996"><div class="ttname"><a href="classAcquisitionWidget.html#aa81ab242e09df01b0c8478d254502996">AcquisitionWidget::getCameraStatus</a></div><div class="ttdeci">void getCameraStatus(bool imagesuccess)</div><div class="ttdef"><b>Definition</b> <a href="#l00371">AcquisitionWidget.cpp:371</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_aa946d8385c2d3449b779aff4cea688e2"><div class="ttname"><a href="classAcquisitionWidget.html#aa946d8385c2d3449b779aff4cea688e2">AcquisitionWidget::setAcqFile</a></div><div class="ttdeci">void setAcqFile(QString acqfile)</div><div class="ttdef"><b>Definition</b> <a href="#l00122">AcquisitionWidget.cpp:122</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_aac224bb734fac1fd52909da07ac9838d"><div class="ttname"><a href="classAcquisitionWidget.html#aac224bb734fac1fd52909da07ac9838d">AcquisitionWidget::update</a></div><div class="ttdeci">void update()</div><div class="ttdoc">Refresh displayed values.</div><div class="ttdef"><b>Definition</b> <a href="#l00264">AcquisitionWidget.cpp:264</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_aac5152376c499940bd2ce3cbabe13e32"><div class="ttname"><a href="classAcquisitionWidget.html#aac5152376c499940bd2ce3cbabe13e32">AcquisitionWidget::run</a></div><div class="ttdeci">void run()</div><div class="ttdoc">Start acquisition.</div><div class="ttdef"><b>Definition</b> <a href="#l00285">AcquisitionWidget.cpp:285</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_ab4a3398cdb02c5c29bd33fa37b8ffc00"><div class="ttname"><a href="classAcquisitionWidget.html#ab4a3398cdb02c5c29bd33fa37b8ffc00">AcquisitionWidget::setDbPath</a></div><div class="ttdeci">void setDbPath(QString path)</div><div class="ttdef"><b>Definition</b> <a href="#l00127">AcquisitionWidget.cpp:127</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_ab5a2a4d784b448170fdf2afee006f53a"><div class="ttname"><a href="classAcquisitionWidget.html#ab5a2a4d784b448170fdf2afee006f53a">AcquisitionWidget::getAcquiring</a></div><div class="ttdeci">void getAcquiring(int record)</div><div class="ttdef"><b>Definition</b> <a href="#l00391">AcquisitionWidget.cpp:391</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_ab8a888f509b99ce1ba37e1cc142f2bf6"><div class="ttname"><a href="classAcquisitionWidget.html#ab8a888f509b99ce1ba37e1cc142f2bf6">AcquisitionWidget::splashScreen</a></div><div class="ttdeci">void splashScreen(QString imagepath, int screen_x, int screen_y)</div><div class="ttdef"><b>Definition</b> <a href="#l00335">AcquisitionWidget.cpp:335</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_abc7c11f13fd726c2fdcacc5866eca9c2"><div class="ttname"><a href="classAcquisitionWidget.html#abc7c11f13fd726c2fdcacc5866eca9c2">AcquisitionWidget::getPosition</a></div><div class="ttdeci">void getPosition(QString positionQString)</div><div class="ttdef"><b>Definition</b> <a href="#l00347">AcquisitionWidget.cpp:347</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_ac9552cf19215c5e2cfaee3094e3599ec"><div class="ttname"><a href="classAcquisitionWidget.html#ac9552cf19215c5e2cfaee3094e3599ec">AcquisitionWidget::setComediCounter</a></div><div class="ttdeci">void setComediCounter(Comedi *comedi)</div><div class="ttdef"><b>Definition</b> <a href="#l00161">AcquisitionWidget.cpp:161</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_acd075e4e967badd0298fdcf4afc04a02"><div class="ttname"><a href="classAcquisitionWidget.html#acd075e4e967badd0298fdcf4afc04a02">AcquisitionWidget::~AcquisitionWidget</a></div><div class="ttdeci">~AcquisitionWidget() override</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition</b> <a href="#l00112">AcquisitionWidget.cpp:112</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_ad24820e7df2349a59bf93abf27e1dd59"><div class="ttname"><a href="classAcquisitionWidget.html#ad24820e7df2349a59bf93abf27e1dd59">AcquisitionWidget::setDac</a></div><div class="ttdeci">void setDac(Dac *dac)</div><div class="ttdef"><b>Definition</b> <a href="#l00157">AcquisitionWidget.cpp:157</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_ae46764c7e74366e7b04970887fc610f9"><div class="ttname"><a href="classAcquisitionWidget.html#ae46764c7e74366e7b04970887fc610f9">AcquisitionWidget::getTreatmentStatus</a></div><div class="ttdeci">void getTreatmentStatus(bool treatmentstatus)</div><div class="ttdef"><b>Definition</b> <a href="#l00387">AcquisitionWidget.cpp:387</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_ae50d846f8aea7c17c63896525dfad3af"><div class="ttname"><a href="classAcquisitionWidget.html#ae50d846f8aea7c17c63896525dfad3af">AcquisitionWidget::getDacStatus</a></div><div class="ttdeci">void getDacStatus(bool dacsuccess)</div><div class="ttdef"><b>Definition</b> <a href="#l00375">AcquisitionWidget.cpp:375</a></div></div>
-<div class="ttc" id="aclassAcquisitionWidget_html_af302f1ffaff24f597462939e01e56805"><div class="ttname"><a href="classAcquisitionWidget.html#af302f1ffaff24f597462939e01e56805">AcquisitionWidget::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdoc">Stop acquisition.</div><div class="ttdef"><b>Definition</b> <a href="#l00331">AcquisitionWidget.cpp:331</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a9049c5959327a481327afabd87bee4b9"><div class="ttname"><a href="classAcquisitionWidget.html#a9049c5959327a481327afabd87bee4b9">AcquisitionWidget::remove</a></div><div class="ttdeci">void remove()</div><div class="ttdoc">Remove the selected acquisition row.</div><div class="ttdef"><b>Definition</b> <a href="#l00275">AcquisitionWidget.cpp:275</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_a93526023269eb57eb4b700d2b0f45654"><div class="ttname"><a href="classAcquisitionWidget.html#a93526023269eb57eb4b700d2b0f45654">AcquisitionWidget::showAcquisitionWarning</a></div><div class="ttdeci">void showAcquisitionWarning(QString message)</div><div class="ttdef"><b>Definition</b> <a href="#l00475">AcquisitionWidget.cpp:475</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_aa64cd52d5904b3438815351417c47712"><div class="ttname"><a href="classAcquisitionWidget.html#aa64cd52d5904b3438815351417c47712">AcquisitionWidget::getMotorStatus</a></div><div class="ttdeci">void getMotorStatus(bool motorsuccess)</div><div class="ttdef"><b>Definition</b> <a href="#l00382">AcquisitionWidget.cpp:382</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_aa81ab242e09df01b0c8478d254502996"><div class="ttname"><a href="classAcquisitionWidget.html#aa81ab242e09df01b0c8478d254502996">AcquisitionWidget::getCameraStatus</a></div><div class="ttdeci">void getCameraStatus(bool imagesuccess)</div><div class="ttdef"><b>Definition</b> <a href="#l00374">AcquisitionWidget.cpp:374</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_aa946d8385c2d3449b779aff4cea688e2"><div class="ttname"><a href="classAcquisitionWidget.html#aa946d8385c2d3449b779aff4cea688e2">AcquisitionWidget::setAcqFile</a></div><div class="ttdeci">void setAcqFile(QString acqfile)</div><div class="ttdef"><b>Definition</b> <a href="#l00124">AcquisitionWidget.cpp:124</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_aac224bb734fac1fd52909da07ac9838d"><div class="ttname"><a href="classAcquisitionWidget.html#aac224bb734fac1fd52909da07ac9838d">AcquisitionWidget::update</a></div><div class="ttdeci">void update()</div><div class="ttdoc">Refresh displayed values.</div><div class="ttdef"><b>Definition</b> <a href="#l00266">AcquisitionWidget.cpp:266</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_aac5152376c499940bd2ce3cbabe13e32"><div class="ttname"><a href="classAcquisitionWidget.html#aac5152376c499940bd2ce3cbabe13e32">AcquisitionWidget::run</a></div><div class="ttdeci">void run()</div><div class="ttdoc">Start acquisition.</div><div class="ttdef"><b>Definition</b> <a href="#l00287">AcquisitionWidget.cpp:287</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_ab3c30193159ef282fd3b77cbaceaacc5"><div class="ttname"><a href="classAcquisitionWidget.html#ab3c30193159ef282fd3b77cbaceaacc5">AcquisitionWidget::requestAnalysis</a></div><div class="ttdeci">void requestAnalysis()</div><div class="ttdoc">Request analysis execution.</div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_ab4a3398cdb02c5c29bd33fa37b8ffc00"><div class="ttname"><a href="classAcquisitionWidget.html#ab4a3398cdb02c5c29bd33fa37b8ffc00">AcquisitionWidget::setDbPath</a></div><div class="ttdeci">void setDbPath(QString path)</div><div class="ttdef"><b>Definition</b> <a href="#l00129">AcquisitionWidget.cpp:129</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_ab5a2a4d784b448170fdf2afee006f53a"><div class="ttname"><a href="classAcquisitionWidget.html#ab5a2a4d784b448170fdf2afee006f53a">AcquisitionWidget::getAcquiring</a></div><div class="ttdeci">void getAcquiring(int record)</div><div class="ttdef"><b>Definition</b> <a href="#l00394">AcquisitionWidget.cpp:394</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_ab8a888f509b99ce1ba37e1cc142f2bf6"><div class="ttname"><a href="classAcquisitionWidget.html#ab8a888f509b99ce1ba37e1cc142f2bf6">AcquisitionWidget::splashScreen</a></div><div class="ttdeci">void splashScreen(QString imagepath, int screen_x, int screen_y)</div><div class="ttdef"><b>Definition</b> <a href="#l00338">AcquisitionWidget.cpp:338</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_abc7c11f13fd726c2fdcacc5866eca9c2"><div class="ttname"><a href="classAcquisitionWidget.html#abc7c11f13fd726c2fdcacc5866eca9c2">AcquisitionWidget::getPosition</a></div><div class="ttdeci">void getPosition(QString positionQString)</div><div class="ttdef"><b>Definition</b> <a href="#l00350">AcquisitionWidget.cpp:350</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_ac9552cf19215c5e2cfaee3094e3599ec"><div class="ttname"><a href="classAcquisitionWidget.html#ac9552cf19215c5e2cfaee3094e3599ec">AcquisitionWidget::setComediCounter</a></div><div class="ttdeci">void setComediCounter(Comedi *comedi)</div><div class="ttdef"><b>Definition</b> <a href="#l00163">AcquisitionWidget.cpp:163</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_acd075e4e967badd0298fdcf4afc04a02"><div class="ttname"><a href="classAcquisitionWidget.html#acd075e4e967badd0298fdcf4afc04a02">AcquisitionWidget::~AcquisitionWidget</a></div><div class="ttdeci">~AcquisitionWidget() override</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition</b> <a href="#l00114">AcquisitionWidget.cpp:114</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_ad24820e7df2349a59bf93abf27e1dd59"><div class="ttname"><a href="classAcquisitionWidget.html#ad24820e7df2349a59bf93abf27e1dd59">AcquisitionWidget::setDac</a></div><div class="ttdeci">void setDac(Dac *dac)</div><div class="ttdef"><b>Definition</b> <a href="#l00159">AcquisitionWidget.cpp:159</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_ae46764c7e74366e7b04970887fc610f9"><div class="ttname"><a href="classAcquisitionWidget.html#ae46764c7e74366e7b04970887fc610f9">AcquisitionWidget::getTreatmentStatus</a></div><div class="ttdeci">void getTreatmentStatus(bool treatmentstatus)</div><div class="ttdef"><b>Definition</b> <a href="#l00390">AcquisitionWidget.cpp:390</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_ae50d846f8aea7c17c63896525dfad3af"><div class="ttname"><a href="classAcquisitionWidget.html#ae50d846f8aea7c17c63896525dfad3af">AcquisitionWidget::getDacStatus</a></div><div class="ttdeci">void getDacStatus(bool dacsuccess)</div><div class="ttdef"><b>Definition</b> <a href="#l00378">AcquisitionWidget.cpp:378</a></div></div>
+<div class="ttc" id="aclassAcquisitionWidget_html_af302f1ffaff24f597462939e01e56805"><div class="ttname"><a href="classAcquisitionWidget.html#af302f1ffaff24f597462939e01e56805">AcquisitionWidget::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdoc">Stop acquisition.</div><div class="ttdef"><b>Definition</b> <a href="#l00333">AcquisitionWidget.cpp:333</a></div></div>
 <div class="ttc" id="aclassAcquisitionWidget_html_af5c6b05403191561867c66d540774efe"><div class="ttname"><a href="classAcquisitionWidget.html#af5c6b05403191561867c66d540774efe">AcquisitionWidget::showWarning</a></div><div class="ttdeci">void showWarning(QString message)</div></div>
 <div class="ttc" id="aclassCamera_html"><div class="ttname"><a href="classCamera.html">Camera</a></div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00052">Camera.h:53</a></div></div>
 <div class="ttc" id="aclassCamera_html_ac7debddf30d07a115056facc32cd7cd0"><div class="ttname"><a href="classCamera.html#ac7debddf30d07a115056facc32cd7cd0">Camera::model</a></div><div class="ttdeci">QString model</div><div class="ttdoc">Current model.</div><div class="ttdef"><b>Definition</b> <a href="Camera_8h_source.html#l00410">Camera.h:410</a></div></div>

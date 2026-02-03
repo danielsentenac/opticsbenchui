@@ -152,6 +152,10 @@ Signals</h2></td></tr>
 <tr class="separator:a39833789a12d8179ea67c04a5494c2ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab82e70d8dce3aec093ed1da5994c0d83" id="r_ab82e70d8dce3aec093ed1da5994c0d83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab82e70d8dce3aec093ed1da5994c0d83">splashScreen</a> (QString imagepath, int screen_x, int screen_y)</td></tr>
 <tr class="separator:ab82e70d8dce3aec093ed1da5994c0d83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4964cd0ece82de51ec8ce2848488e9da" id="r_a4964cd0ece82de51ec8ce2848488e9da"><td class="memItemLeft" align="right" valign="top"><a id="a4964cd0ece82de51ec8ce2848488e9da" name="a4964cd0ece82de51ec8ce2848488e9da"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>requestAnalysis</b> ()</td></tr>
+<tr class="memdesc:a4964cd0ece82de51ec8ce2848488e9da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request analysis execution (triggered by ANALYSE=START in settings). <br /></td></tr>
+<tr class="separator:a4964cd0ece82de51ec8ce2848488e9da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -254,9 +258,9 @@ Protected Member Functions</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00052">52</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00053">53</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="AcquisitionThread_8cpp_source.html#l00106">stop()</a>.</p>
+<p class="reference">References <a class="el" href="AcquisitionThread_8cpp_source.html#l00114">stop()</a>.</p>
 
 </div>
 </div>
@@ -290,7 +294,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="AcquisitionThread_8cpp_source.html#l00112">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="AcquisitionThread_8cpp_source.html#l00123">run()</a>.</p>
 
 </div>
 </div>
@@ -385,7 +389,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="AcquisitionThread_8cpp_source.html#l00112">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="AcquisitionThread_8cpp_source.html#l00123">run()</a>.</p>
 
 </div>
 </div>
@@ -511,7 +515,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="AcquisitionThread_8cpp_source.html#l00112">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="AcquisitionThread_8cpp_source.html#l00123">run()</a>.</p>
 
 </div>
 </div>
@@ -575,7 +579,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="AcquisitionThread_8cpp_source.html#l00112">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="AcquisitionThread_8cpp_source.html#l00123">run()</a>.</p>
 
 </div>
 </div>
@@ -697,9 +701,9 @@ Protected Member Functions</h2></td></tr>
 
 <p>Thread entry point. </p>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00112">112</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00123">123</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Utils_8cpp_source.html#l00035">Utils::CurrentTimestampString()</a>, <a class="el" href="Utils_8h_source.html#l00069">Utils::EmitWarning()</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00049">AcquisitionSequence::etime</a>, <a class="el" href="#a04ce6ae9492b57dcd66a8fbe168746f3">getAcquiring()</a>, <a class="el" href="#a6ef37ddf3cb4d260a727e751f99ff13f">getFilenumber()</a>, <a class="el" href="#ad4b0a66b1101b225595f1b97748ab280">getPosition()</a>, <a class="el" href="#ab34ff2f1f93e40c28fc1138688b22b2b">getSuperKData()</a>, <a class="el" href="Utils_8cpp_source.html#l00023">Utils::GetTimeMicroseconds()</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00058">AcquisitionSequence::instrumentName</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00060">AcquisitionSequence::instrumentType</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00112">AcquisitionSequence::position</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00051">AcquisitionSequence::record</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00053">AcquisitionSequence::seq_record</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00102">AcquisitionSequence::sleep</a>, <a class="el" href="classCamera.html#ad37397588aede3d02dac11ba4780bb0f">Camera::stop()</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00122">AcquisitionSequence::superkLwpValue</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00118">AcquisitionSequence::superkNdValue</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00116">AcquisitionSequence::superkPowerValue</a>, and <a class="el" href="AcquisitionSequence_8h_source.html#l00120">AcquisitionSequence::superkSwpValue</a>.</p>
+<p class="reference">References <a class="el" href="Utils_8cpp_source.html#l00035">Utils::CurrentTimestampString()</a>, <a class="el" href="Utils_8h_source.html#l00069">Utils::EmitWarning()</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00054">AcquisitionSequence::etime</a>, <a class="el" href="#a04ce6ae9492b57dcd66a8fbe168746f3">getAcquiring()</a>, <a class="el" href="#a6ef37ddf3cb4d260a727e751f99ff13f">getFilenumber()</a>, <a class="el" href="#ad4b0a66b1101b225595f1b97748ab280">getPosition()</a>, <a class="el" href="#ab34ff2f1f93e40c28fc1138688b22b2b">getSuperKData()</a>, <a class="el" href="Utils_8cpp_source.html#l00023">Utils::GetTimeMicroseconds()</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00063">AcquisitionSequence::instrumentName</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00065">AcquisitionSequence::instrumentType</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00117">AcquisitionSequence::position</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00056">AcquisitionSequence::record</a>, <a class="el" href="#a4964cd0ece82de51ec8ce2848488e9da">requestAnalysis()</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00058">AcquisitionSequence::seq_record</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00067">AcquisitionSequence::settings</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00107">AcquisitionSequence::sleep</a>, <a class="el" href="classCamera.html#ad37397588aede3d02dac11ba4780bb0f">Camera::stop()</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00127">AcquisitionSequence::superkLwpValue</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00123">AcquisitionSequence::superkNdValue</a>, <a class="el" href="AcquisitionSequence_8h_source.html#l00121">AcquisitionSequence::superkPowerValue</a>, and <a class="el" href="AcquisitionSequence_8h_source.html#l00125">AcquisitionSequence::superkSwpValue</a>.</p>
 
 </div>
 </div>
@@ -724,7 +728,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00059">59</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00067">67</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -749,7 +753,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00075">75</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00083">83</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -774,7 +778,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00079">79</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00087">87</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -799,7 +803,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00071">71</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00079">79</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -829,7 +833,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00087">87</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00095">95</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -854,7 +858,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00097">97</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00105">105</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -879,7 +883,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00063">63</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00071">71</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -904,7 +908,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00083">83</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00091">91</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -929,7 +933,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00092">92</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00100">100</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -954,7 +958,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00067">67</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00075">75</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
 </div>
 </div>
@@ -1048,9 +1052,9 @@ Protected Member Functions</h2></td></tr>
 
 <p>Request the thread to stop. </p>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00106">106</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00114">114</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="AcquisitionThread_8cpp_source.html#l00052">~AcquisitionThread()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="AcquisitionThread_8cpp_source.html#l00053">~AcquisitionThread()</a>.</p>
 
 </div>
 </div>
@@ -1071,7 +1075,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Wake the splash screen waiting for acquisition. </p>
 
-<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00102">102</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AcquisitionThread_8cpp_source.html#l00110">110</a> of file <a class="el" href="AcquisitionThread_8cpp_source.html">AcquisitionThread.cpp</a>.</p>
 
 </div>
 </div>

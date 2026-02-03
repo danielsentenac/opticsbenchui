@@ -104,6 +104,8 @@ $(function(){initNavTree('classAnalysisWidget.html',''); initResizable(true); })
 
 <div class="header">
   <div class="summary">
+<a href="#pub-slots">Public Slots</a> &#124;
+<a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classAnalysisWidget-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">AnalysisWidget Class Reference<div class="ingroups"><a class="el" href="group__ui.html">UI</a></div></div></div>
@@ -118,12 +120,45 @@ Inheritance diagram for AnalysisWidget:</div>
   <img src="classAnalysisWidget.png" alt=""/>
  </div></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-slots" name="pub-slots"></a>
+Public Slots</h2></td></tr>
+<tr class="memitem:a070e41f502feada79356e02d07a1e0dc" id="r_a070e41f502feada79356e02d07a1e0dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a070e41f502feada79356e02d07a1e0dc">update</a> ()</td></tr>
+<tr class="memdesc:a070e41f502feada79356e02d07a1e0dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refresh displayed values.  <br /></td></tr>
+<tr class="separator:a070e41f502feada79356e02d07a1e0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefae3fb4325546147d5e5ee289f9b6b5" id="r_aefae3fb4325546147d5e5ee289f9b6b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aefae3fb4325546147d5e5ee289f9b6b5">reload</a> ()</td></tr>
+<tr class="memdesc:aefae3fb4325546147d5e5ee289f9b6b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reload the analysis table.  <br /></td></tr>
+<tr class="separator:aefae3fb4325546147d5e5ee289f9b6b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44227dfc138d8f0ce26547620b16d346" id="r_a44227dfc138d8f0ce26547620b16d346"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44227dfc138d8f0ce26547620b16d346">remove</a> ()</td></tr>
+<tr class="memdesc:a44227dfc138d8f0ce26547620b16d346"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the selected analysis row.  <br /></td></tr>
+<tr class="separator:a44227dfc138d8f0ce26547620b16d346"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad0deb0cffb1debffc704e9269d12551" id="r_aad0deb0cffb1debffc704e9269d12551"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad0deb0cffb1debffc704e9269d12551">run</a> ()</td></tr>
+<tr class="memdesc:aad0deb0cffb1debffc704e9269d12551"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start analysis.  <br /></td></tr>
+<tr class="separator:aad0deb0cffb1debffc704e9269d12551"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaab4fbe99e67641f0267acf42417988" id="r_aaaab4fbe99e67641f0267acf42417988"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaaab4fbe99e67641f0267acf42417988">stop</a> ()</td></tr>
+<tr class="memdesc:aaaab4fbe99e67641f0267acf42417988"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop analysis.  <br /></td></tr>
+<tr class="separator:aaaab4fbe99e67641f0267acf42417988"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a201fe7c961b1d9cd2c4852729331b9c3" id="r_a201fe7c961b1d9cd2c4852729331b9c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a201fe7c961b1d9cd2c4852729331b9c3">setDbPath</a> (QString path)</td></tr>
+<tr class="separator:a201fe7c961b1d9cd2c4852729331b9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b50463355f626b510e2eaca3c4582b4" id="r_a8b50463355f626b510e2eaca3c4582b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b50463355f626b510e2eaca3c4582b4">runFromAcquisition</a> ()</td></tr>
+<tr class="memdesc:a8b50463355f626b510e2eaca3c4582b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run analysis triggered by acquisition.  <br /></td></tr>
+<tr class="separator:a8b50463355f626b510e2eaca3c4582b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c84b73b5ac067be1a7be27e4dfee941" id="r_a8c84b73b5ac067be1a7be27e4dfee941"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c84b73b5ac067be1a7be27e4dfee941">analysisStarted</a> (int record)</td></tr>
+<tr class="separator:a8c84b73b5ac067be1a7be27e4dfee941"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f280a63fa4a8ded04789112cea88b68" id="r_a0f280a63fa4a8ded04789112cea88b68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f280a63fa4a8ded04789112cea88b68">analysisFinished</a> (int record, bool success, const QString &amp;output)</td></tr>
+<tr class="separator:a0f280a63fa4a8ded04789112cea88b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a777c7dd8ca130a2ee07bef90cb8a2177" id="r_a777c7dd8ca130a2ee07bef90cb8a2177"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a777c7dd8ca130a2ee07bef90cb8a2177">showAnalysisWarning</a> (QString message)</td></tr>
+<tr class="separator:a777c7dd8ca130a2ee07bef90cb8a2177"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="signals" name="signals"></a>
+Signals</h2></td></tr>
+<tr class="memitem:aa8befc39580821d330690195912e5433" id="r_aa8befc39580821d330690195912e5433"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8befc39580821d330690195912e5433">showWarning</a> (QString message)</td></tr>
+<tr class="separator:aa8befc39580821d330690195912e5433"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a89ed31318503bb6e049c873ca965e6df" id="r_a89ed31318503bb6e049c873ca965e6df"><td class="memItemLeft" align="right" valign="top"><a id="a89ed31318503bb6e049c873ca965e6df" name="a89ed31318503bb6e049c873ca965e6df"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>AnalysisWidget</b> ()</td></tr>
-<tr class="memdesc:a89ed31318503bb6e049c873ca965e6df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
-<tr class="separator:a89ed31318503bb6e049c873ca965e6df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a967064cbeb7cc62daa72226030e027b7" id="r_a967064cbeb7cc62daa72226030e027b7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a967064cbeb7cc62daa72226030e027b7">AnalysisWidget</a> (QString appDirPath=QString())</td></tr>
+<tr class="memdesc:a967064cbeb7cc62daa72226030e027b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
+<tr class="separator:a967064cbeb7cc62daa72226030e027b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a275424309fe7ecb5a13c10608e8ae8e0" id="r_a275424309fe7ecb5a13c10608e8ae8e0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a275424309fe7ecb5a13c10608e8ae8e0">~AnalysisWidget</a> () override</td></tr>
 <tr class="memdesc:a275424309fe7ecb5a13c10608e8ae8e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="separator:a275424309fe7ecb5a13c10608e8ae8e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,8 +166,39 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>UI widget for analysis tools. </p>
 
-<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8h_source.html#l00027">27</a> of file <a class="el" href="AnalysisWidget_8h_source.html">AnalysisWidget.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8h_source.html#l00028">28</a> of file <a class="el" href="AnalysisWidget_8h_source.html">AnalysisWidget.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a967064cbeb7cc62daa72226030e027b7" name="a967064cbeb7cc62daa72226030e027b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a967064cbeb7cc62daa72226030e027b7">&#9670;&#160;</a></span>AnalysisWidget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">AnalysisWidget::AnalysisWidget </td>
+          <td>(</td>
+          <td class="paramtype">QString</td>          <td class="paramname"><span class="paramname"><em>appDirPath</em></span><span class="paramdefsep"> = </span><span class="paramdefval">QString()</span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8cpp_source.html#l00027">27</a> of file <a class="el" href="AnalysisWidget_8cpp_source.html">AnalysisWidget.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="AnalysisWidget_8cpp_source.html#l00195">analysisFinished()</a>, <a class="el" href="AnalysisWidget_8cpp_source.html#l00191">analysisStarted()</a>, <a class="el" href="AnalysisWidget_8cpp_source.html#l00138">reload()</a>, <a class="el" href="AnalysisWidget_8cpp_source.html#l00142">remove()</a>, <a class="el" href="AnalysisWidget_8cpp_source.html#l00173">run()</a>, <a class="el" href="AnalysisWidget_8cpp_source.html#l00205">showAnalysisWarning()</a>, <a class="el" href="#aa8befc39580821d330690195912e5433">showWarning()</a>, <a class="el" href="AnalysisWidget_8cpp_source.html#l00186">stop()</a>, and <a class="el" href="AnalysisWidget_8cpp_source.html#l00133">update()</a>.</p>
+
+</div>
+</div>
 <a id="a275424309fe7ecb5a13c10608e8ae8e0" name="a275424309fe7ecb5a13c10608e8ae8e0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a275424309fe7ecb5a13c10608e8ae8e0">&#9670;&#160;</a></span>~AnalysisWidget()</h2>
 
@@ -158,7 +224,380 @@ Public Member Functions</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8cpp_source.html#l00022">22</a> of file <a class="el" href="AnalysisWidget_8cpp_source.html">AnalysisWidget.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8cpp_source.html#l00088">88</a> of file <a class="el" href="AnalysisWidget_8cpp_source.html">AnalysisWidget.cpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0f280a63fa4a8ded04789112cea88b68" name="a0f280a63fa4a8ded04789112cea88b68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f280a63fa4a8ded04789112cea88b68">&#9670;&#160;</a></span>analysisFinished</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnalysisWidget::analysisFinished </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>record</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>success</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>output</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel slot">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Update status label when a task finishes. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">record</td><td>Task record index. </td></tr>
+    <tr><td class="paramname">success</td><td>True if the command succeeded. </td></tr>
+    <tr><td class="paramname">output</td><td>Process output. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8cpp_source.html#l00195">195</a> of file <a class="el" href="AnalysisWidget_8cpp_source.html">AnalysisWidget.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="AnalysisWidget_8cpp_source.html#l00027">AnalysisWidget()</a>.</p>
+
+</div>
+</div>
+<a id="a8c84b73b5ac067be1a7be27e4dfee941" name="a8c84b73b5ac067be1a7be27e4dfee941"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c84b73b5ac067be1a7be27e4dfee941">&#9670;&#160;</a></span>analysisStarted</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnalysisWidget::analysisStarted </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>record</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel slot">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Update status label when a task starts. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">record</td><td>Task record index. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8cpp_source.html#l00191">191</a> of file <a class="el" href="AnalysisWidget_8cpp_source.html">AnalysisWidget.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="AnalysisWidget_8cpp_source.html#l00027">AnalysisWidget()</a>.</p>
+
+</div>
+</div>
+<a id="aefae3fb4325546147d5e5ee289f9b6b5" name="aefae3fb4325546147d5e5ee289f9b6b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefae3fb4325546147d5e5ee289f9b6b5">&#9670;&#160;</a></span>reload</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnalysisWidget::reload </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel slot">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reload the analysis table. </p>
+
+<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8cpp_source.html#l00138">138</a> of file <a class="el" href="AnalysisWidget_8cpp_source.html">AnalysisWidget.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="AnalysisWidget_8cpp_source.html#l00027">AnalysisWidget()</a>.</p>
+
+</div>
+</div>
+<a id="a44227dfc138d8f0ce26547620b16d346" name="a44227dfc138d8f0ce26547620b16d346"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44227dfc138d8f0ce26547620b16d346">&#9670;&#160;</a></span>remove</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnalysisWidget::remove </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel slot">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Remove the selected analysis row. </p>
+
+<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8cpp_source.html#l00142">142</a> of file <a class="el" href="AnalysisWidget_8cpp_source.html">AnalysisWidget.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="AnalysisWidget_8cpp_source.html#l00027">AnalysisWidget()</a>.</p>
+
+</div>
+</div>
+<a id="aad0deb0cffb1debffc704e9269d12551" name="aad0deb0cffb1debffc704e9269d12551"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad0deb0cffb1debffc704e9269d12551">&#9670;&#160;</a></span>run</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnalysisWidget::run </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel slot">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Start analysis. </p>
+
+<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8cpp_source.html#l00173">173</a> of file <a class="el" href="AnalysisWidget_8cpp_source.html">AnalysisWidget.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="AnalysisWidget_8cpp_source.html#l00186">stop()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="AnalysisWidget_8cpp_source.html#l00027">AnalysisWidget()</a>, and <a class="el" href="AnalysisWidget_8cpp_source.html#l00181">runFromAcquisition()</a>.</p>
+
+</div>
+</div>
+<a id="a8b50463355f626b510e2eaca3c4582b4" name="a8b50463355f626b510e2eaca3c4582b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b50463355f626b510e2eaca3c4582b4">&#9670;&#160;</a></span>runFromAcquisition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnalysisWidget::runFromAcquisition </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel slot">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Run analysis triggered by acquisition. </p>
+
+<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8cpp_source.html#l00181">181</a> of file <a class="el" href="AnalysisWidget_8cpp_source.html">AnalysisWidget.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="AnalysisWidget_8cpp_source.html#l00173">run()</a>.</p>
+
+</div>
+</div>
+<a id="a201fe7c961b1d9cd2c4852729331b9c3" name="a201fe7c961b1d9cd2c4852729331b9c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a201fe7c961b1d9cd2c4852729331b9c3">&#9670;&#160;</a></span>setDbPath</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnalysisWidget::setDbPath </td>
+          <td>(</td>
+          <td class="paramtype">QString</td>          <td class="paramname"><span class="paramname"><em>path</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel slot">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the database path used by the widget. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>Filesystem path to DBs. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8cpp_source.html#l00098">98</a> of file <a class="el" href="AnalysisWidget_8cpp_source.html">AnalysisWidget.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a777c7dd8ca130a2ee07bef90cb8a2177" name="a777c7dd8ca130a2ee07bef90cb8a2177"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a777c7dd8ca130a2ee07bef90cb8a2177">&#9670;&#160;</a></span>showAnalysisWarning</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnalysisWidget::showAnalysisWarning </td>
+          <td>(</td>
+          <td class="paramtype">QString</td>          <td class="paramname"><span class="paramname"><em>message</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel slot">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Show analysis warning to the user. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>Warning message. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8cpp_source.html#l00205">205</a> of file <a class="el" href="AnalysisWidget_8cpp_source.html">AnalysisWidget.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="Utils_8h_source.html#l00069">Utils::EmitWarning()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="AnalysisWidget_8cpp_source.html#l00027">AnalysisWidget()</a>.</p>
+
+</div>
+</div>
+<a id="aa8befc39580821d330690195912e5433" name="aa8befc39580821d330690195912e5433"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8befc39580821d330690195912e5433">&#9670;&#160;</a></span>showWarning</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnalysisWidget::showWarning </td>
+          <td>(</td>
+          <td class="paramtype">QString</td>          <td class="paramname"><span class="paramname"><em>message</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel signal">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Emit warnings to the UI. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>Warning message. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="reference">Referenced by <a class="el" href="AnalysisWidget_8cpp_source.html#l00027">AnalysisWidget()</a>.</p>
+
+</div>
+</div>
+<a id="aaaab4fbe99e67641f0267acf42417988" name="aaaab4fbe99e67641f0267acf42417988"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaab4fbe99e67641f0267acf42417988">&#9670;&#160;</a></span>stop</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnalysisWidget::stop </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel slot">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stop analysis. </p>
+
+<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8cpp_source.html#l00186">186</a> of file <a class="el" href="AnalysisWidget_8cpp_source.html">AnalysisWidget.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="AnalysisWidget_8cpp_source.html#l00027">AnalysisWidget()</a>, and <a class="el" href="AnalysisWidget_8cpp_source.html#l00173">run()</a>.</p>
+
+</div>
+</div>
+<a id="a070e41f502feada79356e02d07a1e0dc" name="a070e41f502feada79356e02d07a1e0dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a070e41f502feada79356e02d07a1e0dc">&#9670;&#160;</a></span>update</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnalysisWidget::update </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel slot">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Refresh displayed values. </p>
+
+<p class="definition">Definition at line <a class="el" href="AnalysisWidget_8cpp_source.html#l00133">133</a> of file <a class="el" href="AnalysisWidget_8cpp_source.html">AnalysisWidget.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="AnalysisWidget_8cpp_source.html#l00027">AnalysisWidget()</a>.</p>
 
 </div>
 </div>

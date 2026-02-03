@@ -15,6 +15,7 @@ var classAcquisitionThread =
     [ "getSuperKStatus", "classAcquisitionThread.html#a4cabb8d39c9797a5534c06181f042cc5", null ],
     [ "getSwp", "classAcquisitionThread.html#a7f192e8c915b8633e6b4a13d8326456e", null ],
     [ "getTreatmentStatus", "classAcquisitionThread.html#a7e3739758b2dc3543e925db09e76aeea", null ],
+    [ "requestAnalysis", "classAcquisitionThread.html#a4964cd0ece82de51ec8ce2848488e9da", null ],
     [ "run", "classAcquisitionThread.html#a401f13f548896ddf34e869b8d1db24f7", null ],
     [ "setCamera", "classAcquisitionThread.html#a2a1e001c42fea2b690a773d3abb59c1f", null ],
     [ "setComediCounter", "classAcquisitionThread.html#a06e3f20996571494473b0f2f8d8d31ba", null ],
