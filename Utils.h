@@ -67,6 +67,9 @@ void ConfigureSqlTableView(QTableView* view);
 /// Update row sizing based on current model content.
 /// \param view Table view to update.
 void UpdateSqlTableViewRowSizing(QTableView* view);
+/// Update column sizing based on content and viewport width.
+/// \param view Table view to update.
+void UpdateSqlTableViewColumnSizing(QTableView* view);
 
 /// Report a warning and emit `showWarning` when available.
 /// \param sender Object that may expose `showWarning`.

@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <sys/time.h>
 
 #include <QAbstractItemModel>
+#include <QFontMetrics>
 #include <QHeaderView>
 
 namespace Utils {
@@ -124,6 +125,172 @@ bool ModelHasLongText(QAbstractItemModel* model, int threshold) {
   }
   return false;
 }
+
+bool ModelHasWrappedContent(QTableView* view) {
+  if (!view) {
+    return false;
+  }
+  QAbstractItemModel* model = view->model();
+  if (!model) {
+    return false;
+  }
+  const int rows = model->rowCount();
+  const int cols = model->columnCount();
+  const int maxCells = 500;
+  int checked = 0;
+  const QFontMetrics metrics(view->font());
+  for (int r = 0; r < rows; ++r) {
+    for (int c = 0; c < cols; ++c) {
+      if (checked++ >= maxCells) {
+        return false;
+      }
+      const QModelIndex idx = model->index(r, c);
+      const QVariant data = model->data(idx, Qt::DisplayRole);
+      if (!data.isValid()) {
+        continue;
+      }
+      const QString text = data.toString();
+      if (text.contains('\n')) {
+        return true;
+      }
+      if (metrics.horizontalAdvance(text) > view->columnWidth(c)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+}  // namespace
+
+namespace {
+class SqlTableViewResizer : public QObject {
+ public:
+  explicit SqlTableViewResizer(QTableView* view)
+      : QObject(view),
+        view_(view),
+        in_adjust_(false),
+        user_resized_(false) {}
+
+ protected:
+  bool eventFilter(QObject* obj, QEvent* event) override {
+    if ((obj == view_ || obj == view_->viewport()) &&
+        (event->type() == QEvent::Resize || event->type() == QEvent::Show)) {
+      if (view_ && !in_adjust_) {
+        if (!user_resized_) {
+          UpdateSqlTableViewColumnSizing(view_);
+        } else {
+          AdjustColumnsToViewport(view_, -1);
+        }
+        UpdateSqlTableViewRowSizing(view_);
+      }
+    }
+    return QObject::eventFilter(obj, event);
+  }
+
+ public:
+  void OnHeaderSectionResized(int logicalIndex) {
+    if (in_adjust_) {
+      return;
+    }
+    user_resized_ = true;
+    in_adjust_ = true;
+    AdjustColumnsToViewport(view_, logicalIndex);
+    UpdateSqlTableViewRowSizing(view_);
+    in_adjust_ = false;
+  }
+
+  bool ShouldAutoSize() const {
+    return !user_resized_;
+  }
+
+ private:
+  void AdjustColumnsToViewport(QTableView* view, int resizedColumn) {
+    if (!view) {
+      return;
+    }
+    QHeaderView* header = view->horizontalHeader();
+    if (!header) {
+      return;
+    }
+    const int columns = header->count();
+    if (columns <= 0) {
+      return;
+    }
+    int total = 0;
+    for (int c = 0; c < columns; ++c) {
+      total += header->sectionSize(c);
+    }
+    const int viewportWidth = view->viewport()->width();
+    if (viewportWidth > total) {
+      const int extra = viewportWidth - total;
+      QVector<int> indices;
+      indices.reserve(columns);
+      for (int c = 0; c < columns; ++c) {
+        if (c != resizedColumn) {
+          indices.push_back(c);
+        }
+      }
+      if (indices.isEmpty()) {
+        header->resizeSection(resizedColumn,
+                              header->sectionSize(resizedColumn) + extra);
+        return;
+      }
+      int weightSum = 0;
+      for (int idx : indices) {
+        weightSum += qMax(header->sectionSize(idx), 1);
+      }
+      int distributed = 0;
+      for (int idx : indices) {
+        const int add = (extra * qMax(header->sectionSize(idx), 1)) /
+                        qMax(weightSum, 1);
+        header->resizeSection(idx, header->sectionSize(idx) + add);
+        distributed += add;
+      }
+      if (distributed < extra) {
+        int target = indices.last();
+        header->resizeSection(target,
+                              header->sectionSize(target) + (extra - distributed));
+      }
+    }
+    if (viewportWidth < total) {
+      const int deficit = total - viewportWidth;
+      QVector<int> indices;
+      indices.reserve(columns);
+      for (int c = 0; c < columns; ++c) {
+        if (c != resizedColumn) {
+          indices.push_back(c);
+        }
+      }
+      if (indices.isEmpty()) {
+        return;
+      }
+      int weightSum = 0;
+      for (int idx : indices) {
+        weightSum += qMax(header->sectionSize(idx), 1);
+      }
+      int distributed = 0;
+      for (int idx : indices) {
+        int sub = (deficit * qMax(header->sectionSize(idx), 1)) /
+                  qMax(weightSum, 1);
+        int newSize = qMax(header->minimumSectionSize(),
+                           header->sectionSize(idx) - sub);
+        distributed += (header->sectionSize(idx) - newSize);
+        header->resizeSection(idx, newSize);
+      }
+      if (distributed < deficit) {
+        int target = indices.last();
+        int newSize = qMax(header->minimumSectionSize(),
+                           header->sectionSize(target) - (deficit - distributed));
+        header->resizeSection(target, newSize);
+      }
+    }
+  }
+
+ private:
+  QTableView* view_;
+  bool in_adjust_;
+  bool user_resized_;
+};
 }  // namespace
 
 void ConfigureSqlTableView(QTableView* view) {
@@ -135,16 +302,35 @@ void ConfigureSqlTableView(QTableView* view) {
   view->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
   view->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
   view->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+  view->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  SqlTableViewResizer* resizer = nullptr;
   if (QHeaderView* header = view->horizontalHeader()) {
-    header->setSectionResizeMode(QHeaderView::Stretch);
+    header->setSectionResizeMode(QHeaderView::Interactive);
+    header->setStretchLastSection(false);
+    resizer = new SqlTableViewResizer(view);
+    view->installEventFilter(resizer);
+    if (view->viewport()) {
+      view->viewport()->installEventFilter(resizer);
+    }
+    QObject::connect(header, &QHeaderView::sectionResized, view,
+                     [resizer](int logicalIndex, int, int) {
+                       resizer->OnHeaderSectionResized(logicalIndex);
+                     });
   }
+  UpdateSqlTableViewColumnSizing(view);
   UpdateSqlTableViewRowSizing(view);
 
   QAbstractItemModel* model = view->model();
   if (!model) {
     return;
   }
-  auto update = [view]() { UpdateSqlTableViewRowSizing(view); };
+  // event filter installed above to handle resize and column adjustments
+  auto update = [view, resizer]() {
+    if (!resizer || resizer->ShouldAutoSize()) {
+      UpdateSqlTableViewColumnSizing(view);
+    }
+    UpdateSqlTableViewRowSizing(view);
+  };
   QObject::connect(model, &QAbstractItemModel::dataChanged, view, update);
   QObject::connect(model, &QAbstractItemModel::modelReset, view, update);
   QObject::connect(model, &QAbstractItemModel::layoutChanged, view, update);
@@ -152,6 +338,42 @@ void ConfigureSqlTableView(QTableView* view) {
   QObject::connect(model, &QAbstractItemModel::rowsRemoved, view, update);
   QObject::connect(model, &QAbstractItemModel::columnsInserted, view, update);
   QObject::connect(model, &QAbstractItemModel::columnsRemoved, view, update);
+}
+
+void UpdateSqlTableViewColumnSizing(QTableView* view) {
+  if (!view) {
+    return;
+  }
+  QAbstractItemModel* model = view->model();
+  if (!model) {
+    return;
+  }
+  const int columns = model->columnCount();
+  if (columns <= 0) {
+    return;
+  }
+  QHeaderView* header = view->horizontalHeader();
+  if (!header) {
+    return;
+  }
+  header->setStretchLastSection(false);
+  view->resizeColumnsToContents();
+  QVector<int> widths;
+  widths.reserve(columns);
+  int total = 0;
+  for (int c = 0; c < columns; ++c) {
+    const int width = qMax(header->sectionSize(c), header->minimumSectionSize());
+    widths.push_back(width);
+    total += width;
+  }
+  const int viewportWidth = view->viewport()->width();
+  if (viewportWidth > total) {
+    const int extra = viewportWidth - total;
+    widths[columns - 1] += extra;
+  }
+  for (int c = 0; c < columns; ++c) {
+    view->setColumnWidth(c, widths[c]);
+  }
 }
 
 void UpdateSqlTableViewRowSizing(QTableView* view) {
@@ -162,7 +384,7 @@ void UpdateSqlTableViewRowSizing(QTableView* view) {
   if (!model) {
     return;
   }
-  const bool useWrap = ModelHasLongText(model, 60);
+  const bool useWrap = ModelHasLongText(model, 60) || ModelHasWrappedContent(view);
   if (QHeaderView* header = view->verticalHeader()) {
     if (useWrap) {
       header->setSectionResizeMode(QHeaderView::ResizeToContents);
