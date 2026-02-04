@@ -67,263 +67,89 @@ class Camera : public QThread
      gray.append(qRgb(i, i, i));
    }
 
-   hot <<
-    qRgb( 8,   0,   0)<<
-    qRgb( 9,   0,   0)<<
-    qRgb( 10,   0,   0)<<
-    qRgb( 11,   0,   0)<<
-    qRgb( 19,   0,   0)<<
-    qRgb( 20,   0,   0)<<
-    qRgb( 21,   0,   0)<<
-    qRgb( 22,   0,   0)<<
-    qRgb( 29,   0,   0)<<
-    qRgb( 30,   0,   0)<<
-    qRgb( 31,   0,   0)<<
-    qRgb( 32,   0,   0)<<
-    qRgb( 40,   0,   0)<<
-    qRgb( 41,   0,   0)<<
-    qRgb( 42,   0,   0)<<
-    qRgb( 43,   0,   0)<<
-    qRgb( 51,   0,   0)<<
-    qRgb( 52,   0,   0)<<
-    qRgb( 53,   0,   0)<<
-    qRgb( 54,   0,   0)<<
-    qRgb( 61,   0,   0)<<
-    qRgb( 62,   0,   0)<<
-    qRgb( 63,   0,   0)<<
-    qRgb( 64,   0,   0)<<
-    qRgb( 72,   0,   0)<<
-    qRgb( 73,   0,   0)<<
-    qRgb( 74,   0,   0)<<
-    qRgb( 75,   0,   0)<<
-    qRgb( 82,   0,   0)<<
-    qRgb( 83,   0,   0)<<
-    qRgb( 84,   0,   0)<<
-    qRgb( 85,   0,   0)<<
-    qRgb( 93,   0,   0)<<
-    qRgb( 94,   0,   0)<<
-    qRgb( 95,   0,   0)<<
-    qRgb( 96,   0,   0)<<
-    qRgb(104,   0,   0)<<
-    qRgb(105,   0,   0)<<
-    qRgb(106,   0,   0)<<
-    qRgb(107,   0,   0)<<
-    qRgb(114,   0,   0)<<
-    qRgb(115,   0,   0)<<
-    qRgb(116,   0,   0)<<
-    qRgb(117,   0,   0)<<
-    qRgb(125,   0,   0)<<
-    qRgb(126,   0,   0)<<
-    qRgb(127,   0,   0)<<
-    qRgb(128,   0,   0)<<
-    qRgb(136,   0,   0)<<
-    qRgb(137,   0,   0)<<
-    qRgb(138,   0,   0)<<
-    qRgb(139,   0,   0)<<
-    qRgb(146,   0,   0)<<
-    qRgb(147,   0,   0)<<
-    qRgb(148,   0,   0)<<
-    qRgb(149,   0,   0)<<
-    qRgb(156,   0,   0)<<
-    qRgb(157,   0,   0)<<
-    qRgb(158,   0,   0)<<
-    qRgb(159,   0,   0)<<
-    qRgb(168,   0,   0)<<
-    qRgb(169,   0,   0)<<
-    qRgb(170,   0,   0)<<
-    qRgb(171,   0,   0)<<
-    qRgb(178,   0,   0)<<
-    qRgb(179,   0,   0)<<
-    qRgb(180,   0,   0)<<
-    qRgb(181,   0,   0)<<
-    qRgb(189,   0,   0)<<
-    qRgb(190,   0,   0)<<
-    qRgb(191,   0,   0)<<
-    qRgb(192,   0,   0)<<
-    qRgb(198,   0,   0)<<
-    qRgb(199,   0,   0)<<
-    qRgb(201,   0,   0)<<
-    qRgb(202,   0,   0)<<
-    qRgb(210,   0,   0)<<
-    qRgb(211,   0,   0)<<
-    qRgb(212,   0,   0)<<
-    qRgb(213,   0,   0)<<
-    qRgb(221,   0,   0)<<
-    qRgb(222,   0,   0)<<
-    qRgb(223,   0,   0)<<
-    qRgb(224,   0,   0)<<
-    qRgb(231,   0,   0)<<
-    qRgb(232,   0,   0)<<
-    qRgb(233,   0,   0)<<
-    qRgb(234,   0,   0)<<
-    qRgb(242,   0,   0)<<
-    qRgb(243,   0,   0)<<
-    qRgb(244,   0,   0)<<
-    qRgb(245,   0,   0)<<
-    qRgb(252,   0,   0)<<
-    qRgb(253,   0,   0)<<
-    qRgb(254,   0,   0)<<
-    qRgb(255,   0,   0)<<
-    qRgb(255,  8,   0)<<
-    qRgb(255,  9,   0)<<
-    qRgb(255,  10,   0)<<
-    qRgb(255,  11,   0)<<
-    qRgb(255,  19,   0)<<
-    qRgb(255,  20,   0)<<
-    qRgb(255,  21,   0)<<
-    qRgb(255,  22,   0)<<
-    qRgb(255,  29,   0)<<
-    qRgb(255,  30,   0)<<
-    qRgb(255,  31,   0)<<
-    qRgb(255,  32,   0)<<
-    qRgb(255,  40,   0)<<
-    qRgb(255,  41,   0)<<
-    qRgb(255,  42,   0)<<
-    qRgb(255,  43,   0)<<
-    qRgb(255,  51,   0)<<
-    qRgb(255,  52,   0)<<
-    qRgb(255,  53,   0)<<
-    qRgb(255,  54,   0)<<
-    qRgb(255,  61,   0)<<
-    qRgb(255,  62,   0)<<
-    qRgb(255,  63,   0)<<
-    qRgb(255,  64,   0)<<
-    qRgb(255,  72,   0)<<
-    qRgb(255,  73,   0)<<
-    qRgb(255,  74,   0)<<
-    qRgb(255,  75,   0)<<
-    qRgb(255,  82,   0)<<
-    qRgb(255,  83,   0)<<
-    qRgb(255,  84,   0)<<
-    qRgb(255,  85,   0)<<
-    qRgb(255,  93,   0)<<
-    qRgb(255,  94,   0)<<
-    qRgb(255,  95,   0)<<
-    qRgb(255,  96,   0)<<
-    qRgb(255, 104,   0)<<
-    qRgb(255, 105,   0)<<
-    qRgb(255, 106,   0)<<
-    qRgb(255, 107,   0)<<
-    qRgb(255, 114,   0)<<
-    qRgb(255, 115,   0)<<
-    qRgb(255, 116,   0)<<
-    qRgb(255, 117,   0)<<
-    qRgb(255, 125,   0)<<
-    qRgb(255, 126,   0)<<
-    qRgb(255, 127,   0)<<
-    qRgb(255, 128,   0)<<
-    qRgb(255, 136,   0)<<
-    qRgb(255, 137,   0)<<
-    qRgb(255, 138,   0)<<
-    qRgb(255, 139,   0)<<
-    qRgb(255, 146,   0)<<
-    qRgb(255, 147,   0)<<
-    qRgb(255, 148,   0)<<
-    qRgb(255, 149,   0)<<
-    qRgb(255, 157,   0)<<
-    qRgb(255, 158,   0)<<
-    qRgb(255, 159,   0)<<
-    qRgb(255, 160,   0)<<
-    qRgb(255, 168,   0)<<
-    qRgb(255, 169,   0)<<
-    qRgb(255, 170,   0)<<
-    qRgb(255, 171,   0)<<
-    qRgb(255, 178,   0)<<
-    qRgb(255, 179,   0)<<
-    qRgb(255, 180,   0)<<
-    qRgb(255, 181,   0)<<
-    qRgb(255, 189,   0)<<
-    qRgb(255, 190,   0)<<
-    qRgb(255, 191,   0)<<
-    qRgb(255, 192,   0)<<
-    qRgb(255, 199,   0)<<
-    qRgb(255, 200,   0)<<
-    qRgb(255, 201,   0)<<
-    qRgb(255, 202,   0)<<
-    qRgb(255, 210,   0)<<
-    qRgb(255, 211,   0)<<
-    qRgb(255, 212,   0)<<
-    qRgb(255, 213,   0)<<
-    qRgb(255, 221,   0)<<
-    qRgb(255, 222,   0)<<
-    qRgb(255, 223,   0)<<
-    qRgb(255, 224,   0)<<
-    qRgb(255, 231,   0)<<
-    qRgb(255, 232,   0)<<
-    qRgb(255, 233,   0)<<
-    qRgb(255, 234,   0)<<
-    qRgb(255, 242,   0)<<
-    qRgb(255, 243,   0)<<
-    qRgb(255, 244,   0)<<
-    qRgb(255, 245,   0)<<
-    qRgb(255, 252,   0)<<
-    qRgb(255, 253,   0)<<
-    qRgb(255, 254,   0)<<
-    qRgb(255, 255,   0)<<
-    qRgb(255, 255,  13)<<
-    qRgb(255, 255,  14)<<
-    qRgb(255, 255,  15)<<
-    qRgb(255, 255,  16)<<
-    qRgb(255, 255,  29)<<
-    qRgb(255, 255,  30)<<
-    qRgb(255, 255,  31)<<
-    qRgb(255, 255,  32)<<
-    qRgb(255, 255,  45)<<
-    qRgb(255, 255,  46)<<
-    qRgb(255, 255,  47)<<
-    qRgb(255, 255,  48)<<
-    qRgb(255, 255,  61)<<
-    qRgb(255, 255,  62)<<
-    qRgb(255, 255,  63)<<
-    qRgb(255, 255,  64)<<
-    qRgb(255, 255,  77)<<
-    qRgb(255, 255,  78)<<
-    qRgb(255, 255,  79)<<
-    qRgb(255, 255,  80)<<
-    qRgb(255, 255,  93)<<
-    qRgb(255, 255,  94)<<
-    qRgb(255, 255,  95)<<
-    qRgb(255, 255,  96)<<
-    qRgb(255, 255, 109)<<
-    qRgb(255, 255, 110)<<
-    qRgb(255, 255, 111)<<
-    qRgb(255, 255, 112)<<
-    qRgb(255, 255, 125)<<
-    qRgb(255, 255, 126)<<
-    qRgb(255, 255, 127)<<
-    qRgb(255, 255, 128)<<
-    qRgb(255, 255, 141)<<
-    qRgb(255, 255, 142)<<
-    qRgb(255, 255, 143)<<
-    qRgb(255, 255, 144)<<
-    qRgb(255, 255, 157)<<
-    qRgb(255, 255, 158)<<
-    qRgb(255, 255, 159)<<
-    qRgb(255, 255, 160)<<
-    qRgb(255, 255, 173)<<
-    qRgb(255, 255, 174)<<
-    qRgb(255, 255, 175)<<
-    qRgb(255, 255, 176)<<
-    qRgb(255, 255, 189)<<
-    qRgb(255, 255, 190)<<
-    qRgb(255, 255, 191)<<
-    qRgb(255, 255, 192)<<
-    qRgb(255, 255, 205)<<
-    qRgb(255, 255, 206)<<
-    qRgb(255, 255, 207)<<
-    qRgb(255, 255, 208)<<
-    qRgb(255, 255, 221)<<
-    qRgb(255, 255, 222)<<
-    qRgb(255, 255, 223)<<
-    qRgb(255, 255, 224)<<
-    qRgb(255, 255, 237)<<
-    qRgb(255, 255, 238)<<
-    qRgb(255, 255, 239)<<
-    qRgb(255, 255, 240)<<
-    qRgb(255, 255, 252)<<
-    qRgb(255, 255, 253)<<
-    qRgb(255, 255, 254)<<
-    qRgb(255, 255, 255);
+   auto appendHotRedRange = [this](int start, int end) {
+     for (int value = start; value <= end; ++value) {
+       hot << qRgb(value, 0, 0);
+     }
+   };
+   auto appendHotGreenRange = [this](int start, int end) {
+     for (int value = start; value <= end; ++value) {
+       hot << qRgb(255, value, 0);
+     }
+   };
+   auto appendHotBlueRange = [this](int start, int end) {
+     for (int value = start; value <= end; ++value) {
+       hot << qRgb(255, 255, value);
+     }
+   };
+
+   appendHotRedRange(8, 11);
+   appendHotRedRange(19, 22);
+   appendHotRedRange(29, 32);
+   appendHotRedRange(40, 43);
+   appendHotRedRange(51, 54);
+   appendHotRedRange(61, 64);
+   appendHotRedRange(72, 75);
+   appendHotRedRange(82, 85);
+   appendHotRedRange(93, 96);
+   appendHotRedRange(104, 107);
+   appendHotRedRange(114, 117);
+   appendHotRedRange(125, 128);
+   appendHotRedRange(136, 139);
+   appendHotRedRange(146, 149);
+   appendHotRedRange(156, 159);
+   appendHotRedRange(168, 171);
+   appendHotRedRange(178, 181);
+   appendHotRedRange(189, 192);
+   appendHotRedRange(198, 199);
+   appendHotRedRange(201, 202);
+   appendHotRedRange(210, 213);
+   appendHotRedRange(221, 224);
+   appendHotRedRange(231, 234);
+   appendHotRedRange(242, 245);
+   appendHotRedRange(252, 255);
+
+   appendHotGreenRange(8, 11);
+   appendHotGreenRange(19, 22);
+   appendHotGreenRange(29, 32);
+   appendHotGreenRange(40, 43);
+   appendHotGreenRange(51, 54);
+   appendHotGreenRange(61, 64);
+   appendHotGreenRange(72, 75);
+   appendHotGreenRange(82, 85);
+   appendHotGreenRange(93, 96);
+   appendHotGreenRange(104, 107);
+   appendHotGreenRange(114, 117);
+   appendHotGreenRange(125, 128);
+   appendHotGreenRange(136, 139);
+   appendHotGreenRange(146, 149);
+   appendHotGreenRange(157, 160);
+   appendHotGreenRange(168, 171);
+   appendHotGreenRange(178, 181);
+   appendHotGreenRange(189, 192);
+   appendHotGreenRange(199, 202);
+   appendHotGreenRange(210, 213);
+   appendHotGreenRange(221, 224);
+   appendHotGreenRange(231, 234);
+   appendHotGreenRange(242, 245);
+   appendHotGreenRange(252, 255);
+
+   appendHotBlueRange(13, 16);
+   appendHotBlueRange(29, 32);
+   appendHotBlueRange(45, 48);
+   appendHotBlueRange(61, 64);
+   appendHotBlueRange(77, 80);
+   appendHotBlueRange(93, 96);
+   appendHotBlueRange(109, 112);
+   appendHotBlueRange(125, 128);
+   appendHotBlueRange(141, 144);
+   appendHotBlueRange(157, 160);
+   appendHotBlueRange(173, 176);
+   appendHotBlueRange(189, 192);
+   appendHotBlueRange(205, 208);
+   appendHotBlueRange(221, 224);
+   appendHotBlueRange(237, 240);
+   appendHotBlueRange(252, 255);
 
     table = &gray;
   }
