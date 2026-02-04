@@ -1,5 +1,5 @@
 html, body {
-  background-color: #1e1e1e;
+  background-color: #2b2b2b;
   color: #e6e6e6;
   font-family: sans-serif;
   margin: 0;
@@ -18,34 +18,34 @@ a:hover { color: #a3c3ff; }
 
 table {
   border-collapse: collapse;
-  background-color: #252525;
+  background-color: #353535;
   color: #e6e6e6;
 }
 
 table, th, td {
-  border: 1px solid #444;
+  border: 1px solid #555;
 }
 
 th {
-  background-color: #2f2f2f;
+  background-color: #3a3a3a;
 }
 
 tr:nth-child(even) {
-  background-color: #222;
+  background-color: #303030;
 }
 
 hr {
   border: 0;
-  border-top: 1px solid #444;
+  border-top: 1px solid #555;
 }
 
 code, pre {
-  background-color: #2a2a2a;
+  background-color: #3a3a3a;
   color: #e6e6e6;
 }
 
 img {
-  background-color: #1e1e1e;
-  border: 1px solid #444;
+  background-color: #2b2b2b;
+  border: 1px solid #555;
   padding: 4px;
 }

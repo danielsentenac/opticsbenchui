@@ -15,7 +15,7 @@ var classDriver =
     [ "Move", "classDriver.html#af18acb4691d590b478e9bbc4392601ab", null ],
     [ "MoveAbs", "classDriver.html#aded62e0169ac059384223b7659d4d4e7", null ],
     [ "OperationComplete", "classDriver.html#a35e9fc361ce1f0a1bcac688409e4f678", null ],
-    [ "operator=", "classDriver.html#a79d4cad67adf8c2449d193f2d1678a2e", null ],
+    [ "operator=", "classDriver.html#a7d1ef8b86071e494b208793bca403096", null ],
     [ "ReportCommError", "classDriver.html#a1b880fe0dcef4909c853056222cb1b38", null ],
     [ "ReportError", "classDriver.html#a0698976a0dbf9bf06ce9f1022b5a1b17", null ],
     [ "ReportRangeError", "classDriver.html#a8d56cc5dcace873f9ebc39558bf07a93", null ],

@@ -39,6 +39,7 @@ var group__ui =
       [ "AnalysisWidget", "classAnalysisWidget.html#a967064cbeb7cc62daa72226030e027b7", null ],
       [ "~AnalysisWidget", "classAnalysisWidget.html#a275424309fe7ecb5a13c10608e8ae8e0", null ],
       [ "analysisFinished", "classAnalysisWidget.html#a0f280a63fa4a8ded04789112cea88b68", null ],
+      [ "analysisOutput", "classAnalysisWidget.html#ac38328bf31a4895b377e8e606977dfad", null ],
       [ "analysisStarted", "classAnalysisWidget.html#a8c84b73b5ac067be1a7be27e4dfee941", null ],
       [ "reload", "classAnalysisWidget.html#aefae3fb4325546147d5e5ee289f9b6b5", null ],
       [ "remove", "classAnalysisWidget.html#a44227dfc138d8f0ce26547620b16d346", null ],
@@ -99,9 +100,11 @@ var group__ui =
         [ "NComediCounterData", "classComediCounterPlot.html#a8afeffb4c847816d80704106ea4f12c1a7954d0c449746d7f2f81074069fd83ab", null ]
       ] ],
       [ "ComediCounterPlot", "classComediCounterPlot.html#ad1c88efeb42a78fa1baf3c1a324cf635", null ],
-      [ "comedicounterCurve", "classComediCounterPlot.html#a60739ab85ce981b64361a76380bf3926", null ],
+      [ "comedicounterCurve", "classComediCounterPlot.html#a0d1903cf2393d94a4de8596457ee14a0", null ],
       [ "timerEvent", "classComediCounterPlot.html#a8d7987c1a03644c6788b2d337f8e1e8d", null ],
-      [ "upTime", "classComediCounterPlot.html#ada77492d4d45dd2c7cb41aaea2b5da05", null ]
+      [ "upTime", "classComediCounterPlot.html#ada77492d4d45dd2c7cb41aaea2b5da05", null ],
+      [ "curve", "classComediCounterPlot.html#aefcda5a8daa3ca2f7110486262d1a276", null ],
+      [ "data", "classComediCounterPlot.html#a89fbd028d6bb0d9791fbec4f491447f9", null ]
     ] ],
     [ "ComediDacControlWidget", "classComediDacControlWidget.html", [
       [ "ComediDacControlWidget", "classComediDacControlWidget.html#a943a02c8e4450fe7971564db14b8bd81", null ],

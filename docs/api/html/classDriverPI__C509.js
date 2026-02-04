@@ -13,6 +13,6 @@ var classDriverPI__C509 =
     [ "Move", "classDriverPI__C509.html#aedc4b49703844d9a86f22a1f645e0506", null ],
     [ "MoveAbs", "classDriverPI__C509.html#aa3c5faf8894503955162088eb403d1a7", null ],
     [ "OperationComplete", "classDriverPI__C509.html#a7cabb7a6bd037b4509726b5f23580ef4", null ],
-    [ "operator=", "classDriverPI__C509.html#aac89cdf82c3af820cb73785761a1103b", null ],
+    [ "operator=", "classDriverPI__C509.html#aa53e9594c8cdb9961f6ba6171a82f01e", null ],
     [ "Stop", "classDriverPI__C509.html#ac26b975d4545e1fe49e083e8ff803b1d", null ]
 ];

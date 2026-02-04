@@ -16,7 +16,7 @@ var group__motors =
       [ "Move", "classDriver.html#af18acb4691d590b478e9bbc4392601ab", null ],
       [ "MoveAbs", "classDriver.html#aded62e0169ac059384223b7659d4d4e7", null ],
       [ "OperationComplete", "classDriver.html#a35e9fc361ce1f0a1bcac688409e4f678", null ],
-      [ "operator=", "classDriver.html#a79d4cad67adf8c2449d193f2d1678a2e", null ],
+      [ "operator=", "classDriver.html#a7d1ef8b86071e494b208793bca403096", null ],
       [ "ReportCommError", "classDriver.html#a1b880fe0dcef4909c853056222cb1b38", null ],
       [ "ReportError", "classDriver.html#a0698976a0dbf9bf06ce9f1022b5a1b17", null ],
       [ "ReportRangeError", "classDriver.html#a8d56cc5dcace873f9ebc39558bf07a93", null ],
@@ -43,7 +43,7 @@ var group__motors =
       [ "Move", "classDriverMicos__Pollux.html#aedc65ae742d2cf67f4932db5043fba37", null ],
       [ "MoveAbs", "classDriverMicos__Pollux.html#ae1a7d926e164d5fd0858911155097e7c", null ],
       [ "OperationComplete", "classDriverMicos__Pollux.html#a066df6208c7783d53fdcfe9a90617442", null ],
-      [ "operator=", "classDriverMicos__Pollux.html#a9c04ac8fd9c1530662190b2cd43f6797", null ],
+      [ "operator=", "classDriverMicos__Pollux.html#a890602843f54b3aca60e18c4614dc5a0", null ],
       [ "SendAddressCode", "classDriverMicos__Pollux.html#a127c83819900ef0d4f9a6de31fb2f313", null ],
       [ "Stop", "classDriverMicos__Pollux.html#ab496bc0fab1c2d48d199cc438edfb4a7", null ],
       [ "_axisNumber", "classDriverMicos__Pollux.html#a50de6411f5fc5cf33a71cc70b958c3ed", null ],
@@ -63,7 +63,7 @@ var group__motors =
       [ "Move", "classDriverNewFocus__8750__Cl.html#a54dbd75a085e23a3e519fd222ad298ec", null ],
       [ "MoveAbs", "classDriverNewFocus__8750__Cl.html#a13ef6c37bc1c44dcc4e482c3c0537fba", null ],
       [ "OperationComplete", "classDriverNewFocus__8750__Cl.html#a2f50c17f1d4b2601d0c9e19fe39d1885", null ],
-      [ "operator=", "classDriverNewFocus__8750__Cl.html#a729069d7603594d8497d99a09132e3c4", null ],
+      [ "operator=", "classDriverNewFocus__8750__Cl.html#a2441e992096883d17b2e272a01907536", null ],
       [ "Stop", "classDriverNewFocus__8750__Cl.html#af431751fc6958a0d94f5f4c65aa0ef07", null ]
     ] ],
     [ "DriverNewFocus_8750_Ol", "classDriverNewFocus__8750__Ol.html", [
@@ -80,7 +80,7 @@ var group__motors =
       [ "Move", "classDriverNewFocus__8750__Ol.html#a086a5dd228b0c3a21aa00391c8f047cd", null ],
       [ "MoveAbs", "classDriverNewFocus__8750__Ol.html#a015c65b6868c8d59408b32b860a894d1", null ],
       [ "OperationComplete", "classDriverNewFocus__8750__Ol.html#aa821475e523ddc39ab65d7777513dbf8", null ],
-      [ "operator=", "classDriverNewFocus__8750__Ol.html#a5ad9d0506e50a1d135d441440f7e71dd", null ],
+      [ "operator=", "classDriverNewFocus__8750__Ol.html#ad9187b950434c234cfb7102879a6b2da", null ],
       [ "Stop", "classDriverNewFocus__8750__Ol.html#a11361748d9726908d6f7f76e367abc90", null ]
     ] ],
     [ "DriverNewPort_AGUC2", "classDriverNewPort__AGUC2.html", [
@@ -97,7 +97,7 @@ var group__motors =
       [ "Move", "classDriverNewPort__AGUC2.html#a1f8aa419a2bfdbac623af838b201a9c4", null ],
       [ "MoveAbs", "classDriverNewPort__AGUC2.html#a9526c91248b5e5a70651a02be95d133b", null ],
       [ "OperationComplete", "classDriverNewPort__AGUC2.html#a8129e69708e9fac5443f095cdf55069b", null ],
-      [ "operator=", "classDriverNewPort__AGUC2.html#acc42355abe2f4b1c77858b0bc3fe7d30", null ],
+      [ "operator=", "classDriverNewPort__AGUC2.html#a7d6ac8c0d63cebf3f76ec42aaea8a726", null ],
       [ "SendGeneralCommand", "classDriverNewPort__AGUC2.html#ad24611f957eb942226fc145186307c30", null ],
       [ "Stop", "classDriverNewPort__AGUC2.html#ac974591c39b8cf9f22f2e4759f120460", null ]
     ] ],
@@ -115,7 +115,7 @@ var group__motors =
       [ "Move", "classDriverNewPort__NSC200.html#aa0a78beb26c4ebd44779e51fcb59c965", null ],
       [ "MoveAbs", "classDriverNewPort__NSC200.html#a38cec7582f657ddeb8c88cf5453c8b0c", null ],
       [ "OperationComplete", "classDriverNewPort__NSC200.html#acf340fc66f6352f8488a8b47bf2f772a", null ],
-      [ "operator=", "classDriverNewPort__NSC200.html#aa7a8b9ea703f44bf385676913b59c6e5", null ],
+      [ "operator=", "classDriverNewPort__NSC200.html#ae8e1bf63d66f083292eefb344fd5fc87", null ],
       [ "SelectedSwitchBoxChannel", "classDriverNewPort__NSC200.html#ab9eb7f1adb58920c4eeed16d93007211", null ],
       [ "Stop", "classDriverNewPort__NSC200.html#a4b0d63d74c43cc09fe18f43a3a666a4d", null ],
       [ "_axisNumber", "classDriverNewPort__NSC200.html#a1cf151be6721fa78a8e7162afd8d9fa9", null ],
@@ -138,7 +138,7 @@ var group__motors =
       [ "Move", "classDriverPI__C509.html#aedc4b49703844d9a86f22a1f645e0506", null ],
       [ "MoveAbs", "classDriverPI__C509.html#aa3c5faf8894503955162088eb403d1a7", null ],
       [ "OperationComplete", "classDriverPI__C509.html#a7cabb7a6bd037b4509726b5f23580ef4", null ],
-      [ "operator=", "classDriverPI__C509.html#aac89cdf82c3af820cb73785761a1103b", null ],
+      [ "operator=", "classDriverPI__C509.html#aa53e9594c8cdb9961f6ba6171a82f01e", null ],
       [ "Stop", "classDriverPI__C509.html#ac26b975d4545e1fe49e083e8ff803b1d", null ]
     ] ],
     [ "DriverPI_C862", "classDriverPI__C862.html", [
@@ -155,7 +155,7 @@ var group__motors =
       [ "Move", "classDriverPI__C862.html#a84c4aba7af8c2a679ef8df3ea18a2b83", null ],
       [ "MoveAbs", "classDriverPI__C862.html#ac7b8122f50225ddc03fc4f4ac426d41d", null ],
       [ "OperationComplete", "classDriverPI__C862.html#a6a722869ae2c4ee22a3b20ac79b719a2", null ],
-      [ "operator=", "classDriverPI__C862.html#a0754ff2ce6d8c32f396d7bf9a9e63f17", null ],
+      [ "operator=", "classDriverPI__C862.html#af54fdf1cb6af2ba8da3130ed5912b6eb", null ],
       [ "SendAddressCode", "classDriverPI__C862.html#afed6b294ff0fbe7bff982f377bdbe3fc", null ],
       [ "Stop", "classDriverPI__C862.html#a6928b378f882bc145641181a00456c4e", null ],
       [ "_originOffset", "classDriverPI__C862.html#afd1c17f22655ff99a1438b271424f7b2", null ]
@@ -174,7 +174,7 @@ var group__motors =
       [ "Move", "classDriverPI__E725.html#a49414012290f6e96acae3825f2b5f937", null ],
       [ "MoveAbs", "classDriverPI__E725.html#a9ca4b33984883419d8f239d97635fdf2", null ],
       [ "OperationComplete", "classDriverPI__E725.html#aacf91a5ffdf744238710b06b28734e1e", null ],
-      [ "operator=", "classDriverPI__E725.html#afac85783cdb9ab76dcb523490c7530a2", null ],
+      [ "operator=", "classDriverPI__E725.html#ad09aa72dfc0dc7dc10265f910f8c081f", null ],
       [ "Stop", "classDriverPI__E725.html#a4cc01bb8ea228f580f43b4b170aad777", null ]
     ] ],
     [ "DriverStanda_uSMC", "classDriverStanda__uSMC.html", [
@@ -192,7 +192,7 @@ var group__motors =
       [ "Move", "classDriverStanda__uSMC.html#a559aa648c146fd1f720c4ecf13cf874d", null ],
       [ "MoveAbs", "classDriverStanda__uSMC.html#accafc332c207c0289d2de4f98cabc5cf", null ],
       [ "OperationComplete", "classDriverStanda__uSMC.html#a043caf95a1e27d353a67e53668f5e023", null ],
-      [ "operator=", "classDriverStanda__uSMC.html#a55f964e529b63ba03c0ef3e8cfdf51ee", null ],
+      [ "operator=", "classDriverStanda__uSMC.html#a30a6ca085fb92836cef2d7e920c50c84", null ],
       [ "Stop", "classDriverStanda__uSMC.html#a5f669d531205d1362704d49e972c2b99", null ],
       [ "_cur_dev", "classDriverStanda__uSMC.html#a5da98a8cb20d4a68e8a894c1fde14fe0", null ],
       [ "_devices", "classDriverStanda__uSMC.html#a7f20896518df9f23909b6c269adfd4d0", null ],
@@ -220,7 +220,7 @@ var group__motors =
       [ "Move", "classDriverStanda__uSMC2.html#ae769730ce8370711dd802763a0bdea07", null ],
       [ "MoveAbs", "classDriverStanda__uSMC2.html#ac2ec908d9b5749e5732d0f5c4126afb5", null ],
       [ "OperationComplete", "classDriverStanda__uSMC2.html#ac5748e1bf669ca44ccd6a089e63ef239", null ],
-      [ "operator=", "classDriverStanda__uSMC2.html#ac8af568124a3f64b00ef711808edf1ba", null ],
+      [ "operator=", "classDriverStanda__uSMC2.html#aba687279e871879970cbffec461e34a6", null ],
       [ "Stop", "classDriverStanda__uSMC2.html#a896918a5a03e32caf27ba14bfff7af44", null ],
       [ "_calibration", "classDriverStanda__uSMC2.html#a7f1f708ae3cad397fd95a1a188bf08b6", null ],
       [ "_devenum", "classDriverStanda__uSMC2.html#a58a9744c40a77b159219e476dce2e72f", null ],

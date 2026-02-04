@@ -13,7 +13,7 @@ var classDriverPI__C862 =
     [ "Move", "classDriverPI__C862.html#a84c4aba7af8c2a679ef8df3ea18a2b83", null ],
     [ "MoveAbs", "classDriverPI__C862.html#ac7b8122f50225ddc03fc4f4ac426d41d", null ],
     [ "OperationComplete", "classDriverPI__C862.html#a6a722869ae2c4ee22a3b20ac79b719a2", null ],
-    [ "operator=", "classDriverPI__C862.html#a0754ff2ce6d8c32f396d7bf9a9e63f17", null ],
+    [ "operator=", "classDriverPI__C862.html#af54fdf1cb6af2ba8da3130ed5912b6eb", null ],
     [ "SendAddressCode", "classDriverPI__C862.html#afed6b294ff0fbe7bff982f377bdbe3fc", null ],
     [ "Stop", "classDriverPI__C862.html#a6928b378f882bc145641181a00456c4e", null ],
     [ "_originOffset", "classDriverPI__C862.html#afd1c17f22655ff99a1438b271424f7b2", null ]

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['api_0',['OpticsBenchUI API',['../index.html',1,'']]]
+  ['getting_20started_1272',['Getting Started',['../getting_started.html',1,'']]]
 ];

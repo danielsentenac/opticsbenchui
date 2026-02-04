@@ -1,0 +1,99 @@
+html, body {
+  background-color: #2b2b2b;
+  color: #e6e6e6;
+}
+
+body, table, div, p, dl, dt, dd, li, ul, ol, td, th {
+  color: #e6e6e6;
+}
+
+a, a:visited {
+  color: #8ab4f8;
+}
+
+a:hover {
+  color: #a3c3ff;
+}
+
+div.contents, div.header, div.footer, div.headertitle, div.title, div.textblock {
+  background-color: #2b2b2b;
+}
+
+div.header, div.footer, div.headertitle, div.title {
+  border-color: #555;
+}
+
+table, table.memberdecls, table.memitem, table.doxtable {
+  background-color: #353535;
+  border-color: #555;
+}
+
+table, th, td {
+  border-color: #555;
+}
+
+th {
+  background-color: #3a3a3a;
+}
+
+tr:nth-child(even) {
+  background-color: #303030;
+}
+
+div.memproto, div.memdoc {
+  background-color: #303030;
+  border-color: #555;
+}
+
+#nav-tree, #nav-tree-contents, #nav-tree-contents .selected {
+  background-color: #2b2b2b;
+  color: #e6e6e6;
+}
+
+#nav-tree .selected {
+  background-color: #3a3a3a;
+}
+
+div.navpath, div.navpath ul, div.navpath li {
+  background-color: #2b2b2b;
+  color: #e6e6e6;
+}
+
+div.navpath li.navelem a {
+  color: #8ab4f8;
+}
+
+div.fragment, pre.fragment {
+  background-color: #2f2f2f;
+  border-color: #555;
+  color: #e6e6e6;
+}
+
+code, pre, .line {
+  color: #e6e6e6;
+}
+
+div.line {
+  background-color: #2f2f2f;
+}
+
+.tablist li a, .tablist li a:visited {
+  background-color: #3a3a3a;
+  color: #e6e6e6;
+  border-color: #555;
+}
+
+.tablist li.current a {
+  background-color: #444;
+}
+
+div#titlearea {
+  background-color: #2b2b2b;
+  border-bottom: 1px solid #555;
+}
+
+input, select, textarea {
+  background-color: #303030;
+  color: #e6e6e6;
+  border: 1px solid #555;
+}

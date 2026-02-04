@@ -13,7 +13,7 @@ var classDriverMicos__Pollux =
     [ "Move", "classDriverMicos__Pollux.html#aedc65ae742d2cf67f4932db5043fba37", null ],
     [ "MoveAbs", "classDriverMicos__Pollux.html#ae1a7d926e164d5fd0858911155097e7c", null ],
     [ "OperationComplete", "classDriverMicos__Pollux.html#a066df6208c7783d53fdcfe9a90617442", null ],
-    [ "operator=", "classDriverMicos__Pollux.html#a9c04ac8fd9c1530662190b2cd43f6797", null ],
+    [ "operator=", "classDriverMicos__Pollux.html#a890602843f54b3aca60e18c4614dc5a0", null ],
     [ "SendAddressCode", "classDriverMicos__Pollux.html#a127c83819900ef0d4f9a6de31fb2f313", null ],
     [ "Stop", "classDriverMicos__Pollux.html#ab496bc0fab1c2d48d199cc438edfb4a7", null ],
     [ "_axisNumber", "classDriverMicos__Pollux.html#a50de6411f5fc5cf33a71cc70b958c3ed", null ],

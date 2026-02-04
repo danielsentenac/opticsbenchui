@@ -2,7 +2,7 @@ var classACCom =
 [
     [ "ACCom", "classACCom.html#abc101437418631f4e08bb7cd07553d2b", null ],
     [ "ACCom", "classACCom.html#ae667edc33a3ebb05ceea052086974b9b", null ],
-    [ "~ACCom", "classACCom.html#a3c475084b05c52ee8b7b4c80f8797bc8", null ],
+    [ "~ ACCom", "classACCom.html#aaf28cda07add958bfddc0b7c20c6b4a4", null ],
     [ "Close", "classACCom.html#af152b7236c11f966b39e332de7d87473", null ],
     [ "GetStatus", "classACCom.html#a71376d80647aaea54829acb98032bb98", null ],
     [ "Open", "classACCom.html#ad702f2b3dd6132093fdf55c38531d1dc", null ],

@@ -1,7 +1,5 @@
 var group__utils =
 [
-    [ "QsLogging", "namespaceQsLogging.html", null ],
-    [ "Utils", "namespaceUtils.html", null ],
     [ "FileParser", "classFileParser.html", [
       [ "FileParser", "classFileParser.html#a86f448b8bd0a4c20c0d3e5d30f640f2c", null ],
       [ "~FileParser", "classFileParser.html#a8b41aca52b30e9f357f50e76f3c9cc9d", null ],

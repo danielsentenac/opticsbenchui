@@ -13,7 +13,9 @@ var files_dup =
     [ "ACRSCom.cpp", "ACRSCom_8cpp.html", null ],
     [ "ACRSCom.h", "ACRSCom_8h_source.html", null ],
     [ "ACUsbCom.cpp", "ACUsbCom_8cpp.html", null ],
-    [ "ACUsbCom.h", "ACUsbCom_8h.html", "ACUsbCom_8h" ],
+    [ "ACUsbCom.h", "ACUsbCom_8h.html", [
+      [ "ACUsbCom", "classACUsbCom.html", "classACUsbCom" ]
+    ] ],
     [ "AnalysisThread.cpp", "AnalysisThread_8cpp_source.html", null ],
     [ "AnalysisThread.h", "AnalysisThread_8h_source.html", null ],
     [ "AnalysisWidget.cpp", "AnalysisWidget_8cpp_source.html", null ],

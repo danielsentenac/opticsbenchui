@@ -13,7 +13,7 @@ var classDriverNewPort__NSC200 =
     [ "Move", "classDriverNewPort__NSC200.html#aa0a78beb26c4ebd44779e51fcb59c965", null ],
     [ "MoveAbs", "classDriverNewPort__NSC200.html#a38cec7582f657ddeb8c88cf5453c8b0c", null ],
     [ "OperationComplete", "classDriverNewPort__NSC200.html#acf340fc66f6352f8488a8b47bf2f772a", null ],
-    [ "operator=", "classDriverNewPort__NSC200.html#aa7a8b9ea703f44bf385676913b59c6e5", null ],
+    [ "operator=", "classDriverNewPort__NSC200.html#ae8e1bf63d66f083292eefb344fd5fc87", null ],
     [ "SelectedSwitchBoxChannel", "classDriverNewPort__NSC200.html#ab9eb7f1adb58920c4eeed16d93007211", null ],
     [ "Stop", "classDriverNewPort__NSC200.html#a4b0d63d74c43cc09fe18f43a3a666a4d", null ],
     [ "_axisNumber", "classDriverNewPort__NSC200.html#a1cf151be6721fa78a8e7162afd8d9fa9", null ],

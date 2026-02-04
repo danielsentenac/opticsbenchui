@@ -1,11 +1,11 @@
 var namespaceQsLogging =
 [
+    [ "LoggerImpl", "classQsLogging_1_1LoggerImpl.html", "classQsLogging_1_1LoggerImpl" ],
+    [ "Logger", "classQsLogging_1_1Logger.html", "classQsLogging_1_1Logger" ],
+    [ "FileDestination", "classQsLogging_1_1FileDestination.html", "classQsLogging_1_1FileDestination" ],
     [ "DebugOutputDestination", "classQsLogging_1_1DebugOutputDestination.html", "classQsLogging_1_1DebugOutputDestination" ],
     [ "Destination", "classQsLogging_1_1Destination.html", "classQsLogging_1_1Destination" ],
     [ "DestinationFactory", "classQsLogging_1_1DestinationFactory.html", null ],
-    [ "FileDestination", "classQsLogging_1_1FileDestination.html", "classQsLogging_1_1FileDestination" ],
-    [ "Logger", "classQsLogging_1_1Logger.html", "classQsLogging_1_1Logger" ],
-    [ "LoggerImpl", "classQsLogging_1_1LoggerImpl.html", "classQsLogging_1_1LoggerImpl" ],
     [ "DestinationList", "namespaceQsLogging.html#a9665fefc6346f3d979873f4b6d15292e", null ],
     [ "DestinationPtr", "namespaceQsLogging.html#aaf0bd628f1e6e28f3e25401ec92a7d13", null ],
     [ "Level", "namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033", [

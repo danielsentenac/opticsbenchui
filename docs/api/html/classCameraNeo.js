@@ -7,7 +7,7 @@ var classCameraNeo =
     [ "getImage", "classCameraNeo.html#abfc3f07befffd1946383e62a04bf9c2c", null ],
     [ "getProps", "classCameraNeo.html#ae9b8b95e83f7db906e5331b35af915c4", null ],
     [ "getSnapshot", "classCameraNeo.html#aa7efd1e62a0fe7aa242911508b1c1feb", null ],
-    [ "getSnapshot16", "classCameraNeo.html#ab84c4367c826feb3feeeea011e78c8b8", null ],
+    [ "getSnapshot16", "classCameraNeo.html#a440d1dacb1ff3158db2ff587ee69d009", null ],
     [ "getSnapshot32", "classCameraNeo.html#a021c117f56df366dbc0ae8d72945305a", null ],
     [ "setCamera", "classCameraNeo.html#a962823299a4282c8ac5ed530d53a15cf", null ],
     [ "setFeature", "classCameraNeo.html#a6b7dc0f75ef242399b7d0ea709ee893a", null ],

@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QLibraryInfo>
+#include <QtCore/QProcessEnvironment>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QProcess>
 
@@ -51,6 +52,10 @@ bool Assistant::startAssistant() {
   }
 
   if (proc->state() != QProcess::Running) {
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    env.insert("QT_STYLE_OVERRIDE", "Fusion");
+    proc->setProcessEnvironment(env);
+
     QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
 #if !defined(Q_OS_MAC)
     app += QLatin1String("assistant");
@@ -70,6 +75,11 @@ bool Assistant::startAssistant() {
       }
     }
     QStringList args;
+    const QString qssPath =
+        appDirPath + QLatin1String("/docs/help/assistant-dark.qss");
+    if (QFile::exists(qssPath)) {
+      args << QLatin1String("-stylesheet") << qssPath;
+    }
     args << QLatin1String("-collectionFile")
          << appDirPath + QLatin1String("/docs/help/OpticsBenchUIColl.qhc")
          << QLatin1String("-enableRemoteControl");

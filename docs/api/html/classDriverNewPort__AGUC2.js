@@ -13,7 +13,7 @@ var classDriverNewPort__AGUC2 =
     [ "Move", "classDriverNewPort__AGUC2.html#a1f8aa419a2bfdbac623af838b201a9c4", null ],
     [ "MoveAbs", "classDriverNewPort__AGUC2.html#a9526c91248b5e5a70651a02be95d133b", null ],
     [ "OperationComplete", "classDriverNewPort__AGUC2.html#a8129e69708e9fac5443f095cdf55069b", null ],
-    [ "operator=", "classDriverNewPort__AGUC2.html#acc42355abe2f4b1c77858b0bc3fe7d30", null ],
+    [ "operator=", "classDriverNewPort__AGUC2.html#a7d6ac8c0d63cebf3f76ec42aaea8a726", null ],
     [ "SendGeneralCommand", "classDriverNewPort__AGUC2.html#ad24611f957eb942226fc145186307c30", null ],
     [ "Stop", "classDriverNewPort__AGUC2.html#ac974591c39b8cf9f22f2e4759f120460", null ]
 ];

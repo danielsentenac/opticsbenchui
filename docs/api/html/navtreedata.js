@@ -27,7 +27,7 @@ var NAVTREE =
   [ "OpticsBenchUI", "index.html", [
     [ "OpticsBenchUI API", "index.html", null ],
     [ "Getting Started", "getting_started.html", null ],
-    [ "Topics", "topics.html", "topics" ],
+    [ "Modules", "modules.html", "modules" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -58,11 +58,11 @@ var NAVTREEINDEX =
 [
 "ACCom_8cpp_source.html",
 "classAcquisitionSequence.html#ad207cdc6f2bef725569c13c52aab3b3f",
-"classCameraIEEE1394.html#a06c2fd4ef704fa4b2c48f7db6311a9ce",
-"classDriver.html#a87887b36df2370d5903e193d6bc31da0",
-"classMotor.html#a3bcb8d21f707d4ba7e3af24666ec90ef",
-"functions_vars_k.html"
+"classCameraGiGE.html#aea93bb3977e47df973e9a11ddbe18184",
+"classDriver.html#a3df34b03d1bdde18b80985c7fc46320d",
+"classMotor.html",
+"group__cameras.html"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronization';
-var SYNCOFFMSG = 'click to enable panel synchronization';
+var SYNCONMSG = 'click to disable panel synchronisation';
+var SYNCOFFMSG = 'click to enable panel synchronisation';

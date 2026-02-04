@@ -14,7 +14,7 @@ var classDriverStanda__uSMC =
     [ "Move", "classDriverStanda__uSMC.html#a559aa648c146fd1f720c4ecf13cf874d", null ],
     [ "MoveAbs", "classDriverStanda__uSMC.html#accafc332c207c0289d2de4f98cabc5cf", null ],
     [ "OperationComplete", "classDriverStanda__uSMC.html#a043caf95a1e27d353a67e53668f5e023", null ],
-    [ "operator=", "classDriverStanda__uSMC.html#a55f964e529b63ba03c0ef3e8cfdf51ee", null ],
+    [ "operator=", "classDriverStanda__uSMC.html#a30a6ca085fb92836cef2d7e920c50c84", null ],
     [ "Stop", "classDriverStanda__uSMC.html#a5f669d531205d1362704d49e972c2b99", null ],
     [ "_cur_dev", "classDriverStanda__uSMC.html#a5da98a8cb20d4a68e8a894c1fde14fe0", null ],
     [ "_devices", "classDriverStanda__uSMC.html#a7f20896518df9f23909b6c269adfd4d0", null ],

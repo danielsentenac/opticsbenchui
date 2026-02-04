@@ -13,6 +13,6 @@ var classDriverNewFocus__8750__Cl =
     [ "Move", "classDriverNewFocus__8750__Cl.html#a54dbd75a085e23a3e519fd222ad298ec", null ],
     [ "MoveAbs", "classDriverNewFocus__8750__Cl.html#a13ef6c37bc1c44dcc4e482c3c0537fba", null ],
     [ "OperationComplete", "classDriverNewFocus__8750__Cl.html#a2f50c17f1d4b2601d0c9e19fe39d1885", null ],
-    [ "operator=", "classDriverNewFocus__8750__Cl.html#a729069d7603594d8497d99a09132e3c4", null ],
+    [ "operator=", "classDriverNewFocus__8750__Cl.html#a2441e992096883d17b2e272a01907536", null ],
     [ "Stop", "classDriverNewFocus__8750__Cl.html#af431751fc6958a0d94f5f4c65aa0ef07", null ]
 ];

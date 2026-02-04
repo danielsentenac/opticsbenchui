@@ -9,11 +9,13 @@ EXCLUDE_PATTERNS       = */moc_*.cpp
 STRIP_FROM_PATH        = .
 
 GENERATE_HTML          = YES
+GENERATE_TREEVIEW      = YES
 GENERATE_LATEX         = NO
 QUIET                  = YES
 WARN_IF_UNDOCUMENTED   = YES
 WARN_IF_DOC_ERROR      = YES
 INHERIT_DOCS           = YES
+HTML_EXTRA_STYLESHEET  = docs/api/opticsbenchui-dark.css
 
 EXTRACT_ALL            = NO
 EXTRACT_PRIVATE        = NO

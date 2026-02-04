@@ -4,12 +4,12 @@ var annotated_dup =
       [ "DriverFeature", "structDriverDefinition_1_1DriverFeature.html", "structDriverDefinition_1_1DriverFeature" ]
     ] ],
     [ "QsLogging", "namespaceQsLogging.html", [
+      [ "LoggerImpl", "classQsLogging_1_1LoggerImpl.html", "classQsLogging_1_1LoggerImpl" ],
+      [ "Logger", "classQsLogging_1_1Logger.html", "classQsLogging_1_1Logger" ],
+      [ "FileDestination", "classQsLogging_1_1FileDestination.html", "classQsLogging_1_1FileDestination" ],
       [ "DebugOutputDestination", "classQsLogging_1_1DebugOutputDestination.html", "classQsLogging_1_1DebugOutputDestination" ],
       [ "Destination", "classQsLogging_1_1Destination.html", "classQsLogging_1_1Destination" ],
-      [ "DestinationFactory", "classQsLogging_1_1DestinationFactory.html", null ],
-      [ "FileDestination", "classQsLogging_1_1FileDestination.html", "classQsLogging_1_1FileDestination" ],
-      [ "Logger", "classQsLogging_1_1Logger.html", "classQsLogging_1_1Logger" ],
-      [ "LoggerImpl", "classQsLogging_1_1LoggerImpl.html", "classQsLogging_1_1LoggerImpl" ]
+      [ "DestinationFactory", "classQsLogging_1_1DestinationFactory.html", null ]
     ] ],
     [ "ACCom", "classACCom.html", "classACCom" ],
     [ "ACEthCom", "classACEthCom.html", "classACEthCom" ],

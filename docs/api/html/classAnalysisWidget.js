@@ -3,6 +3,7 @@ var classAnalysisWidget =
     [ "AnalysisWidget", "classAnalysisWidget.html#a967064cbeb7cc62daa72226030e027b7", null ],
     [ "~AnalysisWidget", "classAnalysisWidget.html#a275424309fe7ecb5a13c10608e8ae8e0", null ],
     [ "analysisFinished", "classAnalysisWidget.html#a0f280a63fa4a8ded04789112cea88b68", null ],
+    [ "analysisOutput", "classAnalysisWidget.html#ac38328bf31a4895b377e8e606977dfad", null ],
     [ "analysisStarted", "classAnalysisWidget.html#a8c84b73b5ac067be1a7be27e4dfee941", null ],
     [ "reload", "classAnalysisWidget.html#aefae3fb4325546147d5e5ee289f9b6b5", null ],
     [ "remove", "classAnalysisWidget.html#a44227dfc138d8f0ce26547620b16d346", null ],
