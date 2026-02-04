@@ -58,7 +58,8 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
       gridlayout(new QGridLayout()),
       analysis(new AnalysisThread()),
       expectedTasks(0),
-      finishedTasks(0) {
+      finishedTasks(0),
+      analysisWasStopped(false) {
   QLOG_DEBUG() << "AnalysisWidget::AnalysisWidget";
 
   dbConnexion();
@@ -213,6 +214,7 @@ void AnalysisWidget::run() {
   analysis->setTasks(tasks);
   expectedTasks = tasks.size();
   finishedTasks = 0;
+  analysisWasStopped = false;
   elapsedTimer.start();
   elapsedLabel->setText("Elapsed: 00:00:00");
   analysis->start();
@@ -231,6 +233,7 @@ void AnalysisWidget::runFromAcquisition() {
 
 void AnalysisWidget::stop() {
   analysis->stop();
+  analysisWasStopped = true;
   statusLabel->setText("Idle");
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
@@ -278,6 +281,7 @@ void AnalysisWidget::analysisThreadFinished() {
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
   }
+  statusLabel->setText(analysisWasStopped ? "Stopped" : "Finished");
 }
 
 void AnalysisWidget::dbConnexion() {

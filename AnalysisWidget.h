@@ -107,5 +107,6 @@ private:
   QElapsedTimer elapsedTimer;
   int expectedTasks;
   int finishedTasks;
+  bool analysisWasStopped;
 };
 #endif
