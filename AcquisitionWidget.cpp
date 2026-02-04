@@ -78,6 +78,7 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
   acquisitionview->setStyleSheet(kSelectionStylesheet);
   acquisitionview->setModel(acquisitiontable);
   acquisitionview->verticalHeader()->hide();
+  acquisitionview->setProperty("stretchLastColumn", true);
   Utils::ConfigureSqlTableView(acquisitionview);
   gridlayout->addWidget(acquisitionview, 1, 0, 1, 10);
 

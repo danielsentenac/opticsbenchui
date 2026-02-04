@@ -311,7 +311,9 @@ void ConfigureSqlTableView(QTableView* view) {
   SqlTableViewResizer* resizer = nullptr;
   if (QHeaderView* header = view->horizontalHeader()) {
     header->setSectionResizeMode(QHeaderView::Interactive);
-    header->setStretchLastSection(false);
+    const bool stretchLast =
+        view->property("stretchLastColumn").toBool();
+    header->setStretchLastSection(stretchLast);
     resizer = new SqlTableViewResizer(view);
     view->installEventFilter(resizer);
     if (view->viewport()) {
@@ -361,20 +363,29 @@ void UpdateSqlTableViewColumnSizing(QTableView* view) {
   if (!header) {
     return;
   }
-  header->setStretchLastSection(false);
+  const bool stretchLast = view->property("stretchLastColumn").toBool();
+  header->setStretchLastSection(stretchLast);
   view->resizeColumnsToContents();
   QVector<int> widths;
   widths.reserve(columns);
   int total = 0;
-  for (int c = 0; c < columns; ++c) {
+  const int lastColumn = columns - 1;
+  const int lastLimit = stretchLast ? lastColumn : columns;
+  for (int c = 0; c < lastLimit; ++c) {
     const int width = qMax(header->sectionSize(c), header->minimumSectionSize());
     widths.push_back(width);
     total += width;
   }
   const int viewportWidth = view->viewport()->width();
+  if (stretchLast) {
+    for (int c = 0; c < lastLimit; ++c) {
+      view->setColumnWidth(c, widths[c]);
+    }
+    return;
+  }
   if (viewportWidth > total) {
     const int extra = viewportWidth - total;
-    widths[columns - 1] += extra;
+    widths[lastColumn] += extra;
   }
   for (int c = 0; c < columns; ++c) {
     view->setColumnWidth(c, widths[c]);
