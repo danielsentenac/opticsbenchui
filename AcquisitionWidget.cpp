@@ -27,6 +27,17 @@ namespace {
 const char kSelectionStylesheet[] =
     "QTreeView::item:selected{background-color: palette(highlight); "
     "color: palette(highlightedText);};";
+
+QString FormatElapsed(qint64 elapsedMs) {
+  const qint64 totalSeconds = elapsedMs / 1000;
+  const qint64 hours = totalSeconds / 3600;
+  const qint64 minutes = (totalSeconds % 3600) / 60;
+  const qint64 seconds = totalSeconds % 60;
+  return QString("Elapsed: %1:%2:%3")
+      .arg(hours, 2, 10, QLatin1Char('0'))
+      .arg(minutes, 2, 10, QLatin1Char('0'))
+      .arg(seconds, 2, 10, QLatin1Char('0'));
+}
 }  // namespace
 
 AcquisitionWidget::AcquisitionWidget(QString appDirPath)
@@ -52,6 +63,7 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
       removeButton(new QPushButton("Delete", this)),
       runButton(new QPushButton("Run", this)),
       stopButton(new QPushButton("Stop", this)),
+      elapsedLabel(new QLabel("Elapsed: 00:00:00")),
       gridlayout(new QGridLayout()),
       acquisition(new AcquisitionThread()),
       sequenceList() {
@@ -88,6 +100,7 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
   stopButton->setFixedSize(100, 30);
   connect(stopButton, SIGNAL(clicked()), this, SLOT(stop()));
   gridlayout->addWidget(stopButton, 5, 1, 1, 1);
+  gridlayout->addWidget(elapsedLabel, 5, 2, 1, 4);
 
   setupAcquisitionTable();
   InitConfig();
@@ -115,6 +128,7 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
           SLOT(splashScreen(QString, int, int)));
   connect(acquisition, SIGNAL(requestAnalysis()), this,
           SLOT(requestAnalysisFromThread()));
+  connect(acquisition, SIGNAL(finished()), this, SLOT(acquisitionFinished()));
 }
 
 AcquisitionWidget::~AcquisitionWidget() {
@@ -347,6 +361,8 @@ void AcquisitionWidget::run() {
   acquisition->setComediDac(comedidac);
   acquisition->setRaspiDac(raspidac);
   acquisition->setSequenceList(sequenceList);
+  elapsedTimer.start();
+  elapsedLabel->setText("Elapsed: 00:00:00");
   acquisition->start();
   QLOG_DEBUG() << "AcquisitionWidget::run started";
 }
@@ -354,6 +370,9 @@ void AcquisitionWidget::run() {
 void AcquisitionWidget::stop() {
   acquisition->stop();
   setAcquiringToLastRecord();
+  if (elapsedTimer.isValid()) {
+    elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
+  }
 }
 
 void AcquisitionWidget::splashScreen(QString imagepath, int screen_x,
@@ -499,4 +518,10 @@ void AcquisitionWidget::showAcquisitionWarning(QString message) {
 
 void AcquisitionWidget::requestAnalysisFromThread() {
   emit requestAnalysis();
+}
+
+void AcquisitionWidget::acquisitionFinished() {
+  if (elapsedTimer.isValid()) {
+    elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
+  }
 }

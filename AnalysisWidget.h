@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtSql>
 #include <QtWidgets>
+#include <QElapsedTimer>
 #include "QsLog.h"
 #include "AnalysisThread.h"
 
@@ -71,6 +72,8 @@ public slots:
   /// Show analysis warning to the user.
   /// \param message Warning message.
   void showAnalysisWarning(QString message);
+  /// Update elapsed time when analysis thread finishes.
+  void analysisThreadFinished();
 
 signals:
   /// Emit warnings to the UI.
@@ -89,6 +92,7 @@ private:
 
   QLabel* analysistitle;
   QLabel* statusLabel;
+  QLabel* elapsedLabel;
   QTextEdit* outputView;
   QSqlTableModel* analysistable;
   QTableView* analysisview;
@@ -100,5 +104,8 @@ private:
   QGridLayout* gridlayout;
 
   AnalysisThread* analysis;
+  QElapsedTimer elapsedTimer;
+  int expectedTasks;
+  int finishedTasks;
 };
 #endif

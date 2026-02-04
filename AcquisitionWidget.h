@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtSql>
 #include <QtWidgets>
+#include <QElapsedTimer>
 
 
 #include "QsLog.h"
@@ -132,6 +133,8 @@ public slots:
   void showAcquisitionWarning(QString message);
   /// Relay analysis request from acquisition thread.
   void requestAnalysisFromThread();
+  /// Update elapsed time when acquisition thread finishes.
+  void acquisitionFinished();
  
 private:
   void InitConfig();
@@ -140,6 +143,7 @@ private:
   void updateStatusForRecord(const QString& status, int record);
   void setAcquiringToLastRecord();
   QString statusFromSuccess(bool success) const;
+  QString formatElapsed(qint64 elapsedMs) const;
 
   QString appDirPath;
   QString path;
@@ -165,10 +169,12 @@ private:
   QPushButton* removeButton;
   QPushButton* runButton;
   QPushButton* stopButton;
+  QLabel* elapsedLabel;
   QGridLayout* gridlayout;
 
   AcquisitionThread* acquisition;
   QVector<AcquisitionSequence*> sequenceList;
+  QElapsedTimer elapsedTimer;
 
 };
 #endif

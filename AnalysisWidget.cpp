@@ -27,6 +27,17 @@ namespace {
 const char kSelectionStylesheet[] =
     "QTreeView::item:selected{background-color: palette(highlight); "
     "color: palette(highlightedText);};";
+
+QString FormatElapsed(qint64 elapsedMs) {
+  const qint64 totalSeconds = elapsedMs / 1000;
+  const qint64 hours = totalSeconds / 3600;
+  const qint64 minutes = (totalSeconds % 3600) / 60;
+  const qint64 seconds = totalSeconds % 60;
+  return QString("Elapsed: %1:%2:%3")
+      .arg(hours, 2, 10, QLatin1Char('0'))
+      .arg(minutes, 2, 10, QLatin1Char('0'))
+      .arg(seconds, 2, 10, QLatin1Char('0'));
+}
 }  // namespace
 
 AnalysisWidget::AnalysisWidget(QString appDirPath)
@@ -35,6 +46,7 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
       analysisrow(0),
       analysistitle(new QLabel("Analysis sequence")),
       statusLabel(new QLabel("Idle")),
+      elapsedLabel(new QLabel("Elapsed: 00:00:00")),
       outputView(new QTextEdit()),
       analysistable(nullptr),
       analysisview(new QTableView()),
@@ -44,7 +56,9 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
       runButton(new QPushButton("Run", this)),
       stopButton(new QPushButton("Stop", this)),
       gridlayout(new QGridLayout()),
-      analysis(new AnalysisThread()) {
+      analysis(new AnalysisThread()),
+      expectedTasks(0),
+      finishedTasks(0) {
   QLOG_DEBUG() << "AnalysisWidget::AnalysisWidget";
 
   dbConnexion();
@@ -79,7 +93,8 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
   connect(stopButton, SIGNAL(clicked()), this, SLOT(stop()));
   gridlayout->addWidget(stopButton, 5, 1, 1, 1);
 
-  gridlayout->addWidget(statusLabel, 5, 2, 1, 6);
+  gridlayout->addWidget(statusLabel, 5, 2, 1, 4);
+  gridlayout->addWidget(elapsedLabel, 5, 6, 1, 4);
   outputView->setReadOnly(true);
   outputView->setMinimumHeight(120);
   gridlayout->addWidget(outputView, 6, 0, 1, 10);
@@ -95,6 +110,8 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
           SLOT(analysisOutput(int, QString)));
   connect(analysis, SIGNAL(showWarning(QString)), this,
           SLOT(showAnalysisWarning(QString)));
+  connect(analysis, SIGNAL(finished()), this,
+          SLOT(analysisThreadFinished()));
 }
 
 AnalysisWidget::~AnalysisWidget() {
@@ -187,7 +204,12 @@ void AnalysisWidget::run() {
   stop();
   statusLabel->setText("Running...");
   outputView->clear();
-  analysis->setTasks(buildTaskList());
+  QVector<AnalysisTask> tasks = buildTaskList();
+  analysis->setTasks(tasks);
+  expectedTasks = tasks.size();
+  finishedTasks = 0;
+  elapsedTimer.start();
+  elapsedLabel->setText("Elapsed: 00:00:00");
   analysis->start();
   QLOG_DEBUG() << "AnalysisWidget::run started";
 }
@@ -200,6 +222,9 @@ void AnalysisWidget::runFromAcquisition() {
 void AnalysisWidget::stop() {
   analysis->stop();
   statusLabel->setText("Idle");
+  if (elapsedTimer.isValid()) {
+    elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
+  }
 }
 
 void AnalysisWidget::analysisStarted(int record) {
@@ -217,6 +242,12 @@ void AnalysisWidget::analysisFinished(int record, bool success,
   }
   statusLabel->setText(success ? "Done" : "Failed");
   outputView->append(success ? ">> Done" : ">> Failed");
+  if (expectedTasks > 0) {
+    finishedTasks++;
+    if (finishedTasks >= expectedTasks && elapsedTimer.isValid()) {
+      elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
+    }
+  }
 }
 
 void AnalysisWidget::analysisOutput(int record, const QString& output) {
@@ -231,6 +262,12 @@ void AnalysisWidget::analysisOutput(int record, const QString& output) {
 
 void AnalysisWidget::showAnalysisWarning(QString message) {
   Utils::EmitWarning(this, __FUNCTION__, message);
+}
+
+void AnalysisWidget::analysisThreadFinished() {
+  if (elapsedTimer.isValid()) {
+    elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
+  }
 }
 
 void AnalysisWidget::dbConnexion() {
