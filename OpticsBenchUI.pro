@@ -364,7 +364,8 @@ contains(DEFINES, ADVANTECHDAC) {
   HEADERS += DriverStanda_uSMC2.h
   SOURCES += DriverStanda_uSMC2.cpp
   INCLUDEPATH += $$STANDA_INC_PATH
-  LIBS += -L$$STANDA_LIB_PATH -lximc
+  LIBS += -L$$STANDA_LIB_PATH -lximc -lbindy -lxiwrapper
+  QMAKE_LFLAGS += -Wl,-rpath,$$STANDA_LIB_PATH
 }
 
 INCLUDEPATH += \
