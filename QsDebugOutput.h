@@ -1,3 +1,7 @@
+/**
+ * @file QsDebugOutput.h
+ * @brief Qs Debug Output logging support.
+ */
 // Copyright (c) 2010, Razvan Petru
 // All rights reserved.
 

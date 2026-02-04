@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file DriverSuperK.h
+ * @brief Driver implementation for Super K.
+ */
+
 #ifndef DRIVERSUPERK_H
 #define DRIVERSUPERK_H
 

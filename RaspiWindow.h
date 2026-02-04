@@ -14,6 +14,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
+
+/**
+ * @file RaspiWindow.h
+ * @brief Raspi window.
+ */
 #ifndef RASPIWINDOW_H
 #define RASPIWINDOW_H
 

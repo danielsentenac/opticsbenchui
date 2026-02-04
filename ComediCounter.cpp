@@ -14,6 +14,11 @@ the Free Software Foundation, either version 3 of the License, or
    You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
+
+/**
+ * @file ComediCounter.cpp
+ * @brief Comedi Counter source file.
+ */
 #ifdef COMEDICOUNTER
 #include "ComediCounter.h"
 #include "Utils.h"

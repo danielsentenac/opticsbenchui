@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file DriverPI_C862.h
+ * @brief Driver implementation for PI C 862.
+ */
+
 #ifndef DRIVERPI_C862_H
 #define DRIVERPI_C862_H
 

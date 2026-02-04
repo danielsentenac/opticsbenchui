@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file SuperK.h
+ * @brief Super K device interface.
+ */
+
 #ifndef SUPERK_H
 #define SUPERK_H
 

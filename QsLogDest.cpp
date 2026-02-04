@@ -1,3 +1,7 @@
+/**
+ * @file QsLogDest.cpp
+ * @brief Qs Log Dest logging support.
+ */
 // Copyright (c) 2010, Razvan Petru
 // All rights reserved.
 

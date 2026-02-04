@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file ComboBoxDelegate.cpp
+ * @brief Combo Box Delegate source file.
+ */
+
 #include "ComboBoxDelegate.h"
 
 ComboBoxDelegate::ComboBoxDelegate(QObject *parent, QStringList *itemlist)

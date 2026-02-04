@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file ComboBoxDelegate.h
+ * @brief Combo Box Delegate source file.
+ */
+
 #ifndef COMBOBOXDELEGATE_H
 #define COMBOBOXDELEGATE_H
 

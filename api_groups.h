@@ -1,3 +1,7 @@
+/**
+ * @file api_groups.h
+ * @brief api groups source file.
+ */
 /// \mainpage OpticsBenchUI API
 /// This reference is organized by hardware type and supporting UI/utilities.
 ///

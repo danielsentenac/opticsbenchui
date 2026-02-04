@@ -1,3 +1,7 @@
+/**
+ * @file VideoWidget.cpp
+ * @brief Video widget.
+ */
 #include "VideoWidget.h"
 #include <QtGlobal>
 

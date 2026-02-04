@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file DriverMicos_Pollux.h
+ * @brief Driver implementation for Micos Pollux.
+ */
+
 #ifndef DRIVERMICOS_POLLUX_H
 #define DRIVERMICOS_POLLUX_H
 

@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file DriverPI_C509.cpp
+ * @brief Driver implementation for PI C 509.
+ */
+
 #include "DriverPI_C509.h"
 
 using namespace DriverDefinition;

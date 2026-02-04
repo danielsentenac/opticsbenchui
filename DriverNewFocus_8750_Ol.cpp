@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file DriverNewFocus_8750_Ol.cpp
+ * @brief Driver implementation for New Focus 8750 Ol.
+ */
+
 #include <iostream>
 #include <stdio.h>
 #include <sstream>

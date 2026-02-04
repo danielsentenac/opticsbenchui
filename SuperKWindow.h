@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file SuperKWindow.h
+ * @brief Super K window.
+ */
+
 #ifndef SUPERKWINDOW_H
 #define SUPERKWINDOW_H
 

@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file FileParser.cpp
+ * @brief Acquisition file parser.
+ */
+
 #include "FileParser.h"
 
 FileParser::FileParser(QObject *parent)

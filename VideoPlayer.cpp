@@ -1,3 +1,7 @@
+/**
+ * @file VideoPlayer.cpp
+ * @brief Video Player component.
+ */
 #include "VideoPlayer.h"
 #include "VideoWidget.h"
 #include <QtWidgets>

@@ -1,3 +1,7 @@
+/**
+ * @file ComediCounterPlot.cpp
+ * @brief Comedi Counter Plot source file.
+ */
 #include <qpainter.h>
 #include <qwt_plot_layout.h>
 #include <qwt_plot_curve.h>

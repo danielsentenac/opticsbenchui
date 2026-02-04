@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file ACCom.cpp
+ * @brief AC communication backend for AC Com.
+ */
+
 
 #include "ACRSCom.h"
 #include "ACEthCom.h"

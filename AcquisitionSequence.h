@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file AcquisitionSequence.h
+ * @brief Acquisition sequence model.
+ */
+
 #ifndef ACQUISITIONSEQUENCE_H
 #define ACQUISITIONSEQUENCE_H
 

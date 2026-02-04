@@ -1,3 +1,7 @@
+/**
+ * @file VideoPlayer.h
+ * @brief Video Player component.
+ */
 #ifndef VIDEOPLAYER_H
 #define VIDEOPLAYER_H
 #include <QMovie>

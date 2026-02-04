@@ -14,6 +14,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
+
+/**
+ * @file CameraRAPTORNINOX640.cpp
+ * @brief Camera backend for RAPTORNINOX 640.
+ */
 #ifdef RAPTORNINOX640CAMERA
 #include "CameraRAPTORNINOX640.h"
 #include "Utils.h"

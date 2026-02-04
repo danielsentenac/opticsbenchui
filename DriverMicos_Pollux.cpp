@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file DriverMicos_Pollux.cpp
+ * @brief Driver implementation for Micos Pollux.
+ */
+
 #include <iostream>
 #include <stdio.h>
 #include <sstream>

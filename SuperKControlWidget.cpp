@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file SuperKControlWidget.cpp
+ * @brief Super K control widget.
+ */
+
 #include "SuperKControlWidget.h"
 
 SuperKControlWidget::SuperKControlWidget(QVector<QString>  *_driverList)

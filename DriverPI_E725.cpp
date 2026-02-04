@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file DriverPI_E725.cpp
+ * @brief Driver implementation for PI E 725.
+ */
+
 #include "DriverPI_E725.h"
 
 using namespace DriverDefinition;

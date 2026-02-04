@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file Utils.h
+ * @brief Utility helpers.
+ */
+
 #ifndef UTILS_H
 #define UTILS_H
 

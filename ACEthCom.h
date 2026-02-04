@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file ACEthCom.h
+ * @brief AC communication backend for AC Eth Com.
+ */
+
 
 #if !defined(_ACETHCOM_H_)
 #define _ACETHCOM_H_

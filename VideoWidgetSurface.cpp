@@ -1,3 +1,7 @@
+/**
+ * @file VideoWidgetSurface.cpp
+ * @brief Video Widget Surface component.
+ */
 #include "VideoWidgetSurface.h"
 #include <QtGlobal>
 

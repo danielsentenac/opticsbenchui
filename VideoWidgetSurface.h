@@ -1,3 +1,7 @@
+/**
+ * @file VideoWidgetSurface.h
+ * @brief Video Widget Surface component.
+ */
 #ifndef VIDEOWIDGETSURFACE_H
 #define VIDEOWIDGETSURFACE_H
 #include <QtGlobal>

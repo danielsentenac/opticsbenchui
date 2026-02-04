@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file ComediWindow.cpp
+ * @brief Comedi window.
+ */
+
 #include "ComediWindow.h"
 #include "Utils.h"
 

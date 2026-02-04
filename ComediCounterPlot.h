@@ -1,3 +1,7 @@
+/**
+ * @file ComediCounterPlot.h
+ * @brief Comedi Counter Plot source file.
+ */
 #ifndef COMEDICOUNTERPLOT_H
 #define COMEDICOUNTERPLOT_H
 

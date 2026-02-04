@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file SuperKControlWidget.h
+ * @brief Super K control widget.
+ */
+
 #ifndef SUPERKCONTROLWIDGET_H
 #define SUPERKCONTROLWIDGET_H
 

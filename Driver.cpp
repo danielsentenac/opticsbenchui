@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/**
+ * @file Driver.cpp
+ * @brief Driver implementation for .
+ */
+
 #include "Driver.h"
 #include "DriverPI_C862.h"
 #include "DriverNewFocus_8750_Ol.h"

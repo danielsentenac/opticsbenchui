@@ -1,3 +1,7 @@
+/**
+ * @file VideoWidget.h
+ * @brief Video widget.
+ */
 #ifndef VIDEOWIDGET_H
 #define VIDEOWIDGET_H
 #include <QtGlobal>

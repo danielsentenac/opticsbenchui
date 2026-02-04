@@ -1,3 +1,7 @@
+/**
+ * @file ACRSCom.h
+ * @brief AC communication backend for ACRS Com.
+ */
 /// &file ACRSCom.hpp
 /// Class ACRSCom
 /// This class provides a set of operations to perform communications
