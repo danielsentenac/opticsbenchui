@@ -106,14 +106,14 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">const</span> <span class="keywordtype">int</span>   <a class="code" href="classDriverNewPort__AGUC2.html#a7c63b6cb6a861c2a1203c73d7adf2744">DriverNewPort_AGUC2::MIN_BYTES_TRANS</a>      = 7;  <span class="comment">// Minimum bytes transferred</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">const</span> <a class="code" href="structDriverDefinition_1_1DriverFeature.html">DriverFeature</a> <a class="code" href="classDriverNewPort__AGUC2.html#aab61af2e8f78ae885e9c755dad1dc8f1">DriverNewPort_AGUC2::AGUC2_FEATURE</a> = </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  { <span class="stringliteral">&quot;step&quot;</span>,<span class="stringliteral">&quot;step&quot;</span>,1,1,OPEN_LOOP,NULL };</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  { <span class="stringliteral">&quot;step&quot;</span>,<span class="stringliteral">&quot;step&quot;</span>,1,1,<a class="code" href="namespaceDriverDefinition.html#a69bbe04621ad1182e7c1d19b6ee62176a4af56f07167c870b039052586772f65a">OPEN_LOOP</a>,NULL };</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// </span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// Init implementation</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classDriverNewPort__AGUC2.html#a2b80adf6fb44d5a1db69298719f74a0a">   34</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="classDriverNewPort__AGUC2.html#a2b80adf6fb44d5a1db69298719f74a0a">DriverNewPort_AGUC2::Init</a>(<span class="keywordtype">string</span>&amp; rstateData)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&quot;</span>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&quot;</span>;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordtype">string</span> command;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordtype">string</span> answer;</div>
@@ -124,25 +124,25 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordflow">if</span> (_pcommChannel-&gt;Write(command,<span class="stringliteral">&quot;CONTROL&quot;</span>,0xC0,0x00,0x00,0x00,0x00,1,0) &lt; 1)</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    {</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; Unable to write to port&quot;</span>);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      _lastError = COMMUNICATION_ERROR;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      _lastError = <a class="code" href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">COMMUNICATION_ERROR</a>;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      retStatus = -1;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordflow">if</span> (_pcommChannel-&gt;Write(command,<span class="stringliteral">&quot;CONTROL&quot;</span>,0xC0,0x04,0x08,0x00,0x00,1,0) &lt; 1)</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    {</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; Unable to write to port&quot;</span>);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      _lastError = COMMUNICATION_ERROR;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      _lastError = <a class="code" href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">COMMUNICATION_ERROR</a>;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      retStatus = -1;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">if</span> (_pcommChannel-&gt;Write(command,<span class="stringliteral">&quot;CONTROL&quot;</span>,0xC0,0x03,0x8003,0x00,0x00,1,0) &lt; 1)</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    {</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; Unable to write to port&quot;</span>);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      _lastError = COMMUNICATION_ERROR;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      _lastError = <a class="code" href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">COMMUNICATION_ERROR</a>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      retStatus = -1;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">if</span> (_pcommChannel-&gt;Write(command,<span class="stringliteral">&quot;CONTROL&quot;</span>,0xC0,0x02,0x00,0x00,0x00,1,0) &lt; 1)</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    {</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; Unable to write to port&quot;</span>);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      _lastError = COMMUNICATION_ERROR;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      _lastError = <a class="code" href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">COMMUNICATION_ERROR</a>;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      retStatus = -1;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">if</span> (retStatus == -1) <span class="keywordflow">return</span> retStatus;</div>
@@ -156,21 +156,21 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">if</span> (_pcommChannel-&gt;Write(command,<span class="stringliteral">&quot;BULK&quot;</span>,0x02,&amp;transferred,100) &lt; (<span class="keywordtype">int</span>)command.length())</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      {</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; Unable to write to port&quot;</span>);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    _lastError = COMMUNICATION_ERROR;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    _lastError = <a class="code" href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">COMMUNICATION_ERROR</a>;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    retStatus = -1;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; transferred &quot;</span> &lt;&lt; transferred;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; transferred &quot;</span> &lt;&lt; transferred;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    usleep(10000);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">if</span> (_pcommChannel-&gt;Read(answer,<span class="stringliteral">&quot;BULK&quot;</span>,0x81,&amp;atransferred,100) &lt; MIN_BYTES_TRANS)</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      {</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; Unable to read from port&quot;</span>);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; answer = &quot;</span> &lt;&lt; answer.c_str() &lt;&lt; <span class="stringliteral">&quot; bytes transferred &quot;</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; answer = &quot;</span> &lt;&lt; answer.c_str() &lt;&lt; <span class="stringliteral">&quot; bytes transferred &quot;</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;              &lt;&lt; atransferred;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    _lastError = COMMUNICATION_ERROR;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    _lastError = <a class="code" href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">COMMUNICATION_ERROR</a>;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    retStatus = -1;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      }</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  }</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;   QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; answer &quot;</span> &lt;&lt; answer.c_str() &lt;&lt; <span class="stringliteral">&quot; bytes transferred &quot;</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;   <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; answer &quot;</span> &lt;&lt; answer.c_str() &lt;&lt; <span class="stringliteral">&quot; bytes transferred &quot;</span></div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;         &lt;&lt; atransferred;</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;   usleep(10000);</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="comment">// Set to remote mode</span></div>
@@ -178,10 +178,10 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keywordflow">if</span> (_pcommChannel-&gt;Write(command,<span class="stringliteral">&quot;BULK&quot;</span>,0x02,&amp;transferred,100) &lt; (<span class="keywordtype">int</span>)command.length())</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    {</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; Unable to write to port&quot;</span>);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      _lastError = COMMUNICATION_ERROR;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      _lastError = <a class="code" href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">COMMUNICATION_ERROR</a>;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      retStatus = -1;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  QLOG_DEBUG () &lt;&lt; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; </div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;          <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; transferred &quot;</span> &lt;&lt; transferred;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordflow">return</span> retStatus;</div>
@@ -195,7 +195,7 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="classDriverNewPort__AGUC2.html#a5af0934ba0bb4fd4e9a60f506328e0ad">  115</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="classDriverNewPort__AGUC2.html#a5af0934ba0bb4fd4e9a60f506328e0ad">DriverNewPort_AGUC2::InitActuator</a>(<span class="keywordtype">string</span> actuatorSetting,</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                     <span class="keywordtype">float</span>  position)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::InitActuator&quot;</span>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::InitActuator&quot;</span>;</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keywordflow">return</span> retStatus;</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}</div>
@@ -210,7 +210,7 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classDriverNewPort__AGUC2.html#ab165d4b5173cb1ebcb5e0a25c31632da">  130</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="classDriverNewPort__AGUC2.html#ab165d4b5173cb1ebcb5e0a25c31632da">DriverNewPort_AGUC2::GetPos</a>(<span class="keywordtype">string</span>  actuatorSetting,</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                   <span class="keywordtype">float</span>&amp;  position)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::GetPos&quot;</span>;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::GetPos&quot;</span>;</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <span class="keywordtype">string</span> command;</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <span class="keywordtype">char</span> commandC[64];</div>
@@ -226,7 +226,7 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  sprintf(commandC,<span class="stringliteral">&quot;%dTP\r\n&quot;</span>,axisNumber);</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  command = commandC;</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::GetPos&gt; command &quot;</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::GetPos&gt; command &quot;</span></div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;             &lt;&lt; command.c_str();</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  <span class="keywordflow">while</span> ( cnt &lt; MAX_TRIES &amp;&amp; atransferred &lt; MIN_BYTES_TRANS) {</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    cnt++;</div>
@@ -235,14 +235,14 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordflow">if</span> (_pcommChannel-&gt;Write(command,<span class="stringliteral">&quot;BULK&quot;</span>,0x02,&amp;transferred,100) &lt; (<span class="keywordtype">int</span>)command.length())</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      {</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::GetPos&gt; Unable to write to port&quot;</span>);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    _lastError = COMMUNICATION_ERROR;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    _lastError = <a class="code" href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">COMMUNICATION_ERROR</a>;</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    retStatus = -1;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      }</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    usleep(10000);</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keywordflow">if</span> (_pcommChannel-&gt;Read(answer,<span class="stringliteral">&quot;BULK&quot;</span>,0x81,&amp;atransferred,100) &lt; MIN_BYTES_TRANS)</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      {</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::GetPos&gt; Unable to read from port&quot;</span>);</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    _lastError = COMMUNICATION_ERROR;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    _lastError = <a class="code" href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">COMMUNICATION_ERROR</a>;</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    position  = 0;</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;      retStatus = -1;</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      }</div>
@@ -250,7 +250,7 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      subAns = answer.substr(5,answer.length());</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;      position = atoi(subAns.c_str());</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    }</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; answer &quot;</span> &lt;&lt; answer.c_str() &lt;&lt; <span class="stringliteral">&quot; bytes transferred &quot;</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; answer &quot;</span> &lt;&lt; answer.c_str() &lt;&lt; <span class="stringliteral">&quot; bytes transferred &quot;</span></div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                 &lt;&lt; transferred;</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  }</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  <span class="keywordflow">return</span> retStatus;</div>
@@ -265,7 +265,7 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                 <span class="keywordtype">float</span>  nbSteps,</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                 <span class="keywordtype">int</span>    unit)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::Move&quot;</span>;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::Move&quot;</span>;</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keywordtype">string</span> command;</div>
@@ -284,12 +284,12 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  sprintf(commandC,<span class="stringliteral">&quot;%dPR%d\r\n&quot;</span>,axisNumber,numberOfSteps);</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  command = commandC;</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  QLOG_DEBUG () &lt;&lt; </div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; </div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;           <span class="stringliteral">&quot;DriverNewPort_AGUC2::Move&gt; command &quot;</span> &lt;&lt; command.c_str();</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  <span class="keywordflow">if</span> (_pcommChannel-&gt;Write(command,<span class="stringliteral">&quot;BULK&quot;</span>,0x02,&amp;transferred,100) &lt; (<span class="keywordtype">int</span>)command.length())</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    {</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;      ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::Move&gt; Unable to write to port&quot;</span>);</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;      _lastError = COMMUNICATION_ERROR;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;      _lastError = <a class="code" href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">COMMUNICATION_ERROR</a>;</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;      retStatus = -1;</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    }</div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  </div>
@@ -305,8 +305,8 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                  <span class="keywordtype">float</span>  absPos,</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                  <span class="keywordtype">int</span>    unit)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::MoveAbs&quot;</span>;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  <span class="keywordtype">int</span> retStatus = NOT_CLOSED_LOOP;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::MoveAbs&quot;</span>;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  <span class="keywordtype">int</span> retStatus = <a class="code" href="namespaceDriverDefinition.html#af792df917db20583dd321809f4f62e59aa3c3013a4afefdca8b852e5e41e02a81">NOT_CLOSED_LOOP</a>;</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  <span class="keywordflow">return</span> retStatus;</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;}</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
@@ -318,7 +318,7 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00239"></a><span class="lineno"><a class="line" href="classDriverNewPort__AGUC2.html#ac974591c39b8cf9f22f2e4759f120460">  239</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="classDriverNewPort__AGUC2.html#ac974591c39b8cf9f22f2e4759f120460">DriverNewPort_AGUC2::Stop</a>(<span class="keywordtype">string</span> actuatorSetting)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::Stop&quot;</span>;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::Stop&quot;</span>;</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  <span class="keywordtype">string</span> command;</div>
@@ -336,12 +336,12 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;      sprintf(commandC,<span class="stringliteral">&quot;%dST\r\n&quot;</span>,axisNumber);</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;      command = commandC;</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;      </div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;      QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::Stop&gt; command = %s&quot;</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;      <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::Stop&gt; command = %s&quot;</span></div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            &lt;&lt; command.c_str();</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;      <span class="keywordflow">if</span> (_pcommChannel-&gt;Write(command,<span class="stringliteral">&quot;BULK&quot;</span>,0x02,&amp;transferred,100) &lt; (<span class="keywordtype">int</span>)command.length())</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    {</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;      ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::Stop&gt; Unable to write to port&quot;</span>);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;      _lastError = COMMUNICATION_ERROR;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;      _lastError = <a class="code" href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">COMMUNICATION_ERROR</a>;</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;      retStatus = -1;</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    } </div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    }</div>
@@ -361,7 +361,7 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                      <span class="keywordtype">string</span> actuatorSetting,</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                      <a class="code" href="namespaceDriverDefinition.html#a64a3030e095e640f75f387251025d3bd">ADLimitSwitch</a>&amp; rlimitSwitch)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;  QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::OperationComplete&quot;</span>;</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::OperationComplete&quot;</span>;</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;  </div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;  <span class="keywordtype">int</span>  retStatus = 1;</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;  <span class="keywordtype">string</span> command;</div>
@@ -385,28 +385,28 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;      cnt++;</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;      retStatus = 1;</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;      usleep(10000);</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;      QLOG_DEBUG () &lt;&lt;  </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;      <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  </div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;           <span class="stringliteral">&quot;DriverNewPort_AGUC2::OperationComplete&gt; command &quot;</span></div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;            &lt;&lt; command.c_str();</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;      <span class="keywordflow">if</span> (_pcommChannel-&gt;Write(command,<span class="stringliteral">&quot;BULK&quot;</span>,0x02,&amp;transferred,100) &lt; (<span class="keywordtype">int</span>)command.length())</div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    {</div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;      ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::OperationComplete&gt; Unable to write to port&quot;</span>);</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;      _lastError = COMMUNICATION_ERROR;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;      _lastError = <a class="code" href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">COMMUNICATION_ERROR</a>;</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;      retStatus = -1;</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    }</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;      usleep(10000);</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;      <span class="keywordflow">if</span> (_pcommChannel-&gt;Read(answer,<span class="stringliteral">&quot;BULK&quot;</span>,0x81,&amp;atransferred,100) &lt; MIN_BYTES_TRANS)</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    {</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;      ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::OperationComplete&gt; Unable to read from port&quot;</span>);</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;      _lastError = COMMUNICATION_ERROR;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;      _lastError = <a class="code" href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">COMMUNICATION_ERROR</a>;</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;      retStatus = -1;</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    }</div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;      <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; answer &quot;</span> &lt;&lt; answer.c_str() &lt;&lt; <span class="stringliteral">&quot; bytes transferred &quot;</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; answer &quot;</span> &lt;&lt; answer.c_str() &lt;&lt; <span class="stringliteral">&quot; bytes transferred &quot;</span></div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                 &lt;&lt; atransferred;</div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    subAns = answer.substr(5,1);</div>
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    status = atoi(subAns.c_str());</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    QLOG_DEBUG () &lt;&lt; </div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; </div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;            <span class="stringliteral">&quot;DriverNewPort_AGUC2::OperationComplete&gt; status TS &quot;</span> &lt;&lt; status;</div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="keywordflow">if</span> (status == 1) <span class="comment">// motion not completed</span></div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;      retStatus = 0;</div>
@@ -425,7 +425,7 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00346"></a><span class="lineno"><a class="line" href="classDriverNewPort__AGUC2.html#afcb0dbd16e25a3764c183e314681d82f">  346</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="classDriverNewPort__AGUC2.html#afcb0dbd16e25a3764c183e314681d82f">DriverNewPort_AGUC2::GetActuatorFeature</a>(<a class="code" href="structDriverDefinition_1_1DriverFeature.html">DriverFeature</a>&amp; ractuatorFeature)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;  QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::GetActuatorFeature&quot;</span>;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::GetActuatorFeature&quot;</span>;</div>
 <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;  </div>
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;</div>
 <div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;  </div>
@@ -443,7 +443,7 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                   <span class="keywordtype">float</span>&amp; rconvertedValue,</div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                   <span class="keywordtype">float</span>&amp; rrange)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;  QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::ConvertUnit&quot;</span>;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::ConvertUnit&quot;</span>;</div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;  </div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;  rconvertedValue = valueToConvert;</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;  rrange = 0;</div>
@@ -464,7 +464,7 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;  <span class="keywordtype">string</span> commandPrefix;</div>
 <div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;  <span class="keywordtype">int</span> clength;</div>
 <div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160; </div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;  QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::SendGeneralCommand&gt; reSttatus &quot;</span> &lt;&lt; retStatus;</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::SendGeneralCommand&gt; reSttatus &quot;</span> &lt;&lt; retStatus;</div>
 <div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;  </div>
 <div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;  <span class="keywordflow">if</span> (!mBufferVect.empty()) mBufferVect.erase(mBufferVect.begin(),mBufferVect.end());  </div>
 <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;  Tokenize(strbuffer,mBufferVect,<span class="stringliteral">&quot;,&quot;</span>);</div>
@@ -473,13 +473,13 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    command = mybuffer;</div>
 <div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    commandPrefix = command.substr(0,3);</div>
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    clength = command.length();</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::SendGeneralCommand&gt; Send Command &quot;</span> &lt;&lt; command.c_str() &lt;&lt; <span class="stringliteral">&quot; length &quot;</span> </div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::SendGeneralCommand&gt; Send Command &quot;</span> &lt;&lt; command.c_str() &lt;&lt; <span class="stringliteral">&quot; length &quot;</span> </div>
 <div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;          &lt;&lt; command.length();</div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    <span class="comment">// Apply Command</span></div>
 <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="comment"></span>    <span class="keywordflow">if</span> (_pcommChannel-&gt;Write(command,<span class="stringliteral">&quot;BULK&quot;</span>,0x02,&amp;transferred,100) &lt; (<span class="keywordtype">int</span>)command.length()) { </div>
 <div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;      ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::SendGeneralCommand&gt; Unable to write to port&quot;</span>);</div>
 <div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;      retStatus = (1 &lt;&lt; 0);</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;      QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::SendGeneralCommand&gt; reSttatus &quot;</span> &lt;&lt; retStatus;</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;      <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::SendGeneralCommand&gt; reSttatus &quot;</span> &lt;&lt; retStatus;</div>
 <div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    }</div>
 <div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    </div>
 <div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    usleep(100000);</div>
@@ -488,16 +488,18 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="comment"></span>  <span class="keywordflow">if</span> (!_pcommChannel-&gt;Read(answer,<span class="stringliteral">&quot;BULK&quot;</span>,0x81,&amp;atransferred,100)) {</div>
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;    ReportCommError(<span class="stringliteral">&quot;DriverNewPort_AGUC2::SendGeneralCommand&gt; Unable to read from port&quot;</span>);</div>
 <div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    retStatus |= (1 &lt;&lt; 1);</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    QLOG_DEBUG () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::SendGeneralCommand&gt; retStatus &quot;</span> &lt;&lt; retStatus;</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  <span class="stringliteral">&quot;DriverNewPort_AGUC2::SendGeneralCommand&gt; retStatus &quot;</span> &lt;&lt; retStatus;</div>
 <div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;  }</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; answer &quot;</span> &lt;&lt; answer.c_str() &lt;&lt; <span class="stringliteral">&quot; bytes transferred &quot;</span></div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverNewPort_AGUC2::Init&gt; answer &quot;</span> &lt;&lt; answer.c_str() &lt;&lt; <span class="stringliteral">&quot; bytes transferred &quot;</span></div>
 <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;                 &lt;&lt; atransferred;</div>
 <div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;  rply = answer;</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;  QLOG_DEBUG () &lt;&lt;  </div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt;  </div>
 <div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;           <span class="stringliteral">&quot;DriverNewPort_AGUC2::SendGeneralCommand&gt; returning retStatus &quot;</span> &lt;&lt; retStatus;</div>
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;  <span class="keywordflow">return</span> retStatus;</div>
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;}</div>
 <div class="ttc" id="aDriverNewPort__AGUC2_8h_html"><div class="ttname"><a href="DriverNewPort__AGUC2_8h.html">DriverNewPort_AGUC2.h</a></div><div class="ttdoc">This file provides a class implementing a AGUC2 driver for a non specified controller using only the ...</div></div>
+<div class="ttc" id="aQsLog_8h_html_a9a46ec93e4716bae7d3c5e8894793970"><div class="ttname"><a href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a></div><div class="ttdeci">#define QLOG_ERROR()</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00123">QsLog.h:123</a></div></div>
+<div class="ttc" id="aQsLog_8h_html_abd6d078a03c308c28a48cc1e9bf44e54"><div class="ttname"><a href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a></div><div class="ttdeci">#define QLOG_DEBUG()</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00114">QsLog.h:114</a></div></div>
 <div class="ttc" id="aclassDriverNewPort__AGUC2_html_a1f8aa419a2bfdbac623af838b201a9c4"><div class="ttname"><a href="classDriverNewPort__AGUC2.html#a1f8aa419a2bfdbac623af838b201a9c4">DriverNewPort_AGUC2::Move</a></div><div class="ttdeci">virtual int Move(string actuatorSetting, float nbSteps, int unit) const</div><div class="ttdoc">Perform a relative motion.</div><div class="ttdef"><b>Definition:</b> <a href="DriverNewPort__AGUC2_8cpp_source.html#l00184">DriverNewPort_AGUC2.cpp:184</a></div></div>
 <div class="ttc" id="aclassDriverNewPort__AGUC2_html_a2b80adf6fb44d5a1db69298719f74a0a"><div class="ttname"><a href="classDriverNewPort__AGUC2.html#a2b80adf6fb44d5a1db69298719f74a0a">DriverNewPort_AGUC2::Init</a></div><div class="ttdeci">virtual int Init(string &amp;rstateData) const</div><div class="ttdoc">Initialize the driver.</div><div class="ttdef"><b>Definition:</b> <a href="DriverNewPort__AGUC2_8cpp_source.html#l00034">DriverNewPort_AGUC2.cpp:34</a></div></div>
 <div class="ttc" id="aclassDriverNewPort__AGUC2_html_a4d1a988685f24d6b10662f7290b5b772"><div class="ttname"><a href="classDriverNewPort__AGUC2.html#a4d1a988685f24d6b10662f7290b5b772">DriverNewPort_AGUC2::NB_ITEM_DRV_SETTING</a></div><div class="ttdeci">static const int NB_ITEM_DRV_SETTING</div><div class="ttdoc">Number of driver settings items.</div><div class="ttdef"><b>Definition:</b> <a href="DriverNewPort__AGUC2_8h_source.html#l00103">DriverNewPort_AGUC2.h:103</a></div></div>
@@ -516,9 +518,12 @@ $(document).ready(function(){initNavTree('DriverNewPort__AGUC2_8cpp_source.html'
 <div class="ttc" id="aclassDriverNewPort__AGUC2_html_ad2a7becd7e9e07f4a1640ab5f4ace586"><div class="ttname"><a href="classDriverNewPort__AGUC2.html#ad2a7becd7e9e07f4a1640ab5f4ace586">DriverNewPort_AGUC2::MAX_TRIES</a></div><div class="ttdeci">static const int MAX_TRIES</div><div class="ttdoc">Maximum retry count.</div><div class="ttdef"><b>Definition:</b> <a href="DriverNewPort__AGUC2_8h_source.html#l00105">DriverNewPort_AGUC2.h:105</a></div></div>
 <div class="ttc" id="aclassDriverNewPort__AGUC2_html_ae1e5d99c9af1cea49d0c238a33253209"><div class="ttname"><a href="classDriverNewPort__AGUC2.html#ae1e5d99c9af1cea49d0c238a33253209">DriverNewPort_AGUC2::BUFFER_SIZE</a></div><div class="ttdeci">static const int BUFFER_SIZE</div><div class="ttdoc">Serial buffer size.</div><div class="ttdef"><b>Definition:</b> <a href="DriverNewPort__AGUC2_8h_source.html#l00095">DriverNewPort_AGUC2.h:95</a></div></div>
 <div class="ttc" id="aclassDriverNewPort__AGUC2_html_afcb0dbd16e25a3764c183e314681d82f"><div class="ttname"><a href="classDriverNewPort__AGUC2.html#afcb0dbd16e25a3764c183e314681d82f">DriverNewPort_AGUC2::GetActuatorFeature</a></div><div class="ttdeci">virtual int GetActuatorFeature(DriverDefinition::DriverFeature &amp;ractuatorFeature) const</div><div class="ttdoc">Get actuator feature metadata.</div><div class="ttdef"><b>Definition:</b> <a href="DriverNewPort__AGUC2_8cpp_source.html#l00346">DriverNewPort_AGUC2.cpp:346</a></div></div>
-<div class="ttc" id="anamespaceDriverDefinition_html"><div class="ttname"><a href="namespaceDriverDefinition.html">DriverDefinition</a></div><div class="ttdoc">Shared enums and types for actuator driver implementations.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00029">DriverDefinition.h:30</a></div></div>
-<div class="ttc" id="anamespaceDriverDefinition_html_a64a3030e095e640f75f387251025d3bd"><div class="ttname"><a href="namespaceDriverDefinition.html#a64a3030e095e640f75f387251025d3bd">DriverDefinition::ADLimitSwitch</a></div><div class="ttdeci">ADLimitSwitch</div><div class="ttdoc">Limit switch state.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00069">DriverDefinition.h:69</a></div></div>
-<div class="ttc" id="astructDriverDefinition_1_1DriverFeature_html"><div class="ttname"><a href="structDriverDefinition_1_1DriverFeature.html">DriverDefinition::DriverFeature</a></div><div class="ttdoc">Driver feature metadata.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00047">DriverDefinition.h:48</a></div></div>
+<div class="ttc" id="anamespaceDriverDefinition_html"><div class="ttname"><a href="namespaceDriverDefinition.html">DriverDefinition</a></div><div class="ttdoc">Shared enums and types for actuator driver implementations.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00034">DriverDefinition.h:35</a></div></div>
+<div class="ttc" id="anamespaceDriverDefinition_html_a64a3030e095e640f75f387251025d3bd"><div class="ttname"><a href="namespaceDriverDefinition.html#a64a3030e095e640f75f387251025d3bd">DriverDefinition::ADLimitSwitch</a></div><div class="ttdeci">ADLimitSwitch</div><div class="ttdoc">Limit switch state.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00074">DriverDefinition.h:74</a></div></div>
+<div class="ttc" id="anamespaceDriverDefinition_html_a69bbe04621ad1182e7c1d19b6ee62176a4af56f07167c870b039052586772f65a"><div class="ttname"><a href="namespaceDriverDefinition.html#a69bbe04621ad1182e7c1d19b6ee62176a4af56f07167c870b039052586772f65a">DriverDefinition::OPEN_LOOP</a></div><div class="ttdeci">@ OPEN_LOOP</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00037">DriverDefinition.h:37</a></div></div>
+<div class="ttc" id="anamespaceDriverDefinition_html_a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f"><div class="ttname"><a href="namespaceDriverDefinition.html#a7f5129e5d0f14ea80267bbd5a600fa78ab39f1adad18c6b3adf04be7a73c4089f">DriverDefinition::COMMUNICATION_ERROR</a></div><div class="ttdeci">@ COMMUNICATION_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00070">DriverDefinition.h:70</a></div></div>
+<div class="ttc" id="anamespaceDriverDefinition_html_af792df917db20583dd321809f4f62e59aa3c3013a4afefdca8b852e5e41e02a81"><div class="ttname"><a href="namespaceDriverDefinition.html#af792df917db20583dd321809f4f62e59aa3c3013a4afefdca8b852e5e41e02a81">DriverDefinition::NOT_CLOSED_LOOP</a></div><div class="ttdeci">@ NOT_CLOSED_LOOP</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00044">DriverDefinition.h:44</a></div></div>
+<div class="ttc" id="astructDriverDefinition_1_1DriverFeature_html"><div class="ttname"><a href="structDriverDefinition_1_1DriverFeature.html">DriverDefinition::DriverFeature</a></div><div class="ttdoc">Driver feature metadata.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00052">DriverDefinition.h:53</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

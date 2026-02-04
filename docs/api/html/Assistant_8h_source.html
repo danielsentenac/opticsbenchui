@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('Assistant_8h_source.html',''); initRes
 <div class="title">Assistant.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
+<a href="Assistant_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">This file is part of OpticsBenchUI.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">OpticsBenchUI is free software: you can redistribute it and/or modify</span></div>
@@ -104,38 +104,39 @@ $(document).ready(function(){initNavTree('Assistant_8h_source.html',''); initRes
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">********************************************************************/</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifndef ASSISTANT_H</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define ASSISTANT_H</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;QtCore/QString&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;QsLog.h&quot;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">class </span>QProcess;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef ASSISTANT_H</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define ASSISTANT_H</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classAssistant.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAssistant.html">Assistant</a></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classAssistant.html#ab6499e0f9f0792047f1f6bb109e7977e">Assistant</a>(QString appDirPath = QString());</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="classAssistant.html#a497da42201404f28a140036de7f190e8">~Assistant</a>();</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAssistant.html#acbb318636f789cff280a0b313301a863">showDocumentation</a>(<span class="keyword">const</span> QString &amp;file);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordtype">bool</span> startAssistant();</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  QProcess *proc;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  QString appDirPath;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;};</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassAssistant_html"><div class="ttname"><a href="classAssistant.html">Assistant</a></div><div class="ttdef"><b>Definition:</b> <a href="Assistant_8h_source.html#l00028">Assistant.h:29</a></div></div>
-<div class="ttc" id="aclassAssistant_html_a497da42201404f28a140036de7f190e8"><div class="ttname"><a href="classAssistant.html#a497da42201404f28a140036de7f190e8">Assistant::~Assistant</a></div><div class="ttdeci">~Assistant()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="Assistant_8cpp_source.html#l00033">Assistant.cpp:33</a></div></div>
-<div class="ttc" id="aclassAssistant_html_ab6499e0f9f0792047f1f6bb109e7977e"><div class="ttname"><a href="classAssistant.html#ab6499e0f9f0792047f1f6bb109e7977e">Assistant::Assistant</a></div><div class="ttdeci">Assistant(QString appDirPath=QString())</div><div class="ttdef"><b>Definition:</b> <a href="Assistant_8cpp_source.html#l00029">Assistant.cpp:29</a></div></div>
-<div class="ttc" id="aclassAssistant_html_acbb318636f789cff280a0b313301a863"><div class="ttname"><a href="classAssistant.html#acbb318636f789cff280a0b313301a863">Assistant::showDocumentation</a></div><div class="ttdeci">void showDocumentation(const QString &amp;file)</div><div class="ttdef"><b>Definition:</b> <a href="Assistant_8cpp_source.html#l00041">Assistant.cpp:41</a></div></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;QtCore/QString&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="QsLog_8h.html">QsLog.h</a>&quot;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">class </span>QProcess;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classAssistant.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAssistant.html">Assistant</a></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classAssistant.html#ab6499e0f9f0792047f1f6bb109e7977e">Assistant</a>(QString appDirPath = QString());</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="classAssistant.html#a497da42201404f28a140036de7f190e8">~Assistant</a>();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAssistant.html#acbb318636f789cff280a0b313301a863">showDocumentation</a>(<span class="keyword">const</span> QString &amp;file);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordtype">bool</span> startAssistant();</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  QProcess *proc;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  QString appDirPath;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;};</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aQsLog_8h_html"><div class="ttname"><a href="QsLog_8h.html">QsLog.h</a></div><div class="ttdoc">Qs Log logging support.</div></div>
+<div class="ttc" id="aclassAssistant_html"><div class="ttname"><a href="classAssistant.html">Assistant</a></div><div class="ttdef"><b>Definition:</b> <a href="Assistant_8h_source.html#l00033">Assistant.h:34</a></div></div>
+<div class="ttc" id="aclassAssistant_html_a497da42201404f28a140036de7f190e8"><div class="ttname"><a href="classAssistant.html#a497da42201404f28a140036de7f190e8">Assistant::~Assistant</a></div><div class="ttdeci">~Assistant()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="Assistant_8cpp_source.html#l00038">Assistant.cpp:38</a></div></div>
+<div class="ttc" id="aclassAssistant_html_ab6499e0f9f0792047f1f6bb109e7977e"><div class="ttname"><a href="classAssistant.html#ab6499e0f9f0792047f1f6bb109e7977e">Assistant::Assistant</a></div><div class="ttdeci">Assistant(QString appDirPath=QString())</div><div class="ttdef"><b>Definition:</b> <a href="Assistant_8cpp_source.html#l00034">Assistant.cpp:34</a></div></div>
+<div class="ttc" id="aclassAssistant_html_acbb318636f789cff280a0b313301a863"><div class="ttname"><a href="classAssistant.html#acbb318636f789cff280a0b313301a863">Assistant::showDocumentation</a></div><div class="ttdeci">void showDocumentation(const QString &amp;file)</div><div class="ttdef"><b>Definition:</b> <a href="Assistant_8cpp_source.html#l00046">Assistant.cpp:46</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>Assistant.h</b></li>
+    <li class="navelem"><a class="el" href="Assistant_8h.html">Assistant.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

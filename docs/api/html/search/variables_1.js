@@ -1,13 +1,19 @@
 var searchData=
 [
-  ['acqend_1070',['acqend',['../classCamera.html#a33924d5eddaf9f897bed4e793407c4c7',1,'Camera']]],
-  ['acqstart_1071',['acqstart',['../classCamera.html#a4e64c09c8af69c5b5e667cee4eb33ff6',1,'Camera']]],
-  ['acquiremutex_1072',['acquireMutex',['../classCamera.html#af765862d776294761eb47f81e6682833',1,'Camera']]],
-  ['aguc2_5ffeature_1073',['AGUC2_FEATURE',['../classDriverNewPort__AGUC2.html#aab61af2e8f78ae885e9c755dad1dc8f1',1,'DriverNewPort_AGUC2']]],
-  ['arguments_1074',['arguments',['../structAnalysisTask.html#ac7479c973f9c4e206c63e9c093b9ba7a',1,'AnalysisTask']]],
-  ['avg_1075',['avg',['../classAcquisitionSequence.html#af69f2a77e8f35de9fc6d3545327fb3bd',1,'AcquisitionSequence::avg()'],['../classCamera.html#a899f7576c33b2080b114d80749778103',1,'Camera::avg()']]],
-  ['avgleft_1076',['avgLeft',['../classAcquisitionSequence.html#a17a4abd83ead6a0ad43f77f22b5122ac',1,'AcquisitionSequence']]],
-  ['avgop_1077',['avgOp',['../classAcquisitionSequence.html#ab43dc8c7a4f42702ca1227e3bdb091a6',1,'AcquisitionSequence']]],
-  ['avgright_1078',['avgRight',['../classAcquisitionSequence.html#a9c4cd0a8948c554ffd625870ff30e6f4',1,'AcquisitionSequence']]],
-  ['avgsuccess_1079',['avgSuccess',['../classAcquisitionSequence.html#ad207cdc6f2bef725569c13c52aab3b3f',1,'AcquisitionSequence']]]
+  ['acqend_1912',['acqend',['../classCamera.html#a33924d5eddaf9f897bed4e793407c4c7',1,'Camera']]],
+  ['acqstart_1913',['acqstart',['../classCamera.html#a4e64c09c8af69c5b5e667cee4eb33ff6',1,'Camera']]],
+  ['acquiremutex_1914',['acquireMutex',['../classCamera.html#af765862d776294761eb47f81e6682833',1,'Camera']]],
+  ['aguc2_5ffeature_1915',['AGUC2_FEATURE',['../classDriverNewPort__AGUC2.html#aab61af2e8f78ae885e9c755dad1dc8f1',1,'DriverNewPort_AGUC2']]],
+  ['alliedvision_5faoi_5fsettings_1916',['alliedvision_aoi_settings',['../CameraAlliedVision_8cpp.html#a160aa9b3d8e27ec767692046176b3f9b',1,'CameraAlliedVision.cpp']]],
+  ['alliedvision_5fawb_1917',['alliedvision_awb',['../CameraAlliedVision_8cpp.html#adf4b7eeda298cf4c2cf3af5e49360c99',1,'CameraAlliedVision.cpp']]],
+  ['alliedvision_5fencodings_1918',['alliedvision_encodings',['../CameraAlliedVision_8cpp.html#a1ebd8f58e668d7a5f4a76bf2acea7b46',1,'CameraAlliedVision.cpp']]],
+  ['alliedvision_5ffeatures_1919',['alliedvision_features',['../CameraAlliedVision_8cpp.html#af417aacedd7fa350bebe82e62246bbef',1,'CameraAlliedVision.cpp']]],
+  ['alliedvision_5foffon_1920',['alliedvision_offon',['../CameraAlliedVision_8cpp.html#af79ea5d6a6a1f75bf5f9ce7cd51f846e',1,'CameraAlliedVision.cpp']]],
+  ['alliedvision_5fprops_1921',['alliedvision_props',['../CameraAlliedVision_8cpp.html#a174db39b3a46bd1bd82a75e8583b49a9',1,'CameraAlliedVision.cpp']]],
+  ['arguments_1922',['arguments',['../structAnalysisTask.html#ac7479c973f9c4e206c63e9c093b9ba7a',1,'AnalysisTask']]],
+  ['avg_1923',['avg',['../classCamera.html#a899f7576c33b2080b114d80749778103',1,'Camera::avg()'],['../classAcquisitionSequence.html#af69f2a77e8f35de9fc6d3545327fb3bd',1,'AcquisitionSequence::avg()']]],
+  ['avgleft_1924',['avgLeft',['../classAcquisitionSequence.html#a17a4abd83ead6a0ad43f77f22b5122ac',1,'AcquisitionSequence']]],
+  ['avgop_1925',['avgOp',['../classAcquisitionSequence.html#ab43dc8c7a4f42702ca1227e3bdb091a6',1,'AcquisitionSequence']]],
+  ['avgright_1926',['avgRight',['../classAcquisitionSequence.html#a9c4cd0a8948c554ffd625870ff30e6f4',1,'AcquisitionSequence']]],
+  ['avgsuccess_1927',['avgSuccess',['../classAcquisitionSequence.html#ad207cdc6f2bef725569c13c52aab3b3f',1,'AcquisitionSequence']]]
 ];

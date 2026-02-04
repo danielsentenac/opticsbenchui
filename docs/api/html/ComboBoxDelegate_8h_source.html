@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('ComboBoxDelegate_8h_source.html',''); 
 <div class="title">ComboBoxDelegate.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
+<a href="ComboBoxDelegate_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">This file is part of OpticsBenchUI.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">OpticsBenchUI is free software: you can redistribute it and/or modify</span></div>
@@ -104,47 +104,47 @@ $(document).ready(function(){initNavTree('ComboBoxDelegate_8h_source.html',''); 
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">********************************************************************/</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifndef COMBOBOXDELEGATE_H</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define COMBOBOXDELEGATE_H</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;QtSql&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="classComboBoxDelegate.html">   26</a></span>&#160;<span class="keyword">class </span><a class="code" href="classComboBoxDelegate.html">ComboBoxDelegate</a> : <span class="keyword">public</span> QItemDelegate</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;   Q_OBJECT</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <a class="code" href="classComboBoxDelegate.html#a38c2c55532d460fac03d304254e9ad3e">ComboBoxDelegate</a>(QObject *parent = <span class="keyword">nullptr</span>, QStringList *itemlist = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classComboBoxDelegate.html#ac389071908234441e150ddec63934c0f">   36</a></span>&#160;  <a class="code" href="classComboBoxDelegate.html#ac389071908234441e150ddec63934c0f">~ComboBoxDelegate</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  QWidget *<a class="code" href="classComboBoxDelegate.html#a52c9efa2136cbefa0498f9a4bf945afb">createEditor</a>(QWidget *parent, <span class="keyword">const</span> QStyleOptionViewItem &amp;option,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                        <span class="keyword">const</span> QModelIndex &amp;index) <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classComboBoxDelegate.html#aed0bf5e512ece7647b1173433c4c9dcb">setEditorData</a>(QWidget *editor, <span class="keyword">const</span> QModelIndex &amp;index) <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classComboBoxDelegate.html#aa90a52ca7e9547ae91a2f80ca93691a6">setModelData</a>(QWidget *editor, QAbstractItemModel *model,</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                    <span class="keyword">const</span> QModelIndex &amp;index) <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classComboBoxDelegate.html#af6f8060d2336348f617b5eeccaa9ae0b">updateEditorGeometry</a>(QWidget *editor,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                            <span class="keyword">const</span> QStyleOptionViewItem &amp;option,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                            <span class="keyword">const</span> QModelIndex &amp;index) <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  QStringList *itemlist;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;};</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassComboBoxDelegate_html"><div class="ttname"><a href="classComboBoxDelegate.html">ComboBoxDelegate</a></div><div class="ttdef"><b>Definition:</b> <a href="ComboBoxDelegate_8h_source.html#l00026">ComboBoxDelegate.h:27</a></div></div>
-<div class="ttc" id="aclassComboBoxDelegate_html_a38c2c55532d460fac03d304254e9ad3e"><div class="ttname"><a href="classComboBoxDelegate.html#a38c2c55532d460fac03d304254e9ad3e">ComboBoxDelegate::ComboBoxDelegate</a></div><div class="ttdeci">ComboBoxDelegate(QObject *parent=nullptr, QStringList *itemlist=nullptr)</div><div class="ttdef"><b>Definition:</b> <a href="ComboBoxDelegate_8cpp_source.html#l00020">ComboBoxDelegate.cpp:20</a></div></div>
-<div class="ttc" id="aclassComboBoxDelegate_html_a52c9efa2136cbefa0498f9a4bf945afb"><div class="ttname"><a href="classComboBoxDelegate.html#a52c9efa2136cbefa0498f9a4bf945afb">ComboBoxDelegate::createEditor</a></div><div class="ttdeci">QWidget * createEditor(QWidget *parent, const QStyleOptionViewItem &amp;option, const QModelIndex &amp;index) const override</div><div class="ttdef"><b>Definition:</b> <a href="ComboBoxDelegate_8cpp_source.html#l00026">ComboBoxDelegate.cpp:26</a></div></div>
-<div class="ttc" id="aclassComboBoxDelegate_html_aa90a52ca7e9547ae91a2f80ca93691a6"><div class="ttname"><a href="classComboBoxDelegate.html#aa90a52ca7e9547ae91a2f80ca93691a6">ComboBoxDelegate::setModelData</a></div><div class="ttdeci">void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &amp;index) const override</div><div class="ttdef"><b>Definition:</b> <a href="ComboBoxDelegate_8cpp_source.html#l00048">ComboBoxDelegate.cpp:48</a></div></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef COMBOBOXDELEGATE_H</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define COMBOBOXDELEGATE_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;QtSql&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classComboBoxDelegate.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="classComboBoxDelegate.html">ComboBoxDelegate</a> : <span class="keyword">public</span> QItemDelegate</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;   Q_OBJECT</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="classComboBoxDelegate.html#a38c2c55532d460fac03d304254e9ad3e">ComboBoxDelegate</a>(QObject *parent = <span class="keyword">nullptr</span>, QStringList *itemlist = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classComboBoxDelegate.html#ac389071908234441e150ddec63934c0f">   41</a></span>&#160;  <a class="code" href="classComboBoxDelegate.html#ac389071908234441e150ddec63934c0f">~ComboBoxDelegate</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  QWidget *<a class="code" href="classComboBoxDelegate.html#a52c9efa2136cbefa0498f9a4bf945afb">createEditor</a>(QWidget *parent, <span class="keyword">const</span> QStyleOptionViewItem &amp;option,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                        <span class="keyword">const</span> QModelIndex &amp;index) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classComboBoxDelegate.html#aed0bf5e512ece7647b1173433c4c9dcb">setEditorData</a>(QWidget *editor, <span class="keyword">const</span> QModelIndex &amp;index) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classComboBoxDelegate.html#aa90a52ca7e9547ae91a2f80ca93691a6">setModelData</a>(QWidget *editor, QAbstractItemModel *model,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                    <span class="keyword">const</span> QModelIndex &amp;index) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classComboBoxDelegate.html#af6f8060d2336348f617b5eeccaa9ae0b">updateEditorGeometry</a>(QWidget *editor,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                            <span class="keyword">const</span> QStyleOptionViewItem &amp;option,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                            <span class="keyword">const</span> QModelIndex &amp;index) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  QStringList *itemlist;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;};</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassComboBoxDelegate_html"><div class="ttname"><a href="classComboBoxDelegate.html">ComboBoxDelegate</a></div><div class="ttdef"><b>Definition:</b> <a href="ComboBoxDelegate_8h_source.html#l00031">ComboBoxDelegate.h:32</a></div></div>
+<div class="ttc" id="aclassComboBoxDelegate_html_a38c2c55532d460fac03d304254e9ad3e"><div class="ttname"><a href="classComboBoxDelegate.html#a38c2c55532d460fac03d304254e9ad3e">ComboBoxDelegate::ComboBoxDelegate</a></div><div class="ttdeci">ComboBoxDelegate(QObject *parent=nullptr, QStringList *itemlist=nullptr)</div><div class="ttdef"><b>Definition:</b> <a href="ComboBoxDelegate_8cpp_source.html#l00025">ComboBoxDelegate.cpp:25</a></div></div>
+<div class="ttc" id="aclassComboBoxDelegate_html_a52c9efa2136cbefa0498f9a4bf945afb"><div class="ttname"><a href="classComboBoxDelegate.html#a52c9efa2136cbefa0498f9a4bf945afb">ComboBoxDelegate::createEditor</a></div><div class="ttdeci">QWidget * createEditor(QWidget *parent, const QStyleOptionViewItem &amp;option, const QModelIndex &amp;index) const override</div><div class="ttdef"><b>Definition:</b> <a href="ComboBoxDelegate_8cpp_source.html#l00031">ComboBoxDelegate.cpp:31</a></div></div>
+<div class="ttc" id="aclassComboBoxDelegate_html_aa90a52ca7e9547ae91a2f80ca93691a6"><div class="ttname"><a href="classComboBoxDelegate.html#aa90a52ca7e9547ae91a2f80ca93691a6">ComboBoxDelegate::setModelData</a></div><div class="ttdeci">void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &amp;index) const override</div><div class="ttdef"><b>Definition:</b> <a href="ComboBoxDelegate_8cpp_source.html#l00053">ComboBoxDelegate.cpp:53</a></div></div>
 <div class="ttc" id="aclassComboBoxDelegate_html_ac389071908234441e150ddec63934c0f"><div class="ttname"><a href="classComboBoxDelegate.html#ac389071908234441e150ddec63934c0f">ComboBoxDelegate::~ComboBoxDelegate</a></div><div class="ttdeci">~ComboBoxDelegate() override</div><div class="ttdoc">Destructor.</div></div>
-<div class="ttc" id="aclassComboBoxDelegate_html_aed0bf5e512ece7647b1173433c4c9dcb"><div class="ttname"><a href="classComboBoxDelegate.html#aed0bf5e512ece7647b1173433c4c9dcb">ComboBoxDelegate::setEditorData</a></div><div class="ttdeci">void setEditorData(QWidget *editor, const QModelIndex &amp;index) const override</div><div class="ttdef"><b>Definition:</b> <a href="ComboBoxDelegate_8cpp_source.html#l00036">ComboBoxDelegate.cpp:36</a></div></div>
-<div class="ttc" id="aclassComboBoxDelegate_html_af6f8060d2336348f617b5eeccaa9ae0b"><div class="ttname"><a href="classComboBoxDelegate.html#af6f8060d2336348f617b5eeccaa9ae0b">ComboBoxDelegate::updateEditorGeometry</a></div><div class="ttdeci">void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &amp;option, const QModelIndex &amp;index) const override</div><div class="ttdef"><b>Definition:</b> <a href="ComboBoxDelegate_8cpp_source.html#l00055">ComboBoxDelegate.cpp:55</a></div></div>
+<div class="ttc" id="aclassComboBoxDelegate_html_aed0bf5e512ece7647b1173433c4c9dcb"><div class="ttname"><a href="classComboBoxDelegate.html#aed0bf5e512ece7647b1173433c4c9dcb">ComboBoxDelegate::setEditorData</a></div><div class="ttdeci">void setEditorData(QWidget *editor, const QModelIndex &amp;index) const override</div><div class="ttdef"><b>Definition:</b> <a href="ComboBoxDelegate_8cpp_source.html#l00041">ComboBoxDelegate.cpp:41</a></div></div>
+<div class="ttc" id="aclassComboBoxDelegate_html_af6f8060d2336348f617b5eeccaa9ae0b"><div class="ttname"><a href="classComboBoxDelegate.html#af6f8060d2336348f617b5eeccaa9ae0b">ComboBoxDelegate::updateEditorGeometry</a></div><div class="ttdeci">void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &amp;option, const QModelIndex &amp;index) const override</div><div class="ttdef"><b>Definition:</b> <a href="ComboBoxDelegate_8cpp_source.html#l00060">ComboBoxDelegate.cpp:60</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>ComboBoxDelegate.h</b></li>
+    <li class="navelem"><a class="el" href="ComboBoxDelegate_8h.html">ComboBoxDelegate.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

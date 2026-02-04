@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('RaspiDacControlWidget_8h_source.html',
 <div class="title">RaspiDacControlWidget.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
+<a href="RaspiDacControlWidget_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">This file is part of OpticsBenchUI.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">OpticsBenchUI is free software: you can redistribute it and/or modify</span></div>
@@ -103,69 +103,73 @@ $(document).ready(function(){initNavTree('RaspiDacControlWidget_8h_source.html',
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">You should have received a copy of the GNU General Public License</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">********************************************************************/</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#ifndef RASPIDACCONTROLWIDGET_H</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#define RASPIDACCONTROLWIDGET_H</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;Raspi.h&quot;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;QtSql&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;QsLog.h&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#ifndef RASPIDACCONTROLWIDGET_H</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#define RASPIDACCONTROLWIDGET_H</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Raspi_8h.html">Raspi.h</a>&quot;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">typedef</span> QVector&lt;float&gt; floatVector;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classRaspiDacControlWidget.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRaspiDacControlWidget.html">RaspiDacControlWidget</a> : <span class="keyword">public</span> QWidget</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  Q_OBJECT</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="classRaspiDacControlWidget.html#aab6f6295a1ceea3f1dd96c21f7a149d0">RaspiDacControlWidget</a>(QVector&lt;QString&gt;  *_raspiList = 0);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="classRaspiDacControlWidget.html#a8ccb0eec26c0724d04440a232a2fe09b">~RaspiDacControlWidget</a>();</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classRaspiDacControlWidget.html#a1c55b7b0ed74dee27f494b6468951f20">setRaspi</a>(<a class="code" href="classRaspi.html">Raspi</a> *_raspi);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classRaspiDacControlWidget.html#aa6b2d6fd8aeed07dd0cda640f49fdf7e">setRaspiList</a>(QVector&lt;QString&gt;  *_raspiList);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordtype">void</span> connectRaspi();</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordtype">void</span> resetRaspi();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">void</span> setRaspiValue(<span class="keywordtype">int</span> output);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordtype">void</span> setRaspiRValue(<span class="keywordtype">int</span> output);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">void</span> getDescription(QString description);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">void</span> getOutputs(<span class="keywordtype">int</span> outputs);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">void</span> getOutputValues(<span class="keywordtype">void</span> *raspivalues);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  QPushButton *connectButton; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  QPushButton *resetButton; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  QLabel      *raspivalueLabel;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  QLabel      *outputLabel;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  QLabel      *descriptionLabel; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  QComboBox   *raspiCombo;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  QVector&lt;QLabel*&gt;  *outputsList;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  QVector&lt;QLabel*&gt;  *unitsList;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  QVector&lt;QPushButton*&gt; *setButtonList;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  QVector&lt;QPushButton*&gt; *shiftButtonList;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  QVector&lt;QLineEdit*&gt;   *raspivalueList;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  QVector&lt;QLineEdit*&gt;   *raspirvalueList;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  QVector&lt;QString&gt; *raspiList;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <a class="code" href="classRaspi.html">Raspi</a>  *raspi;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  QGridLayout *layout;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  QSignalMapper *signalMapper, *shiftsignalMapper;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassRaspiDacControlWidget_html"><div class="ttname"><a href="classRaspiDacControlWidget.html">RaspiDacControlWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="RaspiDacControlWidget_8h_source.html#l00031">RaspiDacControlWidget.h:32</a></div></div>
-<div class="ttc" id="aclassRaspiDacControlWidget_html_a1c55b7b0ed74dee27f494b6468951f20"><div class="ttname"><a href="classRaspiDacControlWidget.html#a1c55b7b0ed74dee27f494b6468951f20">RaspiDacControlWidget::setRaspi</a></div><div class="ttdeci">void setRaspi(Raspi *_raspi)</div><div class="ttdef"><b>Definition:</b> <a href="RaspiDacControlWidget_8cpp_source.html#l00057">RaspiDacControlWidget.cpp:57</a></div></div>
-<div class="ttc" id="aclassRaspiDacControlWidget_html_a8ccb0eec26c0724d04440a232a2fe09b"><div class="ttname"><a href="classRaspiDacControlWidget.html#a8ccb0eec26c0724d04440a232a2fe09b">RaspiDacControlWidget::~RaspiDacControlWidget</a></div><div class="ttdeci">~RaspiDacControlWidget()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="RaspiDacControlWidget_8cpp_source.html#l00052">RaspiDacControlWidget.cpp:52</a></div></div>
-<div class="ttc" id="aclassRaspiDacControlWidget_html_aa6b2d6fd8aeed07dd0cda640f49fdf7e"><div class="ttname"><a href="classRaspiDacControlWidget.html#aa6b2d6fd8aeed07dd0cda640f49fdf7e">RaspiDacControlWidget::setRaspiList</a></div><div class="ttdeci">void setRaspiList(QVector&lt; QString &gt; *_raspiList)</div><div class="ttdef"><b>Definition:</b> <a href="RaspiDacControlWidget_8cpp_source.html#l00064">RaspiDacControlWidget.cpp:64</a></div></div>
-<div class="ttc" id="aclassRaspiDacControlWidget_html_aab6f6295a1ceea3f1dd96c21f7a149d0"><div class="ttname"><a href="classRaspiDacControlWidget.html#aab6f6295a1ceea3f1dd96c21f7a149d0">RaspiDacControlWidget::RaspiDacControlWidget</a></div><div class="ttdeci">RaspiDacControlWidget(QVector&lt; QString &gt; *_raspiList=0)</div><div class="ttdef"><b>Definition:</b> <a href="RaspiDacControlWidget_8cpp_source.html#l00019">RaspiDacControlWidget.cpp:19</a></div></div>
-<div class="ttc" id="aclassRaspi_html"><div class="ttname"><a href="classRaspi.html">Raspi</a></div><div class="ttdef"><b>Definition:</b> <a href="Raspi_8h_source.html#l00027">Raspi.h:28</a></div></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;QtSql&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="QsLog_8h.html">QsLog.h</a>&quot;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="RaspiDacControlWidget_8h.html#a8b36598680338262db4e24d24befecd3">   32</a></span>&#160;<span class="keyword">typedef</span> QVector&lt;float&gt; <a class="code" href="RaspiDacControlWidget_8h.html#a8b36598680338262db4e24d24befecd3">floatVector</a>;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classRaspiDacControlWidget.html">   36</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRaspiDacControlWidget.html">RaspiDacControlWidget</a> : <span class="keyword">public</span> QWidget</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  Q_OBJECT</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="classRaspiDacControlWidget.html#aab6f6295a1ceea3f1dd96c21f7a149d0">RaspiDacControlWidget</a>(QVector&lt;QString&gt;  *_raspiList = 0);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <a class="code" href="classRaspiDacControlWidget.html#a8ccb0eec26c0724d04440a232a2fe09b">~RaspiDacControlWidget</a>();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classRaspiDacControlWidget.html#a1c55b7b0ed74dee27f494b6468951f20">setRaspi</a>(<a class="code" href="classRaspi.html">Raspi</a> *_raspi);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classRaspiDacControlWidget.html#aa6b2d6fd8aeed07dd0cda640f49fdf7e">setRaspiList</a>(QVector&lt;QString&gt;  *_raspiList);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">void</span> connectRaspi();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordtype">void</span> resetRaspi();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">void</span> setRaspiValue(<span class="keywordtype">int</span> output);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">void</span> setRaspiRValue(<span class="keywordtype">int</span> output);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">void</span> getDescription(QString description);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">void</span> getOutputs(<span class="keywordtype">int</span> outputs);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">void</span> getOutputValues(<span class="keywordtype">void</span> *raspivalues);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  QPushButton *connectButton; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  QPushButton *resetButton; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  QLabel      *raspivalueLabel;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  QLabel      *outputLabel;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  QLabel      *descriptionLabel; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  QComboBox   *raspiCombo;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  QVector&lt;QLabel*&gt;  *outputsList;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  QVector&lt;QLabel*&gt;  *unitsList;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  QVector&lt;QPushButton*&gt; *setButtonList;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  QVector&lt;QPushButton*&gt; *shiftButtonList;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  QVector&lt;QLineEdit*&gt;   *raspivalueList;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  QVector&lt;QLineEdit*&gt;   *raspirvalueList;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  QVector&lt;QString&gt; *raspiList;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <a class="code" href="classRaspi.html">Raspi</a>  *raspi;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  QGridLayout *layout;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  QSignalMapper *signalMapper, *shiftsignalMapper;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;};</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aQsLog_8h_html"><div class="ttname"><a href="QsLog_8h.html">QsLog.h</a></div><div class="ttdoc">Qs Log logging support.</div></div>
+<div class="ttc" id="aRaspiDacControlWidget_8h_html_a8b36598680338262db4e24d24befecd3"><div class="ttname"><a href="RaspiDacControlWidget_8h.html#a8b36598680338262db4e24d24befecd3">floatVector</a></div><div class="ttdeci">QVector&lt; float &gt; floatVector</div><div class="ttdef"><b>Definition:</b> <a href="RaspiDacControlWidget_8h_source.html#l00032">RaspiDacControlWidget.h:32</a></div></div>
+<div class="ttc" id="aRaspi_8h_html"><div class="ttname"><a href="Raspi_8h.html">Raspi.h</a></div><div class="ttdoc">Raspi device interface.</div></div>
+<div class="ttc" id="aclassRaspiDacControlWidget_html"><div class="ttname"><a href="classRaspiDacControlWidget.html">RaspiDacControlWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="RaspiDacControlWidget_8h_source.html#l00036">RaspiDacControlWidget.h:37</a></div></div>
+<div class="ttc" id="aclassRaspiDacControlWidget_html_a1c55b7b0ed74dee27f494b6468951f20"><div class="ttname"><a href="classRaspiDacControlWidget.html#a1c55b7b0ed74dee27f494b6468951f20">RaspiDacControlWidget::setRaspi</a></div><div class="ttdeci">void setRaspi(Raspi *_raspi)</div><div class="ttdef"><b>Definition:</b> <a href="RaspiDacControlWidget_8cpp_source.html#l00062">RaspiDacControlWidget.cpp:62</a></div></div>
+<div class="ttc" id="aclassRaspiDacControlWidget_html_a8ccb0eec26c0724d04440a232a2fe09b"><div class="ttname"><a href="classRaspiDacControlWidget.html#a8ccb0eec26c0724d04440a232a2fe09b">RaspiDacControlWidget::~RaspiDacControlWidget</a></div><div class="ttdeci">~RaspiDacControlWidget()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="RaspiDacControlWidget_8cpp_source.html#l00057">RaspiDacControlWidget.cpp:57</a></div></div>
+<div class="ttc" id="aclassRaspiDacControlWidget_html_aa6b2d6fd8aeed07dd0cda640f49fdf7e"><div class="ttname"><a href="classRaspiDacControlWidget.html#aa6b2d6fd8aeed07dd0cda640f49fdf7e">RaspiDacControlWidget::setRaspiList</a></div><div class="ttdeci">void setRaspiList(QVector&lt; QString &gt; *_raspiList)</div><div class="ttdef"><b>Definition:</b> <a href="RaspiDacControlWidget_8cpp_source.html#l00069">RaspiDacControlWidget.cpp:69</a></div></div>
+<div class="ttc" id="aclassRaspiDacControlWidget_html_aab6f6295a1ceea3f1dd96c21f7a149d0"><div class="ttname"><a href="classRaspiDacControlWidget.html#aab6f6295a1ceea3f1dd96c21f7a149d0">RaspiDacControlWidget::RaspiDacControlWidget</a></div><div class="ttdeci">RaspiDacControlWidget(QVector&lt; QString &gt; *_raspiList=0)</div><div class="ttdef"><b>Definition:</b> <a href="RaspiDacControlWidget_8cpp_source.html#l00024">RaspiDacControlWidget.cpp:24</a></div></div>
+<div class="ttc" id="aclassRaspi_html"><div class="ttname"><a href="classRaspi.html">Raspi</a></div><div class="ttdef"><b>Definition:</b> <a href="Raspi_8h_source.html#l00032">Raspi.h:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>RaspiDacControlWidget.h</b></li>
+    <li class="navelem"><a class="el" href="RaspiDacControlWidget_8h.html">RaspiDacControlWidget.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

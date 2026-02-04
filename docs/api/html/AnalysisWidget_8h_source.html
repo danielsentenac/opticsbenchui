@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('AnalysisWidget_8h_source.html',''); in
 <div class="title">AnalysisWidget.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
+<a href="AnalysisWidget_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">This file is part of OpticsBenchUI.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">OpticsBenchUI is free software: you can redistribute it and/or modify</span></div>
@@ -104,85 +104,88 @@ $(document).ready(function(){initNavTree('AnalysisWidget_8h_source.html',''); in
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">********************************************************************/</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifndef ANALYSISWIDGET_H</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define ANALYSISWIDGET_H</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;QtSql&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;QsLog.h&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;AnalysisThread.h&quot;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef ANALYSISWIDGET_H</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define ANALYSISWIDGET_H</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classAnalysisWidget.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAnalysisWidget.html">AnalysisWidget</a> : <span class="keyword">public</span> QWidget</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  Q_OBJECT</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classAnalysisWidget.html#a967064cbeb7cc62daa72226030e027b7">AnalysisWidget</a>(QString appDirPath = QString());</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <a class="code" href="classAnalysisWidget.html#a275424309fe7ecb5a13c10608e8ae8e0">~AnalysisWidget</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a070e41f502feada79356e02d07a1e0dc">update</a>();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#aefae3fb4325546147d5e5ee289f9b6b5">reload</a>();</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a44227dfc138d8f0ce26547620b16d346">remove</a>();</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#aad0deb0cffb1debffc704e9269d12551">run</a>();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#aaaab4fbe99e67641f0267acf42417988">stop</a>();</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a201fe7c961b1d9cd2c4852729331b9c3">setDbPath</a>(QString path);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a8b50463355f626b510e2eaca3c4582b4">runFromAcquisition</a>();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a8c84b73b5ac067be1a7be27e4dfee941">analysisStarted</a>(<span class="keywordtype">int</span> record);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a0f280a63fa4a8ded04789112cea88b68">analysisFinished</a>(<span class="keywordtype">int</span> record, <span class="keywordtype">bool</span> success, <span class="keyword">const</span> QString&amp; output);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#ac38328bf31a4895b377e8e606977dfad">analysisOutput</a>(<span class="keywordtype">int</span> record, <span class="keyword">const</span> QString&amp; output);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a777c7dd8ca130a2ee07bef90cb8a2177">showAnalysisWarning</a>(QString message);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;signals:</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classAnalysisWidget.html#aa8befc39580821d330690195912e5433">   73</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#aa8befc39580821d330690195912e5433">showWarning</a>(QString message);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;QtSql&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="QsLog_8h.html">QsLog.h</a>&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="AnalysisThread_8h.html">AnalysisThread.h</a>&quot;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classAnalysisWidget.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAnalysisWidget.html">AnalysisWidget</a> : <span class="keyword">public</span> QWidget</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  Q_OBJECT</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classAnalysisWidget.html#a967064cbeb7cc62daa72226030e027b7">AnalysisWidget</a>(QString appDirPath = QString());</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="classAnalysisWidget.html#a275424309fe7ecb5a13c10608e8ae8e0">~AnalysisWidget</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a070e41f502feada79356e02d07a1e0dc">update</a>();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#aefae3fb4325546147d5e5ee289f9b6b5">reload</a>();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a44227dfc138d8f0ce26547620b16d346">remove</a>();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#aad0deb0cffb1debffc704e9269d12551">run</a>();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#aaaab4fbe99e67641f0267acf42417988">stop</a>();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a201fe7c961b1d9cd2c4852729331b9c3">setDbPath</a>(QString path);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a8b50463355f626b510e2eaca3c4582b4">runFromAcquisition</a>();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a8c84b73b5ac067be1a7be27e4dfee941">analysisStarted</a>(<span class="keywordtype">int</span> record);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a0f280a63fa4a8ded04789112cea88b68">analysisFinished</a>(<span class="keywordtype">int</span> record, <span class="keywordtype">bool</span> success, <span class="keyword">const</span> QString&amp; output);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#ac38328bf31a4895b377e8e606977dfad">analysisOutput</a>(<span class="keywordtype">int</span> record, <span class="keyword">const</span> QString&amp; output);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#a777c7dd8ca130a2ee07bef90cb8a2177">showAnalysisWarning</a>(QString message);</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">void</span> InitConfig();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordtype">void</span> dbConnexion();</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordtype">void</span> setupAnalysisTable();</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  QVector&lt;AnalysisTask&gt; buildTaskList() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  QString appDirPath;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  QString path;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordtype">int</span> analysisrow;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  QLabel* analysistitle;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  QLabel* statusLabel;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  QTextEdit* outputView;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  QSqlTableModel* analysistable;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  QTableView* analysisview;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  QPushButton* reloadButton;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  QPushButton* updateButton;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  QPushButton* removeButton;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  QPushButton* runButton;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  QPushButton* stopButton;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  QGridLayout* gridlayout;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <a class="code" href="classAnalysisThread.html">AnalysisThread</a>* analysis;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;};</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassAnalysisThread_html"><div class="ttname"><a href="classAnalysisThread.html">AnalysisThread</a></div><div class="ttdef"><b>Definition:</b> <a href="AnalysisThread_8h_source.html#l00039">AnalysisThread.h:40</a></div></div>
-<div class="ttc" id="aclassAnalysisWidget_html"><div class="ttname"><a href="classAnalysisWidget.html">AnalysisWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8h_source.html#l00028">AnalysisWidget.h:29</a></div></div>
-<div class="ttc" id="aclassAnalysisWidget_html_a070e41f502feada79356e02d07a1e0dc"><div class="ttname"><a href="classAnalysisWidget.html#a070e41f502feada79356e02d07a1e0dc">AnalysisWidget::update</a></div><div class="ttdeci">void update()</div><div class="ttdoc">Refresh displayed values.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00141">AnalysisWidget.cpp:141</a></div></div>
-<div class="ttc" id="aclassAnalysisWidget_html_a0f280a63fa4a8ded04789112cea88b68"><div class="ttname"><a href="classAnalysisWidget.html#a0f280a63fa4a8ded04789112cea88b68">AnalysisWidget::analysisFinished</a></div><div class="ttdeci">void analysisFinished(int record, bool success, const QString &amp;output)</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00205">AnalysisWidget.cpp:205</a></div></div>
-<div class="ttc" id="aclassAnalysisWidget_html_a201fe7c961b1d9cd2c4852729331b9c3"><div class="ttname"><a href="classAnalysisWidget.html#a201fe7c961b1d9cd2c4852729331b9c3">AnalysisWidget::setDbPath</a></div><div class="ttdeci">void setDbPath(QString path)</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00105">AnalysisWidget.cpp:105</a></div></div>
-<div class="ttc" id="aclassAnalysisWidget_html_a275424309fe7ecb5a13c10608e8ae8e0"><div class="ttname"><a href="classAnalysisWidget.html#a275424309fe7ecb5a13c10608e8ae8e0">AnalysisWidget::~AnalysisWidget</a></div><div class="ttdeci">~AnalysisWidget() override</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00095">AnalysisWidget.cpp:95</a></div></div>
-<div class="ttc" id="aclassAnalysisWidget_html_a44227dfc138d8f0ce26547620b16d346"><div class="ttname"><a href="classAnalysisWidget.html#a44227dfc138d8f0ce26547620b16d346">AnalysisWidget::remove</a></div><div class="ttdeci">void remove()</div><div class="ttdoc">Remove the selected analysis row.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00150">AnalysisWidget.cpp:150</a></div></div>
-<div class="ttc" id="aclassAnalysisWidget_html_a777c7dd8ca130a2ee07bef90cb8a2177"><div class="ttname"><a href="classAnalysisWidget.html#a777c7dd8ca130a2ee07bef90cb8a2177">AnalysisWidget::showAnalysisWarning</a></div><div class="ttdeci">void showAnalysisWarning(QString message)</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00227">AnalysisWidget.cpp:227</a></div></div>
-<div class="ttc" id="aclassAnalysisWidget_html_a8b50463355f626b510e2eaca3c4582b4"><div class="ttname"><a href="classAnalysisWidget.html#a8b50463355f626b510e2eaca3c4582b4">AnalysisWidget::runFromAcquisition</a></div><div class="ttdeci">void runFromAcquisition()</div><div class="ttdoc">Run analysis triggered by acquisition.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00190">AnalysisWidget.cpp:190</a></div></div>
-<div class="ttc" id="aclassAnalysisWidget_html_a8c84b73b5ac067be1a7be27e4dfee941"><div class="ttname"><a href="classAnalysisWidget.html#a8c84b73b5ac067be1a7be27e4dfee941">AnalysisWidget::analysisStarted</a></div><div class="ttdeci">void analysisStarted(int record)</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00200">AnalysisWidget.cpp:200</a></div></div>
-<div class="ttc" id="aclassAnalysisWidget_html_a967064cbeb7cc62daa72226030e027b7"><div class="ttname"><a href="classAnalysisWidget.html#a967064cbeb7cc62daa72226030e027b7">AnalysisWidget::AnalysisWidget</a></div><div class="ttdeci">AnalysisWidget(QString appDirPath=QString())</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00027">AnalysisWidget.cpp:27</a></div></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<a class="code" href="CameraGiGE_8h.html#aabbcb0bbcbcb6adcf20d63cc22f83649">signals</a>:</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="classAnalysisWidget.html#aa8befc39580821d330690195912e5433">   78</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classAnalysisWidget.html#aa8befc39580821d330690195912e5433">showWarning</a>(QString message);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordtype">void</span> InitConfig();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordtype">void</span> dbConnexion();</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordtype">void</span> setupAnalysisTable();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  QVector&lt;AnalysisTask&gt; buildTaskList() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  QString appDirPath;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  QString path;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordtype">int</span> analysisrow;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  QLabel* analysistitle;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  QLabel* statusLabel;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  QTextEdit* outputView;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  QSqlTableModel* analysistable;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  QTableView* analysisview;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  QPushButton* reloadButton;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  QPushButton* updateButton;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  QPushButton* removeButton;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  QPushButton* runButton;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  QPushButton* stopButton;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  QGridLayout* gridlayout;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <a class="code" href="classAnalysisThread.html">AnalysisThread</a>* analysis;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;};</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aAnalysisThread_8h_html"><div class="ttname"><a href="AnalysisThread_8h.html">AnalysisThread.h</a></div><div class="ttdoc">Analysis worker thread.</div></div>
+<div class="ttc" id="aCameraGiGE_8h_html_aabbcb0bbcbcb6adcf20d63cc22f83649"><div class="ttname"><a href="CameraGiGE_8h.html#aabbcb0bbcbcb6adcf20d63cc22f83649">signals</a></div><div class="ttdeci">#define signals</div><div class="ttdef"><b>Definition:</b> <a href="CameraGiGE_8h_source.html#l00028">CameraGiGE.h:28</a></div></div>
+<div class="ttc" id="aQsLog_8h_html"><div class="ttname"><a href="QsLog_8h.html">QsLog.h</a></div><div class="ttdoc">Qs Log logging support.</div></div>
+<div class="ttc" id="aclassAnalysisThread_html"><div class="ttname"><a href="classAnalysisThread.html">AnalysisThread</a></div><div class="ttdef"><b>Definition:</b> <a href="AnalysisThread_8h_source.html#l00044">AnalysisThread.h:45</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html"><div class="ttname"><a href="classAnalysisWidget.html">AnalysisWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8h_source.html#l00033">AnalysisWidget.h:34</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html_a070e41f502feada79356e02d07a1e0dc"><div class="ttname"><a href="classAnalysisWidget.html#a070e41f502feada79356e02d07a1e0dc">AnalysisWidget::update</a></div><div class="ttdeci">void update()</div><div class="ttdoc">Refresh displayed values.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00146">AnalysisWidget.cpp:146</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html_a0f280a63fa4a8ded04789112cea88b68"><div class="ttname"><a href="classAnalysisWidget.html#a0f280a63fa4a8ded04789112cea88b68">AnalysisWidget::analysisFinished</a></div><div class="ttdeci">void analysisFinished(int record, bool success, const QString &amp;output)</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00210">AnalysisWidget.cpp:210</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html_a201fe7c961b1d9cd2c4852729331b9c3"><div class="ttname"><a href="classAnalysisWidget.html#a201fe7c961b1d9cd2c4852729331b9c3">AnalysisWidget::setDbPath</a></div><div class="ttdeci">void setDbPath(QString path)</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00110">AnalysisWidget.cpp:110</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html_a275424309fe7ecb5a13c10608e8ae8e0"><div class="ttname"><a href="classAnalysisWidget.html#a275424309fe7ecb5a13c10608e8ae8e0">AnalysisWidget::~AnalysisWidget</a></div><div class="ttdeci">~AnalysisWidget() override</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00100">AnalysisWidget.cpp:100</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html_a44227dfc138d8f0ce26547620b16d346"><div class="ttname"><a href="classAnalysisWidget.html#a44227dfc138d8f0ce26547620b16d346">AnalysisWidget::remove</a></div><div class="ttdeci">void remove()</div><div class="ttdoc">Remove the selected analysis row.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00155">AnalysisWidget.cpp:155</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html_a777c7dd8ca130a2ee07bef90cb8a2177"><div class="ttname"><a href="classAnalysisWidget.html#a777c7dd8ca130a2ee07bef90cb8a2177">AnalysisWidget::showAnalysisWarning</a></div><div class="ttdeci">void showAnalysisWarning(QString message)</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00232">AnalysisWidget.cpp:232</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html_a8b50463355f626b510e2eaca3c4582b4"><div class="ttname"><a href="classAnalysisWidget.html#a8b50463355f626b510e2eaca3c4582b4">AnalysisWidget::runFromAcquisition</a></div><div class="ttdeci">void runFromAcquisition()</div><div class="ttdoc">Run analysis triggered by acquisition.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00195">AnalysisWidget.cpp:195</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html_a8c84b73b5ac067be1a7be27e4dfee941"><div class="ttname"><a href="classAnalysisWidget.html#a8c84b73b5ac067be1a7be27e4dfee941">AnalysisWidget::analysisStarted</a></div><div class="ttdeci">void analysisStarted(int record)</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00205">AnalysisWidget.cpp:205</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html_a967064cbeb7cc62daa72226030e027b7"><div class="ttname"><a href="classAnalysisWidget.html#a967064cbeb7cc62daa72226030e027b7">AnalysisWidget::AnalysisWidget</a></div><div class="ttdeci">AnalysisWidget(QString appDirPath=QString())</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00032">AnalysisWidget.cpp:32</a></div></div>
 <div class="ttc" id="aclassAnalysisWidget_html_aa8befc39580821d330690195912e5433"><div class="ttname"><a href="classAnalysisWidget.html#aa8befc39580821d330690195912e5433">AnalysisWidget::showWarning</a></div><div class="ttdeci">void showWarning(QString message)</div></div>
-<div class="ttc" id="aclassAnalysisWidget_html_aaaab4fbe99e67641f0267acf42417988"><div class="ttname"><a href="classAnalysisWidget.html#aaaab4fbe99e67641f0267acf42417988">AnalysisWidget::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdoc">Stop analysis.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00195">AnalysisWidget.cpp:195</a></div></div>
-<div class="ttc" id="aclassAnalysisWidget_html_aad0deb0cffb1debffc704e9269d12551"><div class="ttname"><a href="classAnalysisWidget.html#aad0deb0cffb1debffc704e9269d12551">AnalysisWidget::run</a></div><div class="ttdeci">void run()</div><div class="ttdoc">Start analysis.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00181">AnalysisWidget.cpp:181</a></div></div>
-<div class="ttc" id="aclassAnalysisWidget_html_ac38328bf31a4895b377e8e606977dfad"><div class="ttname"><a href="classAnalysisWidget.html#ac38328bf31a4895b377e8e606977dfad">AnalysisWidget::analysisOutput</a></div><div class="ttdeci">void analysisOutput(int record, const QString &amp;output)</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00217">AnalysisWidget.cpp:217</a></div></div>
-<div class="ttc" id="aclassAnalysisWidget_html_aefae3fb4325546147d5e5ee289f9b6b5"><div class="ttname"><a href="classAnalysisWidget.html#aefae3fb4325546147d5e5ee289f9b6b5">AnalysisWidget::reload</a></div><div class="ttdeci">void reload()</div><div class="ttdoc">Reload the analysis table.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00146">AnalysisWidget.cpp:146</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html_aaaab4fbe99e67641f0267acf42417988"><div class="ttname"><a href="classAnalysisWidget.html#aaaab4fbe99e67641f0267acf42417988">AnalysisWidget::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdoc">Stop analysis.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00200">AnalysisWidget.cpp:200</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html_aad0deb0cffb1debffc704e9269d12551"><div class="ttname"><a href="classAnalysisWidget.html#aad0deb0cffb1debffc704e9269d12551">AnalysisWidget::run</a></div><div class="ttdeci">void run()</div><div class="ttdoc">Start analysis.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00186">AnalysisWidget.cpp:186</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html_ac38328bf31a4895b377e8e606977dfad"><div class="ttname"><a href="classAnalysisWidget.html#ac38328bf31a4895b377e8e606977dfad">AnalysisWidget::analysisOutput</a></div><div class="ttdeci">void analysisOutput(int record, const QString &amp;output)</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00222">AnalysisWidget.cpp:222</a></div></div>
+<div class="ttc" id="aclassAnalysisWidget_html_aefae3fb4325546147d5e5ee289f9b6b5"><div class="ttname"><a href="classAnalysisWidget.html#aefae3fb4325546147d5e5ee289f9b6b5">AnalysisWidget::reload</a></div><div class="ttdeci">void reload()</div><div class="ttdoc">Reload the analysis table.</div><div class="ttdef"><b>Definition:</b> <a href="AnalysisWidget_8cpp_source.html#l00151">AnalysisWidget.cpp:151</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>AnalysisWidget.h</b></li>
+    <li class="navelem"><a class="el" href="AnalysisWidget_8h.html">AnalysisWidget.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

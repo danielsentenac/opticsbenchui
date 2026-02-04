@@ -106,18 +106,18 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">const</span> <span class="keywordtype">int</span>   <a class="code" href="classDriverStanda__uSMC.html#aeed45547b09d2159470895b2a55f4bf4">DriverStanda_uSMC::MIN_BYTES_TRANS</a>      = 7;  <span class="comment">// Minimum bytes transferred</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">const</span> <a class="code" href="structDriverDefinition_1_1DriverFeature.html">DriverFeature</a> <a class="code" href="classDriverStanda__uSMC.html#a2a73f2e3c9d37f931a8e7c41befbfb32">DriverStanda_uSMC::STANDA_USMC_FEATURE</a> = </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  { <span class="stringliteral">&quot;step&quot;</span>,<span class="stringliteral">&quot;step&quot;</span>,1,1,CLOSED_LOOP,NULL };</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  { <span class="stringliteral">&quot;step&quot;</span>,<span class="stringliteral">&quot;step&quot;</span>,1,1,<a class="code" href="namespaceDriverDefinition.html#a69bbe04621ad1182e7c1d19b6ee62176a253c98b40ec99205f2f892d19d5fb464">CLOSED_LOOP</a>,NULL };</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// </span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// Init implementation</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classDriverStanda__uSMC.html#ac2cf774c2cfb59aa2f747cadd3b1271d">   34</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="classDriverStanda__uSMC.html#ac2cf774c2cfb59aa2f747cadd3b1271d">DriverStanda_uSMC::Init</a>(<span class="keywordtype">string</span>&amp; rstateData)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::Init&quot;</span>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::Init&quot;</span>;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordflow">if</span> ( USMC_Init ( &amp;_devices ) )</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot; Error retrieving devices&quot;</span>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot; Error retrieving devices&quot;</span>;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">return</span> retStatus;</div>
@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classDriverStanda__uSMC.html#a791fc18a37f287dc0177de18f451a2f6">   51</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="classDriverStanda__uSMC.html#a791fc18a37f287dc0177de18f451a2f6">DriverStanda_uSMC::InitActuator</a>(<span class="keywordtype">string</span> actuatorSetting,</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                     <span class="keywordtype">float</span>  position)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::InitActuator&quot;</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::InitActuator&quot;</span>;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">if</span> (sscanf(actuatorSetting.c_str(),<span class="stringliteral">&quot;axisNumber=%u rotator=%d speed=%f divisor=%d&quot;</span>,</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;             &amp;_cur_dev, &amp;_rotator, &amp;_speed, &amp;_divisor) != NB_ITEM_INIT_SETTING)</div>
@@ -142,43 +142,43 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;   <span class="comment">// Update controller mode respect to rotator case</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;   <span class="keywordflow">if</span> ( USMC_GetMode ( _cur_dev, &amp;_mode ) )</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;   {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot;Error retrieving mode for device &quot;</span> &lt;&lt; _cur_dev;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot;Error retrieving mode for device &quot;</span> &lt;&lt; _cur_dev;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;   }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">if</span> (_rotator == 1 )</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      QLOG_INFO () &lt;&lt; <span class="stringliteral">&quot; Disable limit switches for rotator device &quot;</span> &lt;&lt; _cur_dev; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <a class="code" href="QsLog_8h.html#ad8aec737ba0e3607fb5be7590c6ab0ff">QLOG_INFO</a> () &lt;&lt; <span class="stringliteral">&quot; Disable limit switches for rotator device &quot;</span> &lt;&lt; _cur_dev; </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      _mode.Tr1En = !_mode.Tr1En;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      _mode.Tr2En = !_mode.Tr2En;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <span class="keywordflow">if</span> ( USMC_SetMode ( _cur_dev, &amp;_mode ) )</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;          QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot;Error setting mode for device &quot;</span> &lt;&lt; _cur_dev;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;          <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot;Error setting mode for device &quot;</span> &lt;&lt; _cur_dev;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;          <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      }</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  }</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="comment">// Check controller mode </span></div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;   <span class="keywordflow">if</span> ( USMC_GetMode ( _cur_dev, &amp;_mode ) )</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;   {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot;Error retrieving mode for device &quot;</span> &lt;&lt; _cur_dev;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot;Error retrieving mode for device &quot;</span> &lt;&lt; _cur_dev;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;   }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;   QLOG_INFO () &lt;&lt; <span class="stringliteral">&quot; Limit switches are &quot;</span> &lt;&lt; _mode.Tr1En &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; _mode.Tr2En &lt;&lt; <span class="stringliteral">&quot; for device &quot;</span> &lt;&lt; _cur_dev;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;   <a class="code" href="QsLog_8h.html#ad8aec737ba0e3607fb5be7590c6ab0ff">QLOG_INFO</a> () &lt;&lt; <span class="stringliteral">&quot; Limit switches are &quot;</span> &lt;&lt; _mode.Tr1En &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; _mode.Tr2En &lt;&lt; <span class="stringliteral">&quot; for device &quot;</span> &lt;&lt; _cur_dev;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="comment">// Get actuator parameters</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordflow">if</span> ( USMC_GetParameters ( _cur_dev, &amp;_params ) )</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot; Error retrieving parameters for device &quot;</span> &lt;&lt; _cur_dev;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot; Error retrieving parameters for device &quot;</span> &lt;&lt; _cur_dev;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  }</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="comment">// Save last position in controller</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot; Save last position for device &quot;</span> &lt;&lt; (int) position;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot; Save last position for device &quot;</span> &lt;&lt; (int) position;</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="comment">// Set actuator position</span></div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">if</span> ( USMC_SetCurrentPosition ( _cur_dev, (<span class="keywordtype">int</span>) position ) )</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot; Error setting position in controller &quot;</span> &lt;&lt; _cur_dev;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot; Error setting position in controller &quot;</span> &lt;&lt; _cur_dev;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      }</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  retStatus = GetPos(actuatorSetting,position);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  QLOG_INFO () &lt;&lt; <span class="stringliteral">&quot; Device &quot;</span> &lt;&lt; _cur_dev &lt;&lt; <span class="stringliteral">&quot; initial position from controller is to &quot;</span> &lt;&lt; position;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <a class="code" href="QsLog_8h.html#ad8aec737ba0e3607fb5be7590c6ab0ff">QLOG_INFO</a> () &lt;&lt; <span class="stringliteral">&quot; Device &quot;</span> &lt;&lt; _cur_dev &lt;&lt; <span class="stringliteral">&quot; initial position from controller is to &quot;</span> &lt;&lt; position;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordflow">return</span> retStatus;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;}</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
@@ -192,7 +192,7 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="classDriverStanda__uSMC.html#a75dcf4b77ab0bf840907c59894b8659a">  112</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="classDriverStanda__uSMC.html#a75dcf4b77ab0bf840907c59894b8659a">DriverStanda_uSMC::GetPos</a>(<span class="keywordtype">string</span>  actuatorSetting,</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                   <span class="keywordtype">float</span>&amp;  position)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::GetPos&quot;</span>;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::GetPos&quot;</span>;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keywordflow">if</span> (sscanf(actuatorSetting.c_str(),<span class="stringliteral">&quot;axisNumber=%u rotator=%d speed=%f divisor=%d&quot;</span>,</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;             &amp;_cur_dev, &amp;_rotator, &amp;_speed, &amp;_divisor) != NB_ITEM_INIT_SETTING)</div>
@@ -202,11 +202,11 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="keywordflow">if</span> ( USMC_GetState ( _cur_dev, &amp;_state ) )</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot; Error retrieving state for device &quot;</span> &lt;&lt; _cur_dev;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot; Error retrieving state for device &quot;</span> &lt;&lt; _cur_dev;</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    }</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    position = _state.CurPos;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot; Current position &quot;</span> &lt;&lt; position</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a>() &lt;&lt; <span class="stringliteral">&quot; Current position &quot;</span> &lt;&lt; position</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                 &lt;&lt; <span class="stringliteral">&quot; Rotator settings &quot;</span> &lt;&lt; _rotator </div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                 &lt;&lt; <span class="stringliteral">&quot; Speed settings &quot;</span> &lt;&lt; _speed </div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                 &lt;&lt; <span class="stringliteral">&quot; Divisor settings &quot;</span> &lt;&lt; _divisor;</div>
@@ -222,7 +222,7 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                 <span class="keywordtype">float</span>  nbSteps,</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                 <span class="keywordtype">int</span>    unit)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::Move&quot;</span>;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::Move&quot;</span>;</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  <span class="keywordflow">if</span> (sscanf(actuatorSetting.c_str(),<span class="stringliteral">&quot;axisNumber=%u rotator=%d speed=%f divisor=%d&quot;</span>,</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;             &amp;_cur_dev, &amp;_rotator, &amp;_speed, &amp;_divisor) != NB_ITEM_INIT_SETTING)</div>
@@ -234,11 +234,11 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;   <span class="keywordtype">float</span> curpos;</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;   GetPos(actuatorSetting, curpos);</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;   <span class="keywordtype">int</span> dest_pos  = (int)curpos + (<span class="keywordtype">int</span>)nbSteps;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;   QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::Move&gt; to position &quot;</span> &lt;&lt; dest_pos;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;   <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::Move&gt; to position &quot;</span> &lt;&lt; dest_pos;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;   <span class="comment">// Update start parameters</span></div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;   <span class="keywordflow">if</span> ( USMC_GetStartParameters ( _cur_dev, &amp;_start_params ) )</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    {   </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;      QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot; USMC_GetStartParameters failed &quot;</span>;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;      <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot; USMC_GetStartParameters failed &quot;</span>;</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;      <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    }</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
@@ -247,7 +247,7 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;   _start_params.LoftEn = FALSE;</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;   <span class="keywordflow">if</span> ( USMC_Start ( _cur_dev, dest_pos, &amp;_speed, &amp;_start_params ) )</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    {</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot; USMC_Start failed &quot;</span>;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot; USMC_Start failed &quot;</span>;</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;      <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    }</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
@@ -263,7 +263,7 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                  <span class="keywordtype">float</span>  absPos,</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                  <span class="keywordtype">int</span>    unit)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::MoveAbs&quot;</span>;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::MoveAbs&quot;</span>;</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  <span class="keywordflow">if</span> (sscanf(actuatorSetting.c_str(),<span class="stringliteral">&quot;axisNumber=%u rotator=%d speed=%f divisor=%d&quot;</span>,</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;             &amp;_cur_dev, &amp;_rotator, &amp;_speed, &amp;_divisor) != NB_ITEM_INIT_SETTING)</div>
@@ -275,11 +275,11 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;   <span class="keywordtype">float</span> curpos;</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;   GetPos(actuatorSetting, curpos);</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;   <span class="keywordtype">int</span> dest_pos  = (int)absPos;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;   QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::MoveAbs&gt; to position &quot;</span> &lt;&lt; dest_pos;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;   <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::MoveAbs&gt; to position &quot;</span> &lt;&lt; dest_pos;</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;   <span class="comment">// Update start parameters</span></div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;   <span class="keywordflow">if</span> ( USMC_GetStartParameters ( _cur_dev, &amp;_start_params ) )</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    {</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot; USMC_GetStartParameters failed &quot;</span>;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot; USMC_GetStartParameters failed &quot;</span>;</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;      <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    }</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
@@ -288,7 +288,7 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;   _start_params.LoftEn = FALSE;</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;   <span class="keywordflow">if</span> ( USMC_Start ( _cur_dev, dest_pos, &amp;_speed, &amp;_start_params ) )</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    {</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;      QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot; USMC_Start failed &quot;</span>;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;      <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot; USMC_Start failed &quot;</span>;</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;      <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    }</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
@@ -303,7 +303,7 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="classDriverStanda__uSMC.html#a5f669d531205d1362704d49e972c2b99">  224</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="classDriverStanda__uSMC.html#a5f669d531205d1362704d49e972c2b99">DriverStanda_uSMC::Stop</a>(<span class="keywordtype">string</span> actuatorSetting)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::Stop&quot;</span>;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::Stop&quot;</span>;</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
@@ -316,10 +316,10 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  <span class="keywordflow">if</span> ( USMC_Stop ( _cur_dev ) )</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  {</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;      QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot; USMC_Stop failed &quot;</span>;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;      <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot; USMC_Stop failed &quot;</span>;</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;      <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  }</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;Motor stopped &quot;</span> &lt;&lt; _cur_dev;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;Motor stopped &quot;</span> &lt;&lt; _cur_dev;</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  <span class="keywordflow">return</span> retStatus;</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;}</div>
@@ -337,7 +337,7 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                      <span class="keywordtype">string</span> actuatorSetting,</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                      <a class="code" href="namespaceDriverDefinition.html#a64a3030e095e640f75f387251025d3bd">ADLimitSwitch</a>&amp; rlimitSwitch)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::OperationComplete&quot;</span>;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::OperationComplete&quot;</span>;</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  </div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  <span class="keywordtype">int</span>  retStatus = 1;</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  <span class="keywordflow">if</span> (sscanf(actuatorSetting.c_str(),<span class="stringliteral">&quot;axisNumber=%u rotator=%d speed=%f divisor=%d&quot;</span>,</div>
@@ -349,7 +349,7 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  <span class="keywordflow">if</span> ( USMC_GetState ( _cur_dev, &amp;_state ) )</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    {</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot; Error retrieving state for device &quot;</span> &lt;&lt; _cur_dev;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot; Error retrieving state for device &quot;</span> &lt;&lt; _cur_dev;</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    }</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;  <span class="keywordflow">if</span> ( _state.RUN ) retStatus = 0;</div>
@@ -358,11 +358,11 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="comment">// Save last position in controller </span></div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="keywordtype">float</span> position;</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    GetPos(actuatorSetting,position);</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot; Save last position for device &quot;</span> &lt;&lt; (int) position;</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot; Save last position for device &quot;</span> &lt;&lt; (int) position;</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="comment">// Set actuator position</span></div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="keywordflow">if</span> ( USMC_SetCurrentPosition ( _cur_dev, (<span class="keywordtype">int</span>) position ) )</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;      {</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        QLOG_ERROR () &lt;&lt; <span class="stringliteral">&quot; Error setting position in controller &quot;</span> &lt;&lt; _cur_dev;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <a class="code" href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a> () &lt;&lt; <span class="stringliteral">&quot; Error setting position in controller &quot;</span> &lt;&lt; _cur_dev;</div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;      }</div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;  }</div>
@@ -376,7 +376,7 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00297"></a><span class="lineno"><a class="line" href="classDriverStanda__uSMC.html#af9fe7f88c6d58cf04679d416cab15e1b">  297</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="classDriverStanda__uSMC.html#af9fe7f88c6d58cf04679d416cab15e1b">DriverStanda_uSMC::GetActuatorFeature</a>(<a class="code" href="structDriverDefinition_1_1DriverFeature.html">DriverFeature</a>&amp; ractuatorFeature)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::GetActuatorFeature&quot;</span>;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::GetActuatorFeature&quot;</span>;</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;  </div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;  </div>
@@ -394,7 +394,7 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                   <span class="keywordtype">float</span>&amp; rconvertedValue,</div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                   <span class="keywordtype">float</span>&amp; rrange)<span class="keyword"> const </span></div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;  QLOG_DEBUG () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::ConvertUnit&quot;</span>;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a> () &lt;&lt; <span class="stringliteral">&quot;DriverStanda_uSMC::ConvertUnit&quot;</span>;</div>
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;  <span class="keywordtype">int</span> retStatus = 0;  </div>
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;  rconvertedValue = valueToConvert;</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;  rrange = 0;</div>
@@ -409,7 +409,7 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;      <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    }</div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot; Saving last position in flash memory for device&quot;</span> &lt;&lt; (int) _cur_dev;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;  <a class="code" href="QsLog_8h.html#ad8aec737ba0e3607fb5be7590c6ab0ff">QLOG_INFO</a>() &lt;&lt; <span class="stringliteral">&quot; Saving last position in flash memory for device&quot;</span> &lt;&lt; (int) _cur_dev;</div>
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;  <span class="comment">// Go to Full Step (automaticaly), then Turn Off</span></div>
 <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; <span class="comment">/* _mode.ResetD = TRUE;</span></div>
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment"></span> </div>
@@ -426,10 +426,10 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;  <span class="keywordtype">float</span> position;</div>
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;  GetPos(actuatorSetting,position);</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;  QLOG_INFO () &lt;&lt; <span class="stringliteral">&quot; Device &quot;</span> &lt;&lt; _cur_dev &lt;&lt; <span class="stringliteral">&quot; last position &quot;</span> &lt;&lt; position;</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;  <a class="code" href="QsLog_8h.html#ad8aec737ba0e3607fb5be7590c6ab0ff">QLOG_INFO</a> () &lt;&lt; <span class="stringliteral">&quot; Device &quot;</span> &lt;&lt; _cur_dev &lt;&lt; <span class="stringliteral">&quot; last position &quot;</span> &lt;&lt; position;</div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;  <span class="comment">// Remember CurPos in Parameters Only While state.Power - FALSE</span></div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;  QLOG_INFO () &lt;&lt; <span class="stringliteral">&quot; Device &quot;</span> &lt;&lt; _cur_dev &lt;&lt; <span class="stringliteral">&quot; last controller position &quot;</span> &lt;&lt; _state.CurPos;</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;  <a class="code" href="QsLog_8h.html#ad8aec737ba0e3607fb5be7590c6ab0ff">QLOG_INFO</a> () &lt;&lt; <span class="stringliteral">&quot; Device &quot;</span> &lt;&lt; _cur_dev &lt;&lt; <span class="stringliteral">&quot; last controller position &quot;</span> &lt;&lt; _state.CurPos;</div>
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; </div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;  _params.StartPos = _state.CurPos;</div>
 <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160; </div>
@@ -442,6 +442,9 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;   <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;} </div>
 <div class="ttc" id="aDriverStanda__uSMC_8h_html"><div class="ttname"><a href="DriverStanda__uSMC_8h.html">DriverStanda_uSMC.h</a></div><div class="ttdoc">This file provides a class implementing a AGUC2 driver for a non specified controller using only the ...</div></div>
+<div class="ttc" id="aQsLog_8h_html_a9a46ec93e4716bae7d3c5e8894793970"><div class="ttname"><a href="QsLog_8h.html#a9a46ec93e4716bae7d3c5e8894793970">QLOG_ERROR</a></div><div class="ttdeci">#define QLOG_ERROR()</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00123">QsLog.h:123</a></div></div>
+<div class="ttc" id="aQsLog_8h_html_abd6d078a03c308c28a48cc1e9bf44e54"><div class="ttname"><a href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a></div><div class="ttdeci">#define QLOG_DEBUG()</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00114">QsLog.h:114</a></div></div>
+<div class="ttc" id="aQsLog_8h_html_ad8aec737ba0e3607fb5be7590c6ab0ff"><div class="ttname"><a href="QsLog_8h.html#ad8aec737ba0e3607fb5be7590c6ab0ff">QLOG_INFO</a></div><div class="ttdeci">#define QLOG_INFO()</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00117">QsLog.h:117</a></div></div>
 <div class="ttc" id="aclassDriverStanda__uSMC_html_a043caf95a1e27d353a67e53668f5e023"><div class="ttname"><a href="classDriverStanda__uSMC.html#a043caf95a1e27d353a67e53668f5e023">DriverStanda_uSMC::OperationComplete</a></div><div class="ttdeci">virtual int OperationComplete(string &amp;rstateData, string actuatorSetting, DriverDefinition::ADLimitSwitch &amp;rlimitSwitch) const</div><div class="ttdoc">Check whether the last operation has completed.</div><div class="ttdef"><b>Definition:</b> <a href="DriverStanda__uSMC_8cpp_source.html#l00256">DriverStanda_uSMC.cpp:256</a></div></div>
 <div class="ttc" id="aclassDriverStanda__uSMC_html_a07b3c6ee4a54966bedcbbd5661658d0a"><div class="ttname"><a href="classDriverStanda__uSMC.html#a07b3c6ee4a54966bedcbbd5661658d0a">DriverStanda_uSMC::NB_ITEM_INIT_SETTING</a></div><div class="ttdeci">static const int NB_ITEM_INIT_SETTING</div><div class="ttdoc">Number of init settings items.</div><div class="ttdef"><b>Definition:</b> <a href="DriverStanda__uSMC_8h_source.html#l00101">DriverStanda_uSMC.h:101</a></div></div>
 <div class="ttc" id="aclassDriverStanda__uSMC_html_a2a73f2e3c9d37f931a8e7c41befbfb32"><div class="ttname"><a href="classDriverStanda__uSMC.html#a2a73f2e3c9d37f931a8e7c41befbfb32">DriverStanda_uSMC::STANDA_USMC_FEATURE</a></div><div class="ttdeci">static const DriverDefinition::DriverFeature STANDA_USMC_FEATURE</div><div class="ttdoc">Standa USMC driver features.</div><div class="ttdef"><b>Definition:</b> <a href="DriverStanda__uSMC_8h_source.html#l00109">DriverStanda_uSMC.h:109</a></div></div>
@@ -460,9 +463,10 @@ $(document).ready(function(){initNavTree('DriverStanda__uSMC_8cpp_source.html','
 <div class="ttc" id="aclassDriverStanda__uSMC_html_af9fe7f88c6d58cf04679d416cab15e1b"><div class="ttname"><a href="classDriverStanda__uSMC.html#af9fe7f88c6d58cf04679d416cab15e1b">DriverStanda_uSMC::GetActuatorFeature</a></div><div class="ttdeci">virtual int GetActuatorFeature(DriverDefinition::DriverFeature &amp;ractuatorFeature) const</div><div class="ttdoc">Get actuator feature metadata.</div><div class="ttdef"><b>Definition:</b> <a href="DriverStanda__uSMC_8cpp_source.html#l00297">DriverStanda_uSMC.cpp:297</a></div></div>
 <div class="ttc" id="aclassDriverStanda__uSMC_html_afb4ae068592ed1a3320a515df9276acb"><div class="ttname"><a href="classDriverStanda__uSMC.html#afb4ae068592ed1a3320a515df9276acb">DriverStanda_uSMC::NB_ITEM_DRV_SETTING</a></div><div class="ttdeci">static const int NB_ITEM_DRV_SETTING</div><div class="ttdoc">Number of driver settings items.</div><div class="ttdef"><b>Definition:</b> <a href="DriverStanda__uSMC_8h_source.html#l00103">DriverStanda_uSMC.h:103</a></div></div>
 <div class="ttc" id="aclassDriverStanda__uSMC_html_afff0451a78ff0f15c59b68ecbc29f409"><div class="ttname"><a href="classDriverStanda__uSMC.html#afff0451a78ff0f15c59b68ecbc29f409">DriverStanda_uSMC::MAX_DEVICES</a></div><div class="ttdeci">static const int MAX_DEVICES</div><div class="ttdoc">Maximum device count.</div><div class="ttdef"><b>Definition:</b> <a href="DriverStanda__uSMC_8h_source.html#l00097">DriverStanda_uSMC.h:97</a></div></div>
-<div class="ttc" id="anamespaceDriverDefinition_html"><div class="ttname"><a href="namespaceDriverDefinition.html">DriverDefinition</a></div><div class="ttdoc">Shared enums and types for actuator driver implementations.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00029">DriverDefinition.h:30</a></div></div>
-<div class="ttc" id="anamespaceDriverDefinition_html_a64a3030e095e640f75f387251025d3bd"><div class="ttname"><a href="namespaceDriverDefinition.html#a64a3030e095e640f75f387251025d3bd">DriverDefinition::ADLimitSwitch</a></div><div class="ttdeci">ADLimitSwitch</div><div class="ttdoc">Limit switch state.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00069">DriverDefinition.h:69</a></div></div>
-<div class="ttc" id="astructDriverDefinition_1_1DriverFeature_html"><div class="ttname"><a href="structDriverDefinition_1_1DriverFeature.html">DriverDefinition::DriverFeature</a></div><div class="ttdoc">Driver feature metadata.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00047">DriverDefinition.h:48</a></div></div>
+<div class="ttc" id="anamespaceDriverDefinition_html"><div class="ttname"><a href="namespaceDriverDefinition.html">DriverDefinition</a></div><div class="ttdoc">Shared enums and types for actuator driver implementations.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00034">DriverDefinition.h:35</a></div></div>
+<div class="ttc" id="anamespaceDriverDefinition_html_a64a3030e095e640f75f387251025d3bd"><div class="ttname"><a href="namespaceDriverDefinition.html#a64a3030e095e640f75f387251025d3bd">DriverDefinition::ADLimitSwitch</a></div><div class="ttdeci">ADLimitSwitch</div><div class="ttdoc">Limit switch state.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00074">DriverDefinition.h:74</a></div></div>
+<div class="ttc" id="anamespaceDriverDefinition_html_a69bbe04621ad1182e7c1d19b6ee62176a253c98b40ec99205f2f892d19d5fb464"><div class="ttname"><a href="namespaceDriverDefinition.html#a69bbe04621ad1182e7c1d19b6ee62176a253c98b40ec99205f2f892d19d5fb464">DriverDefinition::CLOSED_LOOP</a></div><div class="ttdeci">@ CLOSED_LOOP</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00037">DriverDefinition.h:37</a></div></div>
+<div class="ttc" id="astructDriverDefinition_1_1DriverFeature_html"><div class="ttname"><a href="structDriverDefinition_1_1DriverFeature.html">DriverDefinition::DriverFeature</a></div><div class="ttdoc">Driver feature metadata.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00052">DriverDefinition.h:53</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

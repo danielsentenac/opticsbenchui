@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('Motor_8h_source.html',''); initResizab
 <div class="title">Motor.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
+<a href="Motor_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">This file is part of OpticsBenchUI.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">OpticsBenchUI is free software: you can redistribute it and/or modify</span></div>
@@ -104,91 +104,96 @@ $(document).ready(function(){initNavTree('Motor_8h_source.html',''); initResizab
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">********************************************************************/</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifndef MOTOR_H</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define MOTOR_H</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;ACCom.h&quot;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;Driver.h&quot;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QtSql&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;QsLog.h&quot;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;Utils.h&quot;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef MOTOR_H</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define MOTOR_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ACCom_8h.html">ACCom.h</a>&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Driver_8h.html">Driver.h</a>&quot;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classMotor.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="classMotor.html">Motor</a> : <span class="keyword">public</span> QObject</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  Q_OBJECT</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="classMotor.html#a7b2ab6bfee2e94e6cef403910b3186f3">Motor</a>(QObject* parent = 0, QString _appDirPath = 0);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <a class="code" href="classMotor.html#a2e57c7b2681efea1d3b7f253ee88ecd4">~Motor</a>();</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordtype">void</span>  <a class="code" href="classMotor.html#ad05b1f281b7e58a7ea70bf7882068a65">connectMotor</a>(QString newactuator);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordtype">void</span>  <a class="code" href="classMotor.html#a71dbdfb7bdac6556c97c601fe23dd8db">moveForward</a>(QString newactuator,<span class="keywordtype">float</span> motion);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">void</span>  <a class="code" href="classMotor.html#a3bcb8d21f707d4ba7e3af24666ec90ef">moveBackward</a>(QString newactuator,<span class="keywordtype">float</span> motion);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">void</span>  <a class="code" href="classMotor.html#ae10f8dee43485ddeb7a5f0c134da0e34">moveAbsolute</a>(QString newactuator,<span class="keywordtype">float</span> motion);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">void</span>  <a class="code" href="classMotor.html#ab2aad7fe96a468eaa5c2adf66b4210cb">stopMotor</a>(QString newactuator);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">void</span>  <a class="code" href="classMotor.html#af696a6de2bcd4abfaf7f8ec06d3234dc">setDbPath</a>(QString _path);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">int</span>   <a class="code" href="classMotor.html#a907cbca6851e59101eba946aa3676a85">getOperationComplete</a>(QString newactuator);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">float</span> <a class="code" href="classMotor.html#af0383eabf8aa83f499a0782d42701ce3">getPosition</a>(QString newactuator);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="comment">// parameters</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classMotor.html#a011c82754bc3b40321b33f0a0a16a45d">   77</a></span>&#160;<span class="comment"></span>  QVector&lt;int&gt; <a class="code" href="classMotor.html#a011c82754bc3b40321b33f0a0a16a45d">operationcomplete</a>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classMotor.html#a571b8c2ceb0f8a05f83ed213cfa106ff">   79</a></span>&#160;  QString <a class="code" href="classMotor.html#a571b8c2ceb0f8a05f83ed213cfa106ff">path</a>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; signals:</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="classMotor.html#afa321fc2b5e4850c4d0106de5ce851a9">   84</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMotor.html#afa321fc2b5e4850c4d0106de5ce851a9">getPosition</a>(<span class="keywordtype">float</span> position);</div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classMotor.html#a3b50da09f7a8751c8c65d177d3d4a1d3">   87</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMotor.html#a3b50da09f7a8751c8c65d177d3d4a1d3">getDescription</a>(QString description);</div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="classMotor.html#a2363808ae0a3c5267768f2945bdf2ac3">   90</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMotor.html#a2363808ae0a3c5267768f2945bdf2ac3">showWarning</a>(QString message);</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="classMotor.html#a08a4a08a8c0eef0bc48741751b415407">   92</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMotor.html#a08a4a08a8c0eef0bc48741751b415407">stopTimer</a>();</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; <span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMotor.html#a6f8d139875870dd3b19b96e92f53e7d5">operationComplete</a>();</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;QtSql&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="QsLog_8h.html">QsLog.h</a>&quot;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Utils_8h.html">Utils.h</a>&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classMotor.html">   40</a></span>&#160;<span class="keyword">class </span><a class="code" href="classMotor.html">Motor</a> : <span class="keyword">public</span> QObject</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  Q_OBJECT</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="classMotor.html#a7b2ab6bfee2e94e6cef403910b3186f3">Motor</a>(QObject* parent = 0, QString _appDirPath = 0);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="classMotor.html#a2e57c7b2681efea1d3b7f253ee88ecd4">~Motor</a>();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordtype">void</span>  <a class="code" href="classMotor.html#ad05b1f281b7e58a7ea70bf7882068a65">connectMotor</a>(QString newactuator);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordtype">void</span>  <a class="code" href="classMotor.html#a71dbdfb7bdac6556c97c601fe23dd8db">moveForward</a>(QString newactuator,<span class="keywordtype">float</span> motion);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">void</span>  <a class="code" href="classMotor.html#a3bcb8d21f707d4ba7e3af24666ec90ef">moveBackward</a>(QString newactuator,<span class="keywordtype">float</span> motion);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordtype">void</span>  <a class="code" href="classMotor.html#ae10f8dee43485ddeb7a5f0c134da0e34">moveAbsolute</a>(QString newactuator,<span class="keywordtype">float</span> motion);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordtype">void</span>  <a class="code" href="classMotor.html#ab2aad7fe96a468eaa5c2adf66b4210cb">stopMotor</a>(QString newactuator);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">void</span>  <a class="code" href="classMotor.html#af696a6de2bcd4abfaf7f8ec06d3234dc">setDbPath</a>(QString _path);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordtype">int</span>   <a class="code" href="classMotor.html#a907cbca6851e59101eba946aa3676a85">getOperationComplete</a>(QString newactuator);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordtype">float</span> <a class="code" href="classMotor.html#af0383eabf8aa83f499a0782d42701ce3">getPosition</a>(QString newactuator);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="comment">// parameters</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="classMotor.html#a011c82754bc3b40321b33f0a0a16a45d">   82</a></span>&#160;<span class="comment"></span>  QVector&lt;int&gt; <a class="code" href="classMotor.html#a011c82754bc3b40321b33f0a0a16a45d">operationcomplete</a>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="classMotor.html#a571b8c2ceb0f8a05f83ed213cfa106ff">   84</a></span>&#160;  QString <a class="code" href="classMotor.html#a571b8c2ceb0f8a05f83ed213cfa106ff">path</a>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; <a class="code" href="CameraGiGE_8h.html#aabbcb0bbcbcb6adcf20d63cc22f83649">signals</a>:</div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="classMotor.html#afa321fc2b5e4850c4d0106de5ce851a9">   89</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMotor.html#afa321fc2b5e4850c4d0106de5ce851a9">getPosition</a>(<span class="keywordtype">float</span> position);</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="classMotor.html#a3b50da09f7a8751c8c65d177d3d4a1d3">   92</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMotor.html#a3b50da09f7a8751c8c65d177d3d4a1d3">getDescription</a>(QString description);</div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="classMotor.html#a2363808ae0a3c5267768f2945bdf2ac3">   95</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMotor.html#a2363808ae0a3c5267768f2945bdf2ac3">showWarning</a>(QString message);</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="classMotor.html#a08a4a08a8c0eef0bc48741751b415407">   97</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMotor.html#a08a4a08a8c0eef0bc48741751b415407">stopTimer</a>();</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="comment">// function : create connexion to the database</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordtype">void</span> dbConnexion();</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  QSqlDatabase connectDb(<span class="keyword">const</span> QString&amp; <a class="code" href="classMotor.html#a571b8c2ceb0f8a05f83ed213cfa106ff">path</a>);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  QVector&lt;ACCom*&gt;   actuatorCom;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  QVector&lt;Driver*&gt;  actuatorDriver;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  QVector&lt;QString&gt;  actuatorSettings;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  QVector&lt;QString&gt;  description;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  QVector&lt;QString&gt;  com;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  QVector&lt;QString&gt;  driver;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  QVector&lt;QString&gt;  actuator;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keywordtype">bool</span> iscompleting;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  QVector&lt;bool&gt; connectSuccess;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  QVector&lt;float&gt; position;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  QString runningActuator;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;};</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassMotor_html"><div class="ttname"><a href="classMotor.html">Motor</a></div><div class="ttdef"><b>Definition:</b> <a href="Motor_8h_source.html#l00035">Motor.h:36</a></div></div>
-<div class="ttc" id="aclassMotor_html_a011c82754bc3b40321b33f0a0a16a45d"><div class="ttname"><a href="classMotor.html#a011c82754bc3b40321b33f0a0a16a45d">Motor::operationcomplete</a></div><div class="ttdeci">QVector&lt; int &gt; operationcomplete</div><div class="ttdoc">Per-actuator completion flags.</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8h_source.html#l00077">Motor.h:77</a></div></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; <span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMotor.html#a6f8d139875870dd3b19b96e92f53e7d5">operationComplete</a>();</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="comment">// function : create connexion to the database</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordtype">void</span> dbConnexion();</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  QSqlDatabase connectDb(<span class="keyword">const</span> QString&amp; <a class="code" href="classMotor.html#a571b8c2ceb0f8a05f83ed213cfa106ff">path</a>);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  QVector&lt;ACCom*&gt;   actuatorCom;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  QVector&lt;Driver*&gt;  actuatorDriver;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  QVector&lt;QString&gt;  actuatorSettings;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  QVector&lt;QString&gt;  description;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  QVector&lt;QString&gt;  com;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  QVector&lt;QString&gt;  driver;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  QVector&lt;QString&gt;  actuator;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keywordtype">bool</span> iscompleting;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  QVector&lt;bool&gt; connectSuccess;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  QVector&lt;float&gt; position;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  QString runningActuator;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;};</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aACCom_8h_html"><div class="ttname"><a href="ACCom_8h.html">ACCom.h</a></div><div class="ttdoc">AC communication backend for AC Com.</div></div>
+<div class="ttc" id="aCameraGiGE_8h_html_aabbcb0bbcbcb6adcf20d63cc22f83649"><div class="ttname"><a href="CameraGiGE_8h.html#aabbcb0bbcbcb6adcf20d63cc22f83649">signals</a></div><div class="ttdeci">#define signals</div><div class="ttdef"><b>Definition:</b> <a href="CameraGiGE_8h_source.html#l00028">CameraGiGE.h:28</a></div></div>
+<div class="ttc" id="aDriver_8h_html"><div class="ttname"><a href="Driver_8h.html">Driver.h</a></div><div class="ttdoc">Driver implementation for .</div></div>
+<div class="ttc" id="aQsLog_8h_html"><div class="ttname"><a href="QsLog_8h.html">QsLog.h</a></div><div class="ttdoc">Qs Log logging support.</div></div>
+<div class="ttc" id="aUtils_8h_html"><div class="ttname"><a href="Utils_8h.html">Utils.h</a></div><div class="ttdoc">Utility helpers.</div></div>
+<div class="ttc" id="aclassMotor_html"><div class="ttname"><a href="classMotor.html">Motor</a></div><div class="ttdef"><b>Definition:</b> <a href="Motor_8h_source.html#l00040">Motor.h:41</a></div></div>
+<div class="ttc" id="aclassMotor_html_a011c82754bc3b40321b33f0a0a16a45d"><div class="ttname"><a href="classMotor.html#a011c82754bc3b40321b33f0a0a16a45d">Motor::operationcomplete</a></div><div class="ttdeci">QVector&lt; int &gt; operationcomplete</div><div class="ttdoc">Per-actuator completion flags.</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8h_source.html#l00082">Motor.h:82</a></div></div>
 <div class="ttc" id="aclassMotor_html_a08a4a08a8c0eef0bc48741751b415407"><div class="ttname"><a href="classMotor.html#a08a4a08a8c0eef0bc48741751b415407">Motor::stopTimer</a></div><div class="ttdeci">void stopTimer()</div><div class="ttdoc">Request timers to stop (UI coordination).</div></div>
 <div class="ttc" id="aclassMotor_html_a2363808ae0a3c5267768f2945bdf2ac3"><div class="ttname"><a href="classMotor.html#a2363808ae0a3c5267768f2945bdf2ac3">Motor::showWarning</a></div><div class="ttdeci">void showWarning(QString message)</div></div>
-<div class="ttc" id="aclassMotor_html_a2e57c7b2681efea1d3b7f253ee88ecd4"><div class="ttname"><a href="classMotor.html#a2e57c7b2681efea1d3b7f253ee88ecd4">Motor::~Motor</a></div><div class="ttdeci">~Motor()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00029">Motor.cpp:29</a></div></div>
+<div class="ttc" id="aclassMotor_html_a2e57c7b2681efea1d3b7f253ee88ecd4"><div class="ttname"><a href="classMotor.html#a2e57c7b2681efea1d3b7f253ee88ecd4">Motor::~Motor</a></div><div class="ttdeci">~Motor()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00034">Motor.cpp:34</a></div></div>
 <div class="ttc" id="aclassMotor_html_a3b50da09f7a8751c8c65d177d3d4a1d3"><div class="ttname"><a href="classMotor.html#a3b50da09f7a8751c8c65d177d3d4a1d3">Motor::getDescription</a></div><div class="ttdeci">void getDescription(QString description)</div></div>
-<div class="ttc" id="aclassMotor_html_a3bcb8d21f707d4ba7e3af24666ec90ef"><div class="ttname"><a href="classMotor.html#a3bcb8d21f707d4ba7e3af24666ec90ef">Motor::moveBackward</a></div><div class="ttdeci">void moveBackward(QString newactuator, float motion)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00284">Motor.cpp:284</a></div></div>
-<div class="ttc" id="aclassMotor_html_a571b8c2ceb0f8a05f83ed213cfa106ff"><div class="ttname"><a href="classMotor.html#a571b8c2ceb0f8a05f83ed213cfa106ff">Motor::path</a></div><div class="ttdeci">QString path</div><div class="ttdoc">Path to the motor database.</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8h_source.html#l00079">Motor.h:79</a></div></div>
-<div class="ttc" id="aclassMotor_html_a6f8d139875870dd3b19b96e92f53e7d5"><div class="ttname"><a href="classMotor.html#a6f8d139875870dd3b19b96e92f53e7d5">Motor::operationComplete</a></div><div class="ttdeci">void operationComplete()</div><div class="ttdoc">Slot called when a motor operation completes.</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00340">Motor.cpp:340</a></div></div>
-<div class="ttc" id="aclassMotor_html_a71dbdfb7bdac6556c97c601fe23dd8db"><div class="ttname"><a href="classMotor.html#a71dbdfb7bdac6556c97c601fe23dd8db">Motor::moveForward</a></div><div class="ttdeci">void moveForward(QString newactuator, float motion)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00273">Motor.cpp:273</a></div></div>
-<div class="ttc" id="aclassMotor_html_a7b2ab6bfee2e94e6cef403910b3186f3"><div class="ttname"><a href="classMotor.html#a7b2ab6bfee2e94e6cef403910b3186f3">Motor::Motor</a></div><div class="ttdeci">Motor(QObject *parent=0, QString _appDirPath=0)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00021">Motor.cpp:21</a></div></div>
-<div class="ttc" id="aclassMotor_html_a907cbca6851e59101eba946aa3676a85"><div class="ttname"><a href="classMotor.html#a907cbca6851e59101eba946aa3676a85">Motor::getOperationComplete</a></div><div class="ttdeci">int getOperationComplete(QString newactuator)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00329">Motor.cpp:329</a></div></div>
-<div class="ttc" id="aclassMotor_html_ab2aad7fe96a468eaa5c2adf66b4210cb"><div class="ttname"><a href="classMotor.html#ab2aad7fe96a468eaa5c2adf66b4210cb">Motor::stopMotor</a></div><div class="ttdeci">void stopMotor(QString newactuator)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00307">Motor.cpp:307</a></div></div>
-<div class="ttc" id="aclassMotor_html_ad05b1f281b7e58a7ea70bf7882068a65"><div class="ttname"><a href="classMotor.html#ad05b1f281b7e58a7ea70bf7882068a65">Motor::connectMotor</a></div><div class="ttdeci">void connectMotor(QString newactuator)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00102">Motor.cpp:102</a></div></div>
-<div class="ttc" id="aclassMotor_html_ae10f8dee43485ddeb7a5f0c134da0e34"><div class="ttname"><a href="classMotor.html#ae10f8dee43485ddeb7a5f0c134da0e34">Motor::moveAbsolute</a></div><div class="ttdeci">void moveAbsolute(QString newactuator, float motion)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00296">Motor.cpp:296</a></div></div>
-<div class="ttc" id="aclassMotor_html_af0383eabf8aa83f499a0782d42701ce3"><div class="ttname"><a href="classMotor.html#af0383eabf8aa83f499a0782d42701ce3">Motor::getPosition</a></div><div class="ttdeci">float getPosition(QString newactuator)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00318">Motor.cpp:318</a></div></div>
-<div class="ttc" id="aclassMotor_html_af696a6de2bcd4abfaf7f8ec06d3234dc"><div class="ttname"><a href="classMotor.html#af696a6de2bcd4abfaf7f8ec06d3234dc">Motor::setDbPath</a></div><div class="ttdeci">void setDbPath(QString _path)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00060">Motor.cpp:60</a></div></div>
+<div class="ttc" id="aclassMotor_html_a3bcb8d21f707d4ba7e3af24666ec90ef"><div class="ttname"><a href="classMotor.html#a3bcb8d21f707d4ba7e3af24666ec90ef">Motor::moveBackward</a></div><div class="ttdeci">void moveBackward(QString newactuator, float motion)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00289">Motor.cpp:289</a></div></div>
+<div class="ttc" id="aclassMotor_html_a571b8c2ceb0f8a05f83ed213cfa106ff"><div class="ttname"><a href="classMotor.html#a571b8c2ceb0f8a05f83ed213cfa106ff">Motor::path</a></div><div class="ttdeci">QString path</div><div class="ttdoc">Path to the motor database.</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8h_source.html#l00084">Motor.h:84</a></div></div>
+<div class="ttc" id="aclassMotor_html_a6f8d139875870dd3b19b96e92f53e7d5"><div class="ttname"><a href="classMotor.html#a6f8d139875870dd3b19b96e92f53e7d5">Motor::operationComplete</a></div><div class="ttdeci">void operationComplete()</div><div class="ttdoc">Slot called when a motor operation completes.</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00345">Motor.cpp:345</a></div></div>
+<div class="ttc" id="aclassMotor_html_a71dbdfb7bdac6556c97c601fe23dd8db"><div class="ttname"><a href="classMotor.html#a71dbdfb7bdac6556c97c601fe23dd8db">Motor::moveForward</a></div><div class="ttdeci">void moveForward(QString newactuator, float motion)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00278">Motor.cpp:278</a></div></div>
+<div class="ttc" id="aclassMotor_html_a7b2ab6bfee2e94e6cef403910b3186f3"><div class="ttname"><a href="classMotor.html#a7b2ab6bfee2e94e6cef403910b3186f3">Motor::Motor</a></div><div class="ttdeci">Motor(QObject *parent=0, QString _appDirPath=0)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00026">Motor.cpp:26</a></div></div>
+<div class="ttc" id="aclassMotor_html_a907cbca6851e59101eba946aa3676a85"><div class="ttname"><a href="classMotor.html#a907cbca6851e59101eba946aa3676a85">Motor::getOperationComplete</a></div><div class="ttdeci">int getOperationComplete(QString newactuator)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00334">Motor.cpp:334</a></div></div>
+<div class="ttc" id="aclassMotor_html_ab2aad7fe96a468eaa5c2adf66b4210cb"><div class="ttname"><a href="classMotor.html#ab2aad7fe96a468eaa5c2adf66b4210cb">Motor::stopMotor</a></div><div class="ttdeci">void stopMotor(QString newactuator)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00312">Motor.cpp:312</a></div></div>
+<div class="ttc" id="aclassMotor_html_ad05b1f281b7e58a7ea70bf7882068a65"><div class="ttname"><a href="classMotor.html#ad05b1f281b7e58a7ea70bf7882068a65">Motor::connectMotor</a></div><div class="ttdeci">void connectMotor(QString newactuator)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00107">Motor.cpp:107</a></div></div>
+<div class="ttc" id="aclassMotor_html_ae10f8dee43485ddeb7a5f0c134da0e34"><div class="ttname"><a href="classMotor.html#ae10f8dee43485ddeb7a5f0c134da0e34">Motor::moveAbsolute</a></div><div class="ttdeci">void moveAbsolute(QString newactuator, float motion)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00301">Motor.cpp:301</a></div></div>
+<div class="ttc" id="aclassMotor_html_af0383eabf8aa83f499a0782d42701ce3"><div class="ttname"><a href="classMotor.html#af0383eabf8aa83f499a0782d42701ce3">Motor::getPosition</a></div><div class="ttdeci">float getPosition(QString newactuator)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00323">Motor.cpp:323</a></div></div>
+<div class="ttc" id="aclassMotor_html_af696a6de2bcd4abfaf7f8ec06d3234dc"><div class="ttname"><a href="classMotor.html#af696a6de2bcd4abfaf7f8ec06d3234dc">Motor::setDbPath</a></div><div class="ttdeci">void setDbPath(QString _path)</div><div class="ttdef"><b>Definition:</b> <a href="Motor_8cpp_source.html#l00065">Motor.cpp:65</a></div></div>
 <div class="ttc" id="aclassMotor_html_afa321fc2b5e4850c4d0106de5ce851a9"><div class="ttname"><a href="classMotor.html#afa321fc2b5e4850c4d0106de5ce851a9">Motor::getPosition</a></div><div class="ttdeci">void getPosition(float position)</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>Motor.h</b></li>
+    <li class="navelem"><a class="el" href="Motor_8h.html">Motor.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

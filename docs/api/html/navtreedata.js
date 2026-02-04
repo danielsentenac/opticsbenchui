@@ -34,7 +34,8 @@ var NAVTREE =
         [ "All", "namespacemembers.html", null ],
         [ "Functions", "namespacemembers_func.html", null ],
         [ "Typedefs", "namespacemembers_type.html", null ],
-        [ "Enumerations", "namespacemembers_enum.html", null ]
+        [ "Enumerations", "namespacemembers_enum.html", null ],
+        [ "Enumerator", "namespacemembers_eval.html", null ]
       ] ]
     ] ],
     [ "Classes", "annotated.html", [
@@ -45,23 +46,36 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", "functions_vars" ],
-        [ "Enumerations", "functions_enum.html", null ]
+        [ "Enumerations", "functions_enum.html", null ],
+        [ "Enumerator", "functions_eval.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
+      [ "File List", "files.html", "files_dup" ],
+      [ "File Members", "globals.html", [
+        [ "All", "globals.html", "globals_dup" ],
+        [ "Functions", "globals_func.html", null ],
+        [ "Variables", "globals_vars.html", null ],
+        [ "Typedefs", "globals_type.html", null ],
+        [ "Enumerations", "globals_enum.html", null ],
+        [ "Enumerator", "globals_eval.html", null ],
+        [ "Macros", "globals_defs.html", "globals_defs" ]
+      ] ]
     ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"ACCom_8cpp_source.html",
-"classAcquisitionSequence.html#ad207cdc6f2bef725569c13c52aab3b3f",
-"classCameraGiGE.html#aea93bb3977e47df973e9a11ddbe18184",
-"classDriver.html#a3df34b03d1bdde18b80985c7fc46320d",
-"classMotor.html",
-"group__cameras.html"
+"ACCom_8cpp.html",
+"DriverDefinition_8h.html#a64a3030e095e640f75f387251025d3bdab61a13e08e25d535af097b3ffd442b28",
+"classAcquisitionSequence.html#a473f18818fc744f6d7adcf59620deb88",
+"classCamera.html#afc7bf99bdc7784a647e421b40a125b0e",
+"classComediWindow.html#aa0d139d65ed88c40fbe87fe293fbae0f",
+"classDriverStanda__uSMC2.html#ae769730ce8370711dd802763a0bdea07",
+"functions_func_t.html",
+"moc__predefs_8h.html#a5922e567fc671cc2985da95b33544c16",
+"moc__predefs_8h.html#adeff56b51aead6443852cacac294d464"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

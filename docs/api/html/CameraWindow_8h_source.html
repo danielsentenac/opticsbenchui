@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('CameraWindow_8h_source.html',''); init
 <div class="title">CameraWindow.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
+<a href="CameraWindow_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">This file is part of OpticsBenchUI.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">OpticsBenchUI is free software: you can redistribute it and/or modify</span></div>
@@ -104,77 +104,83 @@ $(document).ready(function(){initNavTree('CameraWindow_8h_source.html',''); init
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">********************************************************************/</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifndef CAMERAWINDOW_H</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define CAMERAWINDOW_H</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;QMainWindow&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;Camera.h&quot;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;CameraControlWidget.h&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;CameraPropWidget.h&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef NO_MULTIMEDIA</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;VideoPlayer.h&quot;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">class </span><a class="code" href="classVideoPlayer.html">VideoPlayer</a>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;QsLog.h&quot;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classCameraWindow.html">   34</a></span>&#160;<span class="keyword">class </span><a class="code" href="classCameraWindow.html">CameraWindow</a> : <span class="keyword">public</span> QMainWindow</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  Q_OBJECT</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="classCameraWindow.html#a9b4f819fa0055b13bbef42e9a4028b88">CameraWindow</a>( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window, <a class="code" href="classCamera.html">Camera</a> *_camera = 0, </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordtype">int</span> cameraNumber = 0);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classCameraWindow.html#a6fbd2a958d3179e9e32ab99e54efb745">~CameraWindow</a>();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classCameraWindow.html#a8ed6dc8ee7dcdac072ccfc307cc34fd5">update</a>();</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; <span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classCameraWindow.html#a8a836c94fbb3bb71a51791dee4cc2069">set480x320</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classCameraWindow.html#aade07e85d2b488f51afd8e63558c4014">set640x480</a>();</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classCameraWindow.html#ab51b7a15767002639f3a02141ed3a1ad">set1280x960</a>();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;signals:</div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classCameraWindow.html#a55c59622062c1b88affe32fb3ad1e976">   66</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classCameraWindow.html#a55c59622062c1b88affe32fb3ad1e976">setVideoPlayerResolution</a>(<span class="keywordtype">int</span> width,<span class="keywordtype">int</span> height);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classCameraWindow.html#a9aec8521110b74afc476fa462c2b3479">closeEvent</a>(QCloseEvent *event);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  QMainWindow *parentWindow;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <a class="code" href="classCameraControlWidget.html">CameraControlWidget</a> *cameraWidget;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <a class="code" href="classCameraPropWidget.html">CameraPropWidget</a> *cameraPropWidget;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <a class="code" href="classCamera.html">Camera</a> *camera;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">int</span> cameraNumber;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#ifndef NO_MULTIMEDIA</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <a class="code" href="classVideoPlayer.html">VideoPlayer</a> *player;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  QLabel *videoPlaceholder;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// CAMERAWINDOW_H</span></div>
-<div class="ttc" id="aclassCameraControlWidget_html"><div class="ttname"><a href="classCameraControlWidget.html">CameraControlWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="CameraControlWidget_8h_source.html#l00035">CameraControlWidget.h:36</a></div></div>
-<div class="ttc" id="aclassCameraPropWidget_html"><div class="ttname"><a href="classCameraPropWidget.html">CameraPropWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="CameraPropWidget_8h_source.html#l00035">CameraPropWidget.h:36</a></div></div>
-<div class="ttc" id="aclassCameraWindow_html"><div class="ttname"><a href="classCameraWindow.html">CameraWindow</a></div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8h_source.html#l00034">CameraWindow.h:35</a></div></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef CAMERAWINDOW_H</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define CAMERAWINDOW_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;QMainWindow&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Camera_8h.html">Camera.h</a>&quot;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="CameraControlWidget_8h.html">CameraControlWidget.h</a>&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="CameraPropWidget_8h.html">CameraPropWidget.h</a>&quot;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#ifndef NO_MULTIMEDIA</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="VideoPlayer_8h.html">VideoPlayer.h</a>&quot;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">class </span><a class="code" href="classVideoPlayer.html">VideoPlayer</a>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="QsLog_8h.html">QsLog.h</a>&quot;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classCameraWindow.html">   39</a></span>&#160;<span class="keyword">class </span><a class="code" href="classCameraWindow.html">CameraWindow</a> : <span class="keyword">public</span> QMainWindow</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  Q_OBJECT</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <a class="code" href="classCameraWindow.html#a9b4f819fa0055b13bbef42e9a4028b88">CameraWindow</a>( QMainWindow* parent = 0, Qt::WindowFlags fl = Qt::Window, <a class="code" href="classCamera.html">Camera</a> *_camera = 0, </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">int</span> cameraNumber = 0);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classCameraWindow.html#a6fbd2a958d3179e9e32ab99e54efb745">~CameraWindow</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classCameraWindow.html#a8ed6dc8ee7dcdac072ccfc307cc34fd5">update</a>();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; <span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classCameraWindow.html#a8a836c94fbb3bb71a51791dee4cc2069">set480x320</a>();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classCameraWindow.html#aade07e85d2b488f51afd8e63558c4014">set640x480</a>();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classCameraWindow.html#ab51b7a15767002639f3a02141ed3a1ad">set1280x960</a>();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<a class="code" href="CameraGiGE_8h.html#aabbcb0bbcbcb6adcf20d63cc22f83649">signals</a>:</div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classCameraWindow.html#a55c59622062c1b88affe32fb3ad1e976">   71</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classCameraWindow.html#a55c59622062c1b88affe32fb3ad1e976">setVideoPlayerResolution</a>(<span class="keywordtype">int</span> width,<span class="keywordtype">int</span> height);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classCameraWindow.html#a9aec8521110b74afc476fa462c2b3479">closeEvent</a>(QCloseEvent *event);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  QMainWindow *parentWindow;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <a class="code" href="classCameraControlWidget.html">CameraControlWidget</a> *cameraWidget;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <a class="code" href="classCameraPropWidget.html">CameraPropWidget</a> *cameraPropWidget;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <a class="code" href="classCamera.html">Camera</a> *camera;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">int</span> cameraNumber;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#ifndef NO_MULTIMEDIA</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <a class="code" href="classVideoPlayer.html">VideoPlayer</a> *player;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  QLabel *videoPlaceholder;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;};</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// CAMERAWINDOW_H</span></div>
+<div class="ttc" id="aCameraControlWidget_8h_html"><div class="ttname"><a href="CameraControlWidget_8h.html">CameraControlWidget.h</a></div><div class="ttdoc">Camera backend for Control Widget.</div></div>
+<div class="ttc" id="aCameraGiGE_8h_html_aabbcb0bbcbcb6adcf20d63cc22f83649"><div class="ttname"><a href="CameraGiGE_8h.html#aabbcb0bbcbcb6adcf20d63cc22f83649">signals</a></div><div class="ttdeci">#define signals</div><div class="ttdef"><b>Definition:</b> <a href="CameraGiGE_8h_source.html#l00028">CameraGiGE.h:28</a></div></div>
+<div class="ttc" id="aCameraPropWidget_8h_html"><div class="ttname"><a href="CameraPropWidget_8h.html">CameraPropWidget.h</a></div><div class="ttdoc">Camera backend for Prop Widget.</div></div>
+<div class="ttc" id="aCamera_8h_html"><div class="ttname"><a href="Camera_8h.html">Camera.h</a></div><div class="ttdoc">Camera backend for .</div></div>
+<div class="ttc" id="aQsLog_8h_html"><div class="ttname"><a href="QsLog_8h.html">QsLog.h</a></div><div class="ttdoc">Qs Log logging support.</div></div>
+<div class="ttc" id="aVideoPlayer_8h_html"><div class="ttname"><a href="VideoPlayer_8h.html">VideoPlayer.h</a></div><div class="ttdoc">Video Player component.</div></div>
+<div class="ttc" id="aclassCameraControlWidget_html"><div class="ttname"><a href="classCameraControlWidget.html">CameraControlWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="CameraControlWidget_8h_source.html#l00040">CameraControlWidget.h:41</a></div></div>
+<div class="ttc" id="aclassCameraPropWidget_html"><div class="ttname"><a href="classCameraPropWidget.html">CameraPropWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="CameraPropWidget_8h_source.html#l00040">CameraPropWidget.h:41</a></div></div>
+<div class="ttc" id="aclassCameraWindow_html"><div class="ttname"><a href="classCameraWindow.html">CameraWindow</a></div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8h_source.html#l00039">CameraWindow.h:40</a></div></div>
 <div class="ttc" id="aclassCameraWindow_html_a55c59622062c1b88affe32fb3ad1e976"><div class="ttname"><a href="classCameraWindow.html#a55c59622062c1b88affe32fb3ad1e976">CameraWindow::setVideoPlayerResolution</a></div><div class="ttdeci">void setVideoPlayerResolution(int width, int height)</div></div>
-<div class="ttc" id="aclassCameraWindow_html_a6fbd2a958d3179e9e32ab99e54efb745"><div class="ttname"><a href="classCameraWindow.html#a6fbd2a958d3179e9e32ab99e54efb745">CameraWindow::~CameraWindow</a></div><div class="ttdeci">virtual ~CameraWindow()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00097">CameraWindow.cpp:97</a></div></div>
-<div class="ttc" id="aclassCameraWindow_html_a8a836c94fbb3bb71a51791dee4cc2069"><div class="ttname"><a href="classCameraWindow.html#a8a836c94fbb3bb71a51791dee4cc2069">CameraWindow::set480x320</a></div><div class="ttdeci">void set480x320()</div><div class="ttdoc">Set video resolution to 480x320.</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00115">CameraWindow.cpp:115</a></div></div>
-<div class="ttc" id="aclassCameraWindow_html_a8ed6dc8ee7dcdac072ccfc307cc34fd5"><div class="ttname"><a href="classCameraWindow.html#a8ed6dc8ee7dcdac072ccfc307cc34fd5">CameraWindow::update</a></div><div class="ttdeci">void update()</div><div class="ttdoc">Refresh the UI.</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00136">CameraWindow.cpp:136</a></div></div>
-<div class="ttc" id="aclassCameraWindow_html_a9aec8521110b74afc476fa462c2b3479"><div class="ttname"><a href="classCameraWindow.html#a9aec8521110b74afc476fa462c2b3479">CameraWindow::closeEvent</a></div><div class="ttdeci">void closeEvent(QCloseEvent *event)</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00107">CameraWindow.cpp:107</a></div></div>
-<div class="ttc" id="aclassCameraWindow_html_a9b4f819fa0055b13bbef42e9a4028b88"><div class="ttname"><a href="classCameraWindow.html#a9b4f819fa0055b13bbef42e9a4028b88">CameraWindow::CameraWindow</a></div><div class="ttdeci">CameraWindow(QMainWindow *parent=0, Qt::WindowFlags fl=Qt::Window, Camera *_camera=0, int cameraNumber=0)</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00024">CameraWindow.cpp:24</a></div></div>
-<div class="ttc" id="aclassCameraWindow_html_aade07e85d2b488f51afd8e63558c4014"><div class="ttname"><a href="classCameraWindow.html#aade07e85d2b488f51afd8e63558c4014">CameraWindow::set640x480</a></div><div class="ttdeci">void set640x480()</div><div class="ttdoc">Set video resolution to 640x480.</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00122">CameraWindow.cpp:122</a></div></div>
-<div class="ttc" id="aclassCameraWindow_html_ab51b7a15767002639f3a02141ed3a1ad"><div class="ttname"><a href="classCameraWindow.html#ab51b7a15767002639f3a02141ed3a1ad">CameraWindow::set1280x960</a></div><div class="ttdeci">void set1280x960()</div><div class="ttdoc">Set video resolution to 1280x960.</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00129">CameraWindow.cpp:129</a></div></div>
-<div class="ttc" id="aclassCamera_html"><div class="ttname"><a href="classCamera.html">Camera</a></div><div class="ttdef"><b>Definition:</b> <a href="Camera_8h_source.html#l00052">Camera.h:53</a></div></div>
-<div class="ttc" id="aclassVideoPlayer_html"><div class="ttname"><a href="classVideoPlayer.html">VideoPlayer</a></div><div class="ttdef"><b>Definition:</b> <a href="VideoPlayer_8h_source.html#l00017">VideoPlayer.h:18</a></div></div>
+<div class="ttc" id="aclassCameraWindow_html_a6fbd2a958d3179e9e32ab99e54efb745"><div class="ttname"><a href="classCameraWindow.html#a6fbd2a958d3179e9e32ab99e54efb745">CameraWindow::~CameraWindow</a></div><div class="ttdeci">virtual ~CameraWindow()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00102">CameraWindow.cpp:102</a></div></div>
+<div class="ttc" id="aclassCameraWindow_html_a8a836c94fbb3bb71a51791dee4cc2069"><div class="ttname"><a href="classCameraWindow.html#a8a836c94fbb3bb71a51791dee4cc2069">CameraWindow::set480x320</a></div><div class="ttdeci">void set480x320()</div><div class="ttdoc">Set video resolution to 480x320.</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00120">CameraWindow.cpp:120</a></div></div>
+<div class="ttc" id="aclassCameraWindow_html_a8ed6dc8ee7dcdac072ccfc307cc34fd5"><div class="ttname"><a href="classCameraWindow.html#a8ed6dc8ee7dcdac072ccfc307cc34fd5">CameraWindow::update</a></div><div class="ttdeci">void update()</div><div class="ttdoc">Refresh the UI.</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00141">CameraWindow.cpp:141</a></div></div>
+<div class="ttc" id="aclassCameraWindow_html_a9aec8521110b74afc476fa462c2b3479"><div class="ttname"><a href="classCameraWindow.html#a9aec8521110b74afc476fa462c2b3479">CameraWindow::closeEvent</a></div><div class="ttdeci">void closeEvent(QCloseEvent *event)</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00112">CameraWindow.cpp:112</a></div></div>
+<div class="ttc" id="aclassCameraWindow_html_a9b4f819fa0055b13bbef42e9a4028b88"><div class="ttname"><a href="classCameraWindow.html#a9b4f819fa0055b13bbef42e9a4028b88">CameraWindow::CameraWindow</a></div><div class="ttdeci">CameraWindow(QMainWindow *parent=0, Qt::WindowFlags fl=Qt::Window, Camera *_camera=0, int cameraNumber=0)</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00029">CameraWindow.cpp:29</a></div></div>
+<div class="ttc" id="aclassCameraWindow_html_aade07e85d2b488f51afd8e63558c4014"><div class="ttname"><a href="classCameraWindow.html#aade07e85d2b488f51afd8e63558c4014">CameraWindow::set640x480</a></div><div class="ttdeci">void set640x480()</div><div class="ttdoc">Set video resolution to 640x480.</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00127">CameraWindow.cpp:127</a></div></div>
+<div class="ttc" id="aclassCameraWindow_html_ab51b7a15767002639f3a02141ed3a1ad"><div class="ttname"><a href="classCameraWindow.html#ab51b7a15767002639f3a02141ed3a1ad">CameraWindow::set1280x960</a></div><div class="ttdeci">void set1280x960()</div><div class="ttdoc">Set video resolution to 1280x960.</div><div class="ttdef"><b>Definition:</b> <a href="CameraWindow_8cpp_source.html#l00134">CameraWindow.cpp:134</a></div></div>
+<div class="ttc" id="aclassCamera_html"><div class="ttname"><a href="classCamera.html">Camera</a></div><div class="ttdef"><b>Definition:</b> <a href="Camera_8h_source.html#l00057">Camera.h:58</a></div></div>
+<div class="ttc" id="aclassVideoPlayer_html"><div class="ttname"><a href="classVideoPlayer.html">VideoPlayer</a></div><div class="ttdef"><b>Definition:</b> <a href="VideoPlayer_8h_source.html#l00021">VideoPlayer.h:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>CameraWindow.h</b></li>
+    <li class="navelem"><a class="el" href="CameraWindow_8h.html">CameraWindow.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

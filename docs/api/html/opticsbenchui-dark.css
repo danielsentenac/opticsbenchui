@@ -40,6 +40,29 @@ tr:nth-child(even) {
   background-color: #303030;
 }
 
+/* File list / directory pages */
+table.directory, table.directory td {
+  background-color: #2b2b2b;
+  color: #e6e6e6;
+  border-color: #555;
+}
+
+table.directory tr {
+  background-color: #2b2b2b;
+}
+
+table.directory tr.even {
+  background-color: #303030;
+}
+
+table.directory tr.odd {
+  background-color: #2b2b2b;
+}
+
+table.directory tr:hover td {
+  background-color: #3a3a3a;
+}
+
 div.memproto, div.memdoc {
   background-color: #303030;
   border-color: #555;
@@ -78,13 +101,76 @@ div.line {
 }
 
 .tablist li a, .tablist li a:visited {
-  background-color: #3a3a3a;
-  color: #e6e6e6;
+  background-color: #bfc6d4;
+  color: #000000 !important;
   border-color: #555;
 }
 
+.tablist li a:hover,
+.tablist li a:active {
+  color: #000000 !important;
+  background-color: #c7cedc;
+}
+
 .tablist li.current a {
-  background-color: #444;
+  background-color: #d1d7e4;
+  color: #000000 !important;
+}
+
+.tablist li a span,
+.tablist li.current a span {
+  color: #000000 !important;
+}
+
+/* Doxygen SmartMenus tab bar overrides */
+.sm-dox, .sm-dox ul {
+  background-image: none !important;
+}
+
+.sm-dox a,
+.sm-dox a:visited,
+.sm-dox a:focus,
+.sm-dox a:hover,
+.sm-dox a:active,
+.sm-dox a.highlighted,
+.sm-dox a.current {
+  color: #000000 !important;
+  background-color: #bfc6d4 !important;
+  background-image: none !important;
+  text-shadow: none !important;
+}
+
+.sm-dox a:hover,
+.sm-dox a:active,
+.sm-dox a.highlighted {
+  background-color: #c7cedc !important;
+}
+
+.sm-dox ul a,
+.sm-dox ul a:visited,
+.sm-dox ul a:focus,
+.sm-dox ul a:hover,
+.sm-dox ul a:active,
+.sm-dox ul a.highlighted {
+  color: #000000 !important;
+  background-color: #d1d7e4 !important;
+  background-image: none !important;
+  text-shadow: none !important;
+}
+
+.sm-dox a span.sub-arrow {
+  border-color: #000000 transparent transparent transparent !important;
+  background: transparent !important;
+}
+
+/* Invert class/graph images to avoid white backgrounds */
+img[src^="class"],
+img[src*="graph"],
+img[src*="inherit"],
+img[src^="struct"],
+img[src^="namespace"] {
+  background-color: transparent !important;
+  filter: invert(1) hue-rotate(180deg) contrast(1.05);
 }
 
 div#titlearea {

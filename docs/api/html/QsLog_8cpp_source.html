@@ -87,183 +87,192 @@ $(document).ready(function(){initNavTree('QsLog_8cpp_source.html',''); initResiz
 <div class="title">QsLog.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (c) 2010, Razvan Petru</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// All rights reserved.</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// Redistribution and use in source and binary forms, with or without modification,</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// are permitted provided that the following conditions are met:</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// * Redistributions of source code must retain the above copyright notice, this</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//   list of conditions and the following disclaimer.</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// * Redistributions in binary form must reproduce the above copyright notice, this</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">//   list of conditions and the following disclaimer in the documentation and/or other</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">//   materials provided with the distribution.</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// * The name of the contributors may not be used to endorse or promote products</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">//   derived from this software without specific prior written permission.</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// OF THE POSSIBILITY OF SUCH DAMAGE.</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;QsLog.h&quot;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;QsLogDest.h&quot;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;QMutex&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;QList&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;QDateTime&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;QtGlobal&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespaceQsLogging.html">   36</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceQsLogging.html">QsLogging</a></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="namespaceQsLogging.html#a9665fefc6346f3d979873f4b6d15292e">   39</a></span>&#160;<span class="keyword">typedef</span> QList&lt;Destination*&gt; <a class="code" href="namespaceQsLogging.html#a9665fefc6346f3d979873f4b6d15292e">DestinationList</a>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> TraceString[] = <span class="stringliteral">&quot;TRACE&quot;</span>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> DebugString[] = <span class="stringliteral">&quot;DEBUG&quot;</span>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> InfoString[]  = <span class="stringliteral">&quot;INFO&quot;</span>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> WarnString[]  = <span class="stringliteral">&quot;WARN&quot;</span>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> ErrorString[] = <span class="stringliteral">&quot;ERROR&quot;</span>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> FatalString[] = <span class="stringliteral">&quot;FATAL&quot;</span>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// not using Qt::ISODate because we need the milliseconds too</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> QString fmtDateTime(<span class="stringliteral">&quot;yyyy-MM-ddThh:mm:ss.zzz&quot;</span>);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* LevelToText(<a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033">Level</a> theLevel)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;   <span class="keywordflow">switch</span>( theLevel )</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;   {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;   <span class="keywordflow">case</span> TraceLevel:</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <span class="keywordflow">return</span> TraceString;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;   <span class="keywordflow">case</span> DebugLevel:</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keywordflow">return</span> DebugString;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;   <span class="keywordflow">case</span> InfoLevel:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keywordflow">return</span> InfoString;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;   <span class="keywordflow">case</span> WarnLevel:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordflow">return</span> WarnString;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;   <span class="keywordflow">case</span> ErrorLevel:</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keywordflow">return</span> ErrorString;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;   <span class="keywordflow">case</span> FatalLevel:</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      <span class="keywordflow">return</span> FatalString;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;   <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;         assert(!<span class="stringliteral">&quot;bad log level&quot;</span>);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;         <span class="keywordflow">return</span> InfoString;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;   }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classQsLogging_1_1LoggerImpl.html">   76</a></span>&#160;<span class="keyword">class </span><a class="code" href="classQsLogging_1_1LoggerImpl.html">LoggerImpl</a></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;{</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classQsLogging_1_1LoggerImpl.html#a97418676fcfcb2fb13c0ebbbae3ef184">   80</a></span>&#160;   <a class="code" href="classQsLogging_1_1LoggerImpl.html#a97418676fcfcb2fb13c0ebbbae3ef184">LoggerImpl</a>() :</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <a class="code" href="classQsLogging_1_1LoggerImpl.html#ac669e2e7945a439af103cd80c8c606eb">level</a>(InfoLevel)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;   {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;   }</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="classQsLogging_1_1LoggerImpl.html#a34516da614346c94e555acfce4f4e45e">   86</a></span>&#160;   QMutex <a class="code" href="classQsLogging_1_1LoggerImpl.html#a34516da614346c94e555acfce4f4e45e">logMutex</a>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="classQsLogging_1_1LoggerImpl.html#ac669e2e7945a439af103cd80c8c606eb">   88</a></span>&#160;   <a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033">Level</a> <a class="code" href="classQsLogging_1_1LoggerImpl.html#ac669e2e7945a439af103cd80c8c606eb">level</a>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="classQsLogging_1_1LoggerImpl.html#a42d3ebbc7c7ccc0c5db446b6a598f4ed">   90</a></span>&#160;   <a class="code" href="namespaceQsLogging.html#a9665fefc6346f3d979873f4b6d15292e">DestinationList</a> <a class="code" href="classQsLogging_1_1LoggerImpl.html#a42d3ebbc7c7ccc0c5db446b6a598f4ed">destList</a>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;};</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;Logger::Logger() :</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;   d(new <a class="code" href="classQsLogging_1_1LoggerImpl.html">LoggerImpl</a>)</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;{</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;Logger::~Logger()</div>
+<a href="QsLog_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// Copyright (c) 2010, Razvan Petru</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// All rights reserved.</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// Redistribution and use in source and binary forms, with or without modification,</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// are permitted provided that the following conditions are met:</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// * Redistributions of source code must retain the above copyright notice, this</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">//   list of conditions and the following disclaimer.</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// * Redistributions in binary form must reproduce the above copyright notice, this</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//   list of conditions and the following disclaimer in the documentation and/or other</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">//   materials provided with the distribution.</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// * The name of the contributors may not be used to endorse or promote products</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//   derived from this software without specific prior written permission.</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">// IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// OF THE POSSIBILITY OF SUCH DAMAGE.</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="QsLog_8h.html">QsLog.h</a>&quot;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="QsLogDest_8h.html">QsLogDest.h</a>&quot;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;QMutex&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;QList&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;QDateTime&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;QtGlobal&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="namespaceQsLogging.html">   40</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceQsLogging.html">QsLogging</a></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="namespaceQsLogging.html#a9665fefc6346f3d979873f4b6d15292e">   43</a></span>&#160;<span class="keyword">typedef</span> QList&lt;Destination*&gt; <a class="code" href="namespaceQsLogging.html#a9665fefc6346f3d979873f4b6d15292e">DestinationList</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> TraceString[] = <span class="stringliteral">&quot;TRACE&quot;</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> DebugString[] = <span class="stringliteral">&quot;DEBUG&quot;</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> InfoString[]  = <span class="stringliteral">&quot;INFO&quot;</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> WarnString[]  = <span class="stringliteral">&quot;WARN&quot;</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> ErrorString[] = <span class="stringliteral">&quot;ERROR&quot;</span>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> FatalString[] = <span class="stringliteral">&quot;FATAL&quot;</span>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// not using Qt::ISODate because we need the milliseconds too</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> QString fmtDateTime(<span class="stringliteral">&quot;yyyy-MM-ddThh:mm:ss.zzz&quot;</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* LevelToText(<a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033">Level</a> theLevel)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;   <span class="keywordflow">switch</span>( theLevel )</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;   {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;   <span class="keywordflow">case</span> <a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033a187ba10e2b3b400c6ee33afe6fc10915">TraceLevel</a>:</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keywordflow">return</span> TraceString;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;   <span class="keywordflow">case</span> <a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033a2a6c1ca8703fa87e56dae43e9adbecda">DebugLevel</a>:</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordflow">return</span> DebugString;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;   <span class="keywordflow">case</span> <a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033a6447c84a2844e8e1d0cdb95b55ecac72">InfoLevel</a>:</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keywordflow">return</span> InfoString;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;   <span class="keywordflow">case</span> <a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033ac744dbb976c301fa466a390b808e2eef">WarnLevel</a>:</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      <span class="keywordflow">return</span> WarnString;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;   <span class="keywordflow">case</span> <a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033a3d6b56d79245ec74186a538f2e6b3cf2">ErrorLevel</a>:</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keywordflow">return</span> ErrorString;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;   <span class="keywordflow">case</span> <a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033ab961256fd76d6571a41516e1794f39de">FatalLevel</a>:</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="keywordflow">return</span> FatalString;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;   <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;         assert(!<span class="stringliteral">&quot;bad log level&quot;</span>);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;         <span class="keywordflow">return</span> InfoString;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;   }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classQsLogging_1_1LoggerImpl.html">   80</a></span>&#160;<span class="keyword">class </span><a class="code" href="classQsLogging_1_1LoggerImpl.html">LoggerImpl</a></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;{</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="classQsLogging_1_1LoggerImpl.html#a97418676fcfcb2fb13c0ebbbae3ef184">   84</a></span>&#160;   <a class="code" href="classQsLogging_1_1LoggerImpl.html#a97418676fcfcb2fb13c0ebbbae3ef184">LoggerImpl</a>() :</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      <a class="code" href="classQsLogging_1_1LoggerImpl.html#ac669e2e7945a439af103cd80c8c606eb">level</a>(<a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033a6447c84a2844e8e1d0cdb95b55ecac72">InfoLevel</a>)</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;   {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;   }</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="classQsLogging_1_1LoggerImpl.html#a34516da614346c94e555acfce4f4e45e">   90</a></span>&#160;   QMutex <a class="code" href="classQsLogging_1_1LoggerImpl.html#a34516da614346c94e555acfce4f4e45e">logMutex</a>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="classQsLogging_1_1LoggerImpl.html#ac669e2e7945a439af103cd80c8c606eb">   92</a></span>&#160;   <a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033">Level</a> <a class="code" href="classQsLogging_1_1LoggerImpl.html#ac669e2e7945a439af103cd80c8c606eb">level</a>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classQsLogging_1_1LoggerImpl.html#a42d3ebbc7c7ccc0c5db446b6a598f4ed">   94</a></span>&#160;   <a class="code" href="namespaceQsLogging.html#a9665fefc6346f3d979873f4b6d15292e">DestinationList</a> <a class="code" href="classQsLogging_1_1LoggerImpl.html#a42d3ebbc7c7ccc0c5db446b6a598f4ed">destList</a>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;};</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;Logger::Logger() :</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;   d(new <a class="code" href="classQsLogging_1_1LoggerImpl.html">LoggerImpl</a>)</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;{</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;   <span class="keyword">delete</span> d;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="classQsLogging_1_1Logger.html#ae624206f88bff47839aea47a06b96569">  103</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classQsLogging_1_1Logger.html#ae624206f88bff47839aea47a06b96569">Logger::addDestination</a>(<a class="code" href="classQsLogging_1_1Destination.html">Destination</a>* destination)</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;{</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;   assert(destination);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;   d-&gt;<a class="code" href="classQsLogging_1_1LoggerImpl.html#a42d3ebbc7c7ccc0c5db446b6a598f4ed">destList</a>.push_back(destination);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="classQsLogging_1_1Logger.html#aa34d1a0d83e180f15e23a03f9de872c6">  109</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classQsLogging_1_1Logger.html#aa34d1a0d83e180f15e23a03f9de872c6">Logger::setLoggingLevel</a>(<a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033">Level</a> newLevel)</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;{</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;   d-&gt;<a class="code" href="classQsLogging_1_1LoggerImpl.html#ac669e2e7945a439af103cd80c8c606eb">level</a> = newLevel;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="classQsLogging_1_1Logger.html#a30168c3f7ab44ea0c2e5be2a0f06e48e">  114</a></span>&#160;<a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033">Level</a> <a class="code" href="classQsLogging_1_1Logger.html#a30168c3f7ab44ea0c2e5be2a0f06e48e">Logger::loggingLevel</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;   <span class="keywordflow">return</span> d-&gt;<a class="code" href="classQsLogging_1_1LoggerImpl.html#ac669e2e7945a439af103cd80c8c606eb">level</a>;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;}</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="keywordtype">void</span> Logger::Helper::writeToLog()</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;{</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;   <span class="keyword">const</span> <span class="keywordtype">char</span>* <span class="keyword">const</span> levelName = LevelToText(level);</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;   <span class="keyword">const</span> QString completeMessage(QString(<span class="stringliteral">&quot;%1 %2 %3&quot;</span>)</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      .arg(levelName, 5)</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      .arg(QDateTime::currentDateTime().toString(fmtDateTime))</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      .arg(buffer)</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      );</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;   <a class="code" href="classQsLogging_1_1Logger.html">Logger</a>&amp; logger = <a class="code" href="classQsLogging_1_1Logger.html#a26fd3242d362eeeb3b38940a714ea6fa">Logger::instance</a>();</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;   QMutexLocker lock(&amp;logger.d-&gt;<a class="code" href="classQsLogging_1_1LoggerImpl.html#a34516da614346c94e555acfce4f4e45e">logMutex</a>);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;   logger.write(completeMessage);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;}</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
-<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="classQsLogging_1_1Logger_1_1Helper.html#aae7c11e4fed280411fff26e9443a9adf">  134</a></span>&#160;<a class="code" href="classQsLogging_1_1Logger_1_1Helper.html#aae7c11e4fed280411fff26e9443a9adf">Logger::Helper::~Helper</a>()</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;{</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;   <span class="keywordflow">try</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;   {</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;      writeToLog();</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;   }</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;   <span class="keywordflow">catch</span>(std::exception&amp; e)</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;}</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;Logger::~Logger()</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;{</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;   <span class="keyword">delete</span> d;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="classQsLogging_1_1Logger.html#ae624206f88bff47839aea47a06b96569">  107</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classQsLogging_1_1Logger.html#ae624206f88bff47839aea47a06b96569">Logger::addDestination</a>(<a class="code" href="classQsLogging_1_1Destination.html">Destination</a>* destination)</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;{</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;   assert(destination);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;   d-&gt;<a class="code" href="classQsLogging_1_1LoggerImpl.html#a42d3ebbc7c7ccc0c5db446b6a598f4ed">destList</a>.push_back(destination);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="classQsLogging_1_1Logger.html#aa34d1a0d83e180f15e23a03f9de872c6">  113</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classQsLogging_1_1Logger.html#aa34d1a0d83e180f15e23a03f9de872c6">Logger::setLoggingLevel</a>(<a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033">Level</a> newLevel)</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;{</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;   d-&gt;<a class="code" href="classQsLogging_1_1LoggerImpl.html#ac669e2e7945a439af103cd80c8c606eb">level</a> = newLevel;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;}</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classQsLogging_1_1Logger.html#a30168c3f7ab44ea0c2e5be2a0f06e48e">  118</a></span>&#160;<a class="code" href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033">Level</a> <a class="code" href="classQsLogging_1_1Logger.html#a30168c3f7ab44ea0c2e5be2a0f06e48e">Logger::loggingLevel</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;   <span class="keywordflow">return</span> d-&gt;<a class="code" href="classQsLogging_1_1LoggerImpl.html#ac669e2e7945a439af103cd80c8c606eb">level</a>;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="keywordtype">void</span> Logger::Helper::writeToLog()</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;{</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;   <span class="keyword">const</span> <span class="keywordtype">char</span>* <span class="keyword">const</span> levelName = LevelToText(level);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;   <span class="keyword">const</span> QString completeMessage(QString(<span class="stringliteral">&quot;%1 %2 %3&quot;</span>)</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      .arg(levelName, 5)</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      .arg(QDateTime::currentDateTime().toString(fmtDateTime))</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      .arg(buffer)</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;      );</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;   <a class="code" href="classQsLogging_1_1Logger.html">Logger</a>&amp; logger = <a class="code" href="classQsLogging_1_1Logger.html#a26fd3242d362eeeb3b38940a714ea6fa">Logger::instance</a>();</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;   QMutexLocker lock(&amp;logger.d-&gt;<a class="code" href="classQsLogging_1_1LoggerImpl.html#a34516da614346c94e555acfce4f4e45e">logMutex</a>);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;   logger.write(completeMessage);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;}</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
+<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="classQsLogging_1_1Logger_1_1Helper.html#aae7c11e4fed280411fff26e9443a9adf">  138</a></span>&#160;<a class="code" href="classQsLogging_1_1Logger_1_1Helper.html#aae7c11e4fed280411fff26e9443a9adf">Logger::Helper::~Helper</a>()</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;{</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;   <span class="keywordflow">try</span></div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;   {</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      <span class="comment">// you shouldn&#39;t QLOG_ERROR () &lt;&lt; exceptions from a sink</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      Q_UNUSED(e);</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;      assert(!<span class="stringliteral">&quot;exception in logger helper destructor&quot;</span>);</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;      <span class="keywordflow">throw</span>;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;   }</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;}</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="keywordtype">void</span> Logger::write(<span class="keyword">const</span> QString&amp; message)</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;{</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;   <span class="keywordflow">for</span>(DestinationList::iterator it = d-&gt;<a class="code" href="classQsLogging_1_1LoggerImpl.html#a42d3ebbc7c7ccc0c5db446b6a598f4ed">destList</a>.begin(),</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;       endIt = d-&gt;<a class="code" href="classQsLogging_1_1LoggerImpl.html#a42d3ebbc7c7ccc0c5db446b6a598f4ed">destList</a>.end();it != endIt;++it)</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;   {</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;      <span class="keywordflow">if</span>( !(*it) )</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      {</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;         assert(!<span class="stringliteral">&quot;null log destination&quot;</span>);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;         <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      }</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      (*it)-&gt;write(message);</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;   }</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;}</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;} <span class="comment">// end namespace</span></div>
-<div class="ttc" id="aclassQsLogging_1_1Destination_html"><div class="ttname"><a href="classQsLogging_1_1Destination.html">QsLogging::Destination</a></div><div class="ttdoc">Abstract log destination.</div><div class="ttdef"><b>Definition:</b> <a href="QsLogDest_8h_source.html#l00038">QsLogDest.h:39</a></div></div>
-<div class="ttc" id="aclassQsLogging_1_1LoggerImpl_html"><div class="ttname"><a href="classQsLogging_1_1LoggerImpl.html">QsLogging::LoggerImpl</a></div><div class="ttdoc">Private logger implementation details.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00076">QsLog.cpp:77</a></div></div>
-<div class="ttc" id="aclassQsLogging_1_1LoggerImpl_html_a34516da614346c94e555acfce4f4e45e"><div class="ttname"><a href="classQsLogging_1_1LoggerImpl.html#a34516da614346c94e555acfce4f4e45e">QsLogging::LoggerImpl::logMutex</a></div><div class="ttdeci">QMutex logMutex</div><div class="ttdoc">Mutex protecting logging operations.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00086">QsLog.cpp:86</a></div></div>
-<div class="ttc" id="aclassQsLogging_1_1LoggerImpl_html_a42d3ebbc7c7ccc0c5db446b6a598f4ed"><div class="ttname"><a href="classQsLogging_1_1LoggerImpl.html#a42d3ebbc7c7ccc0c5db446b6a598f4ed">QsLogging::LoggerImpl::destList</a></div><div class="ttdeci">DestinationList destList</div><div class="ttdoc">Registered log destinations.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00090">QsLog.cpp:90</a></div></div>
-<div class="ttc" id="aclassQsLogging_1_1LoggerImpl_html_a97418676fcfcb2fb13c0ebbbae3ef184"><div class="ttname"><a href="classQsLogging_1_1LoggerImpl.html#a97418676fcfcb2fb13c0ebbbae3ef184">QsLogging::LoggerImpl::LoggerImpl</a></div><div class="ttdeci">LoggerImpl()</div><div class="ttdoc">Construct with default logging level.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00080">QsLog.cpp:80</a></div></div>
-<div class="ttc" id="aclassQsLogging_1_1LoggerImpl_html_ac669e2e7945a439af103cd80c8c606eb"><div class="ttname"><a href="classQsLogging_1_1LoggerImpl.html#ac669e2e7945a439af103cd80c8c606eb">QsLogging::LoggerImpl::level</a></div><div class="ttdeci">Level level</div><div class="ttdoc">Current logging level.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00088">QsLog.cpp:88</a></div></div>
-<div class="ttc" id="aclassQsLogging_1_1Logger_1_1Helper_html_aae7c11e4fed280411fff26e9443a9adf"><div class="ttname"><a href="classQsLogging_1_1Logger_1_1Helper.html#aae7c11e4fed280411fff26e9443a9adf">QsLogging::Logger::Helper::~Helper</a></div><div class="ttdeci">~Helper()</div><div class="ttdoc">Destructor writes the buffered log entry.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00134">QsLog.cpp:134</a></div></div>
-<div class="ttc" id="aclassQsLogging_1_1Logger_html"><div class="ttname"><a href="classQsLogging_1_1Logger.html">QsLogging::Logger</a></div><div class="ttdoc">Logger singleton and configuration.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00050">QsLog.h:51</a></div></div>
-<div class="ttc" id="aclassQsLogging_1_1Logger_html_a26fd3242d362eeeb3b38940a714ea6fa"><div class="ttname"><a href="classQsLogging_1_1Logger.html#a26fd3242d362eeeb3b38940a714ea6fa">QsLogging::Logger::instance</a></div><div class="ttdeci">static Logger &amp; instance()</div><div class="ttdoc">Return the logger singleton instance.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00054">QsLog.h:54</a></div></div>
-<div class="ttc" id="aclassQsLogging_1_1Logger_html_a30168c3f7ab44ea0c2e5be2a0f06e48e"><div class="ttname"><a href="classQsLogging_1_1Logger.html#a30168c3f7ab44ea0c2e5be2a0f06e48e">QsLogging::Logger::loggingLevel</a></div><div class="ttdeci">Level loggingLevel() const</div><div class="ttdoc">The default level is INFO.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00114">QsLog.cpp:114</a></div></div>
-<div class="ttc" id="aclassQsLogging_1_1Logger_html_aa34d1a0d83e180f15e23a03f9de872c6"><div class="ttname"><a href="classQsLogging_1_1Logger.html#aa34d1a0d83e180f15e23a03f9de872c6">QsLogging::Logger::setLoggingLevel</a></div><div class="ttdeci">void setLoggingLevel(Level newLevel)</div><div class="ttdoc">Logging at a level &lt; 'newLevel' will be ignored.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00109">QsLog.cpp:109</a></div></div>
-<div class="ttc" id="aclassQsLogging_1_1Logger_html_ae624206f88bff47839aea47a06b96569"><div class="ttname"><a href="classQsLogging_1_1Logger.html#ae624206f88bff47839aea47a06b96569">QsLogging::Logger::addDestination</a></div><div class="ttdeci">void addDestination(Destination *destination)</div><div class="ttdoc">Adds a log message destination. Don't add null destinations.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00103">QsLog.cpp:103</a></div></div>
-<div class="ttc" id="anamespaceQsLogging_html"><div class="ttname"><a href="namespaceQsLogging.html">QsLogging</a></div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00036">QsLog.cpp:37</a></div></div>
-<div class="ttc" id="anamespaceQsLogging_html_a38c7dd87e4de6f8eb460763ad0baa033"><div class="ttname"><a href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033">QsLogging::Level</a></div><div class="ttdeci">Level</div><div class="ttdoc">Log severity levels.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00038">QsLog.h:39</a></div></div>
-<div class="ttc" id="anamespaceQsLogging_html_a9665fefc6346f3d979873f4b6d15292e"><div class="ttname"><a href="namespaceQsLogging.html#a9665fefc6346f3d979873f4b6d15292e">QsLogging::DestinationList</a></div><div class="ttdeci">QList&lt; Destination * &gt; DestinationList</div><div class="ttdoc">List of log destinations.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00039">QsLog.cpp:39</a></div></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      writeToLog();</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;   }</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;   <span class="keywordflow">catch</span>(std::exception&amp; e)</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;   {</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      <span class="comment">// you shouldn&#39;t QLOG_ERROR () &lt;&lt; exceptions from a sink</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      Q_UNUSED(e);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;      assert(!<span class="stringliteral">&quot;exception in logger helper destructor&quot;</span>);</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;      <span class="keywordflow">throw</span>;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;   }</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;}</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="keywordtype">void</span> Logger::write(<span class="keyword">const</span> QString&amp; message)</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;{</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;   <span class="keywordflow">for</span>(DestinationList::iterator it = d-&gt;<a class="code" href="classQsLogging_1_1LoggerImpl.html#a42d3ebbc7c7ccc0c5db446b6a598f4ed">destList</a>.begin(),</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;       endIt = d-&gt;<a class="code" href="classQsLogging_1_1LoggerImpl.html#a42d3ebbc7c7ccc0c5db446b6a598f4ed">destList</a>.end();it != endIt;++it)</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;   {</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      <span class="keywordflow">if</span>( !(*it) )</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      {</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;         assert(!<span class="stringliteral">&quot;null log destination&quot;</span>);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;         <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      }</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      (*it)-&gt;write(message);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;   }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;}</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;} <span class="comment">// end namespace</span></div>
+<div class="ttc" id="aQsLogDest_8h_html"><div class="ttname"><a href="QsLogDest_8h.html">QsLogDest.h</a></div><div class="ttdoc">Qs Log Dest logging support.</div></div>
+<div class="ttc" id="aQsLog_8h_html"><div class="ttname"><a href="QsLog_8h.html">QsLog.h</a></div><div class="ttdoc">Qs Log logging support.</div></div>
+<div class="ttc" id="aclassQsLogging_1_1Destination_html"><div class="ttname"><a href="classQsLogging_1_1Destination.html">QsLogging::Destination</a></div><div class="ttdoc">Abstract log destination.</div><div class="ttdef"><b>Definition:</b> <a href="QsLogDest_8h_source.html#l00042">QsLogDest.h:43</a></div></div>
+<div class="ttc" id="aclassQsLogging_1_1LoggerImpl_html"><div class="ttname"><a href="classQsLogging_1_1LoggerImpl.html">QsLogging::LoggerImpl</a></div><div class="ttdoc">Private logger implementation details.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00080">QsLog.cpp:81</a></div></div>
+<div class="ttc" id="aclassQsLogging_1_1LoggerImpl_html_a34516da614346c94e555acfce4f4e45e"><div class="ttname"><a href="classQsLogging_1_1LoggerImpl.html#a34516da614346c94e555acfce4f4e45e">QsLogging::LoggerImpl::logMutex</a></div><div class="ttdeci">QMutex logMutex</div><div class="ttdoc">Mutex protecting logging operations.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00090">QsLog.cpp:90</a></div></div>
+<div class="ttc" id="aclassQsLogging_1_1LoggerImpl_html_a42d3ebbc7c7ccc0c5db446b6a598f4ed"><div class="ttname"><a href="classQsLogging_1_1LoggerImpl.html#a42d3ebbc7c7ccc0c5db446b6a598f4ed">QsLogging::LoggerImpl::destList</a></div><div class="ttdeci">DestinationList destList</div><div class="ttdoc">Registered log destinations.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00094">QsLog.cpp:94</a></div></div>
+<div class="ttc" id="aclassQsLogging_1_1LoggerImpl_html_a97418676fcfcb2fb13c0ebbbae3ef184"><div class="ttname"><a href="classQsLogging_1_1LoggerImpl.html#a97418676fcfcb2fb13c0ebbbae3ef184">QsLogging::LoggerImpl::LoggerImpl</a></div><div class="ttdeci">LoggerImpl()</div><div class="ttdoc">Construct with default logging level.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00084">QsLog.cpp:84</a></div></div>
+<div class="ttc" id="aclassQsLogging_1_1LoggerImpl_html_ac669e2e7945a439af103cd80c8c606eb"><div class="ttname"><a href="classQsLogging_1_1LoggerImpl.html#ac669e2e7945a439af103cd80c8c606eb">QsLogging::LoggerImpl::level</a></div><div class="ttdeci">Level level</div><div class="ttdoc">Current logging level.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00092">QsLog.cpp:92</a></div></div>
+<div class="ttc" id="aclassQsLogging_1_1Logger_1_1Helper_html_aae7c11e4fed280411fff26e9443a9adf"><div class="ttname"><a href="classQsLogging_1_1Logger_1_1Helper.html#aae7c11e4fed280411fff26e9443a9adf">QsLogging::Logger::Helper::~Helper</a></div><div class="ttdeci">~Helper()</div><div class="ttdoc">Destructor writes the buffered log entry.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00138">QsLog.cpp:138</a></div></div>
+<div class="ttc" id="aclassQsLogging_1_1Logger_html"><div class="ttname"><a href="classQsLogging_1_1Logger.html">QsLogging::Logger</a></div><div class="ttdoc">Logger singleton and configuration.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00054">QsLog.h:55</a></div></div>
+<div class="ttc" id="aclassQsLogging_1_1Logger_html_a26fd3242d362eeeb3b38940a714ea6fa"><div class="ttname"><a href="classQsLogging_1_1Logger.html#a26fd3242d362eeeb3b38940a714ea6fa">QsLogging::Logger::instance</a></div><div class="ttdeci">static Logger &amp; instance()</div><div class="ttdoc">Return the logger singleton instance.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00058">QsLog.h:58</a></div></div>
+<div class="ttc" id="aclassQsLogging_1_1Logger_html_a30168c3f7ab44ea0c2e5be2a0f06e48e"><div class="ttname"><a href="classQsLogging_1_1Logger.html#a30168c3f7ab44ea0c2e5be2a0f06e48e">QsLogging::Logger::loggingLevel</a></div><div class="ttdeci">Level loggingLevel() const</div><div class="ttdoc">The default level is INFO.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00118">QsLog.cpp:118</a></div></div>
+<div class="ttc" id="aclassQsLogging_1_1Logger_html_aa34d1a0d83e180f15e23a03f9de872c6"><div class="ttname"><a href="classQsLogging_1_1Logger.html#aa34d1a0d83e180f15e23a03f9de872c6">QsLogging::Logger::setLoggingLevel</a></div><div class="ttdeci">void setLoggingLevel(Level newLevel)</div><div class="ttdoc">Logging at a level &lt; 'newLevel' will be ignored.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00113">QsLog.cpp:113</a></div></div>
+<div class="ttc" id="aclassQsLogging_1_1Logger_html_ae624206f88bff47839aea47a06b96569"><div class="ttname"><a href="classQsLogging_1_1Logger.html#ae624206f88bff47839aea47a06b96569">QsLogging::Logger::addDestination</a></div><div class="ttdeci">void addDestination(Destination *destination)</div><div class="ttdoc">Adds a log message destination. Don't add null destinations.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00107">QsLog.cpp:107</a></div></div>
+<div class="ttc" id="anamespaceQsLogging_html"><div class="ttname"><a href="namespaceQsLogging.html">QsLogging</a></div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00040">QsLog.cpp:41</a></div></div>
+<div class="ttc" id="anamespaceQsLogging_html_a38c7dd87e4de6f8eb460763ad0baa033"><div class="ttname"><a href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033">QsLogging::Level</a></div><div class="ttdeci">Level</div><div class="ttdoc">Log severity levels.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00042">QsLog.h:43</a></div></div>
+<div class="ttc" id="anamespaceQsLogging_html_a38c7dd87e4de6f8eb460763ad0baa033a187ba10e2b3b400c6ee33afe6fc10915"><div class="ttname"><a href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033a187ba10e2b3b400c6ee33afe6fc10915">QsLogging::TraceLevel</a></div><div class="ttdeci">@ TraceLevel</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00044">QsLog.h:44</a></div></div>
+<div class="ttc" id="anamespaceQsLogging_html_a38c7dd87e4de6f8eb460763ad0baa033a2a6c1ca8703fa87e56dae43e9adbecda"><div class="ttname"><a href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033a2a6c1ca8703fa87e56dae43e9adbecda">QsLogging::DebugLevel</a></div><div class="ttdeci">@ DebugLevel</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00045">QsLog.h:45</a></div></div>
+<div class="ttc" id="anamespaceQsLogging_html_a38c7dd87e4de6f8eb460763ad0baa033a3d6b56d79245ec74186a538f2e6b3cf2"><div class="ttname"><a href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033a3d6b56d79245ec74186a538f2e6b3cf2">QsLogging::ErrorLevel</a></div><div class="ttdeci">@ ErrorLevel</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00048">QsLog.h:48</a></div></div>
+<div class="ttc" id="anamespaceQsLogging_html_a38c7dd87e4de6f8eb460763ad0baa033a6447c84a2844e8e1d0cdb95b55ecac72"><div class="ttname"><a href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033a6447c84a2844e8e1d0cdb95b55ecac72">QsLogging::InfoLevel</a></div><div class="ttdeci">@ InfoLevel</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00046">QsLog.h:46</a></div></div>
+<div class="ttc" id="anamespaceQsLogging_html_a38c7dd87e4de6f8eb460763ad0baa033ab961256fd76d6571a41516e1794f39de"><div class="ttname"><a href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033ab961256fd76d6571a41516e1794f39de">QsLogging::FatalLevel</a></div><div class="ttdeci">@ FatalLevel</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00050">QsLog.h:49</a></div></div>
+<div class="ttc" id="anamespaceQsLogging_html_a38c7dd87e4de6f8eb460763ad0baa033ac744dbb976c301fa466a390b808e2eef"><div class="ttname"><a href="namespaceQsLogging.html#a38c7dd87e4de6f8eb460763ad0baa033ac744dbb976c301fa466a390b808e2eef">QsLogging::WarnLevel</a></div><div class="ttdeci">@ WarnLevel</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00047">QsLog.h:47</a></div></div>
+<div class="ttc" id="anamespaceQsLogging_html_a9665fefc6346f3d979873f4b6d15292e"><div class="ttname"><a href="namespaceQsLogging.html#a9665fefc6346f3d979873f4b6d15292e">QsLogging::DestinationList</a></div><div class="ttdeci">QList&lt; Destination * &gt; DestinationList</div><div class="ttdoc">List of log destinations.</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8cpp_source.html#l00043">QsLog.cpp:43</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>QsLog.cpp</b></li>
+    <li class="navelem"><a class="el" href="QsLog_8cpp.html">QsLog.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

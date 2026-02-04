@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('ComediWindow_8cpp_source.html',''); in
 <div class="title">ComediWindow.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
+<a href="ComediWindow_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">This file is part of OpticsBenchUI.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">OpticsBenchUI is free software: you can redistribute it and/or modify</span></div>
@@ -104,212 +104,216 @@ $(document).ready(function(){initNavTree('ComediWindow_8cpp_source.html',''); in
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">********************************************************************/</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;ComediWindow.h&quot;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;Utils.h&quot;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">namespace </span>{</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> kSelectionStylesheet[] =</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="stringliteral">&quot;QTreeView::item:selected{background-color: palette(highlight); &quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="stringliteral">&quot;color: palette(highlightedText);};&quot;</span>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}  <span class="comment">// namespace</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="classComediWindow.html#a44c19008a61095232cd3b3bde8b9550e">   27</a></span>&#160;<a class="code" href="classComediWindow.html#a44c19008a61095232cd3b3bde8b9550e">ComediWindow::ComediWindow</a>(QMainWindow* parent, Qt::WindowFlags fl,</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                           <a class="code" href="classComedi.html">Comedi</a> *comedi)</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    : QMainWindow(parent, fl),</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;      comediWidget(nullptr),</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;      daccomediWidget(nullptr),</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;      parentWindow(parent),</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;      dbPath(),</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;      comedititle(new QLabel(<span class="stringliteral">&quot;Comedi settings&quot;</span>)),</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;      comeditable(nullptr),</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      comediview(new QTableView()),</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      comedirow(0),</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      vboxlayout(new QVBoxLayout()),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      updateButton(new QPushButton(<span class="stringliteral">&quot;Update&quot;</span>, this)),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      removeButton(new QPushButton(<span class="stringliteral">&quot;Delete&quot;</span>, this)),</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      loadButton(new QPushButton(<span class="stringliteral">&quot;Load&quot;</span>, this)),</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      comediList(new QVector&lt;QString&gt;()),</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      dockWidget(new QDockWidget(tr(<span class="stringliteral">&quot;Comedi Control&quot;</span>), this)),</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      comedi(comedi) {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">if</span> (this-&gt;comedi) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    dbPath = this-&gt;comedi-&gt;<a class="code" href="classComedi.html#afb1e94d48a37e256da92c6c8de4855e5">path</a>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  QLOG_INFO() &lt;&lt; <span class="stringliteral">&quot;ComediWindow::ComediWindow&gt; get Db path &quot;</span> &lt;&lt; dbPath;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  QWidget *centralWidget = <span class="keyword">new</span> QWidget(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  centralWidget-&gt;setMinimumSize(20, 20);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  setCentralWidget(centralWidget);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  centralWidget-&gt;setLayout(vboxlayout);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  setupDockWidget();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="comment">// &#39;comedi_settings&#39; table model</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  vboxlayout-&gt;addWidget(comedititle);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  comeditable = <span class="keyword">new</span> QSqlTableModel(<span class="keyword">this</span>, QSqlDatabase::database(dbPath));</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  comediview-&gt;setStyleSheet(kSelectionStylesheet);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  comediview-&gt;setModel(comeditable);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="namespaceUtils.html#aad72ee5221d67672f4e3cf37ed179432">Utils::ConfigureSqlTableView</a>(comediview);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  vboxlayout-&gt;addWidget(comediview);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  updateButton-&gt;setFixedHeight(30);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  connect(updateButton, SIGNAL(clicked()), <span class="keyword">this</span>, SLOT(<a class="code" href="classComediWindow.html#a19d7e25f7293bd5f13e15b88e7666677">update</a>()));</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  vboxlayout-&gt;addWidget(updateButton);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  removeButton-&gt;setFixedHeight(30);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  connect(removeButton, SIGNAL(clicked()), <span class="keyword">this</span>, SLOT(<a class="code" href="classComediWindow.html#aff4d3660d8b6c43f5e092d13c632a37c">remove</a>()));</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  vboxlayout-&gt;addWidget(removeButton);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  loadButton-&gt;setFixedHeight(30);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  connect(loadButton, SIGNAL(clicked()), <span class="keyword">this</span>, SLOT(<a class="code" href="classComediWindow.html#a1cda03f2d57ef1a4857001ffde4d73b9">load</a>()));</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  vboxlayout-&gt;addWidget(loadButton);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  setWindowTitle(<span class="stringliteral">&quot;Comedi&quot;</span>);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  setupTableModel();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  InitConfig();</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classComediWindow.html#accf8f8833e9a4b9f4dead3a3fb6f7fde">   80</a></span>&#160;<a class="code" href="classComediWindow.html#accf8f8833e9a4b9f4dead3a3fb6f7fde">ComediWindow::~ComediWindow</a>() {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;Deleting ComediWindow&quot;</span>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keyword">delete</span> comeditable;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">delete</span> <a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">delete</span> <a class="code" href="classComediWindow.html#a02ed0c31b3db3ab3b131ad82b93bcc4a">daccomediWidget</a>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classComediWindow.html#ab6e9f6fba92e1295e5804c9eb9e8b2c2">   87</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classComediWindow.html#ab6e9f6fba92e1295e5804c9eb9e8b2c2">ComediWindow::setDbPath</a>(QString path) {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">delete</span> comeditable;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordflow">if</span> (comedi) {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    comedi-&gt;<a class="code" href="classComedi.html#a62834d8bc72db9aab157d997ed8ace04">setDbPath</a>(path);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    dbPath = comedi-&gt;<a class="code" href="classComedi.html#afb1e94d48a37e256da92c6c8de4855e5">path</a>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  comeditable = <span class="keyword">new</span> QSqlTableModel(<span class="keyword">this</span>, QSqlDatabase::database(dbPath));</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  comediview-&gt;setModel(comeditable);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <a class="code" href="namespaceUtils.html#aad72ee5221d67672f4e3cf37ed179432">Utils::ConfigureSqlTableView</a>(comediview);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  setupTableModel();</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  InitConfig();</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classComediWindow.html#aa0d139d65ed88c40fbe87fe293fbae0f">  101</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classComediWindow.html#aa0d139d65ed88c40fbe87fe293fbae0f">ComediWindow::closeEvent</a>(QCloseEvent* event) {</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keyword">event</span>-&gt;accept();</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  QLOG_DEBUG() &lt;&lt; <span class="stringliteral">&quot;Closing ComediWindow&quot;</span>;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordflow">if</span> (comedi &amp;&amp; comedi-&gt;<a class="code" href="classComedi.html#a4579b7d65220b8268ea094a55b51e71f">comeditype</a> == <span class="stringliteral">&quot;COMEDICOUNTER&quot;</span>) {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a>-&gt;<a class="code" href="classComediCounterControlWidget.html#a02e08ce3dd4bab384d5389339ab4cf97">setButtonList</a>-&gt;size(); i++) {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      QPushButton *button = <a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a>-&gt;<a class="code" href="classComediCounterControlWidget.html#a02e08ce3dd4bab384d5389339ab4cf97">setButtonList</a>-&gt;at(i);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      button-&gt;setChecked(<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    }</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  hide();</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keywordtype">void</span> ComediWindow::InitConfig() {</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;   <span class="comment">// Set where clause</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="comment">// QLineEdit shows person lastname that id is given parameter</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="comment">//comeditable-&gt;setFilter(QString(&quot;name=*&quot;).arg(name));</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  comeditable-&gt;select();</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  comedirow = comeditable-&gt;rowCount();</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  comeditable-&gt;insertRow(comedirow);</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  comediview-&gt;resizeColumnsToContents();</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  comediview-&gt;resizeRowsToContents();</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="classComediWindow.html#a19d7e25f7293bd5f13e15b88e7666677">  125</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classComediWindow.html#a19d7e25f7293bd5f13e15b88e7666677">ComediWindow::update</a>() {</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  comeditable-&gt;submitAll();</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  InitConfig();</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ComediWindow_8h.html">ComediWindow.h</a>&quot;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Utils_8h.html">Utils.h</a>&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>{</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> kSelectionStylesheet[] =</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="stringliteral">&quot;QTreeView::item:selected{background-color: palette(highlight); &quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="stringliteral">&quot;color: palette(highlightedText);};&quot;</span>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}  <span class="comment">// namespace</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classComediWindow.html#a44c19008a61095232cd3b3bde8b9550e">   32</a></span>&#160;<a class="code" href="classComediWindow.html#a44c19008a61095232cd3b3bde8b9550e">ComediWindow::ComediWindow</a>(QMainWindow* parent, Qt::WindowFlags fl,</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                           <a class="code" href="classComedi.html">Comedi</a> *comedi)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    : QMainWindow(parent, fl),</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;      comediWidget(nullptr),</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      daccomediWidget(nullptr),</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      parentWindow(parent),</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      dbPath(),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      comedititle(new QLabel(<span class="stringliteral">&quot;Comedi settings&quot;</span>)),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      comeditable(nullptr),</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      comediview(new QTableView()),</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      comedirow(0),</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      vboxlayout(new QVBoxLayout()),</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      updateButton(new QPushButton(<span class="stringliteral">&quot;Update&quot;</span>, this)),</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      removeButton(new QPushButton(<span class="stringliteral">&quot;Delete&quot;</span>, this)),</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      loadButton(new QPushButton(<span class="stringliteral">&quot;Load&quot;</span>, this)),</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      comediList(new QVector&lt;QString&gt;()),</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      dockWidget(new QDockWidget(tr(<span class="stringliteral">&quot;Comedi Control&quot;</span>), this)),</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      comedi(comedi) {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordflow">if</span> (this-&gt;comedi) {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    dbPath = this-&gt;comedi-&gt;<a class="code" href="classComedi.html#afb1e94d48a37e256da92c6c8de4855e5">path</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="QsLog_8h.html#ad8aec737ba0e3607fb5be7590c6ab0ff">QLOG_INFO</a>() &lt;&lt; <span class="stringliteral">&quot;ComediWindow::ComediWindow&gt; get Db path &quot;</span> &lt;&lt; dbPath;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  QWidget *centralWidget = <span class="keyword">new</span> QWidget(<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  centralWidget-&gt;setMinimumSize(20, 20);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  setCentralWidget(centralWidget);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  centralWidget-&gt;setLayout(vboxlayout);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  setupDockWidget();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="comment">// &#39;comedi_settings&#39; table model</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  vboxlayout-&gt;addWidget(comedititle);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  comeditable = <span class="keyword">new</span> QSqlTableModel(<span class="keyword">this</span>, QSqlDatabase::database(dbPath));</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  comediview-&gt;setStyleSheet(kSelectionStylesheet);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  comediview-&gt;setModel(comeditable);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="namespaceUtils.html#aad72ee5221d67672f4e3cf37ed179432">Utils::ConfigureSqlTableView</a>(comediview);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  vboxlayout-&gt;addWidget(comediview);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  updateButton-&gt;setFixedHeight(30);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  connect(updateButton, SIGNAL(clicked()), <span class="keyword">this</span>, SLOT(<a class="code" href="classComediWindow.html#a19d7e25f7293bd5f13e15b88e7666677">update</a>()));</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  vboxlayout-&gt;addWidget(updateButton);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  removeButton-&gt;setFixedHeight(30);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  connect(removeButton, SIGNAL(clicked()), <span class="keyword">this</span>, SLOT(<a class="code" href="classComediWindow.html#aff4d3660d8b6c43f5e092d13c632a37c">remove</a>()));</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  vboxlayout-&gt;addWidget(removeButton);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  loadButton-&gt;setFixedHeight(30);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  connect(loadButton, SIGNAL(clicked()), <span class="keyword">this</span>, SLOT(<a class="code" href="classComediWindow.html#a1cda03f2d57ef1a4857001ffde4d73b9">load</a>()));</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  vboxlayout-&gt;addWidget(loadButton);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  setWindowTitle(<span class="stringliteral">&quot;Comedi&quot;</span>);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  setupTableModel();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  InitConfig();</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classComediWindow.html#accf8f8833e9a4b9f4dead3a3fb6f7fde">   85</a></span>&#160;<a class="code" href="classComediWindow.html#accf8f8833e9a4b9f4dead3a3fb6f7fde">ComediWindow::~ComediWindow</a>() {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a>() &lt;&lt; <span class="stringliteral">&quot;Deleting ComediWindow&quot;</span>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">delete</span> comeditable;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">delete</span> <a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">delete</span> <a class="code" href="classComediWindow.html#a02ed0c31b3db3ab3b131ad82b93bcc4a">daccomediWidget</a>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="classComediWindow.html#ab6e9f6fba92e1295e5804c9eb9e8b2c2">   92</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classComediWindow.html#ab6e9f6fba92e1295e5804c9eb9e8b2c2">ComediWindow::setDbPath</a>(QString path) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">delete</span> comeditable;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordflow">if</span> (comedi) {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    comedi-&gt;<a class="code" href="classComedi.html#a62834d8bc72db9aab157d997ed8ace04">setDbPath</a>(path);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    dbPath = comedi-&gt;<a class="code" href="classComedi.html#afb1e94d48a37e256da92c6c8de4855e5">path</a>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  comeditable = <span class="keyword">new</span> QSqlTableModel(<span class="keyword">this</span>, QSqlDatabase::database(dbPath));</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  comediview-&gt;setModel(comeditable);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <a class="code" href="namespaceUtils.html#aad72ee5221d67672f4e3cf37ed179432">Utils::ConfigureSqlTableView</a>(comediview);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  setupTableModel();</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  InitConfig();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="classComediWindow.html#aa0d139d65ed88c40fbe87fe293fbae0f">  106</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classComediWindow.html#aa0d139d65ed88c40fbe87fe293fbae0f">ComediWindow::closeEvent</a>(QCloseEvent* event) {</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keyword">event</span>-&gt;accept();</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <a class="code" href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a>() &lt;&lt; <span class="stringliteral">&quot;Closing ComediWindow&quot;</span>;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="keywordflow">if</span> (comedi &amp;&amp; comedi-&gt;<a class="code" href="classComedi.html#a4579b7d65220b8268ea094a55b51e71f">comeditype</a> == <span class="stringliteral">&quot;COMEDICOUNTER&quot;</span>) {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a>-&gt;<a class="code" href="classComediCounterControlWidget.html#a02e08ce3dd4bab384d5389339ab4cf97">setButtonList</a>-&gt;size(); i++) {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      QPushButton *button = <a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a>-&gt;<a class="code" href="classComediCounterControlWidget.html#a02e08ce3dd4bab384d5389339ab4cf97">setButtonList</a>-&gt;at(i);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      button-&gt;setChecked(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    }</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  hide();</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;}</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keywordtype">void</span> ComediWindow::InitConfig() {</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;   <span class="comment">// Set where clause</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="comment">// QLineEdit shows person lastname that id is given parameter</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="comment">//comeditable-&gt;setFilter(QString(&quot;name=*&quot;).arg(name));</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  comeditable-&gt;select();</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  comedirow = comeditable-&gt;rowCount();</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  comeditable-&gt;insertRow(comedirow);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  comediview-&gt;resizeColumnsToContents();</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  comediview-&gt;resizeRowsToContents();</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;}</div>
-<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="classComediWindow.html#a1cda03f2d57ef1a4857001ffde4d73b9">  129</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classComediWindow.html#a1cda03f2d57ef1a4857001ffde4d73b9">ComediWindow::load</a>() {</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  InitRun();</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;}</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="classComediWindow.html#aff4d3660d8b6c43f5e092d13c632a37c">  133</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classComediWindow.html#aff4d3660d8b6c43f5e092d13c632a37c">ComediWindow::remove</a>() {</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  QModelIndexList selected;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  QItemSelectionModel *selmodel;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  selmodel = comediview-&gt;selectionModel();</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  selected = selmodel-&gt;selectedIndexes();</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = selected.size() - 1; i &gt;= 0; i--) {</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    comeditable-&gt;removeRow(selected.at(i).row());</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  }</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  comeditable-&gt;submitAll();</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  InitConfig();</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;}</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="keywordtype">void</span> ComediWindow::InitRun() {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  comediList-&gt;clear();</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  QSqlDatabase db = QSqlDatabase::database(dbPath);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  QSqlQuery query(db);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  query.exec(<span class="stringliteral">&quot;select name from comedi_settings&quot;</span>);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <span class="keywordflow">while</span> (query.next()) {</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    QString name = query.value(0).toString();</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    comediList-&gt;append(name);</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  }</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="keywordflow">if</span> (comedi-&gt;<a class="code" href="classComedi.html#a4579b7d65220b8268ea094a55b51e71f">comeditype</a> == <span class="stringliteral">&quot;COMEDICOUNTER&quot;</span>) {</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a>-&gt;<a class="code" href="classComediCounterControlWidget.html#a796d3b31e6a2d05dabe38c896421a202">setComediList</a>(comediList);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  }</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (comedi-&gt;<a class="code" href="classComedi.html#a4579b7d65220b8268ea094a55b51e71f">comeditype</a> == <span class="stringliteral">&quot;COMEDIDAC&quot;</span>) {</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="classComediWindow.html#a02ed0c31b3db3ab3b131ad82b93bcc4a">daccomediWidget</a>-&gt;<a class="code" href="classComediDacControlWidget.html#a7dee68b50f651bd42f752fa490cf5da2">setComediList</a>(comediList);</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  }</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;}</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="keywordtype">void</span> ComediWindow::setupTableModel() {</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  comeditable-&gt;setTable(<span class="stringliteral">&quot;comedi_settings&quot;</span>);</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  comeditable-&gt;setEditStrategy(QSqlTableModel::OnManualSubmit);</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  comeditable-&gt;setHeaderData(0, Qt::Horizontal, tr(<span class="stringliteral">&quot;name&quot;</span>));</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  comeditable-&gt;setHeaderData(1, Qt::Horizontal, tr(<span class="stringliteral">&quot;settings&quot;</span>));</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  comeditable-&gt;setHeaderData(2, Qt::Horizontal, tr(<span class="stringliteral">&quot;description&quot;</span>));</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  comeditable-&gt;setHeaderData(3, Qt::Horizontal, tr(<span class="stringliteral">&quot;comedivalues&quot;</span>));</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  comediview-&gt;setColumnHidden(3, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;}</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="keywordtype">void</span> ComediWindow::setupDockWidget() {</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <span class="keywordflow">if</span> (!comedi) {</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  }</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  <span class="keywordflow">if</span> (comedi-&gt;<a class="code" href="classComedi.html#a4579b7d65220b8268ea094a55b51e71f">comeditype</a> == <span class="stringliteral">&quot;COMEDICOUNTER&quot;</span>) {</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a> = <span class="keyword">new</span> <a class="code" href="classComediCounterControlWidget.html">ComediCounterControlWidget</a>(comediList);</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a>-&gt;<a class="code" href="classComediCounterControlWidget.html#a8db4b3aadae59b8d19e80de0092864b4">setComedi</a>(comedi);</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    dockWidget-&gt;setAllowedAreas(Qt::BottomDockWidgetArea);</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    QScrollArea *scrollableWidget = <span class="keyword">new</span> QScrollArea();</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    scrollableWidget-&gt;setWidget(<a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a>);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    scrollableWidget-&gt;setWidgetResizable(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    dockWidget-&gt;setWidget(scrollableWidget);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    addDockWidget(Qt::BottomDockWidgetArea, dockWidget);</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  }</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (comedi-&gt;<a class="code" href="classComedi.html#a4579b7d65220b8268ea094a55b51e71f">comeditype</a> == <span class="stringliteral">&quot;COMEDIDAC&quot;</span>) {</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <a class="code" href="classComediWindow.html#a02ed0c31b3db3ab3b131ad82b93bcc4a">daccomediWidget</a> = <span class="keyword">new</span> <a class="code" href="classComediDacControlWidget.html">ComediDacControlWidget</a>(comediList);</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <a class="code" href="classComediWindow.html#a02ed0c31b3db3ab3b131ad82b93bcc4a">daccomediWidget</a>-&gt;<a class="code" href="classComediDacControlWidget.html#a5451f2f275ba0a7c8ebc7c7ad595043d">setComedi</a>(comedi);</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    dockWidget-&gt;setAllowedAreas(Qt::BottomDockWidgetArea);</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    QScrollArea *scrollableWidget = <span class="keyword">new</span> QScrollArea();</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    scrollableWidget-&gt;setWidget(<a class="code" href="classComediWindow.html#a02ed0c31b3db3ab3b131ad82b93bcc4a">daccomediWidget</a>);</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    scrollableWidget-&gt;setWidgetResizable(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    dockWidget-&gt;setWidget(scrollableWidget);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    addDockWidget(Qt::BottomDockWidgetArea, dockWidget);</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  }</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;}</div>
-<div class="ttc" id="aclassComediCounterControlWidget_html"><div class="ttname"><a href="classComediCounterControlWidget.html">ComediCounterControlWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="ComediCounterControlWidget_8h_source.html#l00031">ComediCounterControlWidget.h:32</a></div></div>
-<div class="ttc" id="aclassComediCounterControlWidget_html_a02e08ce3dd4bab384d5389339ab4cf97"><div class="ttname"><a href="classComediCounterControlWidget.html#a02e08ce3dd4bab384d5389339ab4cf97">ComediCounterControlWidget::setButtonList</a></div><div class="ttdeci">QVector&lt; QPushButton * &gt; * setButtonList</div><div class="ttdoc">List of per-output set buttons.</div><div class="ttdef"><b>Definition:</b> <a href="ComediCounterControlWidget_8h_source.html#l00052">ComediCounterControlWidget.h:52</a></div></div>
-<div class="ttc" id="aclassComediCounterControlWidget_html_a796d3b31e6a2d05dabe38c896421a202"><div class="ttname"><a href="classComediCounterControlWidget.html#a796d3b31e6a2d05dabe38c896421a202">ComediCounterControlWidget::setComediList</a></div><div class="ttdeci">void setComediList(QVector&lt; QString &gt; *comediList)</div><div class="ttdef"><b>Definition:</b> <a href="ComediCounterControlWidget_8cpp_source.html#l00085">ComediCounterControlWidget.cpp:85</a></div></div>
-<div class="ttc" id="aclassComediCounterControlWidget_html_a8db4b3aadae59b8d19e80de0092864b4"><div class="ttname"><a href="classComediCounterControlWidget.html#a8db4b3aadae59b8d19e80de0092864b4">ComediCounterControlWidget::setComedi</a></div><div class="ttdeci">void setComedi(Comedi *comedi)</div><div class="ttdef"><b>Definition:</b> <a href="ComediCounterControlWidget_8cpp_source.html#l00075">ComediCounterControlWidget.cpp:75</a></div></div>
-<div class="ttc" id="aclassComediDacControlWidget_html"><div class="ttname"><a href="classComediDacControlWidget.html">ComediDacControlWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="ComediDacControlWidget_8h_source.html#l00031">ComediDacControlWidget.h:32</a></div></div>
-<div class="ttc" id="aclassComediDacControlWidget_html_a5451f2f275ba0a7c8ebc7c7ad595043d"><div class="ttname"><a href="classComediDacControlWidget.html#a5451f2f275ba0a7c8ebc7c7ad595043d">ComediDacControlWidget::setComedi</a></div><div class="ttdeci">void setComedi(Comedi *comedi)</div><div class="ttdef"><b>Definition:</b> <a href="ComediDacControlWidget_8cpp_source.html#l00065">ComediDacControlWidget.cpp:65</a></div></div>
-<div class="ttc" id="aclassComediDacControlWidget_html_a7dee68b50f651bd42f752fa490cf5da2"><div class="ttname"><a href="classComediDacControlWidget.html#a7dee68b50f651bd42f752fa490cf5da2">ComediDacControlWidget::setComediList</a></div><div class="ttdeci">void setComediList(QVector&lt; QString &gt; *comediList)</div><div class="ttdef"><b>Definition:</b> <a href="ComediDacControlWidget_8cpp_source.html#l00075">ComediDacControlWidget.cpp:75</a></div></div>
-<div class="ttc" id="aclassComediWindow_html_a02ed0c31b3db3ab3b131ad82b93bcc4a"><div class="ttname"><a href="classComediWindow.html#a02ed0c31b3db3ab3b131ad82b93bcc4a">ComediWindow::daccomediWidget</a></div><div class="ttdeci">ComediDacControlWidget * daccomediWidget</div><div class="ttdoc">Comedi DAC control widget.</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8h_source.html#l00046">ComediWindow.h:46</a></div></div>
-<div class="ttc" id="aclassComediWindow_html_a19d7e25f7293bd5f13e15b88e7666677"><div class="ttname"><a href="classComediWindow.html#a19d7e25f7293bd5f13e15b88e7666677">ComediWindow::update</a></div><div class="ttdeci">void update()</div><div class="ttdoc">Update database-backed tables.</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00125">ComediWindow.cpp:125</a></div></div>
-<div class="ttc" id="aclassComediWindow_html_a1cda03f2d57ef1a4857001ffde4d73b9"><div class="ttname"><a href="classComediWindow.html#a1cda03f2d57ef1a4857001ffde4d73b9">ComediWindow::load</a></div><div class="ttdeci">void load()</div><div class="ttdoc">Load configuration into runtime.</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00129">ComediWindow.cpp:129</a></div></div>
-<div class="ttc" id="aclassComediWindow_html_a44c19008a61095232cd3b3bde8b9550e"><div class="ttname"><a href="classComediWindow.html#a44c19008a61095232cd3b3bde8b9550e">ComediWindow::ComediWindow</a></div><div class="ttdeci">ComediWindow(QMainWindow *parent=nullptr, Qt::WindowFlags fl=Qt::Window, Comedi *comedi=nullptr)</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00027">ComediWindow.cpp:27</a></div></div>
-<div class="ttc" id="aclassComediWindow_html_a4b83a0c8fb569faccdc5924505d26aca"><div class="ttname"><a href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">ComediWindow::comediWidget</a></div><div class="ttdeci">ComediCounterControlWidget * comediWidget</div><div class="ttdoc">Comedi counter control widget.</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8h_source.html#l00044">ComediWindow.h:44</a></div></div>
-<div class="ttc" id="aclassComediWindow_html_aa0d139d65ed88c40fbe87fe293fbae0f"><div class="ttname"><a href="classComediWindow.html#aa0d139d65ed88c40fbe87fe293fbae0f">ComediWindow::closeEvent</a></div><div class="ttdeci">void closeEvent(QCloseEvent *event) override</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00101">ComediWindow.cpp:101</a></div></div>
-<div class="ttc" id="aclassComediWindow_html_ab6e9f6fba92e1295e5804c9eb9e8b2c2"><div class="ttname"><a href="classComediWindow.html#ab6e9f6fba92e1295e5804c9eb9e8b2c2">ComediWindow::setDbPath</a></div><div class="ttdeci">void setDbPath(QString path)</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00087">ComediWindow.cpp:87</a></div></div>
-<div class="ttc" id="aclassComediWindow_html_accf8f8833e9a4b9f4dead3a3fb6f7fde"><div class="ttname"><a href="classComediWindow.html#accf8f8833e9a4b9f4dead3a3fb6f7fde">ComediWindow::~ComediWindow</a></div><div class="ttdeci">~ComediWindow() override</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00080">ComediWindow.cpp:80</a></div></div>
-<div class="ttc" id="aclassComediWindow_html_aff4d3660d8b6c43f5e092d13c632a37c"><div class="ttname"><a href="classComediWindow.html#aff4d3660d8b6c43f5e092d13c632a37c">ComediWindow::remove</a></div><div class="ttdeci">void remove()</div><div class="ttdoc">Remove selected entries.</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00133">ComediWindow.cpp:133</a></div></div>
-<div class="ttc" id="aclassComedi_html"><div class="ttname"><a href="classComedi.html">Comedi</a></div><div class="ttdef"><b>Definition:</b> <a href="Comedi_8h_source.html#l00027">Comedi.h:28</a></div></div>
-<div class="ttc" id="aclassComedi_html_a4579b7d65220b8268ea094a55b51e71f"><div class="ttname"><a href="classComedi.html#a4579b7d65220b8268ea094a55b51e71f">Comedi::comeditype</a></div><div class="ttdeci">QString comeditype</div><div class="ttdoc">Comedi device type identifier.</div><div class="ttdef"><b>Definition:</b> <a href="Comedi_8h_source.html#l00062">Comedi.h:62</a></div></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classComediWindow.html#a19d7e25f7293bd5f13e15b88e7666677">  130</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classComediWindow.html#a19d7e25f7293bd5f13e15b88e7666677">ComediWindow::update</a>() {</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  comeditable-&gt;submitAll();</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  InitConfig();</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;}</div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="classComediWindow.html#a1cda03f2d57ef1a4857001ffde4d73b9">  134</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classComediWindow.html#a1cda03f2d57ef1a4857001ffde4d73b9">ComediWindow::load</a>() {</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  InitRun();</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;}</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
+<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="classComediWindow.html#aff4d3660d8b6c43f5e092d13c632a37c">  138</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classComediWindow.html#aff4d3660d8b6c43f5e092d13c632a37c">ComediWindow::remove</a>() {</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  QModelIndexList selected;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  QItemSelectionModel *selmodel;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  selmodel = comediview-&gt;selectionModel();</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  selected = selmodel-&gt;selectedIndexes();</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = selected.size() - 1; i &gt;= 0; i--) {</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    comeditable-&gt;removeRow(selected.at(i).row());</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  }</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  comeditable-&gt;submitAll();</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  InitConfig();</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;}</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="keywordtype">void</span> ComediWindow::InitRun() {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  comediList-&gt;clear();</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  QSqlDatabase db = QSqlDatabase::database(dbPath);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  QSqlQuery query(db);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  query.exec(<span class="stringliteral">&quot;select name from comedi_settings&quot;</span>);</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="keywordflow">while</span> (query.next()) {</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    QString name = query.value(0).toString();</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    comediList-&gt;append(name);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  }</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  <span class="keywordflow">if</span> (comedi-&gt;<a class="code" href="classComedi.html#a4579b7d65220b8268ea094a55b51e71f">comeditype</a> == <span class="stringliteral">&quot;COMEDICOUNTER&quot;</span>) {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a>-&gt;<a class="code" href="classComediCounterControlWidget.html#a796d3b31e6a2d05dabe38c896421a202">setComediList</a>(comediList);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  }</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (comedi-&gt;<a class="code" href="classComedi.html#a4579b7d65220b8268ea094a55b51e71f">comeditype</a> == <span class="stringliteral">&quot;COMEDIDAC&quot;</span>) {</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <a class="code" href="classComediWindow.html#a02ed0c31b3db3ab3b131ad82b93bcc4a">daccomediWidget</a>-&gt;<a class="code" href="classComediDacControlWidget.html#a7dee68b50f651bd42f752fa490cf5da2">setComediList</a>(comediList);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  }</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;}</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="keywordtype">void</span> ComediWindow::setupTableModel() {</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  comeditable-&gt;setTable(<span class="stringliteral">&quot;comedi_settings&quot;</span>);</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  comeditable-&gt;setEditStrategy(QSqlTableModel::OnManualSubmit);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  comeditable-&gt;setHeaderData(0, Qt::Horizontal, tr(<span class="stringliteral">&quot;name&quot;</span>));</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  comeditable-&gt;setHeaderData(1, Qt::Horizontal, tr(<span class="stringliteral">&quot;settings&quot;</span>));</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  comeditable-&gt;setHeaderData(2, Qt::Horizontal, tr(<span class="stringliteral">&quot;description&quot;</span>));</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  comeditable-&gt;setHeaderData(3, Qt::Horizontal, tr(<span class="stringliteral">&quot;comedivalues&quot;</span>));</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  comediview-&gt;setColumnHidden(3, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;}</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="keywordtype">void</span> ComediWindow::setupDockWidget() {</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  <span class="keywordflow">if</span> (!comedi) {</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  }</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  <span class="keywordflow">if</span> (comedi-&gt;<a class="code" href="classComedi.html#a4579b7d65220b8268ea094a55b51e71f">comeditype</a> == <span class="stringliteral">&quot;COMEDICOUNTER&quot;</span>) {</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a> = <span class="keyword">new</span> <a class="code" href="classComediCounterControlWidget.html">ComediCounterControlWidget</a>(comediList);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a>-&gt;<a class="code" href="classComediCounterControlWidget.html#a8db4b3aadae59b8d19e80de0092864b4">setComedi</a>(comedi);</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    dockWidget-&gt;setAllowedAreas(Qt::BottomDockWidgetArea);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    QScrollArea *scrollableWidget = <span class="keyword">new</span> QScrollArea();</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    scrollableWidget-&gt;setWidget(<a class="code" href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">comediWidget</a>);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    scrollableWidget-&gt;setWidgetResizable(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    dockWidget-&gt;setWidget(scrollableWidget);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    addDockWidget(Qt::BottomDockWidgetArea, dockWidget);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  }</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (comedi-&gt;<a class="code" href="classComedi.html#a4579b7d65220b8268ea094a55b51e71f">comeditype</a> == <span class="stringliteral">&quot;COMEDIDAC&quot;</span>) {</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <a class="code" href="classComediWindow.html#a02ed0c31b3db3ab3b131ad82b93bcc4a">daccomediWidget</a> = <span class="keyword">new</span> <a class="code" href="classComediDacControlWidget.html">ComediDacControlWidget</a>(comediList);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <a class="code" href="classComediWindow.html#a02ed0c31b3db3ab3b131ad82b93bcc4a">daccomediWidget</a>-&gt;<a class="code" href="classComediDacControlWidget.html#a5451f2f275ba0a7c8ebc7c7ad595043d">setComedi</a>(comedi);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    dockWidget-&gt;setAllowedAreas(Qt::BottomDockWidgetArea);</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    QScrollArea *scrollableWidget = <span class="keyword">new</span> QScrollArea();</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    scrollableWidget-&gt;setWidget(<a class="code" href="classComediWindow.html#a02ed0c31b3db3ab3b131ad82b93bcc4a">daccomediWidget</a>);</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    scrollableWidget-&gt;setWidgetResizable(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    dockWidget-&gt;setWidget(scrollableWidget);</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    addDockWidget(Qt::BottomDockWidgetArea, dockWidget);</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  }</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;}</div>
+<div class="ttc" id="aComediWindow_8h_html"><div class="ttname"><a href="ComediWindow_8h.html">ComediWindow.h</a></div><div class="ttdoc">Comedi window.</div></div>
+<div class="ttc" id="aQsLog_8h_html_abd6d078a03c308c28a48cc1e9bf44e54"><div class="ttname"><a href="QsLog_8h.html#abd6d078a03c308c28a48cc1e9bf44e54">QLOG_DEBUG</a></div><div class="ttdeci">#define QLOG_DEBUG()</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00114">QsLog.h:114</a></div></div>
+<div class="ttc" id="aQsLog_8h_html_ad8aec737ba0e3607fb5be7590c6ab0ff"><div class="ttname"><a href="QsLog_8h.html#ad8aec737ba0e3607fb5be7590c6ab0ff">QLOG_INFO</a></div><div class="ttdeci">#define QLOG_INFO()</div><div class="ttdef"><b>Definition:</b> <a href="QsLog_8h_source.html#l00117">QsLog.h:117</a></div></div>
+<div class="ttc" id="aUtils_8h_html"><div class="ttname"><a href="Utils_8h.html">Utils.h</a></div><div class="ttdoc">Utility helpers.</div></div>
+<div class="ttc" id="aclassComediCounterControlWidget_html"><div class="ttname"><a href="classComediCounterControlWidget.html">ComediCounterControlWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="ComediCounterControlWidget_8h_source.html#l00036">ComediCounterControlWidget.h:37</a></div></div>
+<div class="ttc" id="aclassComediCounterControlWidget_html_a02e08ce3dd4bab384d5389339ab4cf97"><div class="ttname"><a href="classComediCounterControlWidget.html#a02e08ce3dd4bab384d5389339ab4cf97">ComediCounterControlWidget::setButtonList</a></div><div class="ttdeci">QVector&lt; QPushButton * &gt; * setButtonList</div><div class="ttdoc">List of per-output set buttons.</div><div class="ttdef"><b>Definition:</b> <a href="ComediCounterControlWidget_8h_source.html#l00057">ComediCounterControlWidget.h:57</a></div></div>
+<div class="ttc" id="aclassComediCounterControlWidget_html_a796d3b31e6a2d05dabe38c896421a202"><div class="ttname"><a href="classComediCounterControlWidget.html#a796d3b31e6a2d05dabe38c896421a202">ComediCounterControlWidget::setComediList</a></div><div class="ttdeci">void setComediList(QVector&lt; QString &gt; *comediList)</div><div class="ttdef"><b>Definition:</b> <a href="ComediCounterControlWidget_8cpp_source.html#l00090">ComediCounterControlWidget.cpp:90</a></div></div>
+<div class="ttc" id="aclassComediCounterControlWidget_html_a8db4b3aadae59b8d19e80de0092864b4"><div class="ttname"><a href="classComediCounterControlWidget.html#a8db4b3aadae59b8d19e80de0092864b4">ComediCounterControlWidget::setComedi</a></div><div class="ttdeci">void setComedi(Comedi *comedi)</div><div class="ttdef"><b>Definition:</b> <a href="ComediCounterControlWidget_8cpp_source.html#l00080">ComediCounterControlWidget.cpp:80</a></div></div>
+<div class="ttc" id="aclassComediDacControlWidget_html"><div class="ttname"><a href="classComediDacControlWidget.html">ComediDacControlWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="ComediDacControlWidget_8h_source.html#l00036">ComediDacControlWidget.h:37</a></div></div>
+<div class="ttc" id="aclassComediDacControlWidget_html_a5451f2f275ba0a7c8ebc7c7ad595043d"><div class="ttname"><a href="classComediDacControlWidget.html#a5451f2f275ba0a7c8ebc7c7ad595043d">ComediDacControlWidget::setComedi</a></div><div class="ttdeci">void setComedi(Comedi *comedi)</div><div class="ttdef"><b>Definition:</b> <a href="ComediDacControlWidget_8cpp_source.html#l00070">ComediDacControlWidget.cpp:70</a></div></div>
+<div class="ttc" id="aclassComediDacControlWidget_html_a7dee68b50f651bd42f752fa490cf5da2"><div class="ttname"><a href="classComediDacControlWidget.html#a7dee68b50f651bd42f752fa490cf5da2">ComediDacControlWidget::setComediList</a></div><div class="ttdeci">void setComediList(QVector&lt; QString &gt; *comediList)</div><div class="ttdef"><b>Definition:</b> <a href="ComediDacControlWidget_8cpp_source.html#l00080">ComediDacControlWidget.cpp:80</a></div></div>
+<div class="ttc" id="aclassComediWindow_html_a02ed0c31b3db3ab3b131ad82b93bcc4a"><div class="ttname"><a href="classComediWindow.html#a02ed0c31b3db3ab3b131ad82b93bcc4a">ComediWindow::daccomediWidget</a></div><div class="ttdeci">ComediDacControlWidget * daccomediWidget</div><div class="ttdoc">Comedi DAC control widget.</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8h_source.html#l00051">ComediWindow.h:51</a></div></div>
+<div class="ttc" id="aclassComediWindow_html_a19d7e25f7293bd5f13e15b88e7666677"><div class="ttname"><a href="classComediWindow.html#a19d7e25f7293bd5f13e15b88e7666677">ComediWindow::update</a></div><div class="ttdeci">void update()</div><div class="ttdoc">Update database-backed tables.</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00130">ComediWindow.cpp:130</a></div></div>
+<div class="ttc" id="aclassComediWindow_html_a1cda03f2d57ef1a4857001ffde4d73b9"><div class="ttname"><a href="classComediWindow.html#a1cda03f2d57ef1a4857001ffde4d73b9">ComediWindow::load</a></div><div class="ttdeci">void load()</div><div class="ttdoc">Load configuration into runtime.</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00134">ComediWindow.cpp:134</a></div></div>
+<div class="ttc" id="aclassComediWindow_html_a44c19008a61095232cd3b3bde8b9550e"><div class="ttname"><a href="classComediWindow.html#a44c19008a61095232cd3b3bde8b9550e">ComediWindow::ComediWindow</a></div><div class="ttdeci">ComediWindow(QMainWindow *parent=nullptr, Qt::WindowFlags fl=Qt::Window, Comedi *comedi=nullptr)</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00032">ComediWindow.cpp:32</a></div></div>
+<div class="ttc" id="aclassComediWindow_html_a4b83a0c8fb569faccdc5924505d26aca"><div class="ttname"><a href="classComediWindow.html#a4b83a0c8fb569faccdc5924505d26aca">ComediWindow::comediWidget</a></div><div class="ttdeci">ComediCounterControlWidget * comediWidget</div><div class="ttdoc">Comedi counter control widget.</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8h_source.html#l00049">ComediWindow.h:49</a></div></div>
+<div class="ttc" id="aclassComediWindow_html_aa0d139d65ed88c40fbe87fe293fbae0f"><div class="ttname"><a href="classComediWindow.html#aa0d139d65ed88c40fbe87fe293fbae0f">ComediWindow::closeEvent</a></div><div class="ttdeci">void closeEvent(QCloseEvent *event) override</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00106">ComediWindow.cpp:106</a></div></div>
+<div class="ttc" id="aclassComediWindow_html_ab6e9f6fba92e1295e5804c9eb9e8b2c2"><div class="ttname"><a href="classComediWindow.html#ab6e9f6fba92e1295e5804c9eb9e8b2c2">ComediWindow::setDbPath</a></div><div class="ttdeci">void setDbPath(QString path)</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00092">ComediWindow.cpp:92</a></div></div>
+<div class="ttc" id="aclassComediWindow_html_accf8f8833e9a4b9f4dead3a3fb6f7fde"><div class="ttname"><a href="classComediWindow.html#accf8f8833e9a4b9f4dead3a3fb6f7fde">ComediWindow::~ComediWindow</a></div><div class="ttdeci">~ComediWindow() override</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00085">ComediWindow.cpp:85</a></div></div>
+<div class="ttc" id="aclassComediWindow_html_aff4d3660d8b6c43f5e092d13c632a37c"><div class="ttname"><a href="classComediWindow.html#aff4d3660d8b6c43f5e092d13c632a37c">ComediWindow::remove</a></div><div class="ttdeci">void remove()</div><div class="ttdoc">Remove selected entries.</div><div class="ttdef"><b>Definition:</b> <a href="ComediWindow_8cpp_source.html#l00138">ComediWindow.cpp:138</a></div></div>
+<div class="ttc" id="aclassComedi_html"><div class="ttname"><a href="classComedi.html">Comedi</a></div><div class="ttdef"><b>Definition:</b> <a href="Comedi_8h_source.html#l00032">Comedi.h:33</a></div></div>
+<div class="ttc" id="aclassComedi_html_a4579b7d65220b8268ea094a55b51e71f"><div class="ttname"><a href="classComedi.html#a4579b7d65220b8268ea094a55b51e71f">Comedi::comeditype</a></div><div class="ttdeci">QString comeditype</div><div class="ttdoc">Comedi device type identifier.</div><div class="ttdef"><b>Definition:</b> <a href="Comedi_8h_source.html#l00067">Comedi.h:67</a></div></div>
 <div class="ttc" id="aclassComedi_html_a62834d8bc72db9aab157d997ed8ace04"><div class="ttname"><a href="classComedi.html#a62834d8bc72db9aab157d997ed8ace04">Comedi::setDbPath</a></div><div class="ttdeci">virtual void setDbPath(QString path)=0</div></div>
-<div class="ttc" id="aclassComedi_html_afb1e94d48a37e256da92c6c8de4855e5"><div class="ttname"><a href="classComedi.html#afb1e94d48a37e256da92c6c8de4855e5">Comedi::path</a></div><div class="ttdeci">QString path</div><div class="ttdoc">Path to the Comedi database.</div><div class="ttdef"><b>Definition:</b> <a href="Comedi_8h_source.html#l00060">Comedi.h:60</a></div></div>
-<div class="ttc" id="anamespaceUtils_html_aad72ee5221d67672f4e3cf37ed179432"><div class="ttname"><a href="namespaceUtils.html#aad72ee5221d67672f4e3cf37ed179432">Utils::ConfigureSqlTableView</a></div><div class="ttdeci">void ConfigureSqlTableView(QTableView *view)</div><div class="ttdef"><b>Definition:</b> <a href="Utils_8cpp_source.html#l00296">Utils.cpp:296</a></div></div>
+<div class="ttc" id="aclassComedi_html_afb1e94d48a37e256da92c6c8de4855e5"><div class="ttname"><a href="classComedi.html#afb1e94d48a37e256da92c6c8de4855e5">Comedi::path</a></div><div class="ttdeci">QString path</div><div class="ttdoc">Path to the Comedi database.</div><div class="ttdef"><b>Definition:</b> <a href="Comedi_8h_source.html#l00065">Comedi.h:65</a></div></div>
+<div class="ttc" id="anamespaceUtils_html_aad72ee5221d67672f4e3cf37ed179432"><div class="ttname"><a href="namespaceUtils.html#aad72ee5221d67672f4e3cf37ed179432">Utils::ConfigureSqlTableView</a></div><div class="ttdeci">void ConfigureSqlTableView(QTableView *view)</div><div class="ttdef"><b>Definition:</b> <a href="Utils_8cpp_source.html#l00301">Utils.cpp:301</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>ComediWindow.cpp</b></li>
+    <li class="navelem"><a class="el" href="ComediWindow_8cpp.html">ComediWindow.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

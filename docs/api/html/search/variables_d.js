@@ -1,13 +1,23 @@
 var searchData=
 [
-  ['nb_5fitem_5fdrv_5fsetting_1178',['NB_ITEM_DRV_SETTING',['../classDriverNewPort__AGUC2.html#a4d1a988685f24d6b10662f7290b5b772',1,'DriverNewPort_AGUC2::NB_ITEM_DRV_SETTING()'],['../classDriverNewPort__NSC200.html#af230bfe131176d3660b51773dcc8b562',1,'DriverNewPort_NSC200::NB_ITEM_DRV_SETTING()'],['../classDriverPI__C862.html#a34d21d96e46a0bb3f92a12490e252a8b',1,'DriverPI_C862::NB_ITEM_DRV_SETTING()'],['../classDriverStanda__uSMC.html#afb4ae068592ed1a3320a515df9276acb',1,'DriverStanda_uSMC::NB_ITEM_DRV_SETTING()'],['../classDriverStanda__uSMC2.html#a908d96146f6f57db784f166f132a294e',1,'DriverStanda_uSMC2::NB_ITEM_DRV_SETTING()'],['../classDriverMicos__Pollux.html#a75a316da991a8a808470b360082a1ead',1,'DriverMicos_Pollux::NB_ITEM_DRV_SETTING()']]],
-  ['nb_5fitem_5finit_5fsetting_1179',['NB_ITEM_INIT_SETTING',['../classDriverStanda__uSMC.html#a07b3c6ee4a54966bedcbbd5661658d0a',1,'DriverStanda_uSMC::NB_ITEM_INIT_SETTING()'],['../classDriverStanda__uSMC2.html#a531496ac64da112e7ccf99555b9d20de',1,'DriverStanda_uSMC2::NB_ITEM_INIT_SETTING()'],['../classDriverPI__C862.html#a545c4d47c6637b7ed7d7ff223dfe97f4',1,'DriverPI_C862::NB_ITEM_INIT_SETTING()'],['../classDriverNewPort__NSC200.html#a5fcc36b61649f2a91c9574852df59e9b',1,'DriverNewPort_NSC200::NB_ITEM_INIT_SETTING()'],['../classDriverNewPort__AGUC2.html#a8861f9d4e1b3ea66d8bfe8c4381702b1',1,'DriverNewPort_AGUC2::NB_ITEM_INIT_SETTING()'],['../classDriverMicos__Pollux.html#aa49b5b8fb0c0a89c7a182d7bded93954',1,'DriverMicos_Pollux::NB_ITEM_INIT_SETTING()']]],
-  ['newfocus_5f8750_5fcl_1180',['NEWFOCUS_8750_CL',['../classDriver.html#a02ba0d73c1f4226410648b438f1d810d',1,'Driver']]],
-  ['newfocus_5f8750_5fol_1181',['NEWFOCUS_8750_OL',['../classDriver.html#a22ce82ff01e364ce3d1ac84dc1f1bcf8',1,'Driver']]],
-  ['newport_5faguc2_1182',['NEWPORT_AGUC2',['../classDriver.html#ada8ca7d506b670c5287e703360598bf8',1,'Driver']]],
-  ['newport_5fnsc200_1183',['NEWPORT_NSC200',['../classDriver.html#a6f52e02e19cbca4c6cac4370a5bb4128',1,'Driver']]],
-  ['newport_5fnsc200_5ffeature_1184',['NEWPORT_NSC200_FEATURE',['../classDriverNewPort__NSC200.html#af6987b0eeddb5849b1d6ff4c71c95d2d',1,'DriverNewPort_NSC200']]],
-  ['null_5fcom_1185',['NULL_COM',['../classACCom.html#ae08b8d77aa202640a01fa80c71008102',1,'ACCom']]],
-  ['null_5fdrv_5fid_1186',['NULL_DRV_ID',['../classDriver.html#a6344597a81b6b65fa92ea39993aba5b6',1,'Driver']]],
-  ['num_1187',['num',['../classCamera.html#a5c60cfc59d9abffabd129eda4e576c6a',1,'Camera']]]
+  ['nb_5fitem_5fdrv_5fsetting_2035',['NB_ITEM_DRV_SETTING',['../classDriverNewPort__AGUC2.html#a4d1a988685f24d6b10662f7290b5b772',1,'DriverNewPort_AGUC2::NB_ITEM_DRV_SETTING()'],['../classDriverNewPort__NSC200.html#af230bfe131176d3660b51773dcc8b562',1,'DriverNewPort_NSC200::NB_ITEM_DRV_SETTING()'],['../classDriverPI__C862.html#a34d21d96e46a0bb3f92a12490e252a8b',1,'DriverPI_C862::NB_ITEM_DRV_SETTING()'],['../classDriverStanda__uSMC.html#afb4ae068592ed1a3320a515df9276acb',1,'DriverStanda_uSMC::NB_ITEM_DRV_SETTING()'],['../classDriverStanda__uSMC2.html#a908d96146f6f57db784f166f132a294e',1,'DriverStanda_uSMC2::NB_ITEM_DRV_SETTING()'],['../classDriverMicos__Pollux.html#a75a316da991a8a808470b360082a1ead',1,'DriverMicos_Pollux::NB_ITEM_DRV_SETTING()']]],
+  ['nb_5fitem_5finit_5fsetting_2036',['NB_ITEM_INIT_SETTING',['../classDriverStanda__uSMC2.html#a531496ac64da112e7ccf99555b9d20de',1,'DriverStanda_uSMC2::NB_ITEM_INIT_SETTING()'],['../classDriverStanda__uSMC.html#a07b3c6ee4a54966bedcbbd5661658d0a',1,'DriverStanda_uSMC::NB_ITEM_INIT_SETTING()'],['../classDriverPI__C862.html#a545c4d47c6637b7ed7d7ff223dfe97f4',1,'DriverPI_C862::NB_ITEM_INIT_SETTING()'],['../classDriverNewPort__NSC200.html#a5fcc36b61649f2a91c9574852df59e9b',1,'DriverNewPort_NSC200::NB_ITEM_INIT_SETTING()'],['../classDriverNewPort__AGUC2.html#a8861f9d4e1b3ea66d8bfe8c4381702b1',1,'DriverNewPort_AGUC2::NB_ITEM_INIT_SETTING()'],['../classDriverMicos__Pollux.html#aa49b5b8fb0c0a89c7a182d7bded93954',1,'DriverMicos_Pollux::NB_ITEM_INIT_SETTING()']]],
+  ['neo_5faoi_5fsettings_2037',['neo_aoi_settings',['../CameraNeo_8cpp.html#a433cb33d79641a6e47cc1c573154e920',1,'CameraNeo.cpp']]],
+  ['neo_5faoi_5fsettings_5fpacked_2038',['neo_aoi_settings_packed',['../CameraNeo_8cpp.html#ada4bdaecfb64c2250667457c3f5de81a',1,'CameraNeo.cpp']]],
+  ['neo_5felectronicshuttering_5fmodes_2039',['neo_electronicshuttering_modes',['../CameraNeo_8cpp.html#a5a4d5ada65d9871fbfab76e8458952d9',1,'CameraNeo.cpp']]],
+  ['neo_5fencodings_2040',['neo_encodings',['../CameraNeo_8cpp.html#a917b1b0e7dc71ec41bcc5b377a5f51be',1,'CameraNeo.cpp']]],
+  ['neo_5ffeatures_2041',['neo_features',['../CameraNeo_8cpp.html#a44cf25e4bb39e1bfccce7c8eb822ecd9',1,'CameraNeo.cpp']]],
+  ['neo_5fgains_2042',['neo_gains',['../CameraNeo_8cpp.html#a97db64f6fe0c01f7e68ff4e4a7838f44',1,'CameraNeo.cpp']]],
+  ['neo_5fprops_2043',['neo_props',['../CameraNeo_8cpp.html#a7aada91c88c291af50e80a9547bce078',1,'CameraNeo.cpp']]],
+  ['neo_5freadout_5frates_2044',['neo_readout_rates',['../CameraNeo_8cpp.html#adb6d46a883c8cf6cbc7bf7f0ccf9027b',1,'CameraNeo.cpp']]],
+  ['neo_5fspurious_5fmodes_2045',['neo_spurious_modes',['../CameraNeo_8cpp.html#a745208667561d84788c1b75db84d4517',1,'CameraNeo.cpp']]],
+  ['neo_5ftrigger_5fmodes_2046',['neo_trigger_modes',['../CameraNeo_8cpp.html#a1a5dfab643e3f18eb8e0f7069ebe7412',1,'CameraNeo.cpp']]],
+  ['newfocus_5f8750_5fcl_2047',['NEWFOCUS_8750_CL',['../classDriver.html#a02ba0d73c1f4226410648b438f1d810d',1,'Driver']]],
+  ['newfocus_5f8750_5fol_2048',['NEWFOCUS_8750_OL',['../classDriver.html#a22ce82ff01e364ce3d1ac84dc1f1bcf8',1,'Driver']]],
+  ['newport_5faguc2_2049',['NEWPORT_AGUC2',['../classDriver.html#ada8ca7d506b670c5287e703360598bf8',1,'Driver']]],
+  ['newport_5fnsc200_2050',['NEWPORT_NSC200',['../classDriver.html#a6f52e02e19cbca4c6cac4370a5bb4128',1,'Driver']]],
+  ['newport_5fnsc200_5ffeature_2051',['NEWPORT_NSC200_FEATURE',['../classDriverNewPort__NSC200.html#af6987b0eeddb5849b1d6ff4c71c95d2d',1,'DriverNewPort_NSC200']]],
+  ['null_5fcom_2052',['NULL_COM',['../classACCom.html#ae08b8d77aa202640a01fa80c71008102',1,'ACCom']]],
+  ['null_5fdrv_5fid_2053',['NULL_DRV_ID',['../classDriver.html#a6344597a81b6b65fa92ea39993aba5b6',1,'Driver']]],
+  ['num_2054',['num',['../classCamera.html#a5c60cfc59d9abffabd129eda4e576c6a',1,'Camera']]]
 ];

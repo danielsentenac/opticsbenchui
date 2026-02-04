@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('Dac_8h_source.html',''); initResizable
 <div class="title">Dac.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
+<a href="Dac_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">This file is part of OpticsBenchUI.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">OpticsBenchUI is free software: you can redistribute it and/or modify</span></div>
@@ -104,45 +104,47 @@ $(document).ready(function(){initNavTree('Dac_8h_source.html',''); initResizable
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">********************************************************************/</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifndef DAC_H</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define DAC_H</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;QtSql&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;QsLog.h&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classDac.html">   30</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDac.html">Dac</a> : <span class="keyword">public</span> QObject</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  Q_OBJECT</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classDac.html#a674024556dabb8a2ad4eab8ae9a84563">   36</a></span>&#160;  <a class="code" href="classDac.html#a674024556dabb8a2ad4eab8ae9a84563">~Dac</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classDac.html#a241f367ed32f1714a2e7cb8a6bf66f56">   40</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classDac.html#a241f367ed32f1714a2e7cb8a6bf66f56">connectDac</a>(QString newdac) = 0;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classDac.html#aada551b774b312fa4d04a2685242f92c">   43</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classDac.html#aada551b774b312fa4d04a2685242f92c">resetDac</a>(QString newdac) = 0;</div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classDac.html#acf1d5af5f285617500b2328e98002c70">   48</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classDac.html#acf1d5af5f285617500b2328e98002c70">setDacValue</a>(QString newdac, <span class="keywordtype">int</span> output, <span class="keywordtype">double</span> value) = 0;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classDac.html#a37c6c25d7123f080111364a1266d0660">   53</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classDac.html#a37c6c25d7123f080111364a1266d0660">setDacRValue</a>(QString newdac, <span class="keywordtype">int</span> output, <span class="keywordtype">double</span> rvalue) = 0;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classDac.html#aad63a30e7d91a8d53172fb241e2454f7">   57</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classDac.html#aad63a30e7d91a8d53172fb241e2454f7">getDacValue</a>(QString newdac,<span class="keywordtype">int</span> output) = 0;</div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="classDac.html#a9f959c1832d735e262ac5d507a2b8eb9">   60</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classDac.html#a9f959c1832d735e262ac5d507a2b8eb9">updateDBValues</a>(QString newdac) = 0;</div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classDac.html#a48bf1a5023339de50aafbbb598dc18c0">   63</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDac.html#a48bf1a5023339de50aafbbb598dc18c0">setDbPath</a>(QString <a class="code" href="classDac.html#a87bd852337000ce406fb9761edd452b0">path</a>) = 0;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="comment">// parameters</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classDac.html#a87bd852337000ce406fb9761edd452b0">   67</a></span>&#160;<span class="comment"></span>  QString <a class="code" href="classDac.html#a87bd852337000ce406fb9761edd452b0">path</a>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;signals:</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="classDac.html#a48c5ebc7ce63b7c9905b0d5823e5f3d1">   74</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDac.html#a48c5ebc7ce63b7c9905b0d5823e5f3d1">getDescription</a>(QString description);</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classDac.html#a600bb19364f7179eb847860e4ecf6f0e">   77</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDac.html#a600bb19364f7179eb847860e4ecf6f0e">showWarning</a>(QString message);</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classDac.html#a1993545114f0c03d5cbc4d4c8920cd9c">   81</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDac.html#a1993545114f0c03d5cbc4d4c8920cd9c">getOutputs</a>(<span class="keywordtype">int</span> outputs, QString mode);</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="classDac.html#a21604302bb2e9078e115359213f704b8">   84</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDac.html#a21604302bb2e9078e115359213f704b8">getOutputValues</a>(QVector&lt;float&gt; *dacvalues);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="classDac.html#a95c498cfddf2310b1eccc720e1050dae">   88</a></span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDac.html#a95c498cfddf2310b1eccc720e1050dae">dbConnexion</a>() = 0;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;};</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassDac_html"><div class="ttname"><a href="classDac.html">Dac</a></div><div class="ttdef"><b>Definition:</b> <a href="Dac_8h_source.html#l00030">Dac.h:31</a></div></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef DAC_H</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define DAC_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;QtSql&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="QsLog_8h.html">QsLog.h</a>&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classDac.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDac.html">Dac</a> : <span class="keyword">public</span> QObject</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  Q_OBJECT</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classDac.html#a674024556dabb8a2ad4eab8ae9a84563">   41</a></span>&#160;  <a class="code" href="classDac.html#a674024556dabb8a2ad4eab8ae9a84563">~Dac</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classDac.html#a241f367ed32f1714a2e7cb8a6bf66f56">   45</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classDac.html#a241f367ed32f1714a2e7cb8a6bf66f56">connectDac</a>(QString newdac) = 0;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classDac.html#aada551b774b312fa4d04a2685242f92c">   48</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classDac.html#aada551b774b312fa4d04a2685242f92c">resetDac</a>(QString newdac) = 0;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classDac.html#acf1d5af5f285617500b2328e98002c70">   53</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classDac.html#acf1d5af5f285617500b2328e98002c70">setDacValue</a>(QString newdac, <span class="keywordtype">int</span> output, <span class="keywordtype">double</span> value) = 0;</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classDac.html#a37c6c25d7123f080111364a1266d0660">   58</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classDac.html#a37c6c25d7123f080111364a1266d0660">setDacRValue</a>(QString newdac, <span class="keywordtype">int</span> output, <span class="keywordtype">double</span> rvalue) = 0;</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classDac.html#aad63a30e7d91a8d53172fb241e2454f7">   62</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classDac.html#aad63a30e7d91a8d53172fb241e2454f7">getDacValue</a>(QString newdac,<span class="keywordtype">int</span> output) = 0;</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classDac.html#a9f959c1832d735e262ac5d507a2b8eb9">   65</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classDac.html#a9f959c1832d735e262ac5d507a2b8eb9">updateDBValues</a>(QString newdac) = 0;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classDac.html#a48bf1a5023339de50aafbbb598dc18c0">   68</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDac.html#a48bf1a5023339de50aafbbb598dc18c0">setDbPath</a>(QString <a class="code" href="classDac.html#a87bd852337000ce406fb9761edd452b0">path</a>) = 0;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="comment">// parameters</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classDac.html#a87bd852337000ce406fb9761edd452b0">   72</a></span>&#160;<span class="comment"></span>  QString <a class="code" href="classDac.html#a87bd852337000ce406fb9761edd452b0">path</a>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<a class="code" href="CameraGiGE_8h.html#aabbcb0bbcbcb6adcf20d63cc22f83649">signals</a>:</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classDac.html#a48c5ebc7ce63b7c9905b0d5823e5f3d1">   79</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDac.html#a48c5ebc7ce63b7c9905b0d5823e5f3d1">getDescription</a>(QString description);</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="classDac.html#a600bb19364f7179eb847860e4ecf6f0e">   82</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDac.html#a600bb19364f7179eb847860e4ecf6f0e">showWarning</a>(QString message);</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="classDac.html#a1993545114f0c03d5cbc4d4c8920cd9c">   86</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDac.html#a1993545114f0c03d5cbc4d4c8920cd9c">getOutputs</a>(<span class="keywordtype">int</span> outputs, QString mode);</div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="classDac.html#a21604302bb2e9078e115359213f704b8">   89</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDac.html#a21604302bb2e9078e115359213f704b8">getOutputValues</a>(QVector&lt;float&gt; *dacvalues);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="classDac.html#a95c498cfddf2310b1eccc720e1050dae">   93</a></span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDac.html#a95c498cfddf2310b1eccc720e1050dae">dbConnexion</a>() = 0;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;};</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aCameraGiGE_8h_html_aabbcb0bbcbcb6adcf20d63cc22f83649"><div class="ttname"><a href="CameraGiGE_8h.html#aabbcb0bbcbcb6adcf20d63cc22f83649">signals</a></div><div class="ttdeci">#define signals</div><div class="ttdef"><b>Definition:</b> <a href="CameraGiGE_8h_source.html#l00028">CameraGiGE.h:28</a></div></div>
+<div class="ttc" id="aQsLog_8h_html"><div class="ttname"><a href="QsLog_8h.html">QsLog.h</a></div><div class="ttdoc">Qs Log logging support.</div></div>
+<div class="ttc" id="aclassDac_html"><div class="ttname"><a href="classDac.html">Dac</a></div><div class="ttdef"><b>Definition:</b> <a href="Dac_8h_source.html#l00035">Dac.h:36</a></div></div>
 <div class="ttc" id="aclassDac_html_a1993545114f0c03d5cbc4d4c8920cd9c"><div class="ttname"><a href="classDac.html#a1993545114f0c03d5cbc4d4c8920cd9c">Dac::getOutputs</a></div><div class="ttdeci">void getOutputs(int outputs, QString mode)</div></div>
 <div class="ttc" id="aclassDac_html_a21604302bb2e9078e115359213f704b8"><div class="ttname"><a href="classDac.html#a21604302bb2e9078e115359213f704b8">Dac::getOutputValues</a></div><div class="ttdeci">void getOutputValues(QVector&lt; float &gt; *dacvalues)</div></div>
 <div class="ttc" id="aclassDac_html_a241f367ed32f1714a2e7cb8a6bf66f56"><div class="ttname"><a href="classDac.html#a241f367ed32f1714a2e7cb8a6bf66f56">Dac::connectDac</a></div><div class="ttdeci">virtual bool connectDac(QString newdac)=0</div></div>
@@ -151,7 +153,7 @@ $(document).ready(function(){initNavTree('Dac_8h_source.html',''); initResizable
 <div class="ttc" id="aclassDac_html_a48c5ebc7ce63b7c9905b0d5823e5f3d1"><div class="ttname"><a href="classDac.html#a48c5ebc7ce63b7c9905b0d5823e5f3d1">Dac::getDescription</a></div><div class="ttdeci">void getDescription(QString description)</div></div>
 <div class="ttc" id="aclassDac_html_a600bb19364f7179eb847860e4ecf6f0e"><div class="ttname"><a href="classDac.html#a600bb19364f7179eb847860e4ecf6f0e">Dac::showWarning</a></div><div class="ttdeci">void showWarning(QString message)</div></div>
 <div class="ttc" id="aclassDac_html_a674024556dabb8a2ad4eab8ae9a84563"><div class="ttname"><a href="classDac.html#a674024556dabb8a2ad4eab8ae9a84563">Dac::~Dac</a></div><div class="ttdeci">~Dac() override=default</div><div class="ttdoc">Virtual destructor.</div></div>
-<div class="ttc" id="aclassDac_html_a87bd852337000ce406fb9761edd452b0"><div class="ttname"><a href="classDac.html#a87bd852337000ce406fb9761edd452b0">Dac::path</a></div><div class="ttdeci">QString path</div><div class="ttdoc">Path to the DAC database.</div><div class="ttdef"><b>Definition:</b> <a href="Dac_8h_source.html#l00067">Dac.h:67</a></div></div>
+<div class="ttc" id="aclassDac_html_a87bd852337000ce406fb9761edd452b0"><div class="ttname"><a href="classDac.html#a87bd852337000ce406fb9761edd452b0">Dac::path</a></div><div class="ttdeci">QString path</div><div class="ttdoc">Path to the DAC database.</div><div class="ttdef"><b>Definition:</b> <a href="Dac_8h_source.html#l00072">Dac.h:72</a></div></div>
 <div class="ttc" id="aclassDac_html_a95c498cfddf2310b1eccc720e1050dae"><div class="ttname"><a href="classDac.html#a95c498cfddf2310b1eccc720e1050dae">Dac::dbConnexion</a></div><div class="ttdeci">virtual void dbConnexion()=0</div><div class="ttdoc">Create or refresh the device database connection.</div></div>
 <div class="ttc" id="aclassDac_html_a9f959c1832d735e262ac5d507a2b8eb9"><div class="ttname"><a href="classDac.html#a9f959c1832d735e262ac5d507a2b8eb9">Dac::updateDBValues</a></div><div class="ttdeci">virtual bool updateDBValues(QString newdac)=0</div></div>
 <div class="ttc" id="aclassDac_html_aad63a30e7d91a8d53172fb241e2454f7"><div class="ttname"><a href="classDac.html#aad63a30e7d91a8d53172fb241e2454f7">Dac::getDacValue</a></div><div class="ttdeci">virtual float getDacValue(QString newdac, int output)=0</div></div>
@@ -162,7 +164,7 @@ $(document).ready(function(){initNavTree('Dac_8h_source.html',''); initResizable
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>Dac.h</b></li>
+    <li class="navelem"><a class="el" href="Dac_8h.html">Dac.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

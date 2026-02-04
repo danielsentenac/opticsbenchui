@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('DacWindow_8h_source.html',''); initRes
 <div class="title">DacWindow.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
+<a href="DacWindow_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">This file is part of OpticsBenchUI.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">OpticsBenchUI is free software: you can redistribute it and/or modify</span></div>
@@ -104,74 +104,75 @@ $(document).ready(function(){initNavTree('DacWindow_8h_source.html',''); initRes
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">********************************************************************/</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifndef DACWINDOW_H</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define DACWINDOW_H</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;DacControlWidget.h&quot;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QtSql&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef DACWINDOW_H</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define DACWINDOW_H</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classDacWindow.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDacWindow.html">DacWindow</a> : <span class="keyword">public</span> QMainWindow </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  Q_OBJECT</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="classDacWindow.html#ad9f9086e8c79017314d79dcf30895587">DacWindow</a>(QMainWindow* parent = <span class="keyword">nullptr</span>, Qt::WindowFlags fl = Qt::Window,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <a class="code" href="classDac.html">Dac</a> *dac = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="classDacWindow.html#adb2d66ebd9fe86a2b7c46d83408815fa">~DacWindow</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classDacWindow.html#a9ad358718e62bc07f5069a56e2c48cf6">   44</a></span>&#160;  <a class="code" href="classDacControlWidget.html">DacControlWidget</a> *<a class="code" href="classDacWindow.html#a9ad358718e62bc07f5069a56e2c48cf6">dacWidget</a>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDacWindow.html#a3c77d6cb136a79028bae375c972e2817">update</a>();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDacWindow.html#a7db2a8de5cb8d9a1deea92adc9319e20">remove</a>();</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDacWindow.html#a8b2eec5f541e7cf7d9e9187e60e02820">load</a>();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDacWindow.html#a65bce947fd82cee1b7d12ccf2420c82c">setDbPath</a>(QString path);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDacWindow.html#a45aa8ffd4b9877bb217efe63fe1adfbb">closeEvent</a>(QCloseEvent *event) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">void</span> InitConfig();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">void</span> InitRun();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">void</span> setupTableModel();</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  QMainWindow *parentWindow;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  QString dbPath;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  QLabel      *dactitle;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  QSqlTableModel *dactable;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  QTableView *dacview;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">int</span> dacrow;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  QVBoxLayout* vboxlayout;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;   </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  QPushButton* updateButton;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  QPushButton* removeButton;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  QPushButton* loadButton;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  QVector&lt;QString&gt;* dacList;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  QDockWidget *dockWidget;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <a class="code" href="classDac.html">Dac</a> *dac;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;};</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// DACWINDOW_H</span></div>
-<div class="ttc" id="aclassDacControlWidget_html"><div class="ttname"><a href="classDacControlWidget.html">DacControlWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="DacControlWidget_8h_source.html#l00031">DacControlWidget.h:32</a></div></div>
-<div class="ttc" id="aclassDacWindow_html"><div class="ttname"><a href="classDacWindow.html">DacWindow</a></div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8h_source.html#l00028">DacWindow.h:29</a></div></div>
-<div class="ttc" id="aclassDacWindow_html_a3c77d6cb136a79028bae375c972e2817"><div class="ttname"><a href="classDacWindow.html#a3c77d6cb136a79028bae375c972e2817">DacWindow::update</a></div><div class="ttdeci">void update()</div><div class="ttdoc">Update database-backed tables.</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00121">DacWindow.cpp:121</a></div></div>
-<div class="ttc" id="aclassDacWindow_html_a45aa8ffd4b9877bb217efe63fe1adfbb"><div class="ttname"><a href="classDacWindow.html#a45aa8ffd4b9877bb217efe63fe1adfbb">DacWindow::closeEvent</a></div><div class="ttdeci">void closeEvent(QCloseEvent *event) override</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00103">DacWindow.cpp:103</a></div></div>
-<div class="ttc" id="aclassDacWindow_html_a65bce947fd82cee1b7d12ccf2420c82c"><div class="ttname"><a href="classDacWindow.html#a65bce947fd82cee1b7d12ccf2420c82c">DacWindow::setDbPath</a></div><div class="ttdeci">void setDbPath(QString path)</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00089">DacWindow.cpp:89</a></div></div>
-<div class="ttc" id="aclassDacWindow_html_a7db2a8de5cb8d9a1deea92adc9319e20"><div class="ttname"><a href="classDacWindow.html#a7db2a8de5cb8d9a1deea92adc9319e20">DacWindow::remove</a></div><div class="ttdeci">void remove()</div><div class="ttdoc">Remove selected entries.</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00129">DacWindow.cpp:129</a></div></div>
-<div class="ttc" id="aclassDacWindow_html_a8b2eec5f541e7cf7d9e9187e60e02820"><div class="ttname"><a href="classDacWindow.html#a8b2eec5f541e7cf7d9e9187e60e02820">DacWindow::load</a></div><div class="ttdeci">void load()</div><div class="ttdoc">Load configuration into runtime.</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00125">DacWindow.cpp:125</a></div></div>
-<div class="ttc" id="aclassDacWindow_html_a9ad358718e62bc07f5069a56e2c48cf6"><div class="ttname"><a href="classDacWindow.html#a9ad358718e62bc07f5069a56e2c48cf6">DacWindow::dacWidget</a></div><div class="ttdeci">DacControlWidget * dacWidget</div><div class="ttdoc">DAC control widget instance.</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8h_source.html#l00044">DacWindow.h:44</a></div></div>
-<div class="ttc" id="aclassDacWindow_html_ad9f9086e8c79017314d79dcf30895587"><div class="ttname"><a href="classDacWindow.html#ad9f9086e8c79017314d79dcf30895587">DacWindow::DacWindow</a></div><div class="ttdeci">DacWindow(QMainWindow *parent=nullptr, Qt::WindowFlags fl=Qt::Window, Dac *dac=nullptr)</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00027">DacWindow.cpp:27</a></div></div>
-<div class="ttc" id="aclassDacWindow_html_adb2d66ebd9fe86a2b7c46d83408815fa"><div class="ttname"><a href="classDacWindow.html#adb2d66ebd9fe86a2b7c46d83408815fa">DacWindow::~DacWindow</a></div><div class="ttdeci">~DacWindow() override</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00083">DacWindow.cpp:83</a></div></div>
-<div class="ttc" id="aclassDac_html"><div class="ttname"><a href="classDac.html">Dac</a></div><div class="ttdef"><b>Definition:</b> <a href="Dac_8h_source.html#l00030">Dac.h:31</a></div></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="DacControlWidget_8h.html">DacControlWidget.h</a>&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;QtSql&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classDacWindow.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDacWindow.html">DacWindow</a> : <span class="keyword">public</span> QMainWindow </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  Q_OBJECT</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="classDacWindow.html#ad9f9086e8c79017314d79dcf30895587">DacWindow</a>(QMainWindow* parent = <span class="keyword">nullptr</span>, Qt::WindowFlags fl = Qt::Window,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <a class="code" href="classDac.html">Dac</a> *dac = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="classDacWindow.html#adb2d66ebd9fe86a2b7c46d83408815fa">~DacWindow</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  </div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classDacWindow.html#a9ad358718e62bc07f5069a56e2c48cf6">   49</a></span>&#160;  <a class="code" href="classDacControlWidget.html">DacControlWidget</a> *<a class="code" href="classDacWindow.html#a9ad358718e62bc07f5069a56e2c48cf6">dacWidget</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDacWindow.html#a3c77d6cb136a79028bae375c972e2817">update</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDacWindow.html#a7db2a8de5cb8d9a1deea92adc9319e20">remove</a>();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDacWindow.html#a8b2eec5f541e7cf7d9e9187e60e02820">load</a>();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDacWindow.html#a65bce947fd82cee1b7d12ccf2420c82c">setDbPath</a>(QString path);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDacWindow.html#a45aa8ffd4b9877bb217efe63fe1adfbb">closeEvent</a>(QCloseEvent *event) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">void</span> InitConfig();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordtype">void</span> InitRun();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">void</span> setupTableModel();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  QMainWindow *parentWindow;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  QString dbPath;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  QLabel      *dactitle;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  QSqlTableModel *dactable;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  QTableView *dacview;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordtype">int</span> dacrow;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  QVBoxLayout* vboxlayout;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;   </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  QPushButton* updateButton;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  QPushButton* removeButton;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  QPushButton* loadButton;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  QVector&lt;QString&gt;* dacList;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  QDockWidget *dockWidget;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <a class="code" href="classDac.html">Dac</a> *dac;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// DACWINDOW_H</span></div>
+<div class="ttc" id="aDacControlWidget_8h_html"><div class="ttname"><a href="DacControlWidget_8h.html">DacControlWidget.h</a></div><div class="ttdoc">Dac control widget.</div></div>
+<div class="ttc" id="aclassDacControlWidget_html"><div class="ttname"><a href="classDacControlWidget.html">DacControlWidget</a></div><div class="ttdef"><b>Definition:</b> <a href="DacControlWidget_8h_source.html#l00036">DacControlWidget.h:37</a></div></div>
+<div class="ttc" id="aclassDacWindow_html"><div class="ttname"><a href="classDacWindow.html">DacWindow</a></div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8h_source.html#l00033">DacWindow.h:34</a></div></div>
+<div class="ttc" id="aclassDacWindow_html_a3c77d6cb136a79028bae375c972e2817"><div class="ttname"><a href="classDacWindow.html#a3c77d6cb136a79028bae375c972e2817">DacWindow::update</a></div><div class="ttdeci">void update()</div><div class="ttdoc">Update database-backed tables.</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00126">DacWindow.cpp:126</a></div></div>
+<div class="ttc" id="aclassDacWindow_html_a45aa8ffd4b9877bb217efe63fe1adfbb"><div class="ttname"><a href="classDacWindow.html#a45aa8ffd4b9877bb217efe63fe1adfbb">DacWindow::closeEvent</a></div><div class="ttdeci">void closeEvent(QCloseEvent *event) override</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00108">DacWindow.cpp:108</a></div></div>
+<div class="ttc" id="aclassDacWindow_html_a65bce947fd82cee1b7d12ccf2420c82c"><div class="ttname"><a href="classDacWindow.html#a65bce947fd82cee1b7d12ccf2420c82c">DacWindow::setDbPath</a></div><div class="ttdeci">void setDbPath(QString path)</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00094">DacWindow.cpp:94</a></div></div>
+<div class="ttc" id="aclassDacWindow_html_a7db2a8de5cb8d9a1deea92adc9319e20"><div class="ttname"><a href="classDacWindow.html#a7db2a8de5cb8d9a1deea92adc9319e20">DacWindow::remove</a></div><div class="ttdeci">void remove()</div><div class="ttdoc">Remove selected entries.</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00134">DacWindow.cpp:134</a></div></div>
+<div class="ttc" id="aclassDacWindow_html_a8b2eec5f541e7cf7d9e9187e60e02820"><div class="ttname"><a href="classDacWindow.html#a8b2eec5f541e7cf7d9e9187e60e02820">DacWindow::load</a></div><div class="ttdeci">void load()</div><div class="ttdoc">Load configuration into runtime.</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00130">DacWindow.cpp:130</a></div></div>
+<div class="ttc" id="aclassDacWindow_html_a9ad358718e62bc07f5069a56e2c48cf6"><div class="ttname"><a href="classDacWindow.html#a9ad358718e62bc07f5069a56e2c48cf6">DacWindow::dacWidget</a></div><div class="ttdeci">DacControlWidget * dacWidget</div><div class="ttdoc">DAC control widget instance.</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8h_source.html#l00049">DacWindow.h:49</a></div></div>
+<div class="ttc" id="aclassDacWindow_html_ad9f9086e8c79017314d79dcf30895587"><div class="ttname"><a href="classDacWindow.html#ad9f9086e8c79017314d79dcf30895587">DacWindow::DacWindow</a></div><div class="ttdeci">DacWindow(QMainWindow *parent=nullptr, Qt::WindowFlags fl=Qt::Window, Dac *dac=nullptr)</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00032">DacWindow.cpp:32</a></div></div>
+<div class="ttc" id="aclassDacWindow_html_adb2d66ebd9fe86a2b7c46d83408815fa"><div class="ttname"><a href="classDacWindow.html#adb2d66ebd9fe86a2b7c46d83408815fa">DacWindow::~DacWindow</a></div><div class="ttdeci">~DacWindow() override</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="DacWindow_8cpp_source.html#l00088">DacWindow.cpp:88</a></div></div>
+<div class="ttc" id="aclassDac_html"><div class="ttname"><a href="classDac.html">Dac</a></div><div class="ttdef"><b>Definition:</b> <a href="Dac_8h_source.html#l00035">Dac.h:36</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>DacWindow.h</b></li>
+    <li class="navelem"><a class="el" href="DacWindow_8h.html">DacWindow.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

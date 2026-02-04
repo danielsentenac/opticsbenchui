@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pconvertunittype_1259',['pConvertUnitType',['../namespaceDriverDefinition.html#a164c6aa993b1edec71a53549a3f9c82f',1,'DriverDefinition']]]
+  ['floatvector_2154',['floatVector',['../ComediCounterControlWidget_8h.html#a8b36598680338262db4e24d24befecd3',1,'floatVector():&#160;ComediCounterControlWidget.h'],['../ComediDacControlWidget_8h.html#a8b36598680338262db4e24d24befecd3',1,'floatVector():&#160;ComediDacControlWidget.h'],['../DacControlWidget_8h.html#a8b36598680338262db4e24d24befecd3',1,'floatVector():&#160;DacControlWidget.h'],['../RaspiDacControlWidget_8h.html#a8b36598680338262db4e24d24befecd3',1,'floatVector():&#160;RaspiDacControlWidget.h']]]
 ];

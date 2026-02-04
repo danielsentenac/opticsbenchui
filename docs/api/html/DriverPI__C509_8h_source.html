@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('DriverPI__C509_8h_source.html',''); in
 <div class="title">DriverPI_C509.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
+<a href="DriverPI__C509_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*******************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">This file is part of OpticsBenchUI.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">OpticsBenchUI is free software: you can redistribute it and/or modify</span></div>
@@ -104,86 +104,87 @@ $(document).ready(function(){initNavTree('DriverPI__C509_8h_source.html',''); in
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">********************************************************************/</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifndef DRIVERPI_C509_H</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define DRIVERPI_C509_H</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;Driver.h&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// Set namespace</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">using namespace </span>std;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html">   30</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDriverPI__C509.html">DriverPI_C509</a> : <span class="keyword">public</span> <a class="code" href="classDriver.html">Driver</a></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html#a5273c4acfe3031e571c7821e977fbb19">   35</a></span>&#160;    <a class="code" href="classDriverPI__C509.html#a5273c4acfe3031e571c7821e977fbb19">DriverPI_C509</a>(){}</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html#a7003dd15a4eca73985e766706a93f42e">   38</a></span>&#160;    <a class="code" href="classDriverPI__C509.html#a7003dd15a4eca73985e766706a93f42e">DriverPI_C509</a>(<a class="code" href="classACCom.html">ACCom</a>* commChannel):</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;       <a class="code" href="classDriver.html">Driver</a>(commChannel) </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    {}</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html#abfb7f65c63343edd4bf12bd6e4772a52">   44</a></span>&#160;    <a class="code" href="classDriverPI__C509.html#abfb7f65c63343edd4bf12bd6e4772a52">DriverPI_C509</a>(<span class="keyword">const</span> <a class="code" href="classDriverPI__C509.html">DriverPI_C509</a>&amp; actuatorDrvPI_C509,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                       <a class="code" href="classACCom.html">ACCom</a>* commChannel):</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;       <a class="code" href="classDriver.html">Driver</a>(actuatorDrvPI_C509, commChannel) </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    {}</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html#ad3af7308aab7893aa3647e44867a7269">   50</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classDriverPI__C509.html#ad3af7308aab7893aa3647e44867a7269">~DriverPI_C509</a>(){}</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html#a9916e63059abb077dc4d63b79975a7d0">   54</a></span>&#160;    <a class="code" href="classDriverPI__C509.html#a9916e63059abb077dc4d63b79975a7d0">DriverPI_C509</a>(<span class="keyword">const</span> <a class="code" href="classDriverPI__C509.html">DriverPI_C509</a>&amp; actuatorDrvPI_C509 ):</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;       <a class="code" href="classDriver.html">Driver</a>(actuatorDrvPI_C509)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  </div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html#aa53e9594c8cdb9961f6ba6171a82f01e">   61</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classDriverPI__C509.html">DriverPI_C509</a>&amp; operator = (<span class="keyword">const</span> <a class="code" href="classDriverPI__C509.html">DriverPI_C509</a>&amp; actuatorDrvPI_C509) </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;       _pcommChannel = actuatorDrvPI_C509.<a class="code" href="classDriver.html#a25bcf5a516b6b912f9692cb8209c298d">_pcommChannel</a>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;       <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">// Methods:</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment"></span>    <span class="keyword">virtual</span> <span class="keywordtype">int</span> Init(<span class="keywordtype">string</span>&amp; rstateData) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> InitActuator(<span class="keywordtype">string</span> actuatorSetting,<span class="keywordtype">float</span> position) <span class="keyword">const</span> ;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> GetPos(<span class="keywordtype">string</span> actuatorSetting, <span class="keywordtype">float</span>&amp; position) <span class="keyword">const</span> ;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> Move(<span class="keywordtype">string</span> actuatorSetting,<span class="keywordtype">float</span> nbSteps,<span class="keywordtype">int</span> unit) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> MoveAbs(<span class="keywordtype">string</span> actuatorSetting, <span class="keywordtype">float</span> absPos, <span class="keywordtype">int</span> unit) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> Stop(<span class="keywordtype">string</span> actuatorSetting) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> OperationComplete(</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                    <span class="keywordtype">string</span>&amp; rstateData,</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    <span class="keywordtype">string</span>  actuatorSetting,</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                    <a class="code" href="namespaceDriverDefinition.html#a64a3030e095e640f75f387251025d3bd">DriverDefinition::ADLimitSwitch</a>&amp; rlimitSwitch) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> GetActuatorFeature(</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;       <a class="code" href="structDriverDefinition_1_1DriverFeature.html">DriverDefinition::DriverFeature</a>&amp; ractuatorFeature) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> ConvertUnit(<span class="keywordtype">int</span> unit, </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                            <span class="keywordtype">float</span> valueToConvert, </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                            <span class="keywordtype">float</span>&amp; rconvertedValue,</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                            <span class="keywordtype">float</span>&amp; rrange) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  private :</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">string</span> VALID_ACTUATOR_LIST;  <span class="comment">//List of valid actuator setting</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="structDriverDefinition_1_1DriverFeature.html">DriverDefinition::DriverFeature</a> PI_C509_FEATURE; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                                                <span class="comment">// PI_C509 actuator features</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//_DRIVERPI_C509_H_</span></div>
-<div class="ttc" id="aclassACCom_html"><div class="ttname"><a href="classACCom.html">ACCom</a></div><div class="ttdef"><b>Definition:</b> <a href="ACCom_8h_source.html#l00041">ACCom.h:42</a></div></div>
-<div class="ttc" id="aclassDriverPI__C509_html"><div class="ttname"><a href="classDriverPI__C509.html">DriverPI_C509</a></div><div class="ttdef"><b>Definition:</b> <a href="DriverPI__C509_8h_source.html#l00030">DriverPI_C509.h:31</a></div></div>
-<div class="ttc" id="aclassDriverPI__C509_html_a5273c4acfe3031e571c7821e977fbb19"><div class="ttname"><a href="classDriverPI__C509.html#a5273c4acfe3031e571c7821e977fbb19">DriverPI_C509::DriverPI_C509</a></div><div class="ttdeci">DriverPI_C509()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> <a href="DriverPI__C509_8h_source.html#l00035">DriverPI_C509.h:35</a></div></div>
-<div class="ttc" id="aclassDriverPI__C509_html_a7003dd15a4eca73985e766706a93f42e"><div class="ttname"><a href="classDriverPI__C509.html#a7003dd15a4eca73985e766706a93f42e">DriverPI_C509::DriverPI_C509</a></div><div class="ttdeci">DriverPI_C509(ACCom *commChannel)</div><div class="ttdef"><b>Definition:</b> <a href="DriverPI__C509_8h_source.html#l00038">DriverPI_C509.h:38</a></div></div>
-<div class="ttc" id="aclassDriverPI__C509_html_a9916e63059abb077dc4d63b79975a7d0"><div class="ttname"><a href="classDriverPI__C509.html#a9916e63059abb077dc4d63b79975a7d0">DriverPI_C509::DriverPI_C509</a></div><div class="ttdeci">DriverPI_C509(const DriverPI_C509 &amp;actuatorDrvPI_C509)</div><div class="ttdef"><b>Definition:</b> <a href="DriverPI__C509_8h_source.html#l00054">DriverPI_C509.h:54</a></div></div>
-<div class="ttc" id="aclassDriverPI__C509_html_abfb7f65c63343edd4bf12bd6e4772a52"><div class="ttname"><a href="classDriverPI__C509.html#abfb7f65c63343edd4bf12bd6e4772a52">DriverPI_C509::DriverPI_C509</a></div><div class="ttdeci">DriverPI_C509(const DriverPI_C509 &amp;actuatorDrvPI_C509, ACCom *commChannel)</div><div class="ttdef"><b>Definition:</b> <a href="DriverPI__C509_8h_source.html#l00044">DriverPI_C509.h:44</a></div></div>
-<div class="ttc" id="aclassDriverPI__C509_html_ad3af7308aab7893aa3647e44867a7269"><div class="ttname"><a href="classDriverPI__C509.html#ad3af7308aab7893aa3647e44867a7269">DriverPI_C509::~DriverPI_C509</a></div><div class="ttdeci">virtual ~DriverPI_C509()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="DriverPI__C509_8h_source.html#l00050">DriverPI_C509.h:50</a></div></div>
-<div class="ttc" id="aclassDriver_html"><div class="ttname"><a href="classDriver.html">Driver</a></div><div class="ttdef"><b>Definition:</b> <a href="Driver_8h_source.html#l00039">Driver.h:40</a></div></div>
-<div class="ttc" id="aclassDriver_html_a25bcf5a516b6b912f9692cb8209c298d"><div class="ttname"><a href="classDriver.html#a25bcf5a516b6b912f9692cb8209c298d">Driver::_pcommChannel</a></div><div class="ttdeci">ACCom * _pcommChannel</div><div class="ttdoc">Actuator communication channel.</div><div class="ttdef"><b>Definition:</b> <a href="Driver_8h_source.html#l00224">Driver.h:224</a></div></div>
-<div class="ttc" id="anamespaceDriverDefinition_html_a64a3030e095e640f75f387251025d3bd"><div class="ttname"><a href="namespaceDriverDefinition.html#a64a3030e095e640f75f387251025d3bd">DriverDefinition::ADLimitSwitch</a></div><div class="ttdeci">ADLimitSwitch</div><div class="ttdoc">Limit switch state.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00069">DriverDefinition.h:69</a></div></div>
-<div class="ttc" id="astructDriverDefinition_1_1DriverFeature_html"><div class="ttname"><a href="structDriverDefinition_1_1DriverFeature.html">DriverDefinition::DriverFeature</a></div><div class="ttdoc">Driver feature metadata.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00047">DriverDefinition.h:48</a></div></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef DRIVERPI_C509_H</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define DRIVERPI_C509_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Driver_8h.html">Driver.h</a>&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// Set namespace</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">using namespace </span>std;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDriverPI__C509.html">DriverPI_C509</a> : <span class="keyword">public</span> <a class="code" href="classDriver.html">Driver</a></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html#a5273c4acfe3031e571c7821e977fbb19">   40</a></span>&#160;    <a class="code" href="classDriverPI__C509.html#a5273c4acfe3031e571c7821e977fbb19">DriverPI_C509</a>(){}</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html#a7003dd15a4eca73985e766706a93f42e">   43</a></span>&#160;    <a class="code" href="classDriverPI__C509.html#a7003dd15a4eca73985e766706a93f42e">DriverPI_C509</a>(<a class="code" href="classACCom.html">ACCom</a>* commChannel):</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;       <a class="code" href="classDriver.html">Driver</a>(commChannel) </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    {}</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html#abfb7f65c63343edd4bf12bd6e4772a52">   49</a></span>&#160;    <a class="code" href="classDriverPI__C509.html#abfb7f65c63343edd4bf12bd6e4772a52">DriverPI_C509</a>(<span class="keyword">const</span> <a class="code" href="classDriverPI__C509.html">DriverPI_C509</a>&amp; actuatorDrvPI_C509,</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                       <a class="code" href="classACCom.html">ACCom</a>* commChannel):</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;       <a class="code" href="classDriver.html">Driver</a>(actuatorDrvPI_C509, commChannel) </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    {}</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html#ad3af7308aab7893aa3647e44867a7269">   55</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classDriverPI__C509.html#ad3af7308aab7893aa3647e44867a7269">~DriverPI_C509</a>(){}</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html#a9916e63059abb077dc4d63b79975a7d0">   59</a></span>&#160;    <a class="code" href="classDriverPI__C509.html#a9916e63059abb077dc4d63b79975a7d0">DriverPI_C509</a>(<span class="keyword">const</span> <a class="code" href="classDriverPI__C509.html">DriverPI_C509</a>&amp; actuatorDrvPI_C509 ):</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;       <a class="code" href="classDriver.html">Driver</a>(actuatorDrvPI_C509)</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  </div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classDriverPI__C509.html#aa53e9594c8cdb9961f6ba6171a82f01e">   66</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classDriverPI__C509.html">DriverPI_C509</a>&amp; operator = (<span class="keyword">const</span> <a class="code" href="classDriverPI__C509.html">DriverPI_C509</a>&amp; actuatorDrvPI_C509) </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;       _pcommChannel = actuatorDrvPI_C509.<a class="code" href="classDriver.html#a25bcf5a516b6b912f9692cb8209c298d">_pcommChannel</a>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;       <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// Methods:</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment"></span>    <span class="keyword">virtual</span> <span class="keywordtype">int</span> Init(<span class="keywordtype">string</span>&amp; rstateData) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> InitActuator(<span class="keywordtype">string</span> actuatorSetting,<span class="keywordtype">float</span> position) <span class="keyword">const</span> ;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> GetPos(<span class="keywordtype">string</span> actuatorSetting, <span class="keywordtype">float</span>&amp; position) <span class="keyword">const</span> ;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> Move(<span class="keywordtype">string</span> actuatorSetting,<span class="keywordtype">float</span> nbSteps,<span class="keywordtype">int</span> unit) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> MoveAbs(<span class="keywordtype">string</span> actuatorSetting, <span class="keywordtype">float</span> absPos, <span class="keywordtype">int</span> unit) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> Stop(<span class="keywordtype">string</span> actuatorSetting) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> OperationComplete(</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    <span class="keywordtype">string</span>&amp; rstateData,</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                    <span class="keywordtype">string</span>  actuatorSetting,</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                    <a class="code" href="namespaceDriverDefinition.html#a64a3030e095e640f75f387251025d3bd">DriverDefinition::ADLimitSwitch</a>&amp; rlimitSwitch) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> GetActuatorFeature(</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;       <a class="code" href="structDriverDefinition_1_1DriverFeature.html">DriverDefinition::DriverFeature</a>&amp; ractuatorFeature) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">int</span> ConvertUnit(<span class="keywordtype">int</span> unit, </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                            <span class="keywordtype">float</span> valueToConvert, </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                            <span class="keywordtype">float</span>&amp; rconvertedValue,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                            <span class="keywordtype">float</span>&amp; rrange) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  private :</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">string</span> VALID_ACTUATOR_LIST;  <span class="comment">//List of valid actuator setting</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="structDriverDefinition_1_1DriverFeature.html">DriverDefinition::DriverFeature</a> PI_C509_FEATURE; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                                                <span class="comment">// PI_C509 actuator features</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;};</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//_DRIVERPI_C509_H_</span></div>
+<div class="ttc" id="aDriver_8h_html"><div class="ttname"><a href="Driver_8h.html">Driver.h</a></div><div class="ttdoc">Driver implementation for .</div></div>
+<div class="ttc" id="aclassACCom_html"><div class="ttname"><a href="classACCom.html">ACCom</a></div><div class="ttdef"><b>Definition:</b> <a href="ACCom_8h_source.html#l00046">ACCom.h:47</a></div></div>
+<div class="ttc" id="aclassDriverPI__C509_html"><div class="ttname"><a href="classDriverPI__C509.html">DriverPI_C509</a></div><div class="ttdef"><b>Definition:</b> <a href="DriverPI__C509_8h_source.html#l00035">DriverPI_C509.h:36</a></div></div>
+<div class="ttc" id="aclassDriverPI__C509_html_a5273c4acfe3031e571c7821e977fbb19"><div class="ttname"><a href="classDriverPI__C509.html#a5273c4acfe3031e571c7821e977fbb19">DriverPI_C509::DriverPI_C509</a></div><div class="ttdeci">DriverPI_C509()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> <a href="DriverPI__C509_8h_source.html#l00040">DriverPI_C509.h:40</a></div></div>
+<div class="ttc" id="aclassDriverPI__C509_html_a7003dd15a4eca73985e766706a93f42e"><div class="ttname"><a href="classDriverPI__C509.html#a7003dd15a4eca73985e766706a93f42e">DriverPI_C509::DriverPI_C509</a></div><div class="ttdeci">DriverPI_C509(ACCom *commChannel)</div><div class="ttdef"><b>Definition:</b> <a href="DriverPI__C509_8h_source.html#l00043">DriverPI_C509.h:43</a></div></div>
+<div class="ttc" id="aclassDriverPI__C509_html_a9916e63059abb077dc4d63b79975a7d0"><div class="ttname"><a href="classDriverPI__C509.html#a9916e63059abb077dc4d63b79975a7d0">DriverPI_C509::DriverPI_C509</a></div><div class="ttdeci">DriverPI_C509(const DriverPI_C509 &amp;actuatorDrvPI_C509)</div><div class="ttdef"><b>Definition:</b> <a href="DriverPI__C509_8h_source.html#l00059">DriverPI_C509.h:59</a></div></div>
+<div class="ttc" id="aclassDriverPI__C509_html_abfb7f65c63343edd4bf12bd6e4772a52"><div class="ttname"><a href="classDriverPI__C509.html#abfb7f65c63343edd4bf12bd6e4772a52">DriverPI_C509::DriverPI_C509</a></div><div class="ttdeci">DriverPI_C509(const DriverPI_C509 &amp;actuatorDrvPI_C509, ACCom *commChannel)</div><div class="ttdef"><b>Definition:</b> <a href="DriverPI__C509_8h_source.html#l00049">DriverPI_C509.h:49</a></div></div>
+<div class="ttc" id="aclassDriverPI__C509_html_ad3af7308aab7893aa3647e44867a7269"><div class="ttname"><a href="classDriverPI__C509.html#ad3af7308aab7893aa3647e44867a7269">DriverPI_C509::~DriverPI_C509</a></div><div class="ttdeci">virtual ~DriverPI_C509()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="DriverPI__C509_8h_source.html#l00055">DriverPI_C509.h:55</a></div></div>
+<div class="ttc" id="aclassDriver_html"><div class="ttname"><a href="classDriver.html">Driver</a></div><div class="ttdef"><b>Definition:</b> <a href="Driver_8h_source.html#l00044">Driver.h:45</a></div></div>
+<div class="ttc" id="aclassDriver_html_a25bcf5a516b6b912f9692cb8209c298d"><div class="ttname"><a href="classDriver.html#a25bcf5a516b6b912f9692cb8209c298d">Driver::_pcommChannel</a></div><div class="ttdeci">ACCom * _pcommChannel</div><div class="ttdoc">Actuator communication channel.</div><div class="ttdef"><b>Definition:</b> <a href="Driver_8h_source.html#l00229">Driver.h:229</a></div></div>
+<div class="ttc" id="anamespaceDriverDefinition_html_a64a3030e095e640f75f387251025d3bd"><div class="ttname"><a href="namespaceDriverDefinition.html#a64a3030e095e640f75f387251025d3bd">DriverDefinition::ADLimitSwitch</a></div><div class="ttdeci">ADLimitSwitch</div><div class="ttdoc">Limit switch state.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00074">DriverDefinition.h:74</a></div></div>
+<div class="ttc" id="astructDriverDefinition_1_1DriverFeature_html"><div class="ttname"><a href="structDriverDefinition_1_1DriverFeature.html">DriverDefinition::DriverFeature</a></div><div class="ttdoc">Driver feature metadata.</div><div class="ttdef"><b>Definition:</b> <a href="DriverDefinition_8h_source.html#l00052">DriverDefinition.h:53</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>DriverPI_C509.h</b></li>
+    <li class="navelem"><a class="el" href="DriverPI__C509_8h.html">DriverPI_C509.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
