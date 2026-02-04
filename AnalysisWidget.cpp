@@ -201,6 +201,11 @@ QVector<AnalysisTask> AnalysisWidget::buildTaskList() const {
 }
 
 void AnalysisWidget::run() {
+  if (analysis->isRunning()) {
+    Utils::EmitWarning(this, __FUNCTION__,
+                       "Analysis is already running. Stop it before starting a new run.");
+    return;
+  }
   stop();
   statusLabel->setText("Running...");
   outputView->clear();
@@ -216,6 +221,11 @@ void AnalysisWidget::run() {
 
 void AnalysisWidget::runFromAcquisition() {
   QLOG_INFO() << "AnalysisWidget::runFromAcquisition";
+  if (analysis->isRunning()) {
+    Utils::EmitWarning(this, __FUNCTION__,
+                       "Analysis is already running. Stop it before starting a new run.");
+    return;
+  }
   run();
 }
 
