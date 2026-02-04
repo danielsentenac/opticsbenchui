@@ -40,6 +40,8 @@ MotorWindow::MotorWindow( QMainWindow* parent, Qt::WindowFlags fl , Motor *_moto
   actuatorList = new QVector<QString> ();
   motorWidget = new MotorControlWidget(actuatorList);
   motorWidget->setMotor(motor);
+  connect(motor, SIGNAL(operationCompleted()), this,
+          SLOT(refreshActuatorTable()));
   dockWidget = new QDockWidget(tr("Actuator Control"), this);
   dockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
   QScrollArea *scrollableWidget = new  QScrollArea();
@@ -117,6 +119,7 @@ MotorWindow::MotorWindow( QMainWindow* parent, Qt::WindowFlags fl , Motor *_moto
   actuatortable->setHeaderData(4, Qt::Horizontal, tr("position"));
   //actuatorview->setColumnHidden (4, true);
 
+  refreshActuatorTable();
   
   InitConfig();
 } 
@@ -215,6 +218,15 @@ MotorWindow::update(){
   drivertable->submitAll();
   actuatortable->submitAll();
   InitConfig();
+}
+
+void MotorWindow::refreshActuatorTable() {
+  if (!actuatortable || !actuatorview) {
+    return;
+  }
+  actuatortable->select();
+  actuatorview->resizeColumnsToContents();
+  actuatorview->resizeRowsToContents();
 }
 void 
 MotorWindow::load(){

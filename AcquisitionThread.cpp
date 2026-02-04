@@ -315,6 +315,7 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     // Update motor position
     QString positionQString;
     // Save motor position data
+    motor->updateDbPosition(sequence->instrumentName);
     sequence->position = motor->getPosition(sequence->instrumentName);
     positionQString.setNum (sequence->position, 'f',3);
     emit getPosition(positionQString);

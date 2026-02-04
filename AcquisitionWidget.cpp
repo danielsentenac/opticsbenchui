@@ -64,9 +64,11 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
       runButton(new QPushButton("Run", this)),
       stopButton(new QPushButton("Stop", this)),
       elapsedLabel(new QLabel("Elapsed: 00:00:00")),
+      acquisitionProgress(new QProgressBar()),
       gridlayout(new QGridLayout()),
       acquisition(new AcquisitionThread()),
-      sequenceList() {
+      sequenceList(),
+      elapsedTimerTick(new QTimer(this)) {
   QLOG_DEBUG() << "AcquisitionWidget::AcquisitionWidget";
 
   dbConnexion();
@@ -78,7 +80,7 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
   acquisitionview->setStyleSheet(kSelectionStylesheet);
   acquisitionview->setModel(acquisitiontable);
   acquisitionview->verticalHeader()->hide();
-  acquisitionview->setProperty("stretchLastColumn", true);
+  acquisitionview->setProperty("disableLastColumnExpand", true);
   Utils::ConfigureSqlTableView(acquisitionview);
   gridlayout->addWidget(acquisitionview, 1, 0, 1, 10);
 
@@ -101,7 +103,16 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
   stopButton->setFixedSize(100, 30);
   connect(stopButton, SIGNAL(clicked()), this, SLOT(stop()));
   gridlayout->addWidget(stopButton, 5, 1, 1, 1);
-  gridlayout->addWidget(elapsedLabel, 5, 2, 1, 4);
+  gridlayout->addWidget(elapsedLabel, 5, 2, 1, 3);
+
+  acquisitionProgress->setTextVisible(false);
+  acquisitionProgress->setMinimumHeight(18);
+  acquisitionProgress->setRange(0, 1);
+  acquisitionProgress->setValue(0);
+  gridlayout->addWidget(acquisitionProgress, 5, 5, 1, 5);
+
+  elapsedTimerTick->setInterval(1000);
+  connect(elapsedTimerTick, SIGNAL(timeout()), this, SLOT(updateElapsed()));
 
   setupAcquisitionTable();
   InitConfig();
@@ -283,6 +294,16 @@ void AcquisitionWidget::setupAcquisitionTable() {
   acquisitiontable->setHeaderData(4, Qt::Horizontal, tr("scanplan"));
   acquisitiontable->setHeaderData(5, Qt::Horizontal, tr("status"));
   acquisitiontable->setHeaderData(6, Qt::Horizontal, tr("acquiring"));
+  if (QHeaderView* header = acquisitionview->horizontalHeader()) {
+    const QString headerText =
+        acquisitiontable->headerData(6, Qt::Horizontal).toString();
+    const int padding = 24;
+    const int width =
+        QFontMetrics(header->font()).horizontalAdvance(headerText) + padding;
+    acquisitionview->setProperty("fixedLastColumnWidth", width);
+    header->setSectionResizeMode(6, QHeaderView::Fixed);
+    acquisitionview->setColumnWidth(6, width);
+  }
 }
 
 void AcquisitionWidget::update() {
@@ -364,6 +385,9 @@ void AcquisitionWidget::run() {
   acquisition->setSequenceList(sequenceList);
   elapsedTimer.start();
   elapsedLabel->setText("Elapsed: 00:00:00");
+  acquisitionProgress->setRange(0, 0);
+  acquisitionProgress->setValue(0);
+  elapsedTimerTick->start();
   acquisition->start();
   QLOG_DEBUG() << "AcquisitionWidget::run started";
 }
@@ -371,6 +395,9 @@ void AcquisitionWidget::run() {
 void AcquisitionWidget::stop() {
   acquisition->stop();
   setAcquiringToLastRecord();
+  elapsedTimerTick->stop();
+  acquisitionProgress->setRange(0, 1);
+  acquisitionProgress->setValue(0);
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
   }
@@ -522,7 +549,17 @@ void AcquisitionWidget::requestAnalysisFromThread() {
 }
 
 void AcquisitionWidget::acquisitionFinished() {
+  elapsedTimerTick->stop();
+  acquisitionProgress->setRange(0, 1);
+  acquisitionProgress->setValue(1);
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
   }
+}
+
+void AcquisitionWidget::updateElapsed() {
+  if (!elapsedTimer.isValid()) {
+    return;
+  }
+  elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
 }

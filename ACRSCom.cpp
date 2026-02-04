@@ -138,8 +138,10 @@ ACRSCom::Close ()
     }
   if (close (_hCom))
     {
-      ReportWarning("ACRSCom::Close> Unable to close device");
-      status = -1;
+      if (_state == OPEN) {
+        ReportWarning("ACRSCom::Close> Unable to close device");
+        status = -1;
+      }
     }
   else
     {

@@ -330,6 +330,32 @@ Motor::getPosition(QString newactuator) {
   }
   return actuposition;
 }
+void
+Motor::updateDbPosition(QString newactuator) {
+  for (int i = 0 ; i < actuator.size(); i++) {
+    if (actuator.at(i) == newactuator) {
+      if (!connectSuccess.at(i)) {
+        return;
+      }
+      float curpos = 0;
+      actuatorDriver.at(i)->GetPos(actuatorSettings.at(i).toStdString(), curpos);
+      position.replace(i, curpos);
+      QString positionQString;
+      positionQString.setNum(position.at(i), 'f', 3);
+      emit getPosition(position.at(i));
+      QSqlDatabase db = connectDb(path);
+      QSqlQuery query(db);
+      query.prepare("update motor_actuator set position = ? where name = ?");
+      query.addBindValue(positionQString);
+      query.addBindValue(actuator.at(i));
+      if (!query.exec()) {
+        QLOG_WARN() << "Motor::updateDbPosition> "
+                    << query.lastError().text();
+      }
+      return;
+    }
+  }
+}
 int 
 Motor::getOperationComplete(QString newactuator) {
   int status = 1;
@@ -378,6 +404,7 @@ Motor::operationComplete() {
 	  query.exec();
 	  operationcomplete.replace(i, success);
           QLOG_DEBUG ( ) << "OperationComplete " << success << " position " << position.at(i);
+	  emit operationCompleted();
 	  emit stopTimer();
 	}
 	iscompleting = false;

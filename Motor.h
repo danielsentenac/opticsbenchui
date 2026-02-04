@@ -76,6 +76,9 @@ class Motor : public QObject
   /// Read current actuator position.
   /// \param newactuator Actuator identifier from the database.
   float getPosition(QString newactuator);
+  /// Refresh position from the driver and persist it to the DB.
+  /// \param newactuator Actuator identifier from the database.
+  void updateDbPosition(QString newactuator);
   
   // parameters
   /// Per-actuator completion flags.
@@ -83,10 +86,12 @@ class Motor : public QObject
   /// Path to the motor database.
   QString path;
 
- signals:
+signals:
   /// Emit the current position for display.
   /// \param position Position value (device units).
   void getPosition(float position);
+  /// Emit when a motor operation completes successfully.
+  void operationCompleted();
   /// Emit a human-readable description of the actuator.
   /// \param description Actuator description string.
   void getDescription(QString description);

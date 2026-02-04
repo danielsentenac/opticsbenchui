@@ -135,6 +135,8 @@ public slots:
   void requestAnalysisFromThread();
   /// Update elapsed time when acquisition thread finishes.
   void acquisitionFinished();
+  /// Update elapsed time while acquisition runs.
+  void updateElapsed();
  
 private:
   void InitConfig();
@@ -170,11 +172,13 @@ private:
   QPushButton* runButton;
   QPushButton* stopButton;
   QLabel* elapsedLabel;
+  QProgressBar* acquisitionProgress;
   QGridLayout* gridlayout;
 
   AcquisitionThread* acquisition;
   QVector<AcquisitionSequence*> sequenceList;
   QElapsedTimer elapsedTimer;
+  QTimer* elapsedTimerTick;
 
 };
 #endif

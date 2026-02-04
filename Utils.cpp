@@ -364,15 +364,36 @@ void UpdateSqlTableViewColumnSizing(QTableView* view) {
     return;
   }
   const bool stretchLast = view->property("stretchLastColumn").toBool();
+  const int fixedLastWidth = view->property("fixedLastColumnWidth").toInt();
+  const bool hasFixedLast = fixedLastWidth > 0;
+  const bool disableLastExpand =
+      view->property("disableLastColumnExpand").toBool();
   header->setStretchLastSection(stretchLast);
+  if (hasFixedLast) {
+    header->setSectionResizeMode(columns - 1, QHeaderView::Fixed);
+  }
   view->resizeColumnsToContents();
+  if (hasFixedLast) {
+    view->setColumnWidth(columns - 1, fixedLastWidth);
+  }
+  // Ensure headers remain readable.
+  QVector<int> headerMinWidths;
+  headerMinWidths.reserve(columns);
+  for (int c = 0; c < columns; ++c) {
+    const QString headerText = model->headerData(c, Qt::Horizontal).toString();
+    const int headerWidth =
+        QFontMetrics(header->font()).horizontalAdvance(headerText) + 24;
+    const int minWidth = qMax(headerWidth, header->minimumSectionSize());
+    headerMinWidths.push_back(minWidth);
+    header->resizeSection(c, qMax(header->sectionSize(c), minWidth));
+  }
   QVector<int> widths;
   widths.reserve(columns);
   int total = 0;
   const int lastColumn = columns - 1;
   const int lastLimit = stretchLast ? lastColumn : columns;
   for (int c = 0; c < lastLimit; ++c) {
-    const int width = qMax(header->sectionSize(c), header->minimumSectionSize());
+    const int width = qMax(header->sectionSize(c), headerMinWidths[c]);
     widths.push_back(width);
     total += width;
   }
@@ -383,12 +404,16 @@ void UpdateSqlTableViewColumnSizing(QTableView* view) {
     }
     return;
   }
-  if (viewportWidth > total) {
+  if (!disableLastExpand && !hasFixedLast && viewportWidth > total) {
     const int extra = viewportWidth - total;
     widths[lastColumn] += extra;
   }
   for (int c = 0; c < columns; ++c) {
-    view->setColumnWidth(c, widths[c]);
+    const int width =
+        (hasFixedLast && c == lastColumn)
+            ? qMax(fixedLastWidth, headerMinWidths[c])
+            : qMax(widths[c], headerMinWidths[c]);
+    view->setColumnWidth(c, width);
   }
 }
 

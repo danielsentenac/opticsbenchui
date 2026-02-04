@@ -59,6 +59,8 @@ class MotorWindow : public QMainWindow
    /// Set the database path for tables.
    /// \param _path Filesystem path to the motor DB.
    void setDbPath(QString _path);
+   /// Refresh actuator table to show latest positions.
+   void refreshActuatorTable();
 
  protected:
   /// Handle window close events.
