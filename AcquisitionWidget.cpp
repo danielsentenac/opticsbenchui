@@ -440,6 +440,7 @@ void AcquisitionWidget::run() {
     acquisitionProgress->setValue(0);
   }
   elapsedTimerTick->start();
+  emit runningChanged(true);
   acquisition->start();
   QLOG_DEBUG() << "AcquisitionWidget::run started";
 }
@@ -450,6 +451,7 @@ void AcquisitionWidget::stop() {
   elapsedTimerTick->stop();
   acquisitionProgress->setRange(0, totalAcqRecords > 0 ? totalAcqRecords : 1);
   acquisitionProgress->setValue(0);
+  emit runningChanged(false);
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
   }
@@ -614,6 +616,7 @@ void AcquisitionWidget::acquisitionFinished() {
   elapsedTimerTick->stop();
   acquisitionProgress->setRange(0, totalAcqRecords > 0 ? totalAcqRecords : 1);
   acquisitionProgress->setValue(totalAcqRecords > 0 ? totalAcqRecords : 0);
+  emit runningChanged(false);
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
   }

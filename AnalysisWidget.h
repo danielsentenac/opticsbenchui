@@ -79,6 +79,9 @@ signals:
   /// Emit warnings to the UI.
   /// \param message Warning message.
   void showWarning(QString message);
+  /// Notify when analysis is running or stopped.
+  /// \param running True while analysis is active.
+  void runningChanged(bool running);
 
 private:
   void InitConfig();

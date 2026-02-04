@@ -81,6 +81,9 @@ signals:
   void showWarning(QString message);
   /// Request analysis execution.
   void requestAnalysis();
+  /// Notify when acquisition is running or stopped.
+  /// \param running True while acquisition is active.
+  void runningChanged(bool running);
   
 public slots:
   /// Refresh displayed values.

@@ -217,6 +217,7 @@ void AnalysisWidget::run() {
   analysisWasStopped = false;
   elapsedTimer.start();
   elapsedLabel->setText("Elapsed: 00:00:00");
+  emit runningChanged(true);
   analysis->start();
   QLOG_DEBUG() << "AnalysisWidget::run started";
 }
@@ -234,6 +235,7 @@ void AnalysisWidget::runFromAcquisition() {
 void AnalysisWidget::stop() {
   analysis->stop();
   analysisWasStopped = true;
+  emit runningChanged(false);
   statusLabel->setText("Idle");
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
@@ -282,6 +284,7 @@ void AnalysisWidget::analysisThreadFinished() {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
   }
   statusLabel->setText(analysisWasStopped ? "Stopped" : "Finished");
+  emit runningChanged(false);
 }
 
 void AnalysisWidget::dbConnexion() {

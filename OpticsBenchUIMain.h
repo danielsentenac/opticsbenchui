@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QApplication>
 #include <QtSql>
 #include <QtWidgets>
+#include <QTimer>
 
 #include "CameraWindow.h"
 #include "MotorWindow.h"
@@ -176,6 +177,14 @@ class OpticsBenchUIMain : public QMainWindow
   /// Display acquisition warning message.
   /// \param message Warning text.
   void showAcquisitionWarning(QString message);
+  /// Update flashing state for acquisition tab.
+  /// \param running True while acquisition is active.
+  void setAcquisitionRunning(bool running);
+  /// Update flashing state for analysis tab.
+  /// \param running True while analysis is active.
+  void setAnalysisRunning(bool running);
+  /// Timer slot to flash running tabs.
+  void flashRunningTabs();
   /// Show help documentation.
   void showDocumentation();
   /// Show API documentation in the default browser.
@@ -211,6 +220,10 @@ class OpticsBenchUIMain : public QMainWindow
   QTabWidget    *tab;
   AcquisitionWidget *acquisitionwidget;
   AnalysisWidget    *analysiswidget;
+  QTimer* tabFlashTimer;
+  bool flashOn;
+  bool acquisitionRunning;
+  bool analysisRunning;
   Dac      *dac;
 #if defined(COMEDICOUNTER) || defined(COMEDIDAC)
   Comedi   *comedicounter, *comedidac;

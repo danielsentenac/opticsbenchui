@@ -252,6 +252,17 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
 	  SLOT(showAcquisitionWarning(QString)));
   connect(acquisitionwidget,SIGNAL(requestAnalysis()),analysiswidget,
           SLOT(runFromAcquisition()));
+  connect(acquisitionwidget,SIGNAL(runningChanged(bool)),this,
+          SLOT(setAcquisitionRunning(bool)));
+  connect(analysiswidget,SIGNAL(runningChanged(bool)),this,
+          SLOT(setAnalysisRunning(bool)));
+
+  tabFlashTimer = new QTimer(this);
+  flashOn = false;
+  acquisitionRunning = false;
+  analysisRunning = false;
+  tabFlashTimer->setInterval(500);
+  connect(tabFlashTimer, SIGNAL(timeout()), this, SLOT(flashRunningTabs()));
   
 #ifdef ADVANTECHDAC
   acquisitionwidget->setDac(dac);
@@ -557,6 +568,69 @@ OpticsBenchUIMain::showCameraWarning(QString message) {
 void 
 OpticsBenchUIMain::showAcquisitionWarning(QString message) {
   QMessageBox::warning(this, "Acquisition Error:", message);
+}
+void
+OpticsBenchUIMain::setAcquisitionRunning(bool running) {
+  acquisitionRunning = running;
+  if (!running) {
+    const int index = tab->indexOf(acquisitionwidget);
+    if (index >= 0) {
+      const QColor defaultColor = tab->palette().color(QPalette::WindowText);
+      tab->tabBar()->setTabTextColor(index, defaultColor);
+    }
+  }
+  if (acquisitionRunning || analysisRunning) {
+    if (!tabFlashTimer->isActive()) {
+      flashOn = false;
+      tabFlashTimer->start();
+    }
+  } else {
+    tabFlashTimer->stop();
+    flashOn = false;
+  }
+}
+
+void
+OpticsBenchUIMain::setAnalysisRunning(bool running) {
+  analysisRunning = running;
+  if (!running) {
+    const int index = tab->indexOf(analysiswidget);
+    if (index >= 0) {
+      const QColor defaultColor = tab->palette().color(QPalette::WindowText);
+      tab->tabBar()->setTabTextColor(index, defaultColor);
+    }
+  }
+  if (acquisitionRunning || analysisRunning) {
+    if (!tabFlashTimer->isActive()) {
+      flashOn = false;
+      tabFlashTimer->start();
+    }
+  } else {
+    tabFlashTimer->stop();
+    flashOn = false;
+  }
+}
+
+void
+OpticsBenchUIMain::flashRunningTabs() {
+  if (!tab) {
+    return;
+  }
+  flashOn = !flashOn;
+  const QColor defaultColor = tab->palette().color(QPalette::WindowText);
+  const QColor flashColor = QColor(255, 185, 0);
+  if (acquisitionRunning) {
+    const int index = tab->indexOf(acquisitionwidget);
+    if (index >= 0) {
+      tab->tabBar()->setTabTextColor(index, flashOn ? flashColor : defaultColor);
+    }
+  }
+  if (analysisRunning) {
+    const int index = tab->indexOf(analysiswidget);
+    if (index >= 0) {
+      tab->tabBar()->setTabTextColor(index, flashOn ? flashColor : defaultColor);
+    }
+  }
 }
 void 
 OpticsBenchUIMain::showCameraControlWidgetWarning(QString message) {

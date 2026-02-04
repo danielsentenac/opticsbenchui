@@ -216,23 +216,37 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   layout->addWidget(optimizeAcquisitionLabel,2,1000,1,1,Qt::AlignTop | Qt::AlignCenter);
   layout->addWidget(optimizeAcquisitionBox,2,1000+1,1,1,Qt::AlignTop | Qt::AlignCenter);
 */
+  auto *controlsLayout = new QVBoxLayout();
+  controlsLayout->setContentsMargins(0, 0, 0, 0);
+  controlsLayout->setSpacing(6);
+
   snapshotButton = new QPushButton("Snapshot",this);
   snapshotButton->setFixedHeight(30);
-  snapshotButton->setFixedWidth(80);
+  snapshotButton->setFixedWidth(90);
   QObject::connect(snapshotButton, SIGNAL(clicked()), this, SLOT(snapShot()),Qt::UniqueConnection);
-  layout->addWidget(snapshotButton,0,1000+2,1,1,Qt::AlignCenter);
+  controlsLayout->addWidget(snapshotButton);
   
   vflipLabel = new QLabel("Flip vertical");
   vflipBox = new QCheckBox();
   QObject::connect(vflipBox, SIGNAL(stateChanged(int)), camera, SLOT(vflipImage(int)),Qt::UniqueConnection);
-  layout->addWidget(vflipLabel,1,1000+2,1,1,Qt::AlignBottom);
-  layout->addWidget(vflipBox,1,1000+3,1,1,Qt::AlignBottom);
+  auto *vflipRow = new QHBoxLayout();
+  vflipRow->setContentsMargins(0, 0, 0, 0);
+  vflipRow->setSpacing(6);
+  vflipRow->addWidget(vflipLabel);
+  vflipRow->addWidget(vflipBox);
+  vflipRow->addStretch(1);
+  controlsLayout->addLayout(vflipRow);
 
   hflipLabel = new QLabel("Flip horizontal");
   hflipBox = new QCheckBox();
   QObject::connect(hflipBox, SIGNAL(stateChanged(int)), camera, SLOT(hflipImage(int)),Qt::UniqueConnection);
-  layout->addWidget(hflipLabel,2,1000+2,1,1,Qt::AlignCenter);
-  layout->addWidget(hflipBox,2,1000+3,1,1,Qt::AlignCenter);
+  auto *hflipRow = new QHBoxLayout();
+  hflipRow->setContentsMargins(0, 0, 0, 0);
+  hflipRow->setSpacing(6);
+  hflipRow->addWidget(hflipLabel);
+  hflipRow->addWidget(hflipBox);
+  hflipRow->addStretch(1);
+  controlsLayout->addLayout(hflipRow);
 
   colorGroup = new QButtonGroup(this);
   connect(colorGroup, SIGNAL(buttonClicked(int)), camera, SLOT(setColorTable(int)),Qt::UniqueConnection) ;
@@ -245,9 +259,11 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   colorLayout->setSpacing(4);
   colorLayout->addWidget(grayButton);
   colorLayout->addWidget(hotButton);
-  auto *colorWidget = new QWidget(this);
-  colorWidget->setLayout(colorLayout);
-  layout->addWidget(colorWidget, 1, 2000, 2, 1, Qt::AlignTop);
+  controlsLayout->addLayout(colorLayout);
+
+  auto *controlsWidget = new QWidget(this);
+  controlsWidget->setLayout(controlsLayout);
+  layout->addWidget(controlsWidget, 0, 1000 + 2, 3, 2, Qt::AlignTop);
   
   grayButton->setChecked(true);
   setMinimumHeight(DOCK_HEIGHT);
