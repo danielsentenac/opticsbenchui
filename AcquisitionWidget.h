@@ -139,7 +139,7 @@ public slots:
   void updateElapsed();
  
 private:
-  void InitConfig();
+  void InitConfig(bool resizeView = true);
   void dbConnexion();
   void setupAcquisitionTable();
   void updateStatusForRecord(const QString& status, int record);

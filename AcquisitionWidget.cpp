@@ -83,7 +83,9 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
   acquisitionview->setStyleSheet(kSelectionStylesheet);
   acquisitionview->setModel(acquisitiontable);
   acquisitionview->verticalHeader()->hide();
+  acquisitionview->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
   acquisitionview->setProperty("disableLastColumnExpand", true);
+  acquisitionview->setProperty("disableAutoResizeOnDataChange", true);
   Utils::ConfigureSqlTableView(acquisitionview);
   gridlayout->addWidget(acquisitionview, 1, 0, 1, 10);
 
@@ -278,13 +280,15 @@ void AcquisitionWidget::setDelegates() {
 
 }
 
-void AcquisitionWidget::InitConfig() {
+void AcquisitionWidget::InitConfig(bool resizeView) {
   acquisitiontable->setSort(0, Qt::AscendingOrder);
   acquisitiontable->select();
   acquisitionrow = acquisitiontable->rowCount();
   acquisitiontable->insertRow(acquisitionrow);
-  acquisitionview->resizeColumnsToContents();
-  acquisitionview->resizeRowsToContents();
+  if (resizeView) {
+    acquisitionview->resizeColumnsToContents();
+    acquisitionview->resizeRowsToContents();
+  }
 }
 
 void AcquisitionWidget::setupAcquisitionTable() {
@@ -484,7 +488,7 @@ void AcquisitionWidget::updateStatusForRecord(const QString& status,
   query.exec();
   QLOG_DEBUG() << "AcquisitionWidget::statusUpdate"
                << query.lastError().text();
-  InitConfig();
+  InitConfig(false);
 }
 
 void AcquisitionWidget::getCameraStatus(bool imagesuccess) {
@@ -539,7 +543,7 @@ void AcquisitionWidget::getAcquiring(int record) {
   query.prepare("update acquisition_sequence set acquiring = '*' where record = ?");
   query.addBindValue(seq_record);
   query.exec();
-  InitConfig();
+  InitConfig(false);
   cur_record = seq_record;
 }
 
@@ -550,7 +554,7 @@ void AcquisitionWidget::setAcquiringToLastRecord() {
                   "where record >= 0 order by record desc limit 1")) {
     QLOG_WARN() << "AcquisitionWidget::setAcquiringToLastRecord"
                 << query.lastError().text();
-    InitConfig();
+    InitConfig(false);
     return;
   }
   if (query.next()) {
@@ -560,7 +564,7 @@ void AcquisitionWidget::setAcquiringToLastRecord() {
     update.addBindValue(lastRecord);
     update.exec();
   }
-  InitConfig();
+  InitConfig(false);
 }
 void AcquisitionWidget::getFilenumber(int number) {
   filenumber = QString::number(number);

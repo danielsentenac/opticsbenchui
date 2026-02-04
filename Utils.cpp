@@ -333,8 +333,12 @@ void ConfigureSqlTableView(QTableView* view) {
   }
   // event filter installed above to handle resize and column adjustments
   auto update = [view, resizer]() {
-    if (!resizer || resizer->ShouldAutoSize()) {
-      UpdateSqlTableViewColumnSizing(view);
+    const bool disableAutoResizeOnDataChange =
+        view->property("disableAutoResizeOnDataChange").toBool();
+    if (!disableAutoResizeOnDataChange) {
+      if (!resizer || resizer->ShouldAutoSize()) {
+        UpdateSqlTableViewColumnSizing(view);
+      }
     }
     UpdateSqlTableViewRowSizing(view);
   };
