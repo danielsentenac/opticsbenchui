@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "SuperKWindow.h"
+#include "Utils.h"
 
 SuperKWindow::SuperKWindow( QMainWindow* parent, Qt::WindowFlags fl , SuperK *_superk)
   : QMainWindow( parent, fl )
@@ -46,6 +47,7 @@ SuperKWindow::SuperKWindow( QMainWindow* parent, Qt::WindowFlags fl , SuperK *_s
   driverview = new QTableView;
   driverview->setStyleSheet("QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};");
   driverview->setModel(drivertable);
+  Utils::ConfigureSqlTableView(driverview);
   vboxlayout->addWidget(driverview);
 
   updateButton = new QPushButton("Update",this);
@@ -94,6 +96,7 @@ void SuperKWindow::setDbPath(QString _path) {
   dbPath = superk->path;
   drivertable = new QSqlTableModel(this,QSqlDatabase::database(dbPath));
   driverview->setModel(drivertable);
+  Utils::ConfigureSqlTableView(driverview);
   
   drivertable->setTable("superk_driver");
   drivertable->setEditStrategy(QSqlTableModel::OnManualSubmit);

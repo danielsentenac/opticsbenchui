@@ -61,6 +61,7 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
   acquisitionview->setStyleSheet(kSelectionStylesheet);
   acquisitionview->setModel(acquisitiontable);
   acquisitionview->verticalHeader()->hide();
+  Utils::ConfigureSqlTableView(acquisitionview);
   gridlayout->addWidget(acquisitionview, 1, 0, 1, 10);
 
   reloadButton->setFixedSize(100, 30);
@@ -140,6 +141,7 @@ void AcquisitionWidget::setDbPath(QString path) {
   acquisitiontable = new QSqlTableModel(this, QSqlDatabase::database(this->path));
   acquisitionview->setModel(acquisitiontable);
   acquisitionview->verticalHeader()->hide();
+  Utils::ConfigureSqlTableView(acquisitionview);
   setupAcquisitionTable();
   InitConfig();
 }

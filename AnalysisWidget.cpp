@@ -51,6 +51,7 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
   analysisview->setStyleSheet(kSelectionStylesheet);
   analysisview->setModel(analysistable);
   analysisview->verticalHeader()->hide();
+  Utils::ConfigureSqlTableView(analysisview);
   gridlayout->addWidget(analysisview, 1, 0, 1, 10);
 
   reloadButton->setFixedSize(100, 30);
@@ -115,6 +116,7 @@ void AnalysisWidget::setDbPath(QString path) {
   analysistable = new QSqlTableModel(this, QSqlDatabase::database(this->path));
   analysisview->setModel(analysistable);
   analysisview->verticalHeader()->hide();
+  Utils::ConfigureSqlTableView(analysisview);
   setupAnalysisTable();
   InitConfig();
 }

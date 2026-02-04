@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "ComediWindow.h"
+#include "Utils.h"
 
 namespace {
 const char kSelectionStylesheet[] =
@@ -58,6 +59,7 @@ ComediWindow::ComediWindow(QMainWindow* parent, Qt::WindowFlags fl,
   comeditable = new QSqlTableModel(this, QSqlDatabase::database(dbPath));
   comediview->setStyleSheet(kSelectionStylesheet);
   comediview->setModel(comeditable);
+  Utils::ConfigureSqlTableView(comediview);
   vboxlayout->addWidget(comediview);
 
   updateButton->setFixedHeight(30);
@@ -91,6 +93,7 @@ void ComediWindow::setDbPath(QString path) {
   }
   comeditable = new QSqlTableModel(this, QSqlDatabase::database(dbPath));
   comediview->setModel(comeditable);
+  Utils::ConfigureSqlTableView(comediview);
   setupTableModel();
   InitConfig();
 }

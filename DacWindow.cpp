@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "DacWindow.h"
+#include "Utils.h"
 
 namespace {
 const char kSelectionStylesheet[] =
@@ -61,6 +62,7 @@ DacWindow::DacWindow(QMainWindow* parent, Qt::WindowFlags fl, Dac *dac)
   dactable = new QSqlTableModel(this, QSqlDatabase::database(dbPath));
   dacview->setStyleSheet(kSelectionStylesheet);
   dacview->setModel(dactable);
+  Utils::ConfigureSqlTableView(dacview);
   vboxlayout->addWidget(dacview);
 
   updateButton->setFixedHeight(30);
@@ -93,6 +95,7 @@ void DacWindow::setDbPath(QString path) {
   }
   dactable = new QSqlTableModel(this, QSqlDatabase::database(dbPath));
   dacview->setModel(dactable);
+  Utils::ConfigureSqlTableView(dacview);
   setupTableModel();
   InitConfig();
 }

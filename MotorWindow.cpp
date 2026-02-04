@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "MotorWindow.h"
+#include "Utils.h"
 
 MotorWindow::MotorWindow( QMainWindow* parent, Qt::WindowFlags fl , Motor *_motor)
   : QMainWindow( parent, fl )
@@ -49,6 +50,7 @@ MotorWindow::MotorWindow( QMainWindow* parent, Qt::WindowFlags fl , Motor *_moto
   comview = new QTableView;
   comview->setStyleSheet("QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};");
   comview->setModel(comtable);
+  Utils::ConfigureSqlTableView(comview);
   vboxlayout->addWidget(comview);
 
    // 'motor_driver' table model
@@ -58,6 +60,7 @@ MotorWindow::MotorWindow( QMainWindow* parent, Qt::WindowFlags fl , Motor *_moto
   driverview = new QTableView;
   driverview->setStyleSheet("QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};");
   driverview->setModel(drivertable);
+  Utils::ConfigureSqlTableView(driverview);
   vboxlayout->addWidget(driverview);
 
   // 'motor_actuator' table model
@@ -67,6 +70,7 @@ MotorWindow::MotorWindow( QMainWindow* parent, Qt::WindowFlags fl , Motor *_moto
   actuatorview = new QTableView;
   actuatorview->setStyleSheet("QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};");
   actuatorview->setModel(actuatortable);
+  Utils::ConfigureSqlTableView(actuatorview);
   vboxlayout->addWidget(actuatorview);
 
   updateButton = new QPushButton("Update",this);
@@ -132,10 +136,13 @@ void MotorWindow::setDbPath(QString _path) {
   dbPath = motor->path;
   comtable = new QSqlTableModel(this,QSqlDatabase::database(dbPath));
   comview->setModel(comtable);
+  Utils::ConfigureSqlTableView(comview);
   drivertable = new QSqlTableModel(this,QSqlDatabase::database(dbPath));
   driverview->setModel(drivertable);
+  Utils::ConfigureSqlTableView(driverview);
   actuatortable = new QSqlTableModel(this,QSqlDatabase::database(dbPath));
   actuatorview->setModel(actuatortable);
+  Utils::ConfigureSqlTableView(actuatorview);
   
   comtable->setTable("motor_com");
   comtable->setEditStrategy(QSqlTableModel::OnManualSubmit);

@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
 #include "RaspiWindow.h"
+#include "Utils.h"
 
 RaspiWindow::RaspiWindow( QMainWindow* parent, Qt::WindowFlags fl , Raspi *_raspi)
   : QMainWindow( parent, fl )
@@ -52,6 +53,7 @@ RaspiWindow::RaspiWindow( QMainWindow* parent, Qt::WindowFlags fl , Raspi *_rasp
   raspiview = new QTableView;
   raspiview->setStyleSheet("QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};");
   raspiview->setModel(raspitable);
+  Utils::ConfigureSqlTableView(raspiview);
   vboxlayout->addWidget(raspiview);
 
   updateButton = new QPushButton("Update",this);
@@ -94,6 +96,7 @@ void RaspiWindow::setDbPath(QString _path) {
   dbPath = raspi->path;
   raspitable = new QSqlTableModel(this,QSqlDatabase::database(dbPath));
   raspiview->setModel(raspitable);
+  Utils::ConfigureSqlTableView(raspiview);
   raspitable->setTable("raspi_settings");
   raspitable->setEditStrategy(QSqlTableModel::OnManualSubmit);
   raspitable->setHeaderData(0, Qt::Horizontal, tr("name"));

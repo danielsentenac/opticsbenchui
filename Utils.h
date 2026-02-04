@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QDateTime>
 #include <QDir>
+#include <QTableView>
 #include <QtSql>
 
 #include "QsLog.h"
@@ -60,6 +61,12 @@ void ReportError(const char* logContext, const QString& message);
 /// \param logContext Context string for logging.
 /// \param message Warning message.
 void ReportWarning(const char* logContext, const QString& message);
+/// Apply default sizing and wrapping behavior to SQL table views.
+/// \param view Table view to configure.
+void ConfigureSqlTableView(QTableView* view);
+/// Update row sizing based on current model content.
+/// \param view Table view to update.
+void UpdateSqlTableViewRowSizing(QTableView* view);
 
 /// Report a warning and emit `showWarning` when available.
 /// \param sender Object that may expose `showWarning`.
