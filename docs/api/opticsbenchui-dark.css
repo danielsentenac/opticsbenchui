@@ -68,6 +68,126 @@ div.memproto, div.memdoc {
   border-color: #555;
 }
 
+/* Member sections (class lists) */
+table.memberdecls,
+table.memberdecls td,
+table.memberdecls th,
+table.memitem,
+table.memitem td,
+table.memitem th,
+.memitem,
+.memitemleft,
+.memitemright,
+.memitem td,
+.memitem th,
+.memtitle,
+.memitem .memname,
+.memitem .memname a,
+.memitem .memproto,
+.memitem .memdoc,
+.memitem .memdoc td,
+.memitem .memdoc th {
+  background-color: #2f2f2f !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+.memitem tr:nth-child(even),
+.memitem tr:nth-child(odd),
+table.memberdecls tr:nth-child(even),
+table.memberdecls tr:nth-child(odd) {
+  background-color: #2f2f2f !important;
+}
+
+.memitem tr:hover td,
+table.memberdecls tr:hover td {
+  background-color: #3a3a3a !important;
+}
+
+/* Member title/permalink blocks */
+h2.memtitle,
+h2.memtitle span,
+h2.memtitle a,
+h2.memtitle .permalink,
+h2.memtitle .permalink a {
+  background-color: #2f2f2f !important;
+  background-image: none !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+h2.memtitle,
+.memtitle {
+  background-color: #2f2f2f !important;
+  background-image: none !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+.permalink,
+h2.memtitle .permalink {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.permalink a {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.permalink,
+.permalink a,
+.permalink a:visited,
+.permalink a:hover,
+.permalink a:active,
+.permalink a:focus {
+  background-color: #2f2f2f !important;
+  background-image: none !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+.overload {
+  background-color: #2f2f2f !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+/* Permalink icon blocks */
+.permalink {
+  background-image: none !important;
+}
+
+.permalink a:before {
+  background-image: none !important;
+}
+
+/* Member name tables */
+table.memname,
+table.memname td,
+table.memname th,
+td.memname {
+  background-color: #2f2f2f !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+/* Member labels table (explicit/override tags) */
+table.mlabels,
+table.mlabels td,
+table.mlabels th,
+td.mlabels-left,
+td.mlabels-right,
+span.mlabel {
+  background-color: #2f2f2f !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
 #nav-tree, #nav-tree-contents, #nav-tree-contents .selected {
   background-color: #2b2b2b;
   color: #e6e6e6;
