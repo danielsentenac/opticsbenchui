@@ -8,3 +8,4 @@ moc_predefs.h
 Makefile
 *.log
 *.h5
+docs/help/OpticsBenchUIColl.qhc
