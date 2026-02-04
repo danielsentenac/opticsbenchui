@@ -9,8 +9,42 @@
     <h1>OpticsBenchUI Documentation (version 1.1)</h1>
     
     <p>
-      OpticsBenchUI controls devices commonly used in optical experiments. The exact hardware
-      support depends on build options and installed drivers.
+      OpticsBenchUI is dedicated to automating optics lab experiments. It integrates
+      open-source projects such as libdc1394, Aravis, and Comedi to coordinate cameras,
+      motion stages, and I/O hardware from a single interface. Each instrument can be
+      configured and operated independently, while complex, multi-instrument scan strategies
+      are programmed in the Acquisition panel.
+    </p>
+    <p>
+      Supported devices include digital cameras (FireWire/DCAM, GigE Vision, Camera Link),
+      actuators (RS-232, USB, Ethernet), spatial light modulators (SLM), digital and analog
+      I/O (counters, DAC, ADC), and Supercontinuum laser sources (CP210X USB-UART bridge).
+      Data are stored in a hierarchical, scan-aware layout using HDF5. The graphical user
+      interface is built with Qt.
+    </p>
+    <h2>Motivation</h2>
+    <p>
+      Optics bench experiments typically require software for two complementary tasks:
+    </p>
+    <ol>
+      <li>
+        Individual device control and acquisition (motors, cameras, shutters, DAC/ADC, lasers)
+        for manual alignment and setup.
+      </li>
+      <li>
+        Coordinated, automated workflows where multiple devices must interact during scans
+        or control loops.
+      </li>
+    </ol>
+    <p>
+      Commercial frameworks can address the second point, but often become difficult to
+      extend as experiments grow in complexity. An open-source approach offers long-term
+      flexibility, transparent behavior, and easier reuse of software components.
+    </p>
+    <p>
+      OpticsBenchUI embraces open-source principles: it is modifiable, hardware-agnostic,
+      and benefits from a broad ecosystem of libraries and vendor SDKs. This makes it a
+      practical bridge between academic research and industrial workflows.
     </p>
     <ul>
       <li>Comedi devices for acquisition and control

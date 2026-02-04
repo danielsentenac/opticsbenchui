@@ -1,8 +1,30 @@
-OpticsBenchUI is a Qt-based control application for optical experiments.
-It connects to common lab hardware (cameras, motors, DAC/Comedi boards,
-laser sources, and SLMs), and lets you build scan sequences from the
-Acquisition window. Device availability depends on build options and
-installed vendor SDKs.
+OpticsBenchUI is dedicated to automating optics lab experiments. It integrates
+open-source projects such as libdc1394, Aravis, and Comedi to coordinate
+heterogeneous hardware from a single interface. Each instrument can be
+configured and operated independently, and complex multi-instrument scans are
+programmed in the Acquisition window. Device availability depends on build
+options and installed vendor SDKs.
+
+Supported devices include digital cameras (FireWire/DCAM, GigE Vision,
+Camera Link), actuators (RS-232, USB, Ethernet), spatial light modulators (SLM),
+digital and analog I/O (counters, DAC, ADC), and Supercontinuum laser sources
+(CP210X USB-UART bridge). Data are stored in a hierarchical, scan-aware layout
+using HDF5. The GUI is built with Qt.
+
+Motivation
+----------
+Optics bench experiments typically require software for two complementary tasks:
+1) Individual device control and acquisition for manual alignment and setup.
+2) Coordinated, automated workflows where multiple devices must interact during
+   scans or control loops.
+
+Commercial frameworks can address point 2), but they often become difficult to
+extend as experiments grow. An open-source approach provides long-term
+flexibility, transparent behavior, and easier reuse of software components.
+
+OpticsBenchUI embraces open-source principles: it is modifiable, hardware-agnostic,
+and benefits from a broad ecosystem of libraries and vendor SDKs. This makes it
+a practical bridge between academic research and industrial workflows.
 
 The documentation in this folder describes how to configure each device
 class and how scan sequences are defined. Measurements are saved in HDF5
