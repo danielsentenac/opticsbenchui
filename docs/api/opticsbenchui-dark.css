@@ -139,6 +139,7 @@ h2.memtitle .permalink {
   padding: 0 !important;
 }
 
+
 .permalink,
 .permalink a,
 .permalink a:visited,
@@ -296,6 +297,97 @@ img[src^="namespace"] {
 div#titlearea {
   background-color: #2b2b2b;
   border-bottom: 1px solid #555;
+}
+
+/* Title block spacing and full-row background */
+#titlearea table {
+  width: 100%;
+}
+
+#projectalign {
+  padding: 8px 16px;
+}
+
+#projectname,
+#projectbrief {
+  display: block;
+  width: 100%;
+}
+
+#projectname {
+  margin: 0;
+  padding: 4px 0 0 0;
+}
+
+#projectbrief {
+  margin: 0;
+  padding: 2px 0 6px 0;
+}
+
+/* Pull main menu directly under title area */
+#main-nav {
+  margin-top: 0;
+  border-top: 1px solid #3a3a3a;
+  border-bottom: 1px solid #3a3a3a;
+  background-color: #2b2b2b;
+  padding-left: 0;
+}
+
+#main-nav ul,
+.sm-dox {
+  background-color: #2b2b2b !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Left nav background + horizontal separator under menu */
+#side-nav,
+#nav-tree,
+#nav-tree-contents {
+  background-color: #2b2b2b !important;
+  border-top: 1px solid #3a3a3a !important;
+}
+
+/* Override navtree offsets and header strip */
+#nav-tree {
+  background-image: none !important;
+}
+
+#nav-tree-contents {
+  margin-top: 0 !important;
+}
+
+/* Remove the left panel top margin if any */
+#side-nav {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.navpath,
+.navpath ul,
+.navpath li {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Keep split bar (vertical separator) */
+
+/* Remove default menu left inset */
+.sm-dox {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Slightly larger horizontal insets for top-level menu items */
+.sm-dox > li > a,
+.sm-dox > li > a:visited,
+.sm-dox > li > a:focus,
+.sm-dox > li > a:hover,
+.sm-dox > li > a:active {
+  padding-left: 56px !important;
+  padding-right: 56px !important;
+  background-image: none !important;
+  border-bottom: 1px solid #3a3a3a !important;
 }
 
 input, select, textarea {
