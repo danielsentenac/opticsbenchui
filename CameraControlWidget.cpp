@@ -236,12 +236,18 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
 
   colorGroup = new QButtonGroup(this);
   connect(colorGroup, SIGNAL(buttonClicked(int)), camera, SLOT(setColorTable(int)),Qt::UniqueConnection) ;
-  QRadioButton *grayButton = new QRadioButton("gray");
-  QRadioButton *hotButton =  new QRadioButton(" hot ");
+  QRadioButton *grayButton = new QRadioButton("Gray");
+  QRadioButton *hotButton = new QRadioButton("Hot");
   colorGroup->addButton(grayButton);
   colorGroup->addButton(hotButton);
-  layout->addWidget(grayButton,1,2000,1,1,Qt::AlignBottom);
-  layout->addWidget(hotButton,2,2000,1,1,Qt::AlignCenter);
+  auto *colorLayout = new QVBoxLayout();
+  colorLayout->setContentsMargins(0, 0, 0, 0);
+  colorLayout->setSpacing(4);
+  colorLayout->addWidget(grayButton);
+  colorLayout->addWidget(hotButton);
+  auto *colorWidget = new QWidget(this);
+  colorWidget->setLayout(colorLayout);
+  layout->addWidget(colorWidget, 1, 2000, 2, 1, Qt::AlignTop);
   
   grayButton->setChecked(true);
   setMinimumHeight(DOCK_HEIGHT);
