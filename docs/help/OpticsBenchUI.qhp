@@ -29,6 +29,7 @@
              </keywords>
          <files>
              <file>index.html</file>
+             <file>help.css</file>
              <file>Comedi.html</file>
              <file>DAC.html</file>
              <file>DACWindow.jpg</file>
