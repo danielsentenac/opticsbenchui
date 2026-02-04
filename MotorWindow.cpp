@@ -42,6 +42,8 @@ MotorWindow::MotorWindow( QMainWindow* parent, Qt::WindowFlags fl , Motor *_moto
   motorWidget->setMotor(motor);
   connect(motor, SIGNAL(operationCompleted()), this,
           SLOT(refreshActuatorTable()));
+  connect(motor, SIGNAL(dbPositionUpdated()), this,
+          SLOT(refreshActuatorTable()));
   dockWidget = new QDockWidget(tr("Actuator Control"), this);
   dockWidget->setAllowedAreas(Qt::BottomDockWidgetArea);
   QScrollArea *scrollableWidget = new  QScrollArea();
@@ -218,6 +220,9 @@ MotorWindow::update(){
   drivertable->submitAll();
   actuatortable->submitAll();
   InitConfig();
+  if (motorWidget) {
+    motorWidget->refreshCurrentPosition();
+  }
 }
 
 void MotorWindow::refreshActuatorTable() {

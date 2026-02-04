@@ -91,8 +91,10 @@ void Motor::setDbPath(QString _path) {
 }
 
 QSqlDatabase Motor::connectDb(const QString& path) {
-  if (QSqlDatabase::contains(path)) {
-    QSqlDatabase db = QSqlDatabase::database(path);
+  const QString connectionName =
+      path + ":" + QString::number(reinterpret_cast<qulonglong>(QThread::currentThreadId()));
+  if (QSqlDatabase::contains(connectionName)) {
+    QSqlDatabase db = QSqlDatabase::database(connectionName);
     if (!db.isOpen()) {
       if (!db.open()) {
         QLOG_WARN() << "Motor::connectDb> " << db.lastError().text();
@@ -100,7 +102,13 @@ QSqlDatabase Motor::connectDb(const QString& path) {
     }
     return db;
   }
-  return Utils::ConnectSqliteDb(path, "Motor::connectDb>");
+  QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", connectionName);
+  QLOG_INFO() << "Motor::connectDb> Db path : " << path;
+  db.setDatabaseName(path);
+  if (!db.open()) {
+    QLOG_WARN() << "Motor::connectDb> " << db.lastError().text();
+  }
+  return db;
 }
 
 void
@@ -338,7 +346,10 @@ Motor::updateDbPosition(QString newactuator) {
         return;
       }
       float curpos = 0;
-      actuatorDriver.at(i)->GetPos(actuatorSettings.at(i).toStdString(), curpos);
+      if (actuatorDriver.at(i)->GetPos(actuatorSettings.at(i).toStdString(), curpos) != 0) {
+        QLOG_WARN() << "Motor::updateDbPosition> GetPos failed";
+        return;
+      }
       position.replace(i, curpos);
       QString positionQString;
       positionQString.setNum(position.at(i), 'f', 3);
@@ -351,7 +362,33 @@ Motor::updateDbPosition(QString newactuator) {
       if (!query.exec()) {
         QLOG_WARN() << "Motor::updateDbPosition> "
                     << query.lastError().text();
+        return;
       }
+      emit dbPositionUpdated();
+      return;
+    }
+  }
+}
+
+void
+Motor::refreshPositionFromDb(QString newactuator) {
+  QSqlDatabase db = connectDb(path);
+  QSqlQuery query(db);
+  query.prepare("select position from motor_actuator where name = ?");
+  query.addBindValue(newactuator);
+  if (!query.exec()) {
+    QLOG_WARN() << "Motor::refreshPositionFromDb> "
+                << query.lastError().text();
+    return;
+  }
+  if (!query.next()) {
+    return;
+  }
+  const float dbPos = query.value(0).toString().toFloat();
+  for (int i = 0 ; i < actuator.size(); i++) {
+    if (actuator.at(i) == newactuator) {
+      position.replace(i, dbPos);
+      emit getPosition(dbPos);
       return;
     }
   }
@@ -379,31 +416,33 @@ Motor::operationComplete() {
 	int success = 0;
 	QString positionQString;
 	float curpos;
+	int posStatus = 0;
 	iscompleting = true;
 	success = actuatorDriver.at(i)->OperationComplete(stateData,
 							  actuatorSettings.at(i).toStdString(),
 							  limitSwitch);
-	actuatorDriver.at(i)->GetPos(actuatorSettings.at(i).toStdString(),curpos);
-	position.replace(i, curpos);
-	positionQString.setNum (position.at(i), 'f',3);
-	QLOG_DEBUG ( ) << "OperationComplete " << success << " position " << position.at(i);
-	emit getPosition(position.at(i));
+	posStatus = actuatorDriver.at(i)->GetPos(actuatorSettings.at(i).toStdString(),curpos);
+	if (posStatus == 0) {
+	  position.replace(i, curpos);
+	  positionQString.setNum (position.at(i), 'f',3);
+	  QLOG_DEBUG ( ) << "OperationComplete " << success << " position " << position.at(i);
+	  emit getPosition(position.at(i));
+	} else {
+	  QLOG_WARN() << "Motor::operationComplete> GetPos failed";
+	}
 	if (success > 0 ) {
           // Save last position in Db
-          actuatorDriver.at(i)->GetPos(actuatorSettings.at(i).toStdString(),curpos);
-          position.replace(i, curpos);
-          positionQString.setNum (position.at(i), 'f',3);
-          QLOG_DEBUG ( ) << "OperationComplete " << success << " position " << position.at(i);
-          emit getPosition(position.at(i));
-          QSqlDatabase db = connectDb(path);
-	  QSqlQuery query(db);
-	  query.prepare("update motor_actuator set position = ? "
-			"where name = ?");
-	  query.addBindValue(positionQString);
-	  query.addBindValue(actuator.at(i));
-	  query.exec();
-	  operationcomplete.replace(i, success);
-          QLOG_DEBUG ( ) << "OperationComplete " << success << " position " << position.at(i);
+          if (posStatus == 0) {
+            QSqlDatabase db = connectDb(path);
+            QSqlQuery query(db);
+            query.prepare("update motor_actuator set position = ? "
+                          "where name = ?");
+            query.addBindValue(positionQString);
+            query.addBindValue(actuator.at(i));
+            query.exec();
+            operationcomplete.replace(i, success);
+            QLOG_DEBUG ( ) << "OperationComplete " << success << " position " << position.at(i);
+          }
 	  emit operationCompleted();
 	  emit stopTimer();
 	}

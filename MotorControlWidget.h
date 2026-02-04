@@ -49,7 +49,7 @@ class MotorControlWidget : public QWidget
   /// \param _actuatorList List of actuator names.
   void setActuatorList(QVector<QString>  *_actuatorList);
   
-  private slots:
+  public slots:
   /// Connect to the selected motor.
   void connectMotor();
   /// Move forward by a relative amount.
@@ -68,6 +68,8 @@ class MotorControlWidget : public QWidget
   void getDescription(QString description);
   /// Stop periodic updates.
   void stopTimer();
+  /// Refresh current position from DB after external updates.
+  void refreshCurrentPosition();
 
  private:
 

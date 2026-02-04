@@ -75,6 +75,7 @@ MotorControlWidget::setMotor(Motor *_motor) {
   connect(motor,SIGNAL(getPosition(float)),this,SLOT(getPosition(float)));
   connect(motor,SIGNAL(getDescription(QString)),this,SLOT(getDescription(QString)));
   connect(motor,SIGNAL(stopTimer()),this,SLOT(stopTimer()));
+  connect(motor,SIGNAL(dbPositionUpdated()),this,SLOT(refreshCurrentPosition()));
   //
   // Launch a timer to get the current position of the actuator every second
   //
@@ -137,4 +138,15 @@ MotorControlWidget::getDescription(QString description) {
 void 
 MotorControlWidget::stopTimer() {
   timer->stop();
+}
+
+void MotorControlWidget::refreshCurrentPosition() {
+  if (!motor || !actuatorCombo) {
+    return;
+  }
+  const QString actuator = actuatorCombo->itemText(actuatorCombo->currentIndex());
+  if (actuator.isEmpty()) {
+    return;
+  }
+  motor->refreshPositionFromDb(actuator);
 }

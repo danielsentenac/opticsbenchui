@@ -68,7 +68,10 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
       gridlayout(new QGridLayout()),
       acquisition(new AcquisitionThread()),
       sequenceList(),
-      elapsedTimerTick(new QTimer(this)) {
+      elapsedTimerTick(new QTimer(this)),
+      totalAcqRecords(0),
+      acqProgressValue(0),
+      progressTickRecords() {
   QLOG_DEBUG() << "AcquisitionWidget::AcquisitionWidget";
 
   dbConnexion();
@@ -337,6 +340,9 @@ void AcquisitionWidget::run() {
   
   // Store acquisition sequence
   sequenceList.clear();
+  totalAcqRecords = 0;
+  acqProgressValue = 0;
+  progressTickRecords.clear();
   cur_record = 0;
   while (query.next()) {
     int seq_record = query.value(0).toInt();
@@ -352,11 +358,48 @@ void AcquisitionWidget::run() {
     sequence->scanplan = query.value(4).toString();
     sequenceList.append(sequence);
   }
-  
   // Prepare sequence
   for (int i = 0; i < sequenceList.size(); i++) {
     AcquisitionSequence *sequence = sequenceList.at(i);
     sequence->prepare();
+  }
+  // Compute progress ticks based on deepest loop level.
+  int maxDepth = 0;
+  int maxDepthProduct = 1;
+  QVector<int> loopStack;
+  for (int i = 0; i < sequenceList.size(); ++i) {
+    const AcquisitionSequence* sequence = sequenceList.at(i);
+    if (sequence->loop == AcquisitionSequence::IS_LOOP &&
+        sequence->loopends == AcquisitionSequence::LOOP_START &&
+        sequence->loopNumber > 0) {
+      loopStack.append(sequence->loopNumber);
+      int depth = loopStack.size();
+      int product = 1;
+      for (int v : loopStack) {
+        product *= v;
+      }
+      if (depth > maxDepth) {
+        maxDepth = depth;
+        maxDepthProduct = product;
+        progressTickRecords.clear();
+        progressTickRecords.insert(sequence->record);
+      } else if (depth == maxDepth) {
+        if (product > maxDepthProduct) {
+          maxDepthProduct = product;
+        }
+        progressTickRecords.insert(sequence->record);
+      }
+    } else if (sequence->loop == AcquisitionSequence::IS_LOOP &&
+               sequence->loopends == AcquisitionSequence::LOOP_END) {
+      if (!loopStack.isEmpty()) {
+        loopStack.removeLast();
+      }
+    }
+  }
+  if (maxDepth > 0) {
+    totalAcqRecords = maxDepthProduct;
+  } else {
+    totalAcqRecords = sequenceList.size();
   }
   if (motor) {
     QSet<QString> motorNames;
@@ -385,8 +428,13 @@ void AcquisitionWidget::run() {
   acquisition->setSequenceList(sequenceList);
   elapsedTimer.start();
   elapsedLabel->setText("Elapsed: 00:00:00");
-  acquisitionProgress->setRange(0, 0);
-  acquisitionProgress->setValue(0);
+  if (totalAcqRecords > 0) {
+    acquisitionProgress->setRange(0, totalAcqRecords);
+    acquisitionProgress->setValue(0);
+  } else {
+    acquisitionProgress->setRange(0, 1);
+    acquisitionProgress->setValue(0);
+  }
   elapsedTimerTick->start();
   acquisition->start();
   QLOG_DEBUG() << "AcquisitionWidget::run started";
@@ -396,7 +444,7 @@ void AcquisitionWidget::stop() {
   acquisition->stop();
   setAcquiringToLastRecord();
   elapsedTimerTick->stop();
-  acquisitionProgress->setRange(0, 1);
+  acquisitionProgress->setRange(0, totalAcqRecords > 0 ? totalAcqRecords : 1);
   acquisitionProgress->setValue(0);
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
@@ -462,6 +510,16 @@ void AcquisitionWidget::getTreatmentStatus(bool treatmentsuccess) {
 void AcquisitionWidget::getAcquiring(int record) {
   QSqlQuery query(QSqlDatabase::database(path));
 
+  if (totalAcqRecords > 0) {
+    if (!progressTickRecords.isEmpty()) {
+      if (progressTickRecords.contains(record)) {
+        acqProgressValue = qMin(acqProgressValue + 1, totalAcqRecords);
+        acquisitionProgress->setValue(acqProgressValue);
+      }
+    } else {
+      acquisitionProgress->setValue(qMin(record + 1, totalAcqRecords));
+    }
+  }
   query.exec("update acquisition_sequence set acquiring = ''");
   query.exec("select record from acquisition_sequence order by record");
   QLOG_DEBUG() << query.lastError().text();
@@ -550,8 +608,8 @@ void AcquisitionWidget::requestAnalysisFromThread() {
 
 void AcquisitionWidget::acquisitionFinished() {
   elapsedTimerTick->stop();
-  acquisitionProgress->setRange(0, 1);
-  acquisitionProgress->setValue(1);
+  acquisitionProgress->setRange(0, totalAcqRecords > 0 ? totalAcqRecords : 1);
+  acquisitionProgress->setValue(totalAcqRecords > 0 ? totalAcqRecords : 0);
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
   }

@@ -281,6 +281,7 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
   
   if (sequence->instrumentType == "MOTOR") {
     motor->connectMotor(sequence->instrumentName);
+    motor->updateDbPosition(sequence->instrumentName);
     activeMotorName = sequence->instrumentName;
     
     float motorValue = sequence->motorValue;
@@ -296,7 +297,7 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       }
     }
     else if (sequence->motorAction == "MOVEABS") {
-      motor->moveAbsolute(sequence->instrumentName, sequence->motorValue);
+      motor->moveAbsolute(sequence->instrumentName, motorValue);
     }
     // Wait for motor movement to be completed
     while (motor->getOperationComplete(sequence->instrumentName) <= 0) {

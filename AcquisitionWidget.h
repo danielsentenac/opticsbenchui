@@ -179,6 +179,9 @@ private:
   QVector<AcquisitionSequence*> sequenceList;
   QElapsedTimer elapsedTimer;
   QTimer* elapsedTimerTick;
+  int totalAcqRecords;
+  int acqProgressValue;
+  QSet<int> progressTickRecords;
 
 };
 #endif
