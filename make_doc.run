@@ -5,14 +5,23 @@ cd docs/help
 QHELPGEN=qhelpgenerator
 QCOLLGEN=qcollectiongenerator
 
-if command -v qhelpgenerator-qt5 >/dev/null 2>&1; then
+if command -v qhelpgenerator-qt6 >/dev/null 2>&1; then
+  QHELPGEN=qhelpgenerator-qt6
+elif command -v qhelpgenerator-qt5 >/dev/null 2>&1; then
   QHELPGEN=qhelpgenerator-qt5
 fi
 
-if command -v qcollectiongenerator-qt5 >/dev/null 2>&1; then
+if command -v qcollectiongenerator-qt6 >/dev/null 2>&1; then
+  QCOLLGEN=qcollectiongenerator-qt6
+elif command -v qcollectiongenerator-qt5 >/dev/null 2>&1; then
   QCOLLGEN=qcollectiongenerator-qt5
 elif ! command -v qcollectiongenerator >/dev/null 2>&1; then
   QCOLLGEN=""
+fi
+
+if ! command -v "${QHELPGEN}" >/dev/null 2>&1; then
+  echo "Error: qhelpgenerator not found. Install Qt help tools (Qt5/Qt6)."
+  exit 1
 fi
 
 ${QHELPGEN} OpticsBenchUI.qhp -o OpticsBenchUI.qch
