@@ -2,27 +2,45 @@
 
 External packages needed prior to installation:
 
-1) Graphical user interface is based on Qt5 for Linux. 
-Install it using 
-git clone git://code.qt.io/qt/qt5.git
-   Qt 5 note: ensure the Qt SVG development package is installed so qmake can
+1) Graphical user interface is based on Qt 5 or Qt 6 for Linux.
+   Official Qt downloads: https://www.qt.io/download
+   Qt 5 source: git clone git://code.qt.io/qt/qt5.git
+   Qt 6 source: git clone git://code.qt.io/qt/qt6.git
+   Qt note: ensure the Qt SVG development package is installed so qmake can
    find the `svg` module. On Fedora this is typically `qt5-qtsvg-devel`
    (the runtime package alone does not provide the module `.pri` file).
 
 2) Firewire Camera compliant with DCAM (IIDC) standard is based on libdc1394
-http://damien.douxchamps.net/ieee1394/libdc1394/
+   http://damien.douxchamps.net/ieee1394/libdc1394/
 
-3) Advantech boards are controlled via the advdaq library
-http://support.advantech.com.tw/support/
+3) Advantech boards are controlled via the DAQNavi SDK
+   https://us2.advantech.com/DAQNavi/
 
 4) Comedi boards controlled using the comedi library
-http://www.comedi.org
+   http://www.comedi.org
 
 5) HDF5 data library to manage data collection
-http://www.hdfgroup.org/HDF5/
+   https://www.hdfgroup.org/solutions/hdf5/
 
-OpticsBenchUI is compiled within the Qt5 framework, using a requirement file called
-OpticsBenchUI.pro. First you need to update OpticsBenchUI.pro according to 
+Additional vendor libraries (see Help -> User Manual / Getting Started):
+  - Aravis (GigE Vision): https://github.com/AravisProject/aravis
+  - libraw1394 (IEEE1394 support): https://www.kernel.org/doc/html/latest/driver-api/firewire.html
+  - Andor SDK3 (Neo/Zyla): https://andor.oxinst.com/products/software-development-kit/software-development-kit
+  - Allied Vision Vimba X: https://www.alliedvision.com/en/products/software/vimba-x-sdk
+  - Raptor support: https://www.raptorphotonics.com/support/
+  - EPIX XCLIB: https://www.epixinc.com/products/xclib.htm
+  - raspicam: http://www.uco.es/investiga/grupos/ava/portfolio/raspicam/
+  - Standa libximc: https://libximc.xisupport.com/
+  - bcm2835 (Raspi SPI): http://www.airspayce.com/mikem/bcm2835/
+  - Qwt (Comedi plotting): https://qwt.sourceforge.io/
+  - libusb: https://libusb.info/
+  - NKT SuperK control: https://www.nktphotonics.com/products/femtosecond-lasers/nkt-photonics-laser-control-software/
+  - Newport controllers: https://www.newport.com/p/pzc200, https://www.newport.com/p/AG-UC2
+  - PI Mercury / E-725: https://www.pi-usa.us/en/products/controllers-drivers/mercury-embedded-motion-controller-10244/,
+    https://static.pimicos.com/fileadmin/user_upload/pimicos/physik_instrumente/files/1_Datasheets/E-725_DataSheet.pdf
+
+OpticsBenchUI is compiled with Qt5 or Qt6 using the project file OpticsBenchUI.pro.
+First you need to update OpticsBenchUI.pro according to
 libdc1394,advdaq,comedi,hdf5 libraries and modify it with your personal path installations (INCLUDEPATH, LIBS tags)
 
 OpticsBenchUI installation steps:
@@ -43,5 +61,5 @@ are detected at build time and disabled if missing.
 3) Set/Update the LD_LIBRARY_PATH environment variable with the library paths of 
 libdc1394,advdaq,comedi,hdf5 libraries 
 
-4) Launch OpticsBenchUI ! There is a documentation accessible from the GUI which 
-will help you to configure the devices.
+4) Launch OpticsBenchUI. The documentation is accessible from the GUI and
+includes UI configuration guidance (Help -> User Manual / Getting Started).
