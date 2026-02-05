@@ -7,6 +7,19 @@ Hardware families include USB/IEEE1394/GigE/Andor/Raptor/Raspberry Pi/Allied Vis
 cameras, Newport/New Focus/PI/Micos/Standa motors, NKT SuperK lasers, and
 Advantech/Comedi/Raspberry Pi DACs.
 
+### API Documentation (GitHub Pages)
+
+API documentation can be published with GitHub Pages. Enable Pages on the repo
+and point it at a `gh-pages` branch (or the `docs/` folder on `main`).
+
+Suggested URL (update with your GitHub org/user):
+- https://<github-username>.github.io/OPTICSBENCHUI/api/
+
+Publish flow (gh-pages branch):
+1) Build docs: `./make_api_doc.run`
+2) Copy `docs/api/html/*` into the publish root (e.g., `docs/api/` or repo root).
+3) Commit/push the `gh-pages` branch.
+
 ### External Libraries (.pro)
 
 The `OpticsBenchUI.pro` file wires optional third‑party SDKs/libraries through
