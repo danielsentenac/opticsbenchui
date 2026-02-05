@@ -104,7 +104,7 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
       totalAcqRecords(0),
       acqProgressValue(0),
       progressTickRecords(),
-      currentAcquiringRecord(-1) {
+      currentAcquiringRecordValue(-1) {
   QLOG_DEBUG() << "AcquisitionWidget::AcquisitionWidget";
 
   dbConnexion();
@@ -472,7 +472,7 @@ void AcquisitionWidget::run() {
   elapsedTimer.start();
   elapsedLabel->setText("Elapsed: 00:00:00");
   stopNoteLabel->setText("");
-  currentAcquiringRecord = -1;
+  currentAcquiringRecordValue = -1;
   if (totalAcqRecords > 0) {
     acquisitionProgress->setRange(0, totalAcqRecords);
     acquisitionProgress->setValue(0);
@@ -588,7 +588,7 @@ void AcquisitionWidget::getAcquiring(int record) {
     count++;
   }
   QLOG_DEBUG() << seq_record;
-  currentAcquiringRecord = seq_record;
+  currentAcquiringRecordValue = seq_record;
   InitConfig(false);
   acquisitionview->viewport()->update();
   cur_record = seq_record;
@@ -606,7 +606,7 @@ void AcquisitionWidget::setAcquiringToLastRecord() {
   }
   if (query.next()) {
     const int lastRecord = query.value(0).toInt();
-    currentAcquiringRecord = lastRecord;
+    currentAcquiringRecordValue = lastRecord;
   }
   InitConfig(false);
   acquisitionview->viewport()->update();
