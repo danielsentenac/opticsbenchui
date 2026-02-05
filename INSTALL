@@ -63,6 +63,7 @@ libdc1394,advdaq,comedi,hdf5 libraries
 
 4) Launch OpticsBenchUI. The documentation is accessible from the GUI and
 includes UI configuration guidance (Help -> User Manual / Getting Started).
+   See the "Compilation Options" help page for a structured list of build defines.
 
 Build options (OpticsBenchUI.pro DEFINES):
 
