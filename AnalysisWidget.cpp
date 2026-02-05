@@ -303,6 +303,8 @@ void AnalysisWidget::analysisFinished(int record, bool success,
   if (analysisWasStopped && !success) {
     statusLabel->setText("Stopped");
     outputView->append(">> Stopped by user");
+    outputView->append(QString(">> PID %1 killed")
+                           .arg(lastActivePid > 0 ? lastActivePid : 0));
   } else {
     statusLabel->setText(success ? "Done" : "Failed");
     outputView->append(success ? ">> Done" : ">> Failed");
