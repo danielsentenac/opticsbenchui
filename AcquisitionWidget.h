@@ -140,6 +140,8 @@ public slots:
   void acquisitionFinished();
   /// Update elapsed time while acquisition runs.
   void updateElapsed();
+  /// Current record being processed (for UI highlight).
+  int currentAcquiringRecord() const { return currentAcquiringRecord; }
  
 private:
   void stopAcquisition(bool userStop);
@@ -187,6 +189,7 @@ private:
   int totalAcqRecords;
   int acqProgressValue;
   QSet<int> progressTickRecords;
+  int currentAcquiringRecord;
 
 };
 #endif

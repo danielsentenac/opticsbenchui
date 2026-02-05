@@ -43,26 +43,31 @@ QString FormatElapsed(qint64 elapsedMs) {
 
 class RecordHighlightDelegate : public QStyledItemDelegate {
  public:
-  explicit RecordHighlightDelegate(QObject* parent = nullptr)
-      : QStyledItemDelegate(parent) {}
+  explicit RecordHighlightDelegate(const AcquisitionWidget* widget,
+                                   QObject* parent = nullptr)
+      : QStyledItemDelegate(parent),
+        widget(widget) {}
 
   void paint(QPainter* painter,
              const QStyleOptionViewItem& option,
              const QModelIndex& index) const override {
     QStyleOptionViewItem opt(option);
-    if (index.column() == kRecordColumn) {
-      const QAbstractItemModel* model = index.model();
-      if (model != nullptr && model->columnCount() > kAcquiringColumn) {
-        const QModelIndex markerIndex =
-            model->index(index.row(), kAcquiringColumn);
-        if (markerIndex.data().toString() == QLatin1String("*")) {
-          opt.backgroundBrush = QBrush(QColor(72, 96, 140));
-          opt.palette.setColor(QPalette::Text, QColor(235, 235, 235));
-        }
+    if ((index.column() == kRecordColumn ||
+         index.column() == kAcquiringColumn) &&
+        widget != nullptr) {
+      const int current = widget->currentAcquiringRecord();
+      if (current >= 0 && index.sibling(index.row(), kRecordColumn)
+                              .data()
+                              .toInt() == current) {
+        opt.backgroundBrush = QBrush(QColor(72, 96, 140));
+        opt.palette.setColor(QPalette::Text, QColor(235, 235, 235));
       }
     }
     QStyledItemDelegate::paint(painter, opt, index);
   }
+
+ private:
+  const AcquisitionWidget* widget;
 };
 }  // namespace
 
@@ -98,7 +103,8 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
       elapsedTimerTick(new QTimer(this)),
       totalAcqRecords(0),
       acqProgressValue(0),
-      progressTickRecords() {
+      progressTickRecords(),
+      currentAcquiringRecord(-1) {
   QLOG_DEBUG() << "AcquisitionWidget::AcquisitionWidget";
 
   dbConnexion();
@@ -114,7 +120,9 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
   acquisitionview->setProperty("disableLastColumnExpand", true);
   acquisitionview->setProperty("disableAutoResizeOnDataChange", true);
   acquisitionview->setItemDelegateForColumn(
-      kRecordColumn, new RecordHighlightDelegate(acquisitionview));
+      kRecordColumn, new RecordHighlightDelegate(this, acquisitionview));
+  acquisitionview->setItemDelegateForColumn(
+      kAcquiringColumn, new RecordHighlightDelegate(this, acquisitionview));
   Utils::ConfigureSqlTableView(acquisitionview);
   gridlayout->addWidget(acquisitionview, 1, 0, 1, 10);
 
@@ -464,6 +472,7 @@ void AcquisitionWidget::run() {
   elapsedTimer.start();
   elapsedLabel->setText("Elapsed: 00:00:00");
   stopNoteLabel->setText("");
+  currentAcquiringRecord = -1;
   if (totalAcqRecords > 0) {
     acquisitionProgress->setRange(0, totalAcqRecords);
     acquisitionProgress->setValue(0);
@@ -579,10 +588,9 @@ void AcquisitionWidget::getAcquiring(int record) {
     count++;
   }
   QLOG_DEBUG() << seq_record;
-  query.prepare("update acquisition_sequence set acquiring = '*' where record = ?");
-  query.addBindValue(seq_record);
-  query.exec();
+  currentAcquiringRecord = seq_record;
   InitConfig(false);
+  acquisitionview->viewport()->update();
   cur_record = seq_record;
 }
 
@@ -598,12 +606,10 @@ void AcquisitionWidget::setAcquiringToLastRecord() {
   }
   if (query.next()) {
     const int lastRecord = query.value(0).toInt();
-    QSqlQuery update(QSqlDatabase::database(path));
-    update.prepare("update acquisition_sequence set acquiring = '*' where record = ?");
-    update.addBindValue(lastRecord);
-    update.exec();
+    currentAcquiringRecord = lastRecord;
   }
   InitConfig(false);
+  acquisitionview->viewport()->update();
 }
 void AcquisitionWidget::getFilenumber(int number) {
   filenumber = QString::number(number);
