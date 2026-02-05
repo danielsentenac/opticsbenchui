@@ -127,15 +127,6 @@ void AnalysisThread::run() {
 
     QProcess localProcess;
     localProcess.setProcessChannelMode(QProcess::MergedChannels);
-#if defined(QT_VERSION_CHECK) && QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-#ifdef Q_OS_UNIX
-    localProcess.setCreateProcessArgumentsModifier(
-        [](QProcess::CreateProcessArguments *args) {
-          Q_UNUSED(args);
-          setpgid(0, 0);
-        });
-#endif
-#endif
     localProcess.start(program, arguments);
 
     if (!localProcess.waitForStarted()) {
@@ -153,6 +144,12 @@ void AnalysisThread::run() {
       continue;
     }
     currentPid = static_cast<qint64>(localProcess.processId());
+#ifdef Q_OS_UNIX
+    if (currentPid > 0) {
+      setpgid(static_cast<pid_t>(currentPid),
+              static_cast<pid_t>(currentPid));
+    }
+#endif
     emit pidChanged(currentPid);
 
     bool stopped = false;
