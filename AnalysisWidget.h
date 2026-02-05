@@ -77,6 +77,8 @@ public slots:
   /// Update PID display for running analysis process.
   /// \param pid Process ID (0 when not running).
   void updatePid(qint64 pid);
+  /// Update elapsed time while analysis runs.
+  void updateElapsed();
 
 signals:
   /// Emit warnings to the UI.
@@ -112,6 +114,7 @@ private:
 
   AnalysisThread* analysis;
   QElapsedTimer elapsedTimer;
+  QTimer* elapsedTimerTick;
   int expectedTasks;
   int finishedTasks;
   bool analysisWasStopped;

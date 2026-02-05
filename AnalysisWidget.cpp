@@ -58,6 +58,7 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
       stopButton(new QPushButton("Stop", this)),
       gridlayout(new QGridLayout()),
       analysis(new AnalysisThread()),
+      elapsedTimerTick(new QTimer(this)),
       expectedTasks(0),
       finishedTasks(0),
       analysisWasStopped(false) {
@@ -101,6 +102,9 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
   outputView->setReadOnly(true);
   outputView->setMinimumHeight(120);
   gridlayout->addWidget(outputView, 6, 0, 1, 10);
+
+  elapsedTimerTick->setInterval(1000);
+  connect(elapsedTimerTick, SIGNAL(timeout()), this, SLOT(updateElapsed()));
 
   setupAnalysisTable();
   InitConfig();
@@ -222,6 +226,7 @@ void AnalysisWidget::run() {
   elapsedTimer.start();
   elapsedLabel->setText("Elapsed: 00:00:00");
   emit runningChanged(true);
+  elapsedTimerTick->start();
   analysis->start();
   QLOG_DEBUG() << "AnalysisWidget::run started";
 }
@@ -242,6 +247,7 @@ void AnalysisWidget::stop() {
   pidLabel->setText("PID: -");
   emit runningChanged(false);
   statusLabel->setText("Idle");
+  elapsedTimerTick->stop();
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
   }
@@ -285,6 +291,7 @@ void AnalysisWidget::showAnalysisWarning(QString message) {
 }
 
 void AnalysisWidget::analysisThreadFinished() {
+  elapsedTimerTick->stop();
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
   }
@@ -299,6 +306,13 @@ void AnalysisWidget::updatePid(qint64 pid) {
   } else {
     pidLabel->setText(QString("PID: %1").arg(pid));
   }
+}
+
+void AnalysisWidget::updateElapsed() {
+  if (!elapsedTimer.isValid()) {
+    return;
+  }
+  elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
 }
 
 void AnalysisWidget::dbConnexion() {
