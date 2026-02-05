@@ -27,6 +27,7 @@ namespace {
 const char kSelectionStylesheet[] =
     "QTreeView::item:selected{background-color: palette(highlight); "
     "color: palette(highlightedText);};";
+constexpr int kRecordColumn = 0;
 
 QString FormatElapsed(qint64 elapsedMs) {
   const qint64 totalSeconds = elapsedMs / 1000;
@@ -38,6 +39,31 @@ QString FormatElapsed(qint64 elapsedMs) {
       .arg(minutes, 2, 10, QLatin1Char('0'))
       .arg(seconds, 2, 10, QLatin1Char('0'));
 }
+
+class RecordHighlightDelegate : public QStyledItemDelegate {
+ public:
+  explicit RecordHighlightDelegate(const AnalysisWidget* widget,
+                                   QObject* parent = nullptr)
+      : QStyledItemDelegate(parent),
+        widget(widget) {}
+
+  void paint(QPainter* painter,
+             const QStyleOptionViewItem& option,
+             const QModelIndex& index) const override {
+    QStyleOptionViewItem opt(option);
+    if (index.column() == kRecordColumn && widget != nullptr) {
+      const int current = widget->currentRecordForHighlight();
+      if (current >= 0 && index.data().toInt() == current) {
+        opt.backgroundBrush = QBrush(QColor(72, 96, 140));
+        opt.palette.setColor(QPalette::Text, QColor(235, 235, 235));
+      }
+    }
+    QStyledItemDelegate::paint(painter, opt, index);
+  }
+
+ private:
+  const AnalysisWidget* widget;
+};
 }  // namespace
 
 AnalysisWidget::AnalysisWidget(QString appDirPath)
@@ -59,6 +85,7 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
       gridlayout(new QGridLayout()),
       analysis(new AnalysisThread()),
       elapsedTimerTick(new QTimer(this)),
+      currentRecord(-1),
       expectedTasks(0),
       finishedTasks(0),
       analysisWasStopped(false) {
@@ -73,6 +100,8 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
   analysisview->setStyleSheet(kSelectionStylesheet);
   analysisview->setModel(analysistable);
   analysisview->verticalHeader()->hide();
+  analysisview->setItemDelegateForColumn(
+      kRecordColumn, new RecordHighlightDelegate(this, analysisview));
   Utils::ConfigureSqlTableView(analysisview);
   gridlayout->addWidget(analysisview, 1, 0, 1, 10);
 
@@ -248,6 +277,8 @@ void AnalysisWidget::stop() {
   emit runningChanged(false);
   statusLabel->setText("Idle");
   elapsedTimerTick->stop();
+  currentRecord = -1;
+  analysisview->viewport()->update();
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
   }
@@ -256,6 +287,8 @@ void AnalysisWidget::stop() {
 void AnalysisWidget::analysisStarted(int record) {
   statusLabel->setText(QString("Running record %1").arg(record));
   outputView->append(QString(">> Running record %1").arg(record));
+  currentRecord = record;
+  analysisview->viewport()->update();
 }
 
 void AnalysisWidget::analysisFinished(int record, bool success,
@@ -297,6 +330,8 @@ void AnalysisWidget::analysisThreadFinished() {
   }
   statusLabel->setText(analysisWasStopped ? "Stopped" : "Finished");
   pidLabel->setText("PID: -");
+  currentRecord = -1;
+  analysisview->viewport()->update();
   emit runningChanged(false);
 }
 

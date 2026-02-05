@@ -79,6 +79,8 @@ public slots:
   void updatePid(qint64 pid);
   /// Update elapsed time while analysis runs.
   void updateElapsed();
+  /// Current record being processed (for UI highlight).
+  int currentRecordForHighlight() const { return currentRecord; }
 
 signals:
   /// Emit warnings to the UI.
@@ -115,6 +117,7 @@ private:
   AnalysisThread* analysis;
   QElapsedTimer elapsedTimer;
   QTimer* elapsedTimerTick;
+  int currentRecord;
   int expectedTasks;
   int finishedTasks;
   bool analysisWasStopped;

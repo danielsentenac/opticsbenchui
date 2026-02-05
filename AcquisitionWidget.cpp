@@ -27,6 +27,8 @@ namespace {
 const char kSelectionStylesheet[] =
     "QTreeView::item:selected{background-color: palette(highlight); "
     "color: palette(highlightedText);};";
+constexpr int kRecordColumn = 0;
+constexpr int kAcquiringColumn = 6;
 
 QString FormatElapsed(qint64 elapsedMs) {
   const qint64 totalSeconds = elapsedMs / 1000;
@@ -38,6 +40,30 @@ QString FormatElapsed(qint64 elapsedMs) {
       .arg(minutes, 2, 10, QLatin1Char('0'))
       .arg(seconds, 2, 10, QLatin1Char('0'));
 }
+
+class RecordHighlightDelegate : public QStyledItemDelegate {
+ public:
+  explicit RecordHighlightDelegate(QObject* parent = nullptr)
+      : QStyledItemDelegate(parent) {}
+
+  void paint(QPainter* painter,
+             const QStyleOptionViewItem& option,
+             const QModelIndex& index) const override {
+    QStyleOptionViewItem opt(option);
+    if (index.column() == kRecordColumn) {
+      const QAbstractItemModel* model = index.model();
+      if (model != nullptr && model->columnCount() > kAcquiringColumn) {
+        const QModelIndex markerIndex =
+            model->index(index.row(), kAcquiringColumn);
+        if (markerIndex.data().toString() == QLatin1String("*")) {
+          opt.backgroundBrush = QBrush(QColor(72, 96, 140));
+          opt.palette.setColor(QPalette::Text, QColor(235, 235, 235));
+        }
+      }
+    }
+    QStyledItemDelegate::paint(painter, opt, index);
+  }
+};
 }  // namespace
 
 AcquisitionWidget::AcquisitionWidget(QString appDirPath)
@@ -86,6 +112,8 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
   acquisitionview->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
   acquisitionview->setProperty("disableLastColumnExpand", true);
   acquisitionview->setProperty("disableAutoResizeOnDataChange", true);
+  acquisitionview->setItemDelegateForColumn(
+      kRecordColumn, new RecordHighlightDelegate(acquisitionview));
   Utils::ConfigureSqlTableView(acquisitionview);
   gridlayout->addWidget(acquisitionview, 1, 0, 1, 10);
 
