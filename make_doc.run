@@ -1,5 +1,8 @@
 #!/bin/bash
 export PATH=${PATH}:../../install/bin/
+if [ -d /usr/lib64/qt6/bin ]; then
+  export PATH=${PATH}:/usr/lib64/qt6/bin
+fi
 cd docs/help
 
 QHELPGEN=qhelpgenerator
