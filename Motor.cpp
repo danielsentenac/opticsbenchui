@@ -135,6 +135,29 @@ Motor::connectMotor(QString newactuator) {
     actudescription = query.value(1).toString();
     actuposition = query.value(2).toString().toFloat();
   }
+  auto updateDbPosition = [&](const QString& actuatorName, float positionValue) {
+    QString positionQString;
+    positionQString.setNum(positionValue, 'f', 3);
+    QSqlDatabase localDb = connectDb(path);
+    QSqlQuery updateQuery(localDb);
+    updateQuery.prepare("update motor_actuator set position = ? where name = ?");
+    updateQuery.addBindValue(positionQString);
+    updateQuery.addBindValue(actuatorName);
+    if (!updateQuery.exec()) {
+      QLOG_WARN() << "Motor::connectMotor> update position failed "
+                  << updateQuery.lastError().text();
+    }
+  };
+  auto isClosedLoop = [&](Driver* driver) -> bool {
+    if (!driver) {
+      return false;
+    }
+    DriverDefinition::DriverFeature feature;
+    if (driver->GetActuatorFeature(feature) != 0) {
+      return false;
+    }
+    return feature.closedLoop == DriverDefinition::CLOSED_LOOP;
+  };
   //
   // Check if actuator already configured
   //
@@ -142,8 +165,21 @@ Motor::connectMotor(QString newactuator) {
     if ( actuator.at(i) == newactuator ) {
       QLOG_INFO () << newactuator << " already connected";
       if ( connectSuccess.at(i) == true)  {
-	emit getPosition(actuposition);
-	emit getDescription(actudescription);
+        if (isClosedLoop(actuatorDriver.at(i))) {
+          float curpos = 0;
+          if (actuatorDriver.at(i)->GetPos(actuatorSettings.at(i).toStdString(), curpos) == 0) {
+            position.replace(i, curpos);
+            updateDbPosition(actuator.at(i), curpos);
+            emit getPosition(curpos);
+          } else {
+            position.replace(i, actuposition);
+            emit getPosition(actuposition);
+          }
+        } else {
+          position.replace(i, actuposition);
+          emit getPosition(actuposition);
+        }
+        emit getDescription(actudescription);
 	return;
       }
       else  {
@@ -278,7 +314,19 @@ Motor::connectMotor(QString newactuator) {
     connectSuccess.replace(actuator.size() - 1, false);
     return;
   }
-  emit getPosition(actuposition);
+  if (isClosedLoop(actuatorDriver.at(actuator.size() - 1))) {
+    float curpos = 0;
+    if (actuatorDriver.at(actuator.size() - 1)
+            ->GetPos(actusettings.toStdString(), curpos) == 0) {
+      position.replace(actuator.size() - 1, curpos);
+      updateDbPosition(newactuator, curpos);
+      emit getPosition(curpos);
+    } else {
+      emit getPosition(actuposition);
+    }
+  } else {
+    emit getPosition(actuposition);
+  }
   emit getDescription(actudescription);
   return;
 }
