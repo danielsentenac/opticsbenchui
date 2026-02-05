@@ -12,8 +12,8 @@ Advantech/Comedi/Raspberry Pi DACs.
 API documentation can be published with GitHub Pages. Enable Pages on the repo
 and point it at a `gh-pages` branch (or the `docs/` folder on `main`).
 
-Suggested URL (update with your GitHub org/user):
-- https://<github-username>.github.io/OPTICSBENCHUI/api/
+GitHub Pages URL:
+- https://danielsentenac.github.io/opticsbenchui/api/
 
 Publish flow (gh-pages branch):
 1) Build docs: `./make_api_doc.run`
