@@ -5,6 +5,7 @@
      <filterSection>
          <toc>
              <section title="OpticsBenchUI" ref="index.html"> </section>
+             <section title="Compilation Options" ref="Compilation.html"></section>
              <section title="Comedi" ref="Comedi.html"></section>
              <section title="DAC" ref="DAC.html"></section>
              <section title="SuperK" ref="SUPERK.html"></section>
@@ -30,6 +31,7 @@
          <files>
              <file>index.html</file>
              <file>help.css</file>
+             <file>Compilation.html</file>
              <file>Comedi.html</file>
              <file>DAC.html</file>
              <file>DACWindow.jpg</file>
