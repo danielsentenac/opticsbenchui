@@ -54,7 +54,10 @@ class RecordHighlightDelegate : public QStyledItemDelegate {
     if (index.column() == kRecordColumn && widget != nullptr) {
       const int current = widget->currentRecordForHighlight();
       if (current >= 0 && index.data().toInt() == current) {
-        opt.backgroundBrush = QBrush(QColor(72, 96, 140));
+        const QColor highlightColor(72, 96, 140);
+        painter->save();
+        painter->fillRect(opt.rect, highlightColor);
+        painter->restore();
         opt.palette.setColor(QPalette::Text, QColor(235, 235, 235));
       }
     }
