@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 typedef QVector<float> floatVector;
 
-/// \ingroup ui
+/// \ingroup ui_dac
 /// UI widget for Comedi DAC control.
 class ComediDacControlWidget : public QWidget
 {

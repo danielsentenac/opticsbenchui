@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "QsLog.h"
 #include "AnalysisThread.h"
 
-/// \ingroup ui
+/// \ingroup analysis
 /// UI widget for analysis tools.
 class AnalysisWidget : public QWidget
 {

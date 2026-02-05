@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 #include <QtWidgets>
 
-/// \ingroup ui
+/// \ingroup ui_dac
 /// Window for Comedi device configuration and control.
 class ComediWindow : public QMainWindow 
 {

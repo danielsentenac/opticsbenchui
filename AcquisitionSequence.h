@@ -36,6 +36,7 @@ typedef int herr_t;
 
 
 
+/// \ingroup acquisition
 /// Holds the full state of one acquisition step.
 ///
 /// This structure aggregates scan parameters, device actions, and

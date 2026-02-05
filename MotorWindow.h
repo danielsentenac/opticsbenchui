@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtSql>
 #include <QtWidgets>
 
-/// \ingroup ui
+/// \ingroup ui_motor
 /// Window for motor configuration and control.
 class MotorWindow : public QMainWindow 
 {

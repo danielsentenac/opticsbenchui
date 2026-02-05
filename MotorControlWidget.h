@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets>
 #include "QsLog.h"
 
-/// \ingroup ui
+/// \ingroup ui_motor
 /// UI widget for motor control.
 class MotorControlWidget : public QWidget
 {

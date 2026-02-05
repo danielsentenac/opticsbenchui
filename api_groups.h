@@ -8,9 +8,11 @@
 /// Group Overview:
 /// - \ref motors "Motors": Actuator drivers and motor control APIs.
 /// - \ref cameras "Cameras": Camera interfaces and device implementations.
-/// - \ref dac "DAC/Comedi/Raspi": Analog output devices and counters.
+/// - \ref dac "DAC/Comedi/Raspi/Advantech": Analog output devices and counters.
+/// - \ref slm "SLM": Spatial Light Modulators (currently acquired via HDMI snapshot).
 /// - \ref lasers "Lasers": Laser sources and their drivers.
 /// - \ref ui "UI": Widgets and windows used in the GUI.
+/// - \ref acquisition "Acquisition": Acquisition workflow threads and helpers.
 /// - \ref analysis "Analysis": Analysis workflow threads and helpers.
 /// - \ref utils "Utilities": Helpers, logging, and parsing.
 
@@ -38,7 +40,13 @@
 /// \}
 
 /// \defgroup dac Dac
-/// DAC, Comedi, and Raspi output devices.
+/// DAC, Comedi, Raspi, and Advantech output devices.
+/// \ingroup hardware
+/// \{
+/// \}
+
+/// \defgroup slm SLM
+/// Spatial Light Modulators (currently acquired via HDMI snapshot in acquisition).
 /// \ingroup hardware
 /// \{
 /// \}
@@ -57,12 +65,37 @@
 /// \{
 /// \}
 
+/// \defgroup acquisition Acquisition
+/// Acquisition threads and task definitions.
+/// \ingroup ui
+/// \{
+/// \}
+
 /// \defgroup ui UI
 /// User interface widgets and windows.
 /// \{
+/// \defgroup ui_motor Motor UI
+/// Motor UI windows and widgets.
+/// \{
+/// \}
+/// \defgroup ui_camera Camera UI
+/// Camera UI windows and widgets.
+/// \{
+/// \}
+/// \defgroup ui_dac Dac UI
+/// DAC UI windows and widgets.
+/// \{
+/// \}
+/// \defgroup ui_lasers Laser UI
+/// Laser UI windows and widgets.
+/// \{
+/// \}
 /// \}
 
 /// \defgroup utils Utilities
 /// Utility helpers and logging.
 /// \{
+/// \class UtilsHelper
+/// \ingroup utils
+/// Documentation-only wrapper for the Utils namespace.
 /// \}

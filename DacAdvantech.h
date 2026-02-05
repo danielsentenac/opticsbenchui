@@ -83,8 +83,8 @@ class DacAdvantech : public Dac
   void showWarning(QString message);
   /// Emit output count and device name.
   /// \param outputs Number of outputs.
-  /// \param QString Device name or mode string.
-  void getOutputs(int outputs,QString);
+  /// \param mode Device name or mode string.
+  void getOutputs(int outputs, QString mode);
   /// Emit current output values.
   /// \param dacvalues Pointer to output values.
   void getOutputValues(QVector<float> *dacvalues);

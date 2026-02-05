@@ -3,6 +3,60 @@ html, body {
   color: #e6e6e6;
 }
 
+/* Force Doxygen Awesome variables to dark defaults */
+html {
+  color-scheme: dark;
+  --page-font-size: 18.2px;
+  --navigation-font-size: 16.2px;
+  --toc-font-size: 15.2px;
+  --code-font-size: 15.2px;
+  --title-font-size: 26px;
+  --page-background-color: #2b2b2b;
+  --page-foreground-color: #e6e6e6;
+  --page-secondary-foreground-color: #a8b0b8;
+  --separator-color: #3a3a3a;
+  --side-nav-background: #2b2b2b;
+  --header-background: #2b2b2b;
+  --menu-focus-background: #3a3a3a;
+  --menu-selected-background: rgba(255, 255, 255, 0.08);
+  --searchbar-background: #303030;
+  --searchbar-foreground: #e6e6e6;
+  --odd-color: rgba(255, 255, 255, 0.03);
+  --tablehead-background: #2f2f2f;
+  --tablehead-foreground: #e6e6e6;
+  --code-background: #2a2c2f;
+  --fragment-background: #2a2c2f;
+  --fragment-linenumber-background: #35393c;
+  --blockquote-background: #222325;
+}
+
+/* Section subtitle under headings (e.g., group labels) */
+.ingroups,
+.ingroups a,
+.ingroups span {
+  font-size: 16.2px !important;
+}
+
+/* Page top-right section links */
+.header .title a,
+.header .title small,
+.header .title .ingroups,
+.header .title .ingroup,
+.header .title .groupheader,
+.header .title .groupheader a {
+  font-size: 16px !important;
+}
+
+/* Top-right breadcrumb link (e.g., Modules) */
+/* Top-right breadcrumb link (e.g., Modules, Classes) */
+.header .title .ingroups a,
+.header .title .groupheader a,
+.header .title .ingroups,
+.header .title .groupheader {
+  font-size: 20px !important;
+  font-weight: 600;
+}
+
 body, table, div, p, dl, dt, dd, li, ul, ol, td, th {
   color: #e6e6e6;
 }
@@ -207,6 +261,22 @@ div.navpath li.navelem a {
   color: #8ab4f8;
 }
 
+/* Top-right member navigation bar */
+#nav-path,
+div.navpath,
+div.navpath ul,
+div.navpath li,
+div.navpath li.navelem a,
+.header .summary,
+.header .summary a {
+  font-size: 18px !important;
+  font-weight: 600;
+}
+
+.header .summary {
+  white-space: nowrap;
+}
+
 div.fragment, pre.fragment {
   background-color: #2f2f2f;
   border-color: #555;
@@ -256,15 +326,17 @@ div.line {
 .sm-dox a.highlighted,
 .sm-dox a.current {
   color: #000000 !important;
-  background-color: #bfc6d4 !important;
+  background-color: #cfd6e3 !important;
   background-image: none !important;
   text-shadow: none !important;
+  border-radius: 999px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.55), 0 0 0 2px rgba(255,255,255,0.35);
 }
 
 .sm-dox a:hover,
 .sm-dox a:active,
 .sm-dox a.highlighted {
-  background-color: #c7cedc !important;
+  background-color: #d9dfeb !important;
 }
 
 .sm-dox ul a,
@@ -274,9 +346,11 @@ div.line {
 .sm-dox ul a:active,
 .sm-dox ul a.highlighted {
   color: #000000 !important;
-  background-color: #d1d7e4 !important;
+  background-color: #d8deea !important;
   background-image: none !important;
   text-shadow: none !important;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.6), 0 0 0 2px rgba(255,255,255,0.35);
 }
 
 .sm-dox a span.sub-arrow {
@@ -294,6 +368,33 @@ img[src^="namespace"] {
   filter: invert(1) hue-rotate(180deg) contrast(1.05);
 }
 
+/* SVG diagrams (scaled with working links) */
+.dyncontent svg {
+  width: 300px !important;
+  max-width: 300px !important;
+  height: auto !important;
+}
+
+.dyncontent svg text {
+  fill: #e6e6e6 !important;
+}
+
+.dyncontent svg text tspan,
+.dyncontent svg a text {
+  fill: #e6e6e6 !important;
+}
+
+.dyncontent svg polygon {
+  fill: #2f2f2f !important;
+  stroke: #9aa0a6 !important;
+}
+
+.dyncontent svg path,
+.dyncontent svg line,
+.dyncontent svg polyline {
+  stroke: #4e67d6 !important;
+}
+
 div#titlearea {
   background-color: #2b2b2b;
   border-bottom: 1px solid #555;
@@ -302,6 +403,12 @@ div#titlearea {
 /* Title block spacing and full-row background */
 #titlearea table {
   width: 100%;
+}
+
+#titlearea,
+#titlearea table,
+#projectalign {
+  width: 100% !important;
 }
 
 #projectalign {
@@ -317,11 +424,15 @@ div#titlearea {
 #projectname {
   margin: 0;
   padding: 4px 0 0 0;
+  font-size: 48px !important;
+  font-weight: 700;
 }
 
 #projectbrief {
   margin: 0;
   padding: 2px 0 6px 0;
+  font-size: 22px !important;
+  opacity: 0.9;
 }
 
 /* Pull main menu directly under title area */
@@ -384,14 +495,42 @@ div#titlearea {
 .sm-dox > li > a:focus,
 .sm-dox > li > a:hover,
 .sm-dox > li > a:active {
-  padding-left: 56px !important;
-  padding-right: 56px !important;
+  padding-left: 28px !important;
+  padding-right: 28px !important;
   background-image: none !important;
   border-bottom: 1px solid #3a3a3a !important;
+}
+
+.sm-dox > li {
+  margin-right: 12px !important;
+}
+
+.sm-dox > li:last-child {
+  margin-right: 0 !important;
 }
 
 input, select, textarea {
   background-color: #303030;
   color: #e6e6e6;
   border: 1px solid #555;
+}
+
+/* Inline code / label chips */
+code, tt, .inline, .icon, .path, .docpath, .paramname, .paramtype {
+  background-color: #2a2c2f !important;
+  color: #e6e6e6 !important;
+  border: 1px solid #3a3a3a !important;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+.sm-dox ul li a {
+  background-image: linear-gradient(#e3e7f0, #cfd6e3) !important;
+}
+
+.sm-dox ul li {
+  margin-bottom: 6px !important;
+}
+
+.sm-dox ul li:last-child {
+  margin-bottom: 0 !important;
 }

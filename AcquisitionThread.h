@@ -33,6 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "QsLog.h"
 
 
+/// \ingroup acquisition
 /// Executes acquisition sequences in a worker thread.
 ///
 /// This thread coordinates cameras, motors, DACs, and file I/O for each

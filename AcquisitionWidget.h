@@ -32,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "AcquisitionThread.h"
 #include "ComboBoxDelegate.h"
 
-/// \ingroup ui
+/// \ingroup acquisition
 /// UI widget for configuring and running acquisition sequences.
 class AcquisitionWidget : public QWidget
 {

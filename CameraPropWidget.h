@@ -35,7 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QLCDNumber>
 #include "QsLog.h"
 
-/// \ingroup ui
+/// \ingroup ui_camera
 /// UI widget for displaying camera properties.
 class CameraPropWidget : public QWidget
 {

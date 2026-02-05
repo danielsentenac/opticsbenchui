@@ -51,6 +51,7 @@ enum Level
 
 class LoggerImpl; // d pointer
 /// Logger singleton and configuration.
+/// \ingroup utils
 class Logger
 {
 public:
@@ -71,6 +72,7 @@ public:
    //! The helper forwards the streaming to QDebug and builds the final
    //! log message.
    /// Helper object that builds and writes a log message.
+   /// \ingroup utils
    class Helper
    {
    public:

@@ -9,3 +9,6 @@ Makefile
 *.log
 *.h5
 docs/help/OpticsBenchUIColl.qhc
+docs/api/html/
+docs/api/latex/
+docs/api/xml/

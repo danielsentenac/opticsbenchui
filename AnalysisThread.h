@@ -37,6 +37,7 @@ struct AnalysisTask {
   QString arguments;
 };
 
+/// \ingroup analysis
 /// Executes external analysis commands in a worker thread.
 ///
 /// Each task is run using QProcess with the specified code path and

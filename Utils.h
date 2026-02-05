@@ -89,4 +89,10 @@ void EmitWarning(T* sender, const char* logContext, const QString& message) {
 }
 }  // namespace Utils
 
+#ifdef DOXYGEN
+/// \ingroup utils
+/// Documentation-only wrapper for the Utils namespace.
+class UtilsHelper {};
+#endif
+
 #endif

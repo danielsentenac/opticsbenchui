@@ -35,7 +35,7 @@ class QPushButton;
 class QButtonGroup;
 class QSignalMapper;
 
-/// \ingroup ui
+/// \ingroup ui_camera
 /// UI widget for camera feature control.
 class CameraControlWidget : public QWidget
 {

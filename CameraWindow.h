@@ -34,7 +34,7 @@ class VideoPlayer;
 #endif
 #include "QsLog.h"
 
-/// \ingroup ui
+/// \ingroup ui_camera
 /// Window hosting camera controls and live video.
 class CameraWindow : public QMainWindow
 {

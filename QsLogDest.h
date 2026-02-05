@@ -39,6 +39,7 @@ namespace QsLogging
 {
 
 /// Abstract log destination.
+/// \ingroup utils
 class Destination
 {
 public:
@@ -52,6 +53,7 @@ public:
 typedef std::auto_ptr<Destination> DestinationPtr;
 
 /// Creates logging destinations/sinks. The caller owns the result.
+/// \ingroup utils
 class DestinationFactory
 {
 public:
