@@ -127,7 +127,7 @@ void AnalysisThread::run() {
 
     QProcess localProcess;
     localProcess.setProcessChannelMode(QProcess::MergedChannels);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+#if defined(QT_VERSION_CHECK) && QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 #ifdef Q_OS_UNIX
     localProcess.setCreateProcessArgumentsModifier(
         [](QProcess::CreateProcessArguments *args) {
