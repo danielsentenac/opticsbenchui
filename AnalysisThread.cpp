@@ -21,12 +21,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AnalysisThread.h"
+#include <signal.h>
 
 AnalysisThread::AnalysisThread(QObject* parent)
     : QThread(parent),
       tasks(),
       mutex(new QMutex()),
-      suspend(true) {}
+      suspend(true),
+      currentPid(0) {}
 
 AnalysisThread::~AnalysisThread() {
   QLOG_DEBUG() << "Deleting AnalysisThread";
@@ -42,6 +44,12 @@ void AnalysisThread::setTasks(const QVector<AnalysisTask>& tasks) {
 void AnalysisThread::stop() {
   QMutexLocker locker(mutex);
   suspend = true;
+#ifdef Q_OS_UNIX
+  if (currentPid > 0) {
+    ::kill(-currentPid, SIGTERM);
+    ::kill(currentPid, SIGTERM);
+  }
+#endif
 }
 
 QStringList AnalysisThread::splitArguments(const QString& arguments) const {
@@ -93,6 +101,15 @@ void AnalysisThread::run() {
 
     QProcess localProcess;
     localProcess.setProcessChannelMode(QProcess::MergedChannels);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+#ifdef Q_OS_UNIX
+    localProcess.setCreateProcessArgumentsModifier(
+        [](QProcess::CreateProcessArguments *args) {
+          Q_UNUSED(args);
+          setpgid(0, 0);
+        });
+#endif
+#endif
     localProcess.start(program, arguments);
 
     if (!localProcess.waitForStarted()) {
@@ -103,8 +120,14 @@ void AnalysisThread::run() {
           "Error: " + localProcess.errorString();
       emit analysisFinished(task.record, false, output);
       emit showWarning("Unable to start analysis command: " + task.codePath);
+      if (currentPid != 0) {
+        currentPid = 0;
+        emit pidChanged(0);
+      }
       continue;
     }
+    currentPid = static_cast<qint64>(localProcess.processId());
+    emit pidChanged(currentPid);
 
     bool stopped = false;
     QString outputBuffer;
@@ -134,6 +157,8 @@ void AnalysisThread::run() {
         emit analysisOutput(task.record, chunk);
       }
       emit analysisFinished(task.record, false, "Stopped by user.");
+      currentPid = 0;
+      emit pidChanged(0);
       break;
     }
 
@@ -149,9 +174,15 @@ void AnalysisThread::run() {
     const QString output =
         "Exit code: " + QString::number(localProcess.exitCode());
     emit analysisFinished(task.record, success, output);
+    currentPid = 0;
+    emit pidChanged(0);
   }
 
   QMutexLocker locker(mutex);
   suspend = true;
+  if (currentPid != 0) {
+    currentPid = 0;
+    emit pidChanged(0);
+  }
   QLOG_DEBUG() << "AnalysisThread::run> End of thread";
 }

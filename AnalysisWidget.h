@@ -74,6 +74,9 @@ public slots:
   void showAnalysisWarning(QString message);
   /// Update elapsed time when analysis thread finishes.
   void analysisThreadFinished();
+  /// Update PID display for running analysis process.
+  /// \param pid Process ID (0 when not running).
+  void updatePid(qint64 pid);
 
 signals:
   /// Emit warnings to the UI.
@@ -95,6 +98,7 @@ private:
 
   QLabel* analysistitle;
   QLabel* statusLabel;
+  QLabel* pidLabel;
   QLabel* elapsedLabel;
   QTextEdit* outputView;
   QSqlTableModel* analysistable;

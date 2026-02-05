@@ -46,6 +46,7 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
       analysisrow(0),
       analysistitle(new QLabel("Analysis sequence")),
       statusLabel(new QLabel("Idle")),
+      pidLabel(new QLabel("PID: -")),
       elapsedLabel(new QLabel("Elapsed: 00:00:00")),
       outputView(new QTextEdit()),
       analysistable(nullptr),
@@ -94,7 +95,8 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
   connect(stopButton, SIGNAL(clicked()), this, SLOT(stop()));
   gridlayout->addWidget(stopButton, 5, 1, 1, 1);
 
-  gridlayout->addWidget(statusLabel, 5, 2, 1, 4);
+  gridlayout->addWidget(statusLabel, 5, 2, 1, 3);
+  gridlayout->addWidget(pidLabel, 5, 5, 1, 1);
   gridlayout->addWidget(elapsedLabel, 5, 6, 1, 4);
   outputView->setReadOnly(true);
   outputView->setMinimumHeight(120);
@@ -109,6 +111,8 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
           SLOT(analysisFinished(int, bool, QString)));
   connect(analysis, SIGNAL(analysisOutput(int, QString)), this,
           SLOT(analysisOutput(int, QString)));
+  connect(analysis, SIGNAL(pidChanged(qint64)), this,
+          SLOT(updatePid(qint64)));
   connect(analysis, SIGNAL(showWarning(QString)), this,
           SLOT(showAnalysisWarning(QString)));
   connect(analysis, SIGNAL(finished()), this,
@@ -235,6 +239,7 @@ void AnalysisWidget::runFromAcquisition() {
 void AnalysisWidget::stop() {
   analysis->stop();
   analysisWasStopped = true;
+  pidLabel->setText("PID: -");
   emit runningChanged(false);
   statusLabel->setText("Idle");
   if (elapsedTimer.isValid()) {
@@ -284,7 +289,16 @@ void AnalysisWidget::analysisThreadFinished() {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
   }
   statusLabel->setText(analysisWasStopped ? "Stopped" : "Finished");
+  pidLabel->setText("PID: -");
   emit runningChanged(false);
+}
+
+void AnalysisWidget::updatePid(qint64 pid) {
+  if (pid <= 0) {
+    pidLabel->setText("PID: -");
+  } else {
+    pidLabel->setText(QString("PID: %1").arg(pid));
+  }
 }
 
 void AnalysisWidget::dbConnexion() {

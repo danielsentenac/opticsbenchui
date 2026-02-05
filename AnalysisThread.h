@@ -73,6 +73,9 @@ signals:
   /// Emit warnings to the UI.
   /// \param message Warning message.
   void showWarning(QString message);
+  /// Emit current process PID (0 when not running).
+  /// \param pid Process ID.
+  void pidChanged(qint64 pid);
 
 protected:
   /// Thread entry point.
@@ -84,6 +87,7 @@ private:
   QVector<AnalysisTask> tasks;
   QMutex* mutex;
   bool suspend;
+  qint64 currentPid;
 };
 
 #endif // ANALYSISTHREAD_H
