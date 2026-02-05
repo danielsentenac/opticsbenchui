@@ -59,7 +59,7 @@ class RecordHighlightDelegate : public QStyledItemDelegate {
       if (current >= 0 && index.sibling(index.row(), kRecordColumn)
                               .data()
                               .toInt() == current) {
-        const QColor highlightColor(72, 96, 140);
+        const QColor highlightColor(230, 126, 34);
         painter->save();
         painter->fillRect(opt.rect, highlightColor);
         painter->restore();
