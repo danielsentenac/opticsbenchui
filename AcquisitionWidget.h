@@ -142,6 +142,7 @@ public slots:
   void updateElapsed();
  
 private:
+  void stopAcquisition(bool userStop);
   void InitConfig(bool resizeView = true);
   void dbConnexion();
   void setupAcquisitionTable();
@@ -175,6 +176,7 @@ private:
   QPushButton* runButton;
   QPushButton* stopButton;
   QLabel* elapsedLabel;
+  QLabel* stopNoteLabel;
   QProgressBar* acquisitionProgress;
   QGridLayout* gridlayout;
 

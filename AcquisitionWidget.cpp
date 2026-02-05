@@ -90,6 +90,7 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
       runButton(new QPushButton("Run", this)),
       stopButton(new QPushButton("Stop", this)),
       elapsedLabel(new QLabel("Elapsed: 00:00:00")),
+      stopNoteLabel(new QLabel()),
       acquisitionProgress(new QProgressBar()),
       gridlayout(new QGridLayout()),
       acquisition(new AcquisitionThread()),
@@ -136,13 +137,15 @@ AcquisitionWidget::AcquisitionWidget(QString appDirPath)
   stopButton->setFixedSize(100, 30);
   connect(stopButton, SIGNAL(clicked()), this, SLOT(stop()));
   gridlayout->addWidget(stopButton, 5, 1, 1, 1);
-  gridlayout->addWidget(elapsedLabel, 5, 2, 1, 3);
+  stopNoteLabel->setText("");
+  gridlayout->addWidget(elapsedLabel, 5, 2, 1, 2);
+  gridlayout->addWidget(stopNoteLabel, 5, 4, 1, 2);
 
   acquisitionProgress->setTextVisible(false);
   acquisitionProgress->setMinimumHeight(18);
   acquisitionProgress->setRange(0, 1);
   acquisitionProgress->setValue(0);
-  gridlayout->addWidget(acquisitionProgress, 5, 5, 1, 5);
+  gridlayout->addWidget(acquisitionProgress, 5, 6, 1, 4);
 
   elapsedTimerTick->setInterval(1000);
   connect(elapsedTimerTick, SIGNAL(timeout()), this, SLOT(updateElapsed()));
@@ -363,7 +366,7 @@ void AcquisitionWidget::remove() {
 }
 
 void AcquisitionWidget::run() {
-  this->stop();
+  stopAcquisition(false);
   QSqlQuery query(QSqlDatabase::database(path));
   query.exec("update acquisition_sequence set status = ''");
   query.exec("update acquisition_sequence set acquiring = ''");
@@ -460,6 +463,7 @@ void AcquisitionWidget::run() {
   acquisition->setSequenceList(sequenceList);
   elapsedTimer.start();
   elapsedLabel->setText("Elapsed: 00:00:00");
+  stopNoteLabel->setText("");
   if (totalAcqRecords > 0) {
     acquisitionProgress->setRange(0, totalAcqRecords);
     acquisitionProgress->setValue(0);
@@ -474,12 +478,17 @@ void AcquisitionWidget::run() {
 }
 
 void AcquisitionWidget::stop() {
+  stopAcquisition(true);
+}
+
+void AcquisitionWidget::stopAcquisition(bool userStop) {
   acquisition->stop();
   setAcquiringToLastRecord();
   elapsedTimerTick->stop();
   acquisitionProgress->setRange(0, totalAcqRecords > 0 ? totalAcqRecords : 1);
   acquisitionProgress->setValue(0);
   emit runningChanged(false);
+  stopNoteLabel->setText(userStop ? "Stopped by user" : "");
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
   }
@@ -644,6 +653,7 @@ void AcquisitionWidget::acquisitionFinished() {
   elapsedTimerTick->stop();
   acquisitionProgress->setRange(0, totalAcqRecords > 0 ? totalAcqRecords : 1);
   acquisitionProgress->setValue(totalAcqRecords > 0 ? totalAcqRecords : 0);
+  stopNoteLabel->setText("");
   emit runningChanged(false);
   if (elapsedTimer.isValid()) {
     elapsedLabel->setText(FormatElapsed(elapsedTimer.elapsed()));
