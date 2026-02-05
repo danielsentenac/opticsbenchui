@@ -190,6 +190,10 @@ void AcquisitionThread::run() {
     }
     QLOG_INFO() << "AcquisitionThread::run> stop Acquisition : "
                 << Utils::CurrentTimestampString();
+    if (stoppedEarly) {
+      QLOG_INFO() << "AcquisitionThread::run> Stopped by user.";
+      emit showWarning("Stopped by user.");
+    }
     emit getAcquiring(record);
     filenumber++;
     emit getFilenumber(filenumber);
