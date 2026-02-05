@@ -106,6 +106,38 @@
       <li>Advantech DACs (ADVANTECHDAC / NO_ADVDAQ): <a href="https://us2.advantech.com/DAQNavi/">DAQNavi SDK</a></li>
       <li>Raspberry Pi SPI (RASPIDAC / NO_SPI): <a href="http://www.airspayce.com/mikem/bcm2835/">bcm2835</a></li>
     </ul>
+    <h2>Compilation Options (OpticsBenchUI.pro DEFINES)</h2>
+    <p>
+      Build flags are defined in <code>OpticsBenchUI.pro</code>. Missing SDKs
+      automatically disable their features.
+    </p>
+    <h3>Core data/plotting</h3>
+    <ul>
+      <li>HDF5 / NO_HDF5: Enable/disable HDF5 storage.</li>
+      <li>COMEDICOUNTER: Enable Comedi counter support (requires Qwt).</li>
+      <li>COMEDIDAC: Enable Comedi DAC support.</li>
+      <li>NO_COMEDI: Disable all Comedi support.</li>
+    </ul>
+    <h3>Cameras</h3>
+    <ul>
+      <li>USBCAMERA / NO_MULTIMEDIA: Qt Multimedia camera backend.</li>
+      <li>IEEE1394CAMERA / NO_DC1394 / NO_RAW1394: FireWire cameras via libdc1394/libraw1394.</li>
+      <li>GIGECAMERA / NO_ARAVIS: Aravis GenICam GigE/USB3 cameras.</li>
+      <li>NEOCAMERA / ZYLACAMERA / NO_NEO: Andor SDK3 cameras.</li>
+      <li>ALLIEDVISIONCAMERA: Allied Vision Vimba X SDK.</li>
+      <li>RASPICAMERA / NO_RASPI: Raspberry Pi raspicam support.</li>
+      <li>RAPTORFALCONCAMERA / RAPTORNINOX640CAMERA / NO_RAPTOR: Raptor/EPIX cameras.</li>
+      <li>NO_USB: Disable USB comms (libusb).</li>
+    </ul>
+    <h3>Motion / motors</h3>
+    <ul>
+      <li>NO_STANDA: Disable Standa XIMC motors.</li>
+    </ul>
+    <h3>DAC / IO</h3>
+    <ul>
+      <li>ADVANTECHDAC / NO_ADVDAQ: Advantech DAQNavi SDK.</li>
+      <li>RASPIDAC / NO_SPI: Raspberry Pi SPI DAC support.</li>
+    </ul>
     <h2>Hardware Protocols (by Device Type)</h2>
     <p>
       These tables summarize which communication protocols are used by the
