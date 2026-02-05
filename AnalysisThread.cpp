@@ -22,6 +22,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "AnalysisThread.h"
 #include <signal.h>
+#include <errno.h>
+
+namespace {
+#ifdef Q_OS_UNIX
+bool IsProcessAlive(qint64 pid) {
+  if (pid <= 0) {
+    return false;
+  }
+  if (::kill(static_cast<pid_t>(pid), 0) == 0) {
+    return true;
+  }
+  return errno == EPERM;
+}
+
+void KillProcessTree(qint64 pid, int sig) {
+  if (pid <= 0) {
+    return;
+  }
+  const pid_t target = static_cast<pid_t>(pid);
+  ::kill(-target, sig);
+  ::kill(target, sig);
+}
+#endif
+}  // namespace
 
 AnalysisThread::AnalysisThread(QObject* parent)
     : QThread(parent),
@@ -46,8 +70,10 @@ void AnalysisThread::stop() {
   suspend = true;
 #ifdef Q_OS_UNIX
   if (currentPid > 0) {
-    ::kill(-currentPid, SIGTERM);
-    ::kill(currentPid, SIGTERM);
+    KillProcessTree(currentPid, SIGTERM);
+    if (IsProcessAlive(currentPid)) {
+      KillProcessTree(currentPid, SIGKILL);
+    }
   }
 #endif
 }
@@ -151,6 +177,11 @@ void AnalysisThread::run() {
         localProcess.kill();
         localProcess.waitForFinished(2000);
       }
+#ifdef Q_OS_UNIX
+      if (IsProcessAlive(currentPid)) {
+        KillProcessTree(currentPid, SIGKILL);
+      }
+#endif
       const QString chunk = localProcess.readAllStandardOutput();
       if (!chunk.isEmpty()) {
         outputBuffer += chunk;
