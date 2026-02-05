@@ -63,3 +63,43 @@ libdc1394,advdaq,comedi,hdf5 libraries
 
 4) Launch OpticsBenchUI. The documentation is accessible from the GUI and
 includes UI configuration guidance (Help -> User Manual / Getting Started).
+
+Build options (OpticsBenchUI.pro DEFINES):
+
+Core data/plotting
+  HDF5 / NO_HDF5          Enable/disable HDF5 storage.
+  COMEDICOUNTER           Enable Comedi counter support (requires Qwt).
+  COMEDIDAC               Enable Comedi DAC support.
+  NO_COMEDI               Disable all Comedi support.
+
+Cameras
+  USBCAMERA               Qt Multimedia camera backend.
+  NO_MULTIMEDIA           Disable Qt Multimedia camera backend.
+  IEEE1394CAMERA          libdc1394 + libraw1394 FireWire cameras.
+  NO_DC1394               Disable libdc1394 camera support.
+  NO_RAW1394              Disable libraw1394 integration.
+  GIGECAMERA              Aravis GenICam GigE/USB3 cameras.
+  NO_ARAVIS               Disable Aravis support.
+  NEOCAMERA               Andor Neo (SDK3 / atcore).
+  ZYLACAMERA              Andor Zyla (SDK3 / atcore).
+  NO_NEO                  Disable Andor SDK3 cameras.
+  ALLIEDVISIONCAMERA      Allied Vision Vimba X SDK.
+  RASPICAMERA             Raspberry Pi camera (raspicam).
+  NO_RASPI                Disable raspicam support.
+  RAPTORFALCONCAMERA       Raptor Falcon (EPIX XCLIB).
+  RAPTORNINOX640CAMERA     Raptor Ninox640 (EPIX XCLIB).
+  NO_RAPTOR               Disable Raptor/EPIX cameras.
+  NO_USB                  Disable USB comms (libusb).
+
+Motion / motors
+  NO_STANDA               Disable Standa XIMC motors.
+
+DAC / IO
+  ADVANTECHDAC            Advantech DAQNavi SDK.
+  NO_ADVDAQ               Disable Advantech DAC support.
+  RASPIDAC                Raspberry Pi SPI DAC (bcm2835).
+  NO_SPI                  Disable SPI DAC support.
+
+Notes:
+  - These flags are defined in OpticsBenchUI.pro based on detected SDKs.
+  - If a dependency is missing, its feature is disabled automatically.
