@@ -21,7 +21,8 @@
 ///
 /// Build commands:
 /// - `./make_api_doc.run` generates HTML output into `docs/api`.
-/// - `./make_doc.run` rebuilds the Qt Help user manual in `docs/help`.
+/// - `./make_doc.run` rebuilds the Qt Help user manual in `docs/help` and
+///   includes the current README plus the Compilation Options help page.
 
 /// \defgroup hardware Hardware
 /// Hardware control APIs.
