@@ -118,6 +118,7 @@ private:
   QElapsedTimer elapsedTimer;
   QTimer* elapsedTimerTick;
   int currentRecord;
+  qint64 lastActivePid;
   int expectedTasks;
   int finishedTasks;
   bool analysisWasStopped;

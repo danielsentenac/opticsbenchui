@@ -86,6 +86,7 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
       analysis(new AnalysisThread()),
       elapsedTimerTick(new QTimer(this)),
       currentRecord(-1),
+      lastActivePid(0),
       expectedTasks(0),
       finishedTasks(0),
       analysisWasStopped(false) {
@@ -299,8 +300,14 @@ void AnalysisWidget::analysisFinished(int record, bool success,
     QLOG_INFO() << "Analysis output: " << output;
     outputView->append(output);
   }
-  statusLabel->setText(success ? "Done" : "Failed");
-  outputView->append(success ? ">> Done" : ">> Failed");
+  if (analysisWasStopped && !success) {
+    statusLabel->setText("Stopped");
+    outputView->append(QString(">> PID %1 killed")
+                           .arg(lastActivePid > 0 ? lastActivePid : 0));
+  } else {
+    statusLabel->setText(success ? "Done" : "Failed");
+    outputView->append(success ? ">> Done" : ">> Failed");
+  }
   if (expectedTasks > 0) {
     finishedTasks++;
     if (finishedTasks >= expectedTasks && elapsedTimer.isValid()) {
@@ -340,6 +347,7 @@ void AnalysisWidget::updatePid(qint64 pid) {
     pidLabel->setText("PID: -");
   } else {
     pidLabel->setText(QString("PID: %1").arg(pid));
+    lastActivePid = pid;
   }
 }
 
