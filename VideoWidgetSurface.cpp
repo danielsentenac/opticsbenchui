@@ -87,7 +87,7 @@ bool VideoWidgetSurface::present(const QVideoFrame &frame)
 void VideoWidgetSurface::updateVideoRect()
 {
     QSize size = surfaceFormat().sizeHint();
-    size.scale(widget->size().boundedTo(size), Qt::KeepAspectRatio);
+    size.scale(widget->size(), Qt::KeepAspectRatioByExpanding);
     targetRect = QRect(QPoint(0, 0), size);
     targetRect.moveCenter(widget->rect().center());
 }

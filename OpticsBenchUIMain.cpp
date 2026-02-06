@@ -90,10 +90,12 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
   if (QScreen *screen = QGuiApplication::primaryScreen()) {
-    resize(screen->availableGeometry().size() * 0.7);
+    const QSize available = screen->availableGeometry().size();
+    resize(QSize(available.width() * 0.7, available.height() * 0.35));
   }
 #else
-  resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
+  const QSize available = QDesktopWidget().availableGeometry(this).size();
+  resize(QSize(available.width() * 0.7, available.height() * 0.35));
 #endif
    
 #ifdef ADVANTECHDAC
@@ -462,6 +464,11 @@ void OpticsBenchUIMain::openCameraWindow(int cameraNumber) {
       Camera *camera =  cameraList.at(cameraNumber);
       CameraWindow *camerawindow = new CameraWindow(this,Qt::Window, 
 						  camera,cameraNumber);
+    connect(camerawindow, &QObject::destroyed, this, [this, cameraNumber]() {
+      if (cameraNumber >= 0 && cameraNumber < camerawindowList.size()) {
+        camerawindowList.replace(cameraNumber, nullptr);
+      }
+    });
     camerawindow->show();
     camerawindow->update();
     camerawindowList.replace(cameraNumber,camerawindow);
@@ -505,11 +512,8 @@ OpticsBenchUIMain::~OpticsBenchUIMain()
 #endif
   if (motorwindow) delete motorwindow;
   if (superkwindow) delete superkwindow;
-  for (int i = 0 ; i < cameraList.size() ; i++) {
-    if (isopencamerawindow.at(i) == true) {
-     QLOG_INFO() << " Exiting Camera Window " << i;
-     delete camerawindowList.at(i);
-    }
+  for (int i = 0 ; i < camerawindowList.size() ; i++) {
+    camerawindowList.replace(i, nullptr);
   }
   for (int i = 0 ; i < cameraList.size() ; i++) {
     QLOG_INFO() << " Exiting Camera " << i;

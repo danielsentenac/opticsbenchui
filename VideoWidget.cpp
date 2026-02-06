@@ -119,7 +119,7 @@ void VideoWidget::updateVideoRect()
     }
 
     QSize size = currentImage.size();
-    size.scale(this->size().boundedTo(size), Qt::KeepAspectRatio);
+    size.scale(this->size(), Qt::KeepAspectRatioByExpanding);
     targetRect = QRect(QPoint(0, 0), size);
     targetRect.moveCenter(rect().center());
 }

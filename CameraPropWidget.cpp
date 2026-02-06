@@ -35,7 +35,7 @@ CameraPropWidget::CameraPropWidget(Camera *_camera)
 
   connect(camera,SIGNAL(updateProps()),this,SLOT(updateProps()));
 
-  QGridLayout *layout = new QGridLayout(this);
+  layout = new QGridLayout(this);
   
   refreshButton = new QPushButton(QStringLiteral("Refresh"),this);
   refreshButton->setFixedHeight(30);
@@ -43,12 +43,13 @@ CameraPropWidget::CameraPropWidget(Camera *_camera)
   connect(refreshButton, SIGNAL(clicked()), camera, SLOT(getProps()));
   layout->addWidget(refreshButton,0,0,1,1,Qt::AlignJustify);
 
-  for (int i = 0 ; i < camera->propList.size(); i++) {
-    QLabel *propLabel = new QLabel();
-    propLabel->setText(camera->propList.at(i));
-    propList.push_back(propLabel);
-    layout->addWidget(propLabel,i+1,0,1,1,Qt::AlignLeft);
-  }
+  rebuildProps();
+
+  refreshTimer = new QTimer(this);
+  connect(refreshTimer, SIGNAL(timeout()), camera, SLOT(getProps()));
+  refreshTimer->start(1000);
+
+  camera->getProps();
   setMinimumWidth(DOCK_WIDTH);
   setLayout(layout);
 }
@@ -62,11 +63,35 @@ void CameraPropWidget::updateProps() {
     return;
   }
   QLOG_DEBUG ( ) << "CameraPropWidget::update properties ";
-  for (int i = 0 ; i < propList.size(); i++) {
-    QLabel * propLabel = propList.at(i);
-    propLabel->setText(camera->propList.at(i)); 
-    QLOG_DEBUG ( ) << "CameraPropWidget::update property "
-                   << camera->propList.at(i);
+  if (propList.size() != camera->propList.size()) {
+    rebuildProps();
+  } else {
+    for (int i = 0 ; i < propList.size(); i++) {
+      QLabel * propLabel = propList.at(i);
+      propLabel->setText(camera->propList.at(i)); 
+      QLOG_DEBUG ( ) << "CameraPropWidget::update property "
+                     << camera->propList.at(i);
+    }
   }
 }
 
+void CameraPropWidget::rebuildProps()
+{
+  if (!camera || !layout) {
+    return;
+  }
+
+  for (int i = 0; i < propList.size(); i++) {
+    QLabel *label = propList.at(i);
+    layout->removeWidget(label);
+    delete label;
+  }
+  propList.clear();
+
+  for (int i = 0 ; i < camera->propList.size(); i++) {
+    QLabel *propLabel = new QLabel();
+    propLabel->setText(camera->propList.at(i));
+    propList.push_back(propLabel);
+    layout->addWidget(propLabel,i+1,0,1,1,Qt::AlignLeft);
+  }
+}

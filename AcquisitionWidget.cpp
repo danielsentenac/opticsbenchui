@@ -495,7 +495,7 @@ void AcquisitionWidget::stop() {
 
 void AcquisitionWidget::stopAcquisition(bool userStop) {
   acquisition->stop();
-  setAcquiringToLastRecord();
+  clearAcquiringHighlight();
   elapsedTimerTick->stop();
   acquisitionProgress->setRange(0, totalAcqRecords > 0 ? totalAcqRecords : 1);
   acquisitionProgress->setValue(0);
@@ -614,6 +614,14 @@ void AcquisitionWidget::setAcquiringToLastRecord() {
   InitConfig(false);
   acquisitionview->viewport()->update();
 }
+
+void AcquisitionWidget::clearAcquiringHighlight() {
+  QSqlQuery query(QSqlDatabase::database(path));
+  query.exec("update acquisition_sequence set acquiring = ''");
+  currentAcquiringRecordValue = -1;
+  InitConfig(false);
+  acquisitionview->viewport()->update();
+}
 void AcquisitionWidget::getFilenumber(int number) {
   filenumber = QString::number(number);
 }
@@ -662,6 +670,7 @@ void AcquisitionWidget::acquisitionFinished() {
   elapsedTimerTick->stop();
   acquisitionProgress->setRange(0, totalAcqRecords > 0 ? totalAcqRecords : 1);
   acquisitionProgress->setValue(totalAcqRecords > 0 ? totalAcqRecords : 0);
+  clearAcquiringHighlight();
   stopNoteLabel->setText("");
   emit runningChanged(false);
   if (elapsedTimer.isValid()) {

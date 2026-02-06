@@ -42,7 +42,7 @@ VideoPlayer::VideoPlayer(QWidget *parent, Camera *_camera)
 }
 VideoPlayer::~VideoPlayer()
 {
-   camera->stop();
+   // Do not stop camera here; acquisition may be running without UI.
 }
 
 void VideoPlayer::closeEvent(QCloseEvent* event)

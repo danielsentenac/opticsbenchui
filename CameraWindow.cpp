@@ -115,12 +115,14 @@ void CameraWindow::closeEvent(QCloseEvent* event)
   QLOG_DEBUG ( ) << "Closing CameraWindow";
   OpticsBenchUIMain *OpticsBenchui = (OpticsBenchUIMain*) parentWindow;
   OpticsBenchui->setOpenCameraWindow(false,cameraNumber);
-  delete this;
+  this->deleteLater();
 }
 void CameraWindow::set480x320() {
 #ifndef NO_MULTIMEDIA
   emit setVideoPlayerResolution(480,320);
   const int width = (cameraPropWidget != nullptr) ? 480 + OFFSET_X : 480;
+  setMinimumSize(QSize(0, 0));
+  setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
   resize(QSize(width, 320 + OFFSET_Y));
 #endif
 }
@@ -128,6 +130,8 @@ void CameraWindow::set640x480() {
 #ifndef NO_MULTIMEDIA
   emit setVideoPlayerResolution(640,480); 
   const int width = (cameraPropWidget != nullptr) ? 640 + OFFSET_X : 640;
+  setMinimumSize(QSize(0, 0));
+  setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
   resize(QSize(width, 480 + OFFSET_Y));
 #endif
 }
@@ -135,6 +139,8 @@ void CameraWindow::set1280x960() {
 #ifndef NO_MULTIMEDIA
   emit setVideoPlayerResolution(1280,960);
   const int width = (cameraPropWidget != nullptr) ? 1280 + OFFSET_X : 1280;
+  setMinimumSize(QSize(0, 0));
+  setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
   resize(QSize(width, 960 + OFFSET_Y));
 #endif
 }

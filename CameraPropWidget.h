@@ -33,6 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QPushButton>
 #include <QCheckBox>
 #include <QLCDNumber>
+#include <QTimer>
 #include "QsLog.h"
 
 /// \ingroup ui_camera
@@ -55,13 +56,17 @@ class CameraPropWidget : public QWidget
   /// \param message Warning message.
   void showWarning(QString message);
 
-  private slots:
+ private slots:
   /// Refresh the property display.
   void updateProps();
 
  private:
+  void rebuildProps();
+
   Camera *camera;
   QVector<QLabel*> propList;
   QPushButton *refreshButton;
+  QGridLayout *layout = nullptr;
+  QTimer *refreshTimer = nullptr;
 };
 #endif

@@ -192,22 +192,22 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   QLabel *minPixLabel = new QLabel("min:");
   QLCDNumber *minValue = new  QLCDNumber();
   minValue->setSegmentStyle(QLCDNumber::Flat);
-  layout->addWidget(minPixLabel,0,1000,1,1,Qt::AlignCenter);
-  layout->addWidget(minValue,0,1000+1,1,1,Qt::AlignCenter);
+  layout->addWidget(minPixLabel,0,1000,1,1,Qt::AlignRight | Qt::AlignVCenter);
+  layout->addWidget(minValue,0,1000+1,1,1,Qt::AlignLeft | Qt::AlignVCenter);
   connect(camera,SIGNAL(updateMin(int)),minValue,SLOT(display(int)),Qt::UniqueConnection);
    
   QLabel *maxPixLabel = new QLabel("max:");
   QLCDNumber *maxValue = new  QLCDNumber();
   maxValue->setSegmentStyle(QLCDNumber::Flat);
-  layout->addWidget(maxPixLabel,1,1000,1,1,Qt::AlignTop | Qt::AlignCenter);
-  layout->addWidget(maxValue,1,1000+1,1,1,Qt::AlignTop | Qt::AlignCenter);
+  layout->addWidget(maxPixLabel,1,1000,1,1,Qt::AlignRight | Qt::AlignVCenter);
+  layout->addWidget(maxValue,1,1000+1,1,1,Qt::AlignLeft | Qt::AlignVCenter);
   connect(camera,SIGNAL(updateMax(int)),maxValue,SLOT(display(int)),Qt::UniqueConnection);
 
   QLabel *avgPixLabel = new QLabel("avg:");
   QLCDNumber *avgValue = new  QLCDNumber();
   avgValue->setSegmentStyle(QLCDNumber::Flat);
-  layout->addWidget(avgPixLabel,1,1000,1,1,Qt::AlignBottom | Qt::AlignCenter);
-  layout->addWidget(avgValue,1,1000+1,1,1,Qt::AlignBottom | Qt::AlignCenter);
+  layout->addWidget(avgPixLabel,2,1000,1,1,Qt::AlignRight | Qt::AlignVCenter);
+  layout->addWidget(avgValue,2,1000+1,1,1,Qt::AlignLeft | Qt::AlignVCenter);
   connect(camera,SIGNAL(updateAvg(int)),avgValue,SLOT(display(int)),Qt::UniqueConnection);
 
  /* optimizeAcquisitionLabel = new QLabel("Optimize:");
@@ -216,54 +216,51 @@ CameraControlWidget::CameraControlWidget(Camera *_camera)
   layout->addWidget(optimizeAcquisitionLabel,2,1000,1,1,Qt::AlignTop | Qt::AlignCenter);
   layout->addWidget(optimizeAcquisitionBox,2,1000+1,1,1,Qt::AlignTop | Qt::AlignCenter);
 */
-  auto *controlsLayout = new QVBoxLayout();
-  controlsLayout->setContentsMargins(0, 0, 0, 0);
-  controlsLayout->setSpacing(6);
+  auto *controlsLayout = new QGridLayout();
+  controlsLayout->setContentsMargins(16, 0, 0, 0);
+  controlsLayout->setHorizontalSpacing(8);
+  controlsLayout->setVerticalSpacing(6);
+  controlsLayout->setColumnStretch(0, 1);
+  controlsLayout->setColumnStretch(1, 0);
+  controlsLayout->setAlignment(Qt::AlignRight | Qt::AlignTop);
 
   snapshotButton = new QPushButton("Snapshot",this);
   snapshotButton->setFixedHeight(30);
-  snapshotButton->setFixedWidth(90);
+  snapshotButton->setMinimumWidth(160);
   QObject::connect(snapshotButton, SIGNAL(clicked()), this, SLOT(snapShot()),Qt::UniqueConnection);
-  controlsLayout->addWidget(snapshotButton);
+  controlsLayout->addWidget(snapshotButton, 0, 0, 1, 2, Qt::AlignRight);
+  controlsLayout->addItem(new QSpacerItem(0, 16, QSizePolicy::Minimum, QSizePolicy::Fixed), 1, 0, 1, 2);
   
   vflipLabel = new QLabel("Flip vertical");
   vflipBox = new QCheckBox();
   QObject::connect(vflipBox, SIGNAL(stateChanged(int)), camera, SLOT(vflipImage(int)),Qt::UniqueConnection);
-  auto *vflipRow = new QHBoxLayout();
-  vflipRow->setContentsMargins(0, 0, 0, 0);
-  vflipRow->setSpacing(6);
-  vflipRow->addWidget(vflipLabel);
-  vflipRow->addWidget(vflipBox);
-  vflipRow->addStretch(1);
-  controlsLayout->addLayout(vflipRow);
+  controlsLayout->addWidget(vflipLabel, 2, 0, 1, 1, Qt::AlignRight);
+  controlsLayout->addWidget(vflipBox, 2, 1, 1, 1, Qt::AlignLeft);
 
   hflipLabel = new QLabel("Flip horizontal");
   hflipBox = new QCheckBox();
   QObject::connect(hflipBox, SIGNAL(stateChanged(int)), camera, SLOT(hflipImage(int)),Qt::UniqueConnection);
-  auto *hflipRow = new QHBoxLayout();
-  hflipRow->setContentsMargins(0, 0, 0, 0);
-  hflipRow->setSpacing(6);
-  hflipRow->addWidget(hflipLabel);
-  hflipRow->addWidget(hflipBox);
-  hflipRow->addStretch(1);
-  controlsLayout->addLayout(hflipRow);
+  controlsLayout->addWidget(hflipLabel, 3, 0, 1, 1, Qt::AlignRight);
+  controlsLayout->addWidget(hflipBox, 3, 1, 1, 1, Qt::AlignLeft);
 
   colorGroup = new QButtonGroup(this);
   connect(colorGroup, SIGNAL(buttonClicked(int)), camera, SLOT(setColorTable(int)),Qt::UniqueConnection) ;
-  QRadioButton *grayButton = new QRadioButton("Gray");
-  QRadioButton *hotButton = new QRadioButton("Hot");
+  QLabel *grayLabel = new QLabel("Gray");
+  QLabel *hotLabel = new QLabel("Hot");
+  QRadioButton *grayButton = new QRadioButton();
+  QRadioButton *hotButton = new QRadioButton();
   colorGroup->addButton(grayButton);
   colorGroup->addButton(hotButton);
-  auto *colorLayout = new QVBoxLayout();
-  colorLayout->setContentsMargins(0, 0, 0, 0);
-  colorLayout->setSpacing(4);
-  colorLayout->addWidget(grayButton);
-  colorLayout->addWidget(hotButton);
-  controlsLayout->addLayout(colorLayout);
+  controlsLayout->addWidget(grayLabel, 4, 0, 1, 1, Qt::AlignRight);
+  controlsLayout->addWidget(grayButton, 4, 1, 1, 1, Qt::AlignLeft);
+  controlsLayout->addWidget(hotLabel, 5, 0, 1, 1, Qt::AlignRight);
+  controlsLayout->addWidget(hotButton, 5, 1, 1, 1, Qt::AlignLeft);
 
   auto *controlsWidget = new QWidget(this);
+  controlsWidget->setMinimumWidth(180);
+  controlsWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
   controlsWidget->setLayout(controlsLayout);
-  layout->addWidget(controlsWidget, 0, 1000 + 2, 3, 2, Qt::AlignTop);
+  layout->addWidget(controlsWidget, 0, 1000 + 4, 3, 2, Qt::AlignTop | Qt::AlignRight);
   
   grayButton->setChecked(true);
   setMinimumHeight(DOCK_HEIGHT);

@@ -577,8 +577,8 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       camera = cameraList.at(i);
       if (camera->model == sequence->instrumentName) {
         cameraExists = true;
+        break;
       }
-      break;
     }
     if (cameraExists == true) {
       if (camera->suspend == true) {

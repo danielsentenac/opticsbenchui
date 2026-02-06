@@ -107,7 +107,17 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
   analysisview->setItemDelegateForColumn(
       kRecordColumn, new RecordHighlightDelegate(this, analysisview));
   Utils::ConfigureSqlTableView(analysisview);
-  gridlayout->addWidget(analysisview, 1, 0, 1, 10);
+  outputView->setReadOnly(true);
+  outputView->setMinimumHeight(120);
+
+  QSplitter *splitter = new QSplitter(Qt::Vertical, this);
+  splitter->addWidget(analysisview);
+  splitter->addWidget(outputView);
+  splitter->setStretchFactor(0, 3);
+  splitter->setStretchFactor(1, 1);
+  splitter->setCollapsible(0, false);
+  splitter->setCollapsible(1, false);
+  gridlayout->addWidget(splitter, 1, 0, 1, 10);
 
   reloadButton->setFixedSize(100, 30);
   connect(reloadButton, SIGNAL(clicked()), this, SLOT(reload()));
@@ -132,9 +142,6 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
   gridlayout->addWidget(statusLabel, 5, 2, 1, 3);
   gridlayout->addWidget(pidLabel, 5, 5, 1, 1);
   gridlayout->addWidget(elapsedLabel, 5, 6, 1, 4);
-  outputView->setReadOnly(true);
-  outputView->setMinimumHeight(120);
-  gridlayout->addWidget(outputView, 6, 0, 1, 10);
 
   elapsedTimerTick->setInterval(1000);
   connect(elapsedTimerTick, SIGNAL(timeout()), this, SLOT(updateElapsed()));

@@ -27,8 +27,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QCameraInfo>
 #include <QCameraImageCapture>
+#include <QCameraImageProcessing>
 #include <QCameraViewfinderSettings>
 #include <QCameraViewfinder>
+#include <QVideoProbe>
 #else
 #include <QCameraDevice>
 #include <QCameraFormat>
@@ -102,13 +104,17 @@ class CameraUSB : public Camera
 
  private:
   void run() override;
-  int  connectCamera() override;
-  int  acquireImage() override;
-  void cleanup_and_exit() override;
-  
+ int  connectCamera() override;
+ int  acquireImage() override;
+ void cleanup_and_exit() override;
+
+ void processImage(const QImage &image);
+ void resetBackend();
+
  QCamera *camera = nullptr;
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
   QCameraImageCapture *imageCapture = nullptr;
+  QVideoProbe *videoProbe = nullptr;
   QList<QCameraInfo> cameras;
   QCameraViewfinder *viewfinder = nullptr;
   QCameraViewfinderSettings viewfinderSettings;
@@ -121,6 +127,10 @@ class CameraUSB : public Camera
   int cameraIndex = 0;
   int imageWidth = 0;
   int imageHeight = 0;
+  QImage lastImage;
+  QMutex frameMutex;
+  QWaitCondition frameReady;
+  bool frameAvailable = false;
 };
 
 #endif // CAMERAUSB_H
