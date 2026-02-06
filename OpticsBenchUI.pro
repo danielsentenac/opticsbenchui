@@ -72,7 +72,7 @@ DEFINES += OPTICSBENCHUIVERSION=\\\"$$VERSION\\\"
 DEFINES += QT_NO_DEBUG_OUTPUT
 
 # USB camera support
-#DEFINES        +=      USBCAMERA
+DEFINES        +=      USBCAMERA
 
 # Firewire camera support
 #DEFINES   +=   IEEE1394CAMERA
