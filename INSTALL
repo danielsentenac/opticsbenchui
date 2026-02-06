@@ -1,106 +1,79 @@
-                         INSTALLING OpticsBenchUI 1.1
+INSTALLING OpticsBenchUI 1.1
 
 External packages needed prior to installation:
 
-1) Graphical user interface is based on Qt 5 or Qt 6 for Linux.
-   Official Qt downloads: https://www.qt.io/download
-   Qt 5 source: git clone git://code.qt.io/qt/qt5.git
-   Qt 6 source: git clone git://code.qt.io/qt/qt6.git
-   Qt note: ensure the Qt SVG development package is installed so qmake can
-   find the `svg` module. On Fedora this is typically `qt5-qtsvg-devel`
-   (the runtime package alone does not provide the module `.pri` file).
+Graphical user interface is based on Qt 5 or Qt 6 for Linux. Official Qt downloads: https://www.qt.io/download
+Qt 5 source: git clone git://code.qt.io/qt/qt5.git
+Qt 6 source: git clone git://code.qt.io/qt/qt6.git
+OpticsBenchUI is compiled with Qt5 or Qt6 using the project file OpticsBenchUI.pro. First you need to update OpticsBenchUI.pro according to optional librairies installed and modify it with your personal path installations (INCLUDEPATH, LIBS tags)
 
-2) Firewire Camera compliant with DCAM (IIDC) standard is based on libdc1394
-   http://damien.douxchamps.net/ieee1394/libdc1394/
-
-3) Advantech boards are controlled via the DAQNavi SDK
-   https://us2.advantech.com/DAQNavi/
-
-4) Comedi boards controlled using the comedi library
-   http://www.comedi.org
-
-5) HDF5 data library to manage data collection
-   https://www.hdfgroup.org/solutions/hdf5/
-
-Additional vendor libraries (see Help -> User Manual / Getting Started):
-  - Aravis (GigE Vision): https://github.com/AravisProject/aravis
-  - libraw1394 (IEEE1394 support): https://www.kernel.org/doc/html/latest/driver-api/firewire.html
-  - Andor SDK3 (Neo/Zyla): https://andor.oxinst.com/products/software-development-kit/software-development-kit
-  - Allied Vision Vimba X: https://www.alliedvision.com/en/products/software/vimba-x-sdk
-  - Raptor support: https://www.raptorphotonics.com/support/
-  - EPIX XCLIB: https://www.epixinc.com/products/xclib.htm
-  - raspicam: http://www.uco.es/investiga/grupos/ava/portfolio/raspicam/
-  - Standa libximc: https://libximc.xisupport.com/
-  - bcm2835 (Raspi SPI): http://www.airspayce.com/mikem/bcm2835/
-  - Qwt (Comedi plotting): https://qwt.sourceforge.io/
-  - libusb: https://libusb.info/
-  - NKT SuperK control: https://www.nktphotonics.com/products/femtosecond-lasers/nkt-photonics-laser-control-software/
-  - Newport controllers: https://www.newport.com/p/pzc200, https://www.newport.com/p/AG-UC2
-  - PI Mercury / E-725: https://www.pi-usa.us/en/products/controllers-drivers/mercury-embedded-motion-controller-10244/,
-    https://static.pimicos.com/fileadmin/user_upload/pimicos/physik_instrumente/files/1_Datasheets/E-725_DataSheet.pdf
-
-OpticsBenchUI is compiled with Qt5 or Qt6 using the project file OpticsBenchUI.pro.
-First you need to update OpticsBenchUI.pro according to
-libdc1394,advdaq,comedi,hdf5 libraries and modify it with your personal path installations (INCLUDEPATH, LIBS tags)
-
+Optional Librairies & SDKs (see Help -> User Manual / Getting Started)
+Firewire Camera compliant with DCAM (IIDC) standard is based on libdc1394: http://damien.douxchamps.net/ieee1394/libdc1394/
+Advantech boards are controlled via the DAQNavi SDK: https://us2.advantech.com/DAQNavi/
+Comedi boards controlled using the comedi library: http://www.comedi.org
+HDF5 data library to manage data collection: https://www.hdfgroup.org/solutions/hdf5/
+Aravis (GigE Vision): https://github.com/AravisProject/aravis
+libraw1394 (IEEE1394 support): https://www.kernel.org/doc/html/latest/driver-api/firewire.html
+Andor SDK3 (Neo/Zyla): https://andor.oxinst.com/products/software-development-kit/software-development-kit
+Allied Vision Vimba X: https://www.alliedvision.com/en/products/software/vimba-x-sdk
+Raptor support: https://www.raptorphotonics.com/support/
+EPIX XCLIB: https://www.epixinc.com/products/xclib.htm
+raspicam: http://www.uco.es/investiga/grupos/ava/portfolio/raspicam/
+Standa libximc: https://libximc.xisupport.com/
+bcm2835 (Raspi SPI): http://www.airspayce.com/mikem/bcm2835/
+Qwt (Comedi plotting): https://qwt.sourceforge.io/
+libusb: https://libusb.info/
+NKT SuperK control: https://www.nktphotonics.com/products/femtosecond-lasers/nkt-photonics-laser-control-software/
+Newport controllers: https://www.newport.com/p/pzc200, https://www.newport.com/p/AG-UC2
+PI Mercury / E-725: https://www.pi-usa.us/en/products/controllers-drivers/mercury-embedded-motion-controller-10244/, https://static.pimicos.com/fileadmin/user_upload/pimicos/physik_instrumente/files/1_Datasheets/E-725_DataSheet.pdf
 OpticsBenchUI installation steps:
 
 In the source directory (where is present the OpticsBenchUI.pro file):
 
 1) qmake
-   - Qt 5: qmake-qt5 OpticsBenchUI.pro
-   - Qt 6: qmake6 OpticsBenchUI.pro
 
+Qt 5: qmake-qt5 OpticsBenchUI.pro
+Qt 6: qmake6 OpticsBenchUI.pro
 2) make
 
 This will create an OpticsBenchUI executable
 
-Optional dependencies (HDF5, OpenGL headers, Qt Multimedia, Standa, USB, Qt SVG)
-are detected at build time and disabled if missing.
+Optional dependencies (HDF5, OpenGL headers, Qt Multimedia, Standa, USB, Qt SVG) are detected at build time and disabled if missing.
 
-3) Set/Update the LD_LIBRARY_PATH environment variable with the library paths of 
-libdc1394,advdaq,comedi,hdf5 libraries 
+3) Launch OpticsBenchUI. The documentation is accessible from the GUI and includes UI configuration guidance (Help -> User Manual / Getting Started). See the "Compilation Options" help page for a structured list of build defines.
 
-4) Launch OpticsBenchUI. The documentation is accessible from the GUI and
-includes UI configuration guidance (Help -> User Manual / Getting Started).
-   See the "Compilation Options" help page for a structured list of build defines.
+Build options description:
 
-Build options (OpticsBenchUI.pro DEFINES):
-
-Core data/plotting
-  HDF5 / NO_HDF5          Enable/disable HDF5 storage.
-  COMEDICOUNTER           Enable Comedi counter support (requires Qwt).
-  COMEDIDAC               Enable Comedi DAC support.
-  NO_COMEDI               Disable all Comedi support.
-
+Core data handling
+HDF5 / NO_HDF5: Enable/disable HDF5 storage.
 Cameras
-  USBCAMERA               Qt Multimedia camera backend.
-  NO_MULTIMEDIA           Disable Qt Multimedia camera backend.
-  IEEE1394CAMERA          libdc1394 + libraw1394 FireWire cameras.
-  NO_DC1394               Disable libdc1394 camera support.
-  NO_RAW1394              Disable libraw1394 integration.
-  GIGECAMERA              Aravis GenICam GigE/USB3 cameras.
-  NO_ARAVIS               Disable Aravis support.
-  NEOCAMERA               Andor Neo (SDK3 / atcore).
-  ZYLACAMERA              Andor Zyla (SDK3 / atcore).
-  NO_NEO                  Disable Andor SDK3 cameras.
-  ALLIEDVISIONCAMERA      Allied Vision Vimba X SDK.
-  RASPICAMERA             Raspberry Pi camera (raspicam).
-  NO_RASPI                Disable raspicam support.
-  RAPTORFALCONCAMERA       Raptor Falcon (EPIX XCLIB).
-  RAPTORNINOX640CAMERA     Raptor Ninox640 (EPIX XCLIB).
-  NO_RAPTOR               Disable Raptor/EPIX cameras.
-  NO_USB                  Disable USB comms (libusb).
-
+USBCAMERA: Qt Multimedia camera backend.
+NO_MULTIMEDIA: Disable Qt Multimedia camera backend.
+IEEE1394CAMERA: libdc1394 + libraw1394 FireWire cameras.
+NO_DC1394: Disable libdc1394 camera support.
+NO_RAW1394: Disable libraw1394 integration.
+GIGECAMERA: Aravis GenICam GigE/USB3 cameras.
+NO_ARAVIS: Disable Aravis support.
+NEOCAMERA: Andor Neo (SDK3 / atcore).
+ZYLACAMERA: Andor Zyla (SDK3 / atcore).
+NO_NEO: Disable Andor SDK3 cameras.
+ALLIEDVISIONCAMERA: Allied Vision Vimba X SDK.
+RASPICAMERA: Raspberry Pi camera (raspicam).
+NO_RASPI: Disable raspicam support.
+RAPTORFALCONCAMERA: Raptor Falcon (EPIX XCLIB).
+RAPTORNINOX640CAMERA: Raptor Ninox640 (EPIX XCLIB).
+NO_RAPTOR: Disable Raptor/EPIX cameras.
+NO_USB: Disable USB comms (libusb).
 Motion / motors
-  NO_STANDA               Disable Standa XIMC motors.
-
+NO_STANDA: Disable Standa XIMC motors.
 DAC / IO
-  ADVANTECHDAC            Advantech DAQNavi SDK.
-  NO_ADVDAQ               Disable Advantech DAC support.
-  RASPIDAC                Raspberry Pi SPI DAC (bcm2835).
-  NO_SPI                  Disable SPI DAC support.
-
-Notes:
-  - These flags are defined in OpticsBenchUI.pro based on detected SDKs.
-  - If a dependency is missing, its feature is disabled automatically.
+ADVANTECHDAC: Advantech DAQNavi SDK.
+NO_ADVDAQ: Disable Advantech DAC support.
+RASPIDAC: Raspberry Pi SPI DAC (bcm2835).
+NO_SPI: Disable SPI DAC support.
+COMEDICOUNTER: Enable Comedi counter support (requires Qwt).
+COMEDIDAC: Enable Comedi DAC support.
+NO_COMEDI: Disable all Comedi support.
+Notes
+These flags are defined in OpticsBenchUI.pro based on detected SDKs.
+If a dependency is missing, its feature is disabled automatically.
