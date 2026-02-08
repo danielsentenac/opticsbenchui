@@ -66,3 +66,11 @@ ver. 1.0
 ver 1.1
 1- Arrange code to compile correctly without comedi and raspi
 2- Add USB Camera support using v4l2 driver
+
+ver 1.2 (2026-02-08)
+1- Improve USB camera backend (Qt Multimedia): discovery, capture, properties, and UI controls.
+2- Fix acquisition snapshot timing and highlight reset on completion.
+3- Update analysis UI with resizable split between table and output.
+4- Improve camera window resizing and video scaling behavior.
+5- Refactor layout: move sources to src/ and clean root; move databases to data/ and scripts/ to scripts/.
+6- Fix shutdown stability by avoiding self-deletion on close.
