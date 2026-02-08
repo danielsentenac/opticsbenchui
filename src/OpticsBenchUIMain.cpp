@@ -528,7 +528,7 @@ void OpticsBenchUIMain::setOpenCameraWindow(bool isopen, int cameranumber){
 void OpticsBenchUIMain::keyPressEvent(QKeyEvent *e) {
   if(e->type() == QKeyEvent::KeyPress) {
     if(e->matches(QKeySequence::Copy)) {
-      delete this;
+      close();
     } 
   }
 }
@@ -536,7 +536,6 @@ void OpticsBenchUIMain::keyPressEvent(QKeyEvent *e) {
 void OpticsBenchUIMain::closeEvent(QCloseEvent* event)
 {
   event->accept();
-  delete this;
 }
 void myMessageOutput(QtMsgType type, const QMessageLogContext &, const QString & str) {
    const char * msg = str.toStdString().c_str();
