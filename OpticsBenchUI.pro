@@ -33,8 +33,8 @@ qtHaveModule(multimediawidgets) {
   DEFINES += NO_MULTIMEDIA
 }
 
-!exists(/usr/include/GL/gl.h) {
-  !exists(/usr/local/include/GL/gl.h) {
+!exists(/usr/include/GL/src/gl.h) {
+  !exists(/usr/local/include/GL/src/gl.h) {
     DEFINES += NO_OPENGL QT_NO_OPENGL
     message("OpenGL headers not found. Building without OpenGL support.")
   }
@@ -153,7 +153,7 @@ RASPI_INC_PATH = /usr/local/include/raspicam
 ALLIEDVISION_INC_PATH = /usr/local/VimbaX/include
 SPI_INC_PATH = /usr/local/include
 
-!exists($$STANDA_INC_PATH/ximc.h) {
+!exists($$STANDA_INC_PATH/src/ximc.h) {
   DEFINES += NO_STANDA
   message("Standa XIMC headers not found. Building without Standa support.")
 } else {
@@ -163,8 +163,8 @@ SPI_INC_PATH = /usr/local/include
   }
 }
 
-!exists(/usr/include/libusb-1.0/libusb.h) {
-  !exists(/usr/local/include/libusb-1.0/libusb.h) {
+!exists(/usr/include/libusb-1.0/src/libusb.h) {
+  !exists(/usr/local/include/libusb-1.0/src/libusb.h) {
     DEFINES += NO_USB
     message("libusb headers not found. Building without USB support.")
   }
@@ -177,7 +177,7 @@ SPI_INC_PATH = /usr/local/include
 }
 
 contains(DEFINES, ADVANTECHDAC) {
-  !exists($$ADVDAQ_INC_PATH/Advantech/advdaq.h)|!exists($$ADVDAQ_INC_PATH/Advantech/advdevice.h)|!exists($$ADVDAQ_LIB_PATH/libadvdaq.so) {
+  !exists($$ADVDAQ_INC_PATH/Advantech/src/advdaq.h)|!exists($$ADVDAQ_INC_PATH/Advantech/src/advdevice.h)|!exists($$ADVDAQ_LIB_PATH/libadvdaq.so) {
     DEFINES -= ADVANTECHDAC
     DEFINES += NO_ADVDAQ
     message("Advantech headers or library not found. Disabling Advantech DAC support.")
@@ -187,10 +187,10 @@ contains(DEFINES, ADVANTECHDAC) {
 
 HDF5_HEADERS_FOUND = 0
 HDF5_EXTRA_INC_PATH =
-exists($$HDF5_INC_PATH/hdf5.h) {
+exists($$HDF5_INC_PATH/src/hdf5.h) {
   HDF5_HEADERS_FOUND = 1
 }
-exists($$HDF5_INC_PATH/hdf5/serial/hdf5.h) {
+exists($$HDF5_INC_PATH/hdf5/serial/src/hdf5.h) {
   HDF5_HEADERS_FOUND = 1
   HDF5_EXTRA_INC_PATH = $$HDF5_INC_PATH/hdf5/serial
 }
@@ -216,114 +216,114 @@ isEmpty(HDF5_HL_LIB_FILE) {
 }
 
 
-HEADERS += OpticsBenchUIMain.h \
-  Camera.h \
-  CameraUSB.h \
-  CameraIEEE1394.h \
-  CameraGiGE.h \
-  CameraNeo.h \
-  CameraZyla.h \
-  CameraRAPTORFALCON.h \
-  CameraRAPTORNINOX640.h \
-  CameraRaspi.h \
-  CameraWindow.h \
-  CameraControlWidget.h \
-  CameraPropWidget.h \
-  Raspi.h \
-  RaspiDac.h \
-  RaspiDacControlWidget.h \
-  RaspiWindow.h \
-  DacWindow.h \
-  DacControlWidget.h \
-  Dac.h \
-  MotorWindow.h \
-  MotorControlWidget.h \
-  Motor.h \
-  DriverDefinition.h \
-  Driver.h \
-  DriverNewFocus_8750_Cl.h \
-  DriverNewFocus_8750_Ol.h \
-  DriverNewPort_NSC200.h \
-  DriverPI_E725.h \
-  DriverPI_C509.h \
-  DriverMicos_Pollux.h \
-  DriverPI_C862.h \
-  DriverNewPort_AGUC2.h \
-  SuperK.h \
-  DriverSuperK.h \
-  SuperKWindow.h \
-  SuperKControlWidget.h \
-  ACCom.h \
-  ACEthCom.h \
-  ACRSCom.h \
-  AcquisitionWidget.h \
-  ComboBoxDelegate.h \
-  AcquisitionThread.h \
-  AcquisitionSequence.h \
-  FileParser.h \
-  AnalysisWidget.h \
-  AnalysisThread.h \
-  Utils.h \
-  QsLog.h \
-  QsDebugOutput.h \
-  QsLogDest.h \
-  Assistant.h
-SOURCES += OpticsBenchUIMain.cpp \
-  CameraUSB.cpp \
-  CameraIEEE1394.cpp \
-  CameraGiGE.cpp \
-  CameraNeo.cpp \
-  CameraZyla.cpp \
-  CameraRAPTORFALCON.cpp \
-  CameraRAPTORNINOX640.cpp \
-  CameraRaspi.cpp \
-  CameraWindow.cpp \
-  CameraControlWidget.cpp \
-  CameraPropWidget.cpp \
-  RaspiDac.cpp \
-  RaspiDacControlWidget.cpp \
-  RaspiWindow.cpp \
-  DacWindow.cpp \
-  DacControlWidget.cpp \
-  MotorWindow.cpp \
-  MotorControlWidget.cpp \
-  Motor.cpp \
-  Driver.cpp \
-  DriverNewFocus_8750_Cl.cpp \
-  DriverNewFocus_8750_Ol.cpp \
-  DriverNewPort_NSC200.cpp \
-  DriverPI_C509.cpp \
-  DriverMicos_Pollux.cpp \
-  DriverPI_C862.cpp \
-  DriverNewPort_AGUC2.cpp \
-  DriverPI_E725.cpp \
-  SuperK.cpp \
-  DriverSuperK.cpp \
-  SuperKWindow.cpp \
-  SuperKControlWidget.cpp \
-  ACCom.cpp \
-  ACEthCom.cpp \
-  ACRSCom.cpp \
-  AcquisitionWidget.cpp \
-  ComboBoxDelegate.cpp \
-  AcquisitionThread.cpp \
-  AcquisitionSequence.cpp \
-  FileParser.cpp \
-  AnalysisWidget.cpp \
-  AnalysisThread.cpp \
-  Utils.cpp \
-  QsLog.cpp \
-  QsDebugOutput.cpp \
-  QsLogDest.cpp \
-  Assistant.cpp
+HEADERS += src/OpticsBenchUIMain.h \
+  src/Camera.h \
+  src/CameraUSB.h \
+  src/CameraIEEE1394.h \
+  src/CameraGiGE.h \
+  src/CameraNeo.h \
+  src/CameraZyla.h \
+  src/CameraRAPTORFALCON.h \
+  src/CameraRAPTORNINOX640.h \
+  src/CameraRaspi.h \
+  src/CameraWindow.h \
+  src/CameraControlWidget.h \
+  src/CameraPropWidget.h \
+  src/Raspi.h \
+  src/RaspiDac.h \
+  src/RaspiDacControlWidget.h \
+  src/RaspiWindow.h \
+  src/DacWindow.h \
+  src/DacControlWidget.h \
+  src/Dac.h \
+  src/MotorWindow.h \
+  src/MotorControlWidget.h \
+  src/Motor.h \
+  src/DriverDefinition.h \
+  src/Driver.h \
+  src/DriverNewFocus_8750_Cl.h \
+  src/DriverNewFocus_8750_Ol.h \
+  src/DriverNewPort_NSC200.h \
+  src/DriverPI_E725.h \
+  src/DriverPI_C509.h \
+  src/DriverMicos_Pollux.h \
+  src/DriverPI_C862.h \
+  src/DriverNewPort_AGUC2.h \
+  src/SuperK.h \
+  src/DriverSuperK.h \
+  src/SuperKWindow.h \
+  src/SuperKControlWidget.h \
+  src/ACCom.h \
+  src/ACEthCom.h \
+  src/ACRSCom.h \
+  src/AcquisitionWidget.h \
+  src/ComboBoxDelegate.h \
+  src/AcquisitionThread.h \
+  src/AcquisitionSequence.h \
+  src/FileParser.h \
+  src/AnalysisWidget.h \
+  src/AnalysisThread.h \
+  src/Utils.h \
+  src/QsLog.h \
+  src/QsDebugOutput.h \
+  src/QsLogDest.h \
+  src/Assistant.h
+SOURCES += src/OpticsBenchUIMain.cpp \
+  src/CameraUSB.cpp \
+  src/CameraIEEE1394.cpp \
+  src/CameraGiGE.cpp \
+  src/CameraNeo.cpp \
+  src/CameraZyla.cpp \
+  src/CameraRAPTORFALCON.cpp \
+  src/CameraRAPTORNINOX640.cpp \
+  src/CameraRaspi.cpp \
+  src/CameraWindow.cpp \
+  src/CameraControlWidget.cpp \
+  src/CameraPropWidget.cpp \
+  src/RaspiDac.cpp \
+  src/RaspiDacControlWidget.cpp \
+  src/RaspiWindow.cpp \
+  src/DacWindow.cpp \
+  src/DacControlWidget.cpp \
+  src/MotorWindow.cpp \
+  src/MotorControlWidget.cpp \
+  src/Motor.cpp \
+  src/Driver.cpp \
+  src/DriverNewFocus_8750_Cl.cpp \
+  src/DriverNewFocus_8750_Ol.cpp \
+  src/DriverNewPort_NSC200.cpp \
+  src/DriverPI_C509.cpp \
+  src/DriverMicos_Pollux.cpp \
+  src/DriverPI_C862.cpp \
+  src/DriverNewPort_AGUC2.cpp \
+  src/DriverPI_E725.cpp \
+  src/SuperK.cpp \
+  src/DriverSuperK.cpp \
+  src/SuperKWindow.cpp \
+  src/SuperKControlWidget.cpp \
+  src/ACCom.cpp \
+  src/ACEthCom.cpp \
+  src/ACRSCom.cpp \
+  src/AcquisitionWidget.cpp \
+  src/ComboBoxDelegate.cpp \
+  src/AcquisitionThread.cpp \
+  src/AcquisitionSequence.cpp \
+  src/FileParser.cpp \
+  src/AnalysisWidget.cpp \
+  src/AnalysisThread.cpp \
+  src/Utils.cpp \
+  src/QsLog.cpp \
+  src/QsDebugOutput.cpp \
+  src/QsLogDest.cpp \
+  src/Assistant.cpp
 !contains(DEFINES, NO_MULTIMEDIA) {
-  HEADERS += VideoPlayer.h \
-    VideoWidget.h
-  SOURCES += VideoPlayer.cpp \
-    VideoWidget.cpp
+  HEADERS += src/VideoPlayer.h \
+    src/VideoWidget.h
+  SOURCES += src/VideoPlayer.cpp \
+    src/VideoWidget.cpp
   lessThan(QT_MAJOR_VERSION, 6) {
-    HEADERS += VideoWidgetSurface.h
-    SOURCES += VideoWidgetSurface.cpp
+    HEADERS += src/VideoWidgetSurface.h
+    SOURCES += src/VideoWidgetSurface.cpp
   }
 } else {
   message("Qt Multimedia not available. Video display disabled.")
@@ -337,32 +337,32 @@ contains(DEFINES, USBCAMERA) {
 }
 
 contains(DEFINES, ALLIEDVISIONCAMERA) {
-  !exists($$ALLIEDVISION_INC_PATH/VmbCPP/VmbCPP.h)|!exists($$ALLIEDVISION_LIB_PATH/libVmbCPP.so) {
+  !exists($$ALLIEDVISION_INC_PATH/VmbCPP/src/VmbCPP.h)|!exists($$ALLIEDVISION_LIB_PATH/libVmbCPP.so) {
     DEFINES -= ALLIEDVISIONCAMERA
     message("Allied Vision headers or library not found. Disabling Allied Vision support.")
   } else {
-    HEADERS += CameraAlliedVision.h
-    SOURCES += CameraAlliedVision.cpp
+    HEADERS += src/CameraAlliedVision.h
+    SOURCES += src/CameraAlliedVision.cpp
     INCLUDEPATH += $$ALLIEDVISION_INC_PATH
     LIBS += -L$$ALLIEDVISION_LIB_PATH -lVmbCPP
   }
 }
 
 contains(DEFINES, ADVANTECHDAC) {
-  HEADERS += DacAdvantech.h
-  SOURCES += DacAdvantech.cpp
+  HEADERS += src/DacAdvantech.h
+  SOURCES += src/DacAdvantech.cpp
 }
 
 !contains(DEFINES, NO_USB) {
-  HEADERS += ACUsbCom.h
-  SOURCES += ACUsbCom.cpp
+  HEADERS += src/ACUsbCom.h
+  SOURCES += src/ACUsbCom.cpp
   INCLUDEPATH += $$USB_INC_PATH
   LIBS += -L$$USB_LIB_PATH -lusb-1.0
 }
 
 !contains(DEFINES, NO_STANDA) {
-  HEADERS += DriverStanda_uSMC2.h
-  SOURCES += DriverStanda_uSMC2.cpp
+  HEADERS += src/DriverStanda_uSMC2.h
+  SOURCES += src/DriverStanda_uSMC2.cpp
   INCLUDEPATH += $$STANDA_INC_PATH
   LIBS += -L$$STANDA_LIB_PATH -lximc -lbindy -lxiwrapper
   QMAKE_LFLAGS += -Wl,-rpath,$$STANDA_LIB_PATH
@@ -391,7 +391,7 @@ INCLUDEPATH += \
 LIBS += \
 
   contains(DEFINES, COMEDICOUNTER)|contains(DEFINES, COMEDIDAC) {
-  !exists($$COMEDI_INC_PATH/comedi.h)|!exists($$COMEDI_LIB_PATH/libcomedi.so) {
+  !exists($$COMEDI_INC_PATH/src/comedi.h)|!exists($$COMEDI_LIB_PATH/libcomedi.so) {
     DEFINES -= COMEDICOUNTER
     DEFINES -= COMEDIDAC
     DEFINES += NO_COMEDI
@@ -402,7 +402,7 @@ LIBS += \
 }
 
 contains(DEFINES, ADVANTECHDAC) {
-  !exists($$ADVDAQ_INC_PATH/Advantech/advdaq.h)|!exists($$ADVDAQ_INC_PATH/Advantech/advdevice.h)|!exists($$ADVDAQ_LIB_PATH/libadvdaq.so) {
+  !exists($$ADVDAQ_INC_PATH/Advantech/src/advdaq.h)|!exists($$ADVDAQ_INC_PATH/Advantech/src/advdevice.h)|!exists($$ADVDAQ_LIB_PATH/libadvdaq.so) {
     DEFINES -= ADVANTECHDAC
     DEFINES += NO_ADVDAQ
     message("Advantech headers or library not found. Disabling Advantech DAC support.")
@@ -412,7 +412,7 @@ contains(DEFINES, ADVANTECHDAC) {
 }
 
 contains(DEFINES, IEEE1394CAMERA) {
-  !exists($$DC1394_INC_PATH/dc1394/dc1394.h)|!exists($$RAW1394_INC_PATH/raw1394.h)|!exists($$DC1394_LIB_PATH/libdc1394.so)|!exists($$RAW1394_LIB_PATH/libraw1394.so) {
+  !exists($$DC1394_INC_PATH/dc1394/src/dc1394.h)|!exists($$RAW1394_INC_PATH/src/raw1394.h)|!exists($$DC1394_LIB_PATH/libdc1394.so)|!exists($$RAW1394_LIB_PATH/libraw1394.so) {
     DEFINES -= IEEE1394CAMERA
     DEFINES += NO_DC1394
     message("IEEE1394 headers or libraries not found. Disabling IEEE1394 camera support.")
@@ -423,7 +423,7 @@ contains(DEFINES, IEEE1394CAMERA) {
 }
 
 contains(DEFINES, RASPICAMERA) {
-  !exists($$RASPI_INC_PATH/raspicam.h)|!exists($$RASPI_LIB_PATH/libraspicam.so) {
+  !exists($$RASPI_INC_PATH/src/raspicam.h)|!exists($$RASPI_LIB_PATH/libraspicam.so) {
     DEFINES -= RASPICAMERA
     DEFINES += NO_RASPI
     message("Raspberry Pi camera headers or library not found. Disabling Raspi support.")
@@ -433,7 +433,7 @@ contains(DEFINES, RASPICAMERA) {
 }
 
 contains(DEFINES, GIGECAMERA) {
-  !exists($$ARAVIS_INC_PATH/arv.h)|!exists($$ARAVIS_LIB_PATH/libaravis-0.2.so) {
+  !exists($$ARAVIS_INC_PATH/src/arv.h)|!exists($$ARAVIS_LIB_PATH/libaravis-0.2.so) {
     DEFINES -= GIGECAMERA
     DEFINES += NO_ARAVIS
     message("Aravis headers or library not found. Disabling GigE Vision support.")
@@ -443,7 +443,7 @@ contains(DEFINES, GIGECAMERA) {
 }
 
 contains(DEFINES, NEOCAMERA)|contains(DEFINES, ZYLACAMERA) {
-  !exists($$NEO_INC_PATH/atcore.h)|!exists($$NEO_LIB_PATH/libatcore.so) {
+  !exists($$NEO_INC_PATH/src/atcore.h)|!exists($$NEO_LIB_PATH/libatcore.so) {
     DEFINES -= NEOCAMERA
     DEFINES -= ZYLACAMERA
     DEFINES += NO_NEO
@@ -454,7 +454,7 @@ contains(DEFINES, NEOCAMERA)|contains(DEFINES, ZYLACAMERA) {
 }
 
 contains(DEFINES, RAPTORFALCONCAMERA)|contains(DEFINES, RAPTORNINOX640CAMERA) {
-  !exists($$RAPTOR_INC_PATH/xcliball.h)|!exists($$RAPTOR_LIB_PATH/xclib_x86_64_pic.a) {
+  !exists($$RAPTOR_INC_PATH/src/xcliball.h)|!exists($$RAPTOR_LIB_PATH/xclib_x86_64_pic.a) {
     DEFINES -= RAPTORFALCONCAMERA
     DEFINES -= RAPTORNINOX640CAMERA
     DEFINES += NO_RAPTOR
@@ -465,7 +465,7 @@ contains(DEFINES, RAPTORFALCONCAMERA)|contains(DEFINES, RAPTORNINOX640CAMERA) {
 }
 
 contains(DEFINES, RASPIDAC) {
-  !exists($$SPI_INC_PATH/bcm2835.h)|!exists($$SPI_LIB_PATH/libbcm2835.a) {
+  !exists($$SPI_INC_PATH/src/bcm2835.h)|!exists($$SPI_LIB_PATH/libbcm2835.a) {
     DEFINES -= RASPIDAC
     DEFINES += NO_SPI
     message("SPI bcm2835 headers or library not found. Disabling Raspi DAC support.")
@@ -491,18 +491,18 @@ contains(DEFINES, RASPICAMERA) {
 }
 
 contains(DEFINES, COMEDICOUNTER) {
-  !exists($$QWTPLOT_INC_PATH/qwt_plot.h) {
-    error("COMEDICOUNTER requires Qwt (qwt_plot.h). Please install Qwt or disable COMEDICOUNTER.")
+  !exists($$QWTPLOT_INC_PATH/src/qwt_plot.h) {
+    error("COMEDICOUNTER requires Qwt (src/qwt_plot.h). Please install Qwt or disable COMEDICOUNTER.")
   }
-  HEADERS += Comedi.h \
-  ComediCounter.h \
-  ComediCounterControlWidget.h \
-  ComediCounterPlot.h \
-  ComediWindow.h
-  SOURCES += ComediCounter.cpp \
-  ComediCounterControlWidget.cpp \
-  ComediCounterPlot.cpp \
-  ComediWindow.cpp
+  HEADERS += src/Comedi.h \
+  src/ComediCounter.h \
+  src/ComediCounterControlWidget.h \
+  src/ComediCounterPlot.h \
+  src/ComediWindow.h
+  SOURCES += src/ComediCounter.cpp \
+  src/ComediCounterControlWidget.cpp \
+  src/ComediCounterPlot.cpp \
+  src/ComediWindow.cpp
   INCLUDEPATH += $$QWTPLOT_INC_PATH
   lessThan(QT_MAJOR_VERSION, 6) {
     LIBS += -L$$QWTPLOT_LIB_PATH -lqwt-qt5
@@ -512,13 +512,13 @@ contains(DEFINES, COMEDICOUNTER) {
 }
 
 contains(DEFINES, COMEDIDAC) {
-  HEADERS += Comedi.h \
-  ComediDac.h \
-  ComediDacControlWidget.h \
-  ComediWindow.h
-  SOURCES += ComediDac.cpp \
-  ComediDacControlWidget.cpp \
-  ComediWindow.cpp
+  HEADERS += src/Comedi.h \
+  src/ComediDac.h \
+  src/ComediDacControlWidget.h \
+  src/ComediWindow.h
+  SOURCES += src/ComediDac.cpp \
+  src/ComediDacControlWidget.cpp \
+  src/ComediWindow.cpp
 }
 
 contains(DEFINES, NO_OPENGL) {

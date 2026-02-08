@@ -1,0 +1,1175 @@
+/*******************************************************************
+This file is part of OpticsBenchUI.
+
+OpticsBenchUI is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+********************************************************************/
+
+/**
+ * @file AcquisitionThread.cpp
+ * @brief Acquisition worker thread.
+ */
+
+#include "AcquisitionThread.h"
+#include "Utils.h"
+
+#include <unistd.h>
+
+AcquisitionThread::AcquisitionThread(QObject* parent)
+    : QThread(parent),
+      cameraList(),
+      sequenceList(),
+      isopencamerawindow(),
+      mutex(new QMutex()),
+      splashScreenOk(new QWaitCondition()),
+      record(0),
+      motor(nullptr),
+      superk(nullptr),
+      dac(nullptr),
+      comedicounter(nullptr),
+      comedidac(nullptr),
+      raspidac(nullptr),
+      dacsuccess(false),
+      comedicountersuccess(false),
+      comedidacsuccess(false),
+      raspidacsuccess(false),
+      slmsuccess(false),
+      imagesuccess(false),
+      filesuccess(false),
+      treatmentsuccess(false),
+      suspend(true),
+      file_id(0),
+      ids(),
+      status(0),
+      filename(),
+      filenumber(0),
+      activeMotorName() {}
+
+AcquisitionThread::~AcquisitionThread() {
+  QLOG_DEBUG() << "Deleting AcquisitionThread";
+  stop();
+  if (isRunning()) {
+    if (!wait(2000)) {
+      QLOG_WARN() << "AcquisitionThread did not stop in time. Forcing terminate.";
+      terminate();
+      wait(2000);
+    }
+  }
+  delete mutex;
+  delete splashScreenOk;
+}
+
+void AcquisitionThread::setCamera(const QVector<Camera*>& cameraList) {
+  this->cameraList = cameraList;
+}
+
+void AcquisitionThread::setMotor(Motor* motor) {
+  this->motor = motor;
+}
+
+void AcquisitionThread::setSuperK(SuperK* superk) {
+  this->superk = superk;
+}
+
+void AcquisitionThread::setDac(Dac* dac) {
+  this->dac = dac;
+}
+
+void AcquisitionThread::setComediCounter(Comedi* comedi) {
+  comedicounter = comedi;
+}
+
+void AcquisitionThread::setComediDac(Comedi* comedi) {
+  comedidac = comedi;
+}
+
+void AcquisitionThread::setRaspiDac(Raspi* raspi) {
+  raspidac = raspi;
+}
+
+void AcquisitionThread::setFile(const QString& filename, int filenumber) {
+  this->filename = filename;
+  this->filenumber = filenumber;
+}
+
+void AcquisitionThread::setSequenceList(
+    const QVector<AcquisitionSequence*>& sequenceList) {
+  this->sequenceList = sequenceList;
+}
+
+void AcquisitionThread::setIsOpenCameraWindow(
+    const QVector<bool>& isOpenCameraWindow) {
+  isopencamerawindow = isOpenCameraWindow;
+}
+
+void AcquisitionThread::wakeSplashScreen() {
+  splashScreenOk->wakeAll();
+}
+
+void AcquisitionThread::stop() {
+  suspend = true;
+  requestInterruption();
+  stopActiveMotor();
+  if (splashScreenOk) {
+    splashScreenOk->wakeAll();
+  }
+}
+
+void AcquisitionThread::run() {
+  if (suspend) {
+    suspend = false;
+
+    /* create a new data File */
+#ifdef NO_HDF5
+    Utils::EmitWarning(this, __FUNCTION__,
+                       "HDF5 support is disabled. Acquisition data will not be saved.");
+#else
+    file_id = H5Fcreate(filename.toStdString().c_str(), H5F_ACC_TRUNC,
+                        H5P_DEFAULT, H5P_DEFAULT);
+    if (file_id < 0) {
+      const QString message =
+          "Unable to open file - " + filename + " - Aborting scan";
+      Utils::EmitWarning(this, __FUNCTION__, message);
+      return;
+    }
+#endif
+    record = 0;
+    int lastrecord = sequenceList.size();
+    QLOG_DEBUG() << "AcquisitionThread::run> Number of sequences " << lastrecord;
+    // run acquisition sequence
+    QLOG_INFO() << "AcquisitionThread::run> start Acquisition : "
+                << Utils::CurrentTimestampString();
+    bool stoppedEarly = false;
+    while (record < lastrecord) {
+      if (shouldStop()) {
+        stoppedEarly = true;
+        break;
+      }
+      AcquisitionSequence *sequence = sequenceList.at(record);
+      emit getAcquiring(sequence->record);
+      sequence->etime = Utils::GetTimeMicroseconds();
+      int cur_record = record;
+      this->execute(sequence);
+      this->nextRecord(sequence, cur_record);
+      QLOG_DEBUG() << "AcquisitionThread::run> Start sequence " << sequence->seq_record;
+      this->saveData(sequence, cur_record);
+      if (sequence->settings.contains("ANALYSIS=START")) {
+        QLOG_INFO() << "AcquisitionThread::run> Analysis requested by settings";
+        emit requestAnalysis();
+      }
+      if (shouldStop()) {
+        stoppedEarly = true;
+        break;
+      }
+      if (sequence->sleep > 0) {
+        usleep(sequence->sleep);
+      }
+      sequence->etime = Utils::GetTimeMicroseconds() - sequence->etime;
+      if (shouldStop()) {
+        stoppedEarly = true;
+        break;
+      }
+#ifndef NO_HDF5
+      if (H5Fflush(file_id, H5F_SCOPE_GLOBAL) < 0) {
+        QLOG_WARN() << " File flushing failed !";
+      }
+      H5garbage_collect();
+#endif
+      QLOG_INFO() << "AcquisitionThread::run> sequence " << sequence->seq_record
+                  << ": etime = " << (int)sequence->etime;
+    }
+    QLOG_INFO() << "AcquisitionThread::run> stop Acquisition : "
+                << Utils::CurrentTimestampString();
+    if (stoppedEarly) {
+      QLOG_INFO() << "AcquisitionThread::run> Stopped by user.";
+      emit showWarning("Stopped by user.");
+    }
+    emit getAcquiring(record);
+    filenumber++;
+    emit getFilenumber(filenumber);
+#ifndef NO_HDF5
+    // close all groups
+    for (int i = ids.size(); i >= 0; i--) {
+      H5Gclose(ids.at(i));
+    }
+    ids.clear();
+    status = H5Fclose(file_id);
+#endif
+    // Close eventually open camera
+    for (int i = 0; i < cameraList.size(); i++) {
+      Camera *camera = cameraList.at(i);
+      if (isopencamerawindow.at(i) == false) {
+        camera->stop();
+      }
+    }
+    for (int i = 0; i < sequenceList.size(); i++) {
+      AcquisitionSequence *sequence = sequenceList.at(i);
+      emit getAcquiring(sequence->record);
+      if (sequence->instrumentType == "DAC") {
+        QLOG_DEBUG() << "AcquisitionThread::execute> Update Db DAC values...";
+        // Update DB Dac values
+        if (dac != NULL) {
+          dac->updateDBValues(sequence->instrumentName);
+        }
+      }
+      if (sequence->instrumentType == "COMEDICOUNTER") {
+        QLOG_DEBUG() << "AcquisitionThread::execute> Update Db COMEDI COUNTER values...";
+        // Update DB Counter values
+        if (comedicounter != NULL) {
+          comedicounter->updateDBValues(sequence->instrumentName);
+        }
+      }
+      if (sequence->instrumentType == "COMEDIDAC") {
+        QLOG_DEBUG() << "AcquisitionThread::execute> Update Db COMEDI DAC values...";
+        // Update DB Comedi Dac values
+        if (comedidac != NULL) {
+          comedidac->updateDBValues(sequence->instrumentName);
+        }
+      }
+      if (sequence->instrumentType == "RASPIDAC") {
+        QLOG_DEBUG() << "AcquisitionThread::execute> Update Db RASPI DAC values...";
+        // Update DB Raspi Dac values
+        if (raspidac != NULL) {
+          raspidac->updateDBValues(sequence->instrumentName);
+        }
+      }
+      if (sequence->instrumentType == "MOTOR") {
+        QLOG_DEBUG() << "AcquisitionThread::execute> Update Db MOTOR values...";
+        // Emit last position
+        QString positionQString;
+        positionQString.setNum (sequence->position, 'f',3);
+        emit getPosition(positionQString);
+      }
+      if (sequence->instrumentType == "SUPERK") {
+        QLOG_DEBUG() << "AcquisitionThread::execute> Update Db SUPERK values...";
+        // Emit last data
+        QString superKData = QString::number(sequence->superkPowerValue) + " " +
+                             QString::number(sequence->superkNdValue) + " " +
+                             QString::number(sequence->superkSwpValue) + " " +
+                             QString::number(sequence->superkLwpValue);
+        emit getSuperKData(superKData);
+      }
+      delete sequence;
+    }
+    sequenceList.clear();
+    if (stoppedEarly) {
+      emit getAcquiring(lastrecord);
+    }
+  }
+  suspend = true;
+  QLOG_DEBUG() << "AcquisitionThread::run> End of thread";
+}
+void AcquisitionThread::execute(AcquisitionSequence *sequence) {
+  if (shouldStop()) {
+    return;
+  }
+  // New acquisition
+  QLOG_INFO() << "AcquisitionThread::execute> instrument type " << sequence->instrumentType;
+  //emit getAcquiring(record);
+  
+  QLOG_INFO() << "AcquisitionThread::execute> Execute record " << record
+              << " instrument " << sequence->instrumentType << ":"
+              << sequence->instrumentName << " remaining loops "
+              << sequence->remainingLoops << ":" << sequence->loopends << ":"
+              << sequence->loopends;
+  
+  if (sequence->instrumentType == "MOTOR") {
+    motor->connectMotor(sequence->instrumentName);
+    motor->updateDbPosition(sequence->instrumentName);
+    activeMotorName = sequence->instrumentName;
+    
+    float motorValue = sequence->motorValue;
+    if (sequence->motorAction == "MOVEREL" && isSnakeReverseForRecord(record)) {
+      motorValue = -motorValue;
+    }
+
+    if (sequence->motorAction == "MOVEREL") {
+      if (motorValue < 0) {
+        motor->moveBackward(sequence->instrumentName, (-motorValue));
+      } else {
+        motor->moveForward(sequence->instrumentName, motorValue);
+      }
+    }
+    else if (sequence->motorAction == "MOVEABS") {
+      motor->moveAbsolute(sequence->instrumentName, motorValue);
+    }
+    // Wait for motor movement to be completed
+    while (motor->getOperationComplete(sequence->instrumentName) <= 0) {
+      if (shouldStop()) {
+        motor->stopMotor(sequence->instrumentName);
+        break;
+      }
+      usleep(100);
+      motor->operationComplete();
+    }
+    if (shouldStop()) {
+      sequence->status = false;
+      activeMotorName.clear();
+      return;
+    }
+    // Update motor position
+    QString positionQString;
+    // Save motor position data
+    motor->updateDbPosition(sequence->instrumentName);
+    sequence->position = motor->getPosition(sequence->instrumentName);
+    positionQString.setNum (sequence->position, 'f',3);
+    emit getPosition(positionQString);
+    QLOG_INFO() << "AcquisitionThread::execute> " << sequence->instrumentName
+                << " new position:" << positionQString;
+    sequence->status = true;
+    activeMotorName.clear();
+  }
+  else if (sequence->instrumentType == "SUPERK") {
+    superk->connectSuperK(sequence->instrumentName);
+    if (sequence->superkPowerValue > -88888) {
+      superk->setPower(sequence->instrumentName,
+                       sequence->superkPowerValue * 10);
+    }
+    if (sequence->superkNdValue > -88888) {
+      superk->setNd(sequence->instrumentName, sequence->superkNdValue * 10);
+    }
+    if (sequence->superkSwpValue > -88888) {
+      superk->setSwp(sequence->instrumentName, sequence->superkSwpValue * 10);
+    }
+    if (sequence->superkLwpValue > -88888) {
+      superk->setLwp(sequence->instrumentName, sequence->superkLwpValue * 10);
+    }
+    if (sequence->superkBwValue > -88888 && sequence->superkCwValue > -88888) {
+      superk->setLwp(sequence->instrumentName,
+                     (sequence->superkCwValue - sequence->superkBwValue / 2) *
+                         10);
+      superk->setSwp(sequence->instrumentName,
+                     (sequence->superkCwValue + sequence->superkBwValue / 2) *
+                         10);
+    }
+    if (sequence->superkRPowerValue > -88888) {
+      sequence->superkPowerValue =
+          (float)superk->getPower(sequence->instrumentName) / 10 +
+          sequence->superkRPowerValue;
+      QLOG_INFO() << "sequence->superkPowerValue=" << sequence->superkPowerValue
+                  << " " << superk->getPower(sequence->instrumentName) << " + "
+                  << sequence->superkRPowerValue;
+      superk->setPower(sequence->instrumentName,
+                       sequence->superkPowerValue * 10);
+    }
+    if (sequence->superkRNdValue > -88888) {
+      sequence->superkNdValue =
+          (float)superk->getNd(sequence->instrumentName) / 10 +
+          sequence->superkRNdValue;
+      superk->setNd(sequence->instrumentName, sequence->superkNdValue * 10);
+    }
+    if (sequence->superkRSwpValue > -88888) {
+      sequence->superkSwpValue =
+          (float)superk->getSwp(sequence->instrumentName) / 10 +
+          sequence->superkRSwpValue;
+      superk->setSwp(sequence->instrumentName, sequence->superkSwpValue * 10);
+    }
+    if (sequence->superkRLwpValue > -88888) {
+      sequence->superkLwpValue =
+          (float)superk->getLwp(sequence->instrumentName) / 10 +
+          sequence->superkRLwpValue;
+      superk->setLwp(sequence->instrumentName, sequence->superkLwpValue * 10);
+    }
+    if (sequence->superkRBwValue > -88888 && sequence->superkCwValue > -88888) {
+      QLOG_INFO() << "sequence->superkRBwValue " << sequence->superkRBwValue;
+      QLOG_INFO() << "sequence->superkCwValue " << sequence->superkCwValue;
+
+      sequence->superkBwValue =
+          ((float)superk->getSwp(sequence->instrumentName) -
+           (float)superk->getLwp(sequence->instrumentName)) /
+              10 +
+          sequence->superkRBwValue;
+      superk->setLwp(sequence->instrumentName,
+                     (sequence->superkCwValue - sequence->superkBwValue / 2) *
+                         10);
+      superk->setSwp(sequence->instrumentName,
+                     (sequence->superkCwValue + sequence->superkBwValue / 2) *
+                         10);
+    }
+    if (sequence->superkBwValue > -88888 && sequence->superkRCwValue > -88888) {
+      QLOG_INFO() << "sequence->superkBwValue " << sequence->superkBwValue;
+      QLOG_INFO() << "sequence->superkRCwValue " << sequence->superkRCwValue;
+
+      sequence->superkCwValue =
+          ((float)superk->getLwp(sequence->instrumentName) +
+           (float)superk->getSwp(sequence->instrumentName)) /
+              10 / 2 +
+          sequence->superkRCwValue;
+      superk->setLwp(sequence->instrumentName,
+                     (sequence->superkCwValue - sequence->superkBwValue / 2) *
+                         10);
+      superk->setSwp(sequence->instrumentName,
+                     (sequence->superkCwValue + sequence->superkBwValue / 2) *
+                         10);
+    }
+    if (sequence->superkRBwValue > -88888 && sequence->superkRCwValue > -88888) {
+      QLOG_INFO() << "sequence->superkRBwValue " << sequence->superkRBwValue;
+      QLOG_INFO() << "sequence->superkRCwValue " << sequence->superkRCwValue;
+      sequence->superkCwValue =
+          ((float)superk->getLwp(sequence->instrumentName) +
+           (float)superk->getSwp(sequence->instrumentName)) /
+              10 / 2 +
+          sequence->superkRCwValue;
+      sequence->superkBwValue =
+          ((float)superk->getSwp(sequence->instrumentName) -
+           (float)superk->getLwp(sequence->instrumentName)) /
+              10 +
+          sequence->superkRBwValue;
+      superk->setLwp(sequence->instrumentName,
+                     (sequence->superkCwValue - sequence->superkBwValue / 2) *
+                         10);
+      superk->setSwp(sequence->instrumentName,
+                     (sequence->superkCwValue + sequence->superkBwValue / 2) *
+                         10);
+    }
+    
+    // Wait for superk to be completed
+    while (superk->getOperationComplete(sequence->instrumentName) <= 0) {
+      usleep(100);
+      superk->operationComplete();
+    }
+    sequence->status = true;
+  }
+  else if (sequence->instrumentType == "DAC") {
+    QLOG_INFO() << "AcquisitionThread::execute> connecting DAC ..." << sequence->instrumentName;
+    dacsuccess = dac->connectDac(sequence->instrumentName);
+    QLOG_INFO() << "AcquisitionThread::execute> DAC " << sequence->instrumentName
+                << " connected " << dacsuccess;
+	    
+    if (dacsuccess == true) {
+      if (sequence->dacRValue != 0) {
+        dacsuccess = dac->setDacRValue(sequence->instrumentName,
+                                       sequence->dacOutput,
+                                       sequence->dacRValue);
+        sequence->dacValue =
+            dac->getDacValue(sequence->instrumentName, sequence->dacOutput);
+      }
+      else {
+        dacsuccess = dac->setDacValue(sequence->instrumentName,
+                                      sequence->dacOutput,
+                                      sequence->dacValue);
+      }
+    }
+    sequence->status = dacsuccess;
+    //emit getDacStatus(dacsuccess);
+  }
+  else if (sequence->instrumentType == "COMEDICOUNTER") {
+    if (!comedicounter) {
+      Utils::EmitWarning(this, __FUNCTION__,
+                         "COMEDICOUNTER is not configured");
+      sequence->status = false;
+      return;
+    }
+    QLOG_INFO() << "AcquisitionThread::execute> connecting COMEDI COUNTER ..." << sequence->instrumentName
+                << " ComediCounter pointer " << comedicounter;
+    comedicountersuccess = comedicounter->connectComedi(sequence->instrumentName);
+    QLOG_INFO() << "AcquisitionThread::execute> COMEDI COUNTER " << sequence->instrumentName
+                 << " connected " << comedicountersuccess;
+
+    if (comedicountersuccess == true) {
+      comedicountersuccess =
+          comedicounter->setComediValue(sequence->instrumentName,
+                                        sequence->comediOutput,
+                                        (void*)&sequence->comediValue);
+      QLOG_INFO() << "AcquisitionThread::execute> COMEDI COUNTER "
+                  << sequence->instrumentName << " setComediValue "
+                  << comedicountersuccess;
+      // Copy comedi data in sequence for saving later
+      comedicountersuccess =
+          comedicounter->getComediValue(sequence->instrumentName,
+                                        sequence->comediOutput,
+                                        sequence->comediData);
+      QLOG_INFO() << "AcquisitionThread::execute> COMEDI COUNTER "
+                  << sequence->instrumentName << " getComediValue "
+                  << comedicountersuccess;
+    }
+    sequence->status = comedicountersuccess;
+    //emit getComediStatus(comedicountersuccess);
+  }
+  else if (sequence->instrumentType == "COMEDIDAC") {
+    if (!comedidac) {
+      Utils::EmitWarning(this, __FUNCTION__,
+                         "COMEDIDAC is not configured");
+      sequence->status = false;
+      return;
+    }
+    QLOG_INFO() << "AcquisitionThread::execute> connecting COMEDI DAC ..." << sequence->instrumentName;
+    comedidacsuccess = comedidac->connectComedi(sequence->instrumentName);
+    QLOG_INFO() << "AcquisitionThread::execute> COMEDI DAC " << sequence->instrumentName
+                 << " connected " << comedidacsuccess;
+
+    if (comedidacsuccess == true) {
+      if (sequence->dacRValue != 0) {
+        double dacValue;
+        comedidacsuccess |=
+            comedidac->getComediValue(sequence->instrumentName,
+                                      sequence->dacOutput, dacValue);
+        dacValue += sequence->dacRValue;
+        comedidacsuccess |=
+            comedidac->setComediValue(sequence->instrumentName,
+                                      sequence->dacOutput, (void*)&dacValue);
+      }
+      else {
+        comedidacsuccess |=
+            comedidac->setComediValue(sequence->instrumentName,
+                                      sequence->comediOutput,
+                                      (void*)&sequence->dacValue);
+      }
+      comedidacsuccess |=
+          comedidac->getComediValue(sequence->instrumentName,
+                                    sequence->dacOutput, sequence->dacValue);
+    }
+    sequence->status = comedidacsuccess;
+    //emit getComediStatus(comedidacsuccess);
+  }
+  else if (sequence->instrumentType == "RASPIDAC") {
+    if (!raspidac) {
+      Utils::EmitWarning(this, __FUNCTION__,
+                         "RASPIDAC is not configured");
+      sequence->status = false;
+      return;
+    }
+    QLOG_INFO() << "AcquisitionThread::execute> connecting RASPI DAC ..." << sequence->instrumentName;
+    raspidacsuccess = raspidac->connectRaspi(sequence->instrumentName);
+    QLOG_INFO() << "AcquisitionThread::execute> RASPI DAC " << sequence->instrumentName
+                 << " connected " << raspidacsuccess;
+
+    if (raspidacsuccess == true) {
+      if (sequence->dacRValue != 0) {
+        double dacValue;
+        raspidacsuccess |=
+            raspidac->getRaspiValue(sequence->instrumentName,
+                                    sequence->dacOutput, dacValue);
+        dacValue += sequence->dacRValue;
+        raspidacsuccess |=
+            raspidac->setRaspiValue(sequence->instrumentName,
+                                    sequence->dacOutput, (void*)&dacValue);
+      }
+      else {
+        raspidacsuccess |=
+            raspidac->setRaspiValue(sequence->instrumentName,
+                                    sequence->comediOutput,
+                                    (void*)&sequence->dacValue);
+      }
+      raspidacsuccess |=
+          raspidac->getRaspiValue(sequence->instrumentName,
+                                  sequence->dacOutput, sequence->dacValue);
+    }
+    sequence->status = raspidacsuccess;
+    //emit getRaspiStatus(raspidacsuccess);
+  }
+
+  else if (sequence->instrumentType == "CAMERA") {
+    imagesuccess = false;
+    bool cameraExists = false;
+    Camera *camera = nullptr;
+    for (int i = 0; i < cameraList.size(); i++) {
+      camera = cameraList.at(i);
+      if (camera->model == sequence->instrumentName) {
+        cameraExists = true;
+        break;
+      }
+    }
+    if (cameraExists == true) {
+      if (camera->suspend == true) {
+        QLOG_INFO() << "AcquisitionThread::execute> open CAMERA " << camera->model;
+        camera->start();
+        while (camera->has_started == false) {
+          usleep(100);
+        }
+      }
+      QLOG_INFO() << "AcquisitionThread::execute>  wait for Image Acquisition ";
+      camera->mutex->lock();
+      while (!shouldStop()) {
+        if (camera->acqstart->wait(camera->mutex, 100)) {
+          break;
+        }
+      }
+      camera->mutex->unlock();
+      if (shouldStop()) {
+        return;
+      }
+      camera->mutex->lock();
+      while (!shouldStop()) {
+        if (camera->acqend->wait(camera->mutex, 100)) {
+          break;
+        }
+      }
+      camera->mutex->unlock();
+      if (shouldStop()) {
+        return;
+      }
+      if (sequence->settings.contains("SNAPSHOT") &&
+          !sequence->settings.contains("32") &&
+          !sequence->settings.contains("16")) {
+        sequence->setImage(camera->getSnapshot(),
+                           camera->width,
+                           camera->height);
+      }
+      else if (sequence->settings.contains("SNAPSHOT") &&
+               sequence->settings.contains("16")) {
+        sequence->setImage16(camera->getSnapshot16(),
+                             camera->width,
+                             camera->height);
+      }
+      else if (sequence->settings.contains("SNAPSHOT") &&
+               sequence->settings.contains("32")) {
+        sequence->setImage32(camera->getSnapshot32(),
+                             camera->width,
+                             camera->height);
+      }
+      sequence->setImageMin(camera->snapShotMin);
+      sequence->setImageMax(camera->snapShotMax);
+      QLOG_INFO() << "AcquisitionThread::execute> Save Image buffer in sequence from " << camera->vendor
+                  << " imageMin " << camera->width << " " << sequence->imageMin
+                  << " imageMax " << camera->height << " " << sequence->imageMax;
+      imagesuccess = true;
+    }
+    else {
+      QLOG_WARN() << "CAMERA does not exist...";
+    }
+    
+    //emit getCameraStatus(imagesuccess);
+    sequence->status = imagesuccess;
+  }
+  else if (sequence->instrumentType == "SLM") {
+    sequence->imgnum = sequence->imgnum + sequence->stepnum;
+    sequence->fullpath = sequence->imagepath +  //sequence->keepzero +
+                         QString::number(sequence->imgnum) + "." +
+                         sequence->imagetype;
+    QLOG_INFO() << sequence->fullpath;
+    QFile file(sequence->fullpath);
+    if (file.exists() == true) {
+      emit splashScreen(sequence->fullpath, sequence->screen_x,
+                        sequence->screen_y);
+      mutex->lock();
+      while (!shouldStop()) {
+        if (splashScreenOk->wait(mutex, 100)) {
+          break;
+        }
+      }
+      mutex->unlock();
+      slmsuccess = true;
+    }
+    else {
+      QLOG_ERROR() << sequence->fullpath << " not found ! (skip it)";
+      slmsuccess = false;
+    }
+  }
+  else if (sequence->instrumentType == "TREATMENT") {
+    if (sequence->treatment != "" && sequence->avg != "") {
+      // Treat an average on selected records
+      AcquisitionSequence *sequenceLeft = nullptr;
+      AcquisitionSequence *sequenceRight = nullptr;
+      if (sequence->avgLeft >= 0) {
+        for (int k = 0; k < sequenceList.size(); k++) {
+          AcquisitionSequence *tmpSequence = sequenceList.at(k);
+          if (tmpSequence->seq_record == sequence->avgLeft) {
+            sequenceLeft = tmpSequence;
+            break;
+          }
+        }
+      }
+      if (sequence->avgRight >= 0) {
+        for (int k = 0; k < sequenceList.size(); k++) {
+          AcquisitionSequence *tmpSequence = sequenceList.at(k);
+          if (tmpSequence->seq_record == sequence->avgRight) {
+            sequenceRight = tmpSequence;
+            break;
+          }
+        }
+      }
+      if (sequence->treatment == "AVG") {
+        treatmentsuccess = sequence->setAvg(sequenceLeft, sequenceRight);
+      }
+      else if (sequence->treatment == "PHASE") {
+        treatmentsuccess = sequence->setPhase(sequenceLeft, sequenceRight);
+      }
+      else if (sequence->treatment == "AMPLITUDE") {
+        treatmentsuccess = sequence->setAmplitude(sequenceLeft, sequenceRight);
+      }
+      else if (sequence->treatment == "IMAGE") {
+        treatmentsuccess = sequence->setImage(sequenceLeft);
+      }
+      //emit getTreatmentStatus(treatmentsuccess);
+      sequence->status = treatmentsuccess;
+    }
+  }
+  else if (sequence->instrumentType == "FILE") {
+    filesuccess = sequence->getFileData();
+    QLOG_INFO() << "AcquisitionThread::execute()> type=FILE " << filesuccess;
+  }
+}
+
+bool AcquisitionThread::shouldStop() const {
+  return suspend || isInterruptionRequested();
+}
+
+void AcquisitionThread::stopActiveMotor() {
+  if (!motor || activeMotorName.isEmpty()) {
+    return;
+  }
+  motor->stopMotor(activeMotorName);
+}
+bool AcquisitionThread::isSnakeReverseForRecord(int cur_record) const {
+  int loopDepth = 0;
+  for (int i = cur_record; i >= 0; --i) {
+    AcquisitionSequence *tmpSequence = sequenceList.at(i);
+    if (tmpSequence->loop != AcquisitionSequence::IS_LOOP) {
+      continue;
+    }
+    if (tmpSequence->loopends == AcquisitionSequence::LOOP_END) {
+      loopDepth++;
+      continue;
+    }
+    if (tmpSequence->loopends == AcquisitionSequence::LOOP_START) {
+      if (loopDepth > 0) {
+        loopDepth--;
+        continue;
+      }
+      if (tmpSequence->loopSnake) {
+        return tmpSequence->loopReverse;
+      }
+    }
+  }
+  return false;
+}
+
+void AcquisitionThread::updateChildSnakeReverse(int parent_start,
+                                                int parent_end,
+                                                bool reset) {
+  int depth = 0;
+  for (int i = parent_start + 1; i < parent_end; ++i) {
+    AcquisitionSequence *tmpSequence = sequenceList.at(i);
+    if (tmpSequence->loop != AcquisitionSequence::IS_LOOP) {
+      continue;
+    }
+    if (tmpSequence->loopends == AcquisitionSequence::LOOP_START) {
+      depth++;
+      if (depth == 1 && tmpSequence->loopSnake) {
+        tmpSequence->loopReverse = reset ? false : !tmpSequence->loopReverse;
+      }
+      continue;
+    }
+    if (tmpSequence->loopends == AcquisitionSequence::LOOP_END) {
+      if (depth > 0) {
+        depth--;
+      }
+      continue;
+    }
+  }
+}
+void AcquisitionThread::nextRecord(AcquisitionSequence *sequence, int cur_record) {
+  if (sequence->loop == AcquisitionSequence::IS_LOOP &&
+      sequence->loopends == AcquisitionSequence::LOOP_END) {
+    QLOG_DEBUG() << "AcquisitionThread::nextRecord> End of loop at record "
+                 << cur_record << " loop " << sequence->loop << " loopNumber "
+                 << sequence->loopNumber << " instrument "
+                 << sequence->instrumentType << ":" << sequence->instrumentName;
+    
+    // go back to starting loop record 
+    int loopnumber = 0;
+    for (int i = cur_record - 1; i >= 0; i--) {
+      AcquisitionSequence *tmpSequence = sequenceList.at(i);
+      QLOG_DEBUG() << "AcquisitionThread::nextRecord> Search start of loop at record "
+                   << cur_record << " loop " << tmpSequence->loop << " loopends "
+                   << tmpSequence->loopends << " loopNumber "
+                   << tmpSequence->loopNumber << " instrument "
+                   << tmpSequence->instrumentType << ":"
+                   << tmpSequence->instrumentName;
+	      
+      if (tmpSequence->loop == AcquisitionSequence::IS_LOOP &&
+          tmpSequence->loopends == AcquisitionSequence::LOOP_END) {
+        loopnumber++;
+        continue;
+      }
+      if (tmpSequence->loop == AcquisitionSequence::IS_LOOP &&
+          tmpSequence->loopends == AcquisitionSequence::LOOP_START) {
+        if (loopnumber > 0) {
+          loopnumber--;
+          continue;
+        }
+        else if (loopnumber == 0 && tmpSequence->loopNumber > 0) {
+          QLOG_DEBUG() << "AcquisitionThread::nextRecord> Start of loop at record "
+                       << tmpSequence->record << " loop " << tmpSequence->loop
+                       << " loopNumber " << tmpSequence->loopNumber
+                       << " instrument " << tmpSequence->instrumentType << ":"
+                       << tmpSequence->instrumentName;
+
+          if (tmpSequence->remainingLoops > 1) {
+            record = tmpSequence->record;
+            tmpSequence->remainingLoops--;
+            updateChildSnakeReverse(i, cur_record, false);
+            // Set new group name
+            if (sequence->inc_group >= 10) {
+              sequence->group =
+                  sequence->datagroup + "_" + QString::number(sequence->inc_group);
+            }
+            else {
+              sequence->group =
+                  sequence->datagroup + "_0" + QString::number(sequence->inc_group);
+            }
+            sequence->inc_group++;
+            return;
+          }
+          else {
+            // reset remainScans and go to next record
+            QLOG_DEBUG() << "AcquisitionThread::nextRecord> RemainingLoops = 1";
+            tmpSequence->remainingLoops = tmpSequence->loopNumber;
+            updateChildSnakeReverse(i, cur_record, true);
+            // reset inc_group number for the entire loop sequence
+            for (int j = cur_record; j >= i; j--) {
+              AcquisitionSequence *tmpSequencebis = sequenceList.at(j);
+              tmpSequencebis->inc_group = 0;
+            }
+            record++;
+            return;
+          }
+        }
+      }
+    }
+  }
+  else {
+    // go to next record
+    record++;
+    // Set new group name
+    if (sequence->inc_group >= 10) {
+      sequence->group =
+          sequence->datagroup + "_" + QString::number(sequence->inc_group);
+    }
+    else {
+      sequence->group =
+          sequence->datagroup + "_0" + QString::number(sequence->inc_group);
+    }
+    sequence->inc_group++;
+  }
+}
+void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) {
+#ifdef NO_HDF5
+  Q_UNUSED(sequence);
+  Q_UNUSED(cur_record);
+  return;
+#else
+
+  AcquisitionSequence *parentSequence = NULL;
+  AcquisitionSequence *grandparentSequence = NULL;
+  int parent_record = 0;
+  /* Turn off error handling */
+  hid_t error_stack = 0;
+  H5Eset_current_stack(error_stack);
+  H5Eset_auto(error_stack, NULL, NULL);
+
+  
+  if (sequence->refgrp == 0) {
+    sequence->refgrp = file_id;
+    sequence->tmpgrp = file_id;
+  }
+  
+  //Try to open parent reference group
+  int jumpdatagroup = 0;
+  for ( int i = cur_record - 1; i >= 0 ; i-- ) {
+    AcquisitionSequence *tmpSequence = sequenceList.at(i);
+     if (tmpSequence->seq_record < 0 )
+      continue;
+    if (tmpSequence->loop == AcquisitionSequence::IS_LOOP && 
+        tmpSequence->loopends == AcquisitionSequence::LOOP_END) {
+      jumpdatagroup++;
+      QLOG_DEBUG() << "AcquisitionThread::saveData> must jump to next DATAGROUP" << jumpdatagroup;
+      continue;
+    } 
+    if (tmpSequence->datagroup != "" ) {
+      if ( jumpdatagroup > 0 ) {
+	jumpdatagroup--;
+	QLOG_DEBUG() << "AcquisitionThread::saveData> Found datagroup not null" << jumpdatagroup;
+	continue;
+      }
+      QLOG_DEBUG() << "AcquisitionThread::saveData> Found parent reference loop at record " 
+		  << i << " loop "
+		  << tmpSequence->loop << " loopends " << tmpSequence->loopends
+		  << " loopNumber " << tmpSequence->loopNumber << " instrument " 
+		  << tmpSequence->instrumentType << ":" << tmpSequence->instrumentName
+		  << " group " << tmpSequence->group << " grp " << tmpSequence->grp 
+		  << " refgrp " << tmpSequence->refgrp;
+      
+      sequence->refgrp = tmpSequence->refgrp;
+      sequence->grp = tmpSequence->grp;
+      sequence->tmpgrp = tmpSequence->grp;
+      sequence->grpname = tmpSequence->group;
+      parentSequence = tmpSequence;
+      parent_record = i;
+      break;
+    }
+  }
+  if (parent_record > 0) {
+    //Try to open grand parent reference group
+    for ( int j = parent_record - 1; j >= 0 ; j-- ) {
+      AcquisitionSequence *tmpSequence = sequenceList.at(j);
+      if (tmpSequence->datagroup != "") {
+	QLOG_DEBUG() << "AcquisitionThread::saveData> Found grand parent reference loop at record " 
+		     << j << " loop "
+		     << tmpSequence->loop << " loopNumber " << tmpSequence->loopNumber
+		     << " instrument " << tmpSequence->instrumentType << ":" 
+		     << tmpSequence->instrumentName
+		     << " group " << tmpSequence->group << " grp " << tmpSequence->grp 
+		     << " refgrp " << tmpSequence->refgrp;
+
+	grandparentSequence = tmpSequence;
+	break;
+      }
+    }
+  }
+ 
+  if (sequence->datagroup != "") {
+    QLOG_DEBUG() << "AcquisitionThread::saveData> Open new group " << sequence->datagroup 
+		 << " in " << sequence->grpname << "(" << sequence->tmpgrp << ")";
+    // Create new sub group
+    sequence->grpname = sequence->group;
+    sequence->grp = H5Gopen2(sequence->tmpgrp, sequence->grpname.toStdString().c_str(), 
+			     H5P_DEFAULT);
+    if ( sequence->grp < 0 ) {
+      sequence->grp = H5Gcreate2(sequence->tmpgrp, sequence->grpname.toStdString().c_str(), 
+				 H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT); 
+      
+      QLOG_DEBUG() << "AcquisitionThread::saveData> Created new group " 
+		   << sequence->grp << " in reference group " 
+		   << sequence->tmpgrp;
+      // store new id group for future deletion
+      ids.push_back(sequence->grp);
+    }
+    sequence->refgrp = sequence->tmpgrp;
+  }
+  else if (sequence->grpname == "")
+    return;
+  
+  QLOG_DEBUG() << "AcquisitionThread::saveData> Save " << sequence->dataname 
+	       << " in refgrp " << sequence->refgrp << " grp "
+	       << sequence->grp << " grpname " << sequence->grpname;
+	   
+  // No dataname means no data to be saved
+  if (sequence->dataname == "") return;
+
+  // Save MOTOR data in the group
+  if (sequence->instrumentType == "MOTOR") {
+    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(), 
+				     sequence->dataname.toStdString().c_str(), 
+				     &(sequence->position),1);
+  }
+  // Save SUPERK data in the group
+  if (sequence->instrumentType == "SUPERK") {
+    QString datanamefull = sequence->dataname + QString("_Power");
+    float tmpF = (float)superk->getPower(sequence->instrumentName) / 10 ;
+    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     datanamefull.toStdString().c_str(),
+                                     &(tmpF),1);
+    datanamefull = sequence->dataname + QString("_Nd");
+    tmpF = (float)superk->getNd(sequence->instrumentName) / 10 ;
+    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     datanamefull.toStdString().c_str(),
+                                     &(tmpF),1);
+    datanamefull = sequence->dataname + QString("_Swp");
+    tmpF = (float)superk->getSwp(sequence->instrumentName) / 10 ;
+    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     datanamefull.toStdString().c_str(),
+                                     &(tmpF),1);
+    datanamefull = sequence->dataname + QString("_Lwp");
+    tmpF = (float)superk->getLwp(sequence->instrumentName) / 10 ;
+    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     datanamefull.toStdString().c_str(),
+                                     &(tmpF),1);
+    datanamefull = sequence->dataname + QString("_Cw");
+    tmpF = ( (float)superk->getLwp(sequence->instrumentName)  + (float)superk->getSwp(sequence->instrumentName) ) / 10 / 2 ;
+    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     datanamefull.toStdString().c_str(),
+                                     &(tmpF),1);
+    datanamefull = sequence->dataname + QString("_Bw");
+    tmpF = ( (float)superk->getSwp(sequence->instrumentName) - (float)superk->getLwp(sequence->instrumentName) ) / 10 ;
+    status = H5LTset_attribute_float(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     datanamefull.toStdString().c_str(),
+                                     &(tmpF),1);
+  }
+  // Save DAC data in the group
+  else if (sequence->instrumentType == "DAC" && dacsuccess == true) {
+    status = H5LTset_attribute_double(sequence->refgrp, sequence->grpname.toStdString().c_str(), 
+				     sequence->dataname.toStdString().c_str(), 
+				     &(sequence->dacValue),1);
+  }
+  // Save COMEDI data in the group
+  else if ( sequence->instrumentType == "COMEDICOUNTER" && comedicountersuccess == true) {
+    QLOG_INFO() << "AcquisitionThread::saveData> save COMEDI COUNTER data";
+    status = H5LTset_attribute_double(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     sequence->dataname.toStdString().c_str(),
+                                     &(sequence->comediData),1);
+  }
+  else if ( sequence->instrumentType == "COMEDIDAC" && comedidacsuccess == true) {
+    QLOG_INFO() << "AcquisitionThread::saveData> save COMEDI DAC data";
+    QString str = QString::number(sequence->dacValue, 'f', 3);
+    double rounded_value = str.toDouble();
+    status = H5LTset_attribute_double(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     sequence->dataname.toStdString().c_str(),
+                                     &rounded_value,1);
+  }
+  else if ( sequence->instrumentType == "RASPIDAC" && raspidacsuccess == true) {
+    QLOG_INFO() << "AcquisitionThread::saveData> save RASPI DAC data";
+    QString str = QString::number(sequence->dacValue, 'f', 3);
+    double rounded_value = str.toDouble();
+    status = H5LTset_attribute_double(sequence->refgrp, sequence->grpname.toStdString().c_str(),
+                                     sequence->dataname.toStdString().c_str(),
+                                     &rounded_value,1);
+  }
+  // Save SLM data in the group
+  else if (sequence->instrumentType == "SLM" && slmsuccess == true) {
+    status = H5LTset_attribute_int(sequence->refgrp, sequence->grpname.toStdString().c_str(), 
+				     sequence->dataname.toStdString().c_str(), 
+				     &(sequence->imgnum),1);
+    status = H5IMmake_image_8bit(sequence->grp,sequence->dataname.toStdString().c_str(),
+				 sequence->imageWidth,sequence->imageHeight,sequence->getImageFromFile());
+  }
+  // Save CAMERA data in the group
+  else if (sequence->instrumentType == "CAMERA" && imagesuccess == true) {
+    hsize_t dset_dims[2];
+    dset_dims[0] = sequence->imageHeight;
+    dset_dims[1] = sequence->imageWidth;
+    /* create and write an double type dataset named "dset" */
+    QLOG_INFO () << " Save image data " << sequence->dataname
+                 << " width " << sequence->imageWidth
+                 << " height " << sequence->imageHeight;
+   if ( sequence->settings.contains("SNAPSHOT") && !sequence->settings.contains("32") && !sequence->settings.contains("16") ) 
+       status = H5IMmake_image_8bit(sequence->grp,sequence->dataname.toStdString().c_str(),
+				 sequence->imageWidth,sequence->imageHeight,sequence->getImage());
+   else if ( sequence->settings.contains("SNAPSHOT") && sequence->settings.contains("16") )
+       status = H5LTmake_dataset(sequence->grp,sequence->dataname.toStdString().c_str(),
+                                 2,dset_dims,H5T_NATIVE_USHORT,sequence->getImage16());
+   else if ( sequence->settings.contains("SNAPSHOT") && sequence->settings.contains("32") ) 
+       status = H5LTmake_dataset_int(sequence->grp,sequence->dataname.toStdString().c_str(),
+                                 2,dset_dims,sequence->getImage32());
+   
+   status = H5LTset_attribute_int(sequence->grp, sequence->dataname.toStdString().c_str(), 
+				   "min", 
+				   &sequence->imageMin,1);
+   status = H5LTset_attribute_int(sequence->grp, sequence->dataname.toStdString().c_str(), 
+				   "max", 
+				   &sequence->imageMax,1);
+  }
+  else if ( sequence->instrumentType == "FILE"  && filesuccess == true ) {
+      FileParser *fparser = sequence->fileParser; 
+      if ( fparser->getType() == "ARRAY" ) {
+         hsize_t dset_dims[2];
+         dset_dims[0] = fparser->getArrayHeight();
+         dset_dims[1] = fparser->getArrayWidth();
+         status = H5LTmake_dataset_double(sequence->grp,sequence->dataname.toStdString().c_str(),
+                                 2,dset_dims,fparser->getArray());
+         status = H5LTset_attribute_string(sequence->grp, sequence->dataname.toStdString().c_str(),
+                                   "File name",fparser->getParsedFileName().toStdString().c_str());
+      }
+      if ( fparser->getType() == "LIST" ) {
+         QLOG_INFO () << "AcquisitionThread::saveData> treating LIST type";
+         hsize_t dset_dims[1];
+         dset_dims[0] = 1;
+         QVector<QString> nameList = fparser->getNameList();
+         QVector<double> dataList = fparser->getDataList();
+         status = H5LTmake_dataset_int(sequence->grp,sequence->dataname.toStdString().c_str(),
+                                 1,dset_dims,0);
+         for ( int i = 0 ; i < dataList.size(); i++ ) {
+            QLOG_INFO () << "AcquisitionThread::saveData> " << nameList.at(i) << " = " << dataList.at(i);
+            status = H5LTset_attribute_double(sequence->grp, sequence->dataname.toStdString().c_str(),
+                                   nameList.at(i).toStdString().c_str(),&dataList.at(i),1);
+         }
+      }
+
+  }
+  else if (sequence->instrumentType == "TREATMENT") {
+    QLOG_DEBUG() << "AcquisitionThread::saveData> sequence->treatment " << sequence->treatment;
+    if (sequence->treatment != "" && sequence->avg != "" ) {
+      // Check parent group and save average in grand parent group
+      QLOG_DEBUG() << "AcquisitionThread::saveData> Save avergage data remainingLoops " 
+		   << parentSequence->remainingLoops;
+      if ( sequence->treatment == "AVG" && parentSequence->remainingLoops == 1 
+	   && grandparentSequence != NULL) {
+	if (sequence->instrumentRef == "CAMERA" && treatmentsuccess == true) {
+	  hsize_t dset_dims[2];
+	  dset_dims[0] = sequence->data_2D_FLOAT_DIM_Y;
+	  dset_dims[1] = sequence->data_2D_FLOAT_DIM_X;
+	  // Average data
+	  for (int i = 0 ; i < sequence->data_2D_FLOAT_DIM_X * sequence->data_2D_FLOAT_DIM_Y; i++)
+	    sequence->data_2D_FLOAT[i] /= parentSequence->loopNumber;
+	  status = H5LTmake_dataset_float(grandparentSequence->grp,
+					  sequence->dataname.toStdString().c_str(),
+					  2,dset_dims,sequence->data_2D_FLOAT);
+	  // reset sequence data
+	  sequence->reset =true;
+	}
+	else if ((sequence->instrumentRef == "DAC" || 
+                  sequence->instrumentRef == "COMEDIDAC" ||
+                  sequence->instrumentRef == "RASPIDAC") 
+                  && treatmentsuccess == true ) {
+	  QLOG_DEBUG() << "AcquisitionThread::saveData> Save average DAC or COMEDIDAC data in groupname " 
+		       << grandparentSequence->grpname
+		       << " refgrp " << grandparentSequence->refgrp;
+	  
+	  // Average data
+	  sequence->dacValue /= parentSequence->loopNumber;
+	  status = H5LTset_attribute_double(grandparentSequence->refgrp, 
+					   grandparentSequence->grpname.toStdString().c_str(), 
+					   sequence->dataname.toStdString().c_str(), 
+					   &(sequence->dacValue),1);
+	  // reset sequence data
+	  sequence->reset =true;	  
+	}
+        else if ( sequence->instrumentRef == "COUNTER" && treatmentsuccess == true ) {
+          QLOG_DEBUG() << "AcquisitionThread::saveData> Save average COMEDI COUNTER data in groupname " 
+                       << grandparentSequence->grpname
+                       << " refgrp " << grandparentSequence->refgrp;
+
+          // Average data
+          sequence->comediData /=  parentSequence->loopNumber;
+          status = H5LTset_attribute_double(grandparentSequence->refgrp,
+                                           grandparentSequence->grpname.toStdString().c_str(),
+                                           sequence->dataname.toStdString().c_str(),
+                                           &(sequence->comediData),1);
+          // reset sequence data
+          sequence->reset =true;
+        }
+      }
+      else if ( sequence->treatment == "PHASE" || sequence->treatment == "AMPLITUDE" ) {
+	QLOG_DEBUG() << "AcquisitionThread::saveData> Save PHASE/AMPLITUDE data in groupname " 
+		    << sequence->grpname
+		    << " refgrp " << sequence->grp;
+	QLOG_DEBUG() << "AcquisitionThread::saveData> instrumentRef " << sequence->instrumentRef;
+	QLOG_DEBUG() << "AcquisitionThread::saveData> treatmentsuccess " << treatmentsuccess;
+	if (sequence->instrumentRef == "CAMERA" && treatmentsuccess == true) {
+	  hsize_t dset_dims[2];
+	  dset_dims[0] = sequence->data_2D_FLOAT_DIM_Y;
+	  dset_dims[1] = sequence->data_2D_FLOAT_DIM_X;
+	  status = H5LTmake_dataset_float(sequence->grp,sequence->dataname.toStdString().c_str(),
+					  2,dset_dims,sequence->data_2D_FLOAT);
+	  // reset data
+	  sequence->reset =true;
+	}
+      }
+      else if (sequence->treatment == "IMAGE" ) {
+	QLOG_DEBUG() << "AcquisitionThread::saveData> Save converted IMAGE data in groupname " 
+		     << sequence->grpname
+		     << " refgrp " << sequence->refgrp;
+	QLOG_DEBUG() << "AcquisitionThread::saveData> instrumentRef " << sequence->instrumentRef;
+	QLOG_DEBUG() << "AcquisitionThread::saveData> treatmentsuccess " << treatmentsuccess;
+	if (sequence->instrumentRef == "CAMERA" && treatmentsuccess == true) {
+	  status = H5IMmake_image_8bit(sequence->grp,sequence->dataname.toStdString().c_str(),
+				       sequence->imageWidth,sequence->imageHeight,sequence->image);
+	  // reset data
+	  sequence->reset =true;
+	}
+      }
+    }
+  }
+#endif
+}
