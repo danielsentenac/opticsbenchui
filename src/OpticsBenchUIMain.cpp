@@ -412,8 +412,8 @@ void OpticsBenchUIMain::closeTab(int index)
 }
 
 void OpticsBenchUIMain::openConfiguration() {
-  const QString selectedPath = QFileDialog::getExistingDirectory(
-      this, tr("Open Configuration Location"), configDirPath);
+  const QString selectedPath =
+      selectDirectory(tr("Open Configuration Location"), configDirPath);
   if (!selectedPath.isEmpty()) {
     applyConfigurationDirectory(selectedPath);
   }
@@ -472,8 +472,8 @@ void OpticsBenchUIMain::applyConfigurationDirectory(const QString& path) {
                            .arg(QDir::toNativeSeparators(configDirPath)));
 }
 void OpticsBenchUIMain::saveConfiguration() {
-  const QString destinationPath = QFileDialog::getExistingDirectory(
-      this, tr("Save Configuration Location"), configDirPath);
+  const QString destinationPath =
+      selectDirectory(tr("Save Configuration Location"), configDirPath);
   if (destinationPath.isEmpty()) {
     return;
   }
@@ -544,6 +544,23 @@ void OpticsBenchUIMain::saveConfiguration() {
         tr("Failed to save the following file(s):\n%1")
             .arg(failedFiles.join("\n")));
   }
+}
+
+QString OpticsBenchUIMain::selectDirectory(const QString& title,
+                                           const QString& initialPath) {
+  QFileDialog dialog(this, title, initialPath);
+  dialog.setFileMode(QFileDialog::Directory);
+  dialog.setOption(QFileDialog::ShowDirsOnly, true);
+  dialog.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+  dialog.setDirectory(initialPath);
+  if (dialog.exec() != QDialog::Accepted) {
+    return QString();
+  }
+  const QStringList selected = dialog.selectedFiles();
+  if (selected.isEmpty()) {
+    return QString();
+  }
+  return selected.first();
 }
 void OpticsBenchUIMain::showDocumentation()
 {

@@ -209,6 +209,12 @@ class OpticsBenchUIMain : public QMainWindow
   void keyPressEvent(QKeyEvent *e);
 
  private:
+  /// Open a directory picker configured to show directories only.
+  /// \param title Dialog window title.
+  /// \param initialPath Initial directory path.
+  /// \return Selected directory, or empty string if canceled.
+  QString selectDirectory(const QString& title, const QString& initialPath);
+
   QString appDirPath;
   QString configDirPath;
   Assistant *assistant;
