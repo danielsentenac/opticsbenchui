@@ -1,9 +1,17 @@
 #!/bin/bash
-export PATH=${PATH}:../../install/bin/
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+HELP_DIR="${REPO_ROOT}/docs/help"
+QHP_FILE="${HELP_DIR}/OpticsBenchUI.qhp"
+
+export PATH="${PATH}:../../install/bin/"
 if [ -d /usr/lib64/qt6/bin ]; then
-  export PATH=${PATH}:/usr/lib64/qt6/bin
+  export PATH="${PATH}:/usr/lib64/qt6/bin"
 fi
-cd docs/help
+
+cd "${HELP_DIR}"
 
 QHELPGEN=qhelpgenerator
 QCOLLGEN=qcollectiongenerator
@@ -26,6 +34,53 @@ if ! command -v "${QHELPGEN}" >/dev/null 2>&1; then
   echo "Error: qhelpgenerator not found. Install Qt help tools (Qt5/Qt6)."
   exit 1
 fi
+
+if [ ! -f "${QHP_FILE}" ]; then
+  echo "Error: QHP file not found: ${QHP_FILE}"
+  exit 1
+fi
+
+# Keep the QHP file list in sync with docs/help content.
+tmp_files="$(mktemp)"
+tmp_qhp="$(mktemp)"
+find . -type f \
+  ! -name '*.qch' \
+  ! -name '*.qhc' \
+  ! -name '*.qhp' \
+  ! -name '*.qhcp' \
+  | sed 's#^\./##' \
+  | LC_ALL=C sort > "${tmp_files}"
+
+awk -v files="${tmp_files}" '
+BEGIN {
+  while ((getline line < files) > 0) {
+    listed[++count] = line;
+  }
+  close(files);
+  in_files = 0;
+}
+{
+  if ($0 ~ /<files>/) {
+    print "         <files>";
+    for (i = 1; i <= count; i++) {
+      print "             <file>" listed[i] "</file>";
+    }
+    print "             </files>";
+    in_files = 1;
+    next;
+  }
+  if (in_files) {
+    if ($0 ~ /<\/files>/) {
+      in_files = 0;
+    }
+    next;
+  }
+  print;
+}
+' "${QHP_FILE}" > "${tmp_qhp}"
+
+mv "${tmp_qhp}" "${QHP_FILE}"
+rm -f "${tmp_files}"
 
 ${QHELPGEN} OpticsBenchUI.qhp -o OpticsBenchUI.qch
 if [ -n "${QCOLLGEN}" ]; then

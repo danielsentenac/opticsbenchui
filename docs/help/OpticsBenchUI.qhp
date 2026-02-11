@@ -29,23 +29,35 @@
              <keyword name="File" ref="./File.html"/>
              </keywords>
          <files>
-             <file>index.html</file>
-             <file>help.css</file>
-             <file>Compilation.html</file>
-             <file>Comedi.html</file>
-             <file>DAC.html</file>
-             <file>DACWindow.jpg</file>
-             <file>SUPERK.html</file>
-             <file>SuperKWindow.jpg</file>
-             <file>Motor.html</file>
-             <file>MotorWindow.jpg</file>
-             <file>Camera.html</file>
-             <file>CameraWindow.jpg</file>
-             <file>SLM.html</file>
-             <file>Analysis.html</file>
              <file>Acquisition.html</file>
              <file>AcquisitionWindow.jpg</file>
+             <file>Analysis.html</file>
+             <file>AnalysisWindow.jpg</file>
+             <file>Camera.html</file>
+             <file>CameraWindow.jpg</file>
+             <file>Comedi.html</file>
+             <file>ComediWindow.jpg</file>
+             <file>Compilation.html</file>
+             <file>DAC.html</file>
+             <file>DACWindow.jpg</file>
              <file>File.html</file>
+             <file>Motor.html</file>
+             <file>MotorWindow.jpg</file>
+             <file>SLM.html</file>
+             <file>SUPERK.html</file>
+             <file>SuperKWindow.jpg</file>
+             <file>about.txt</file>
+             <file>assistant-dark.qss</file>
+             <file>help.css</file>
+             <file>images/browse.png</file>
+             <file>images/fadedfilemenu.png</file>
+             <file>images/filedialog.png</file>
+             <file>images/handbook.png</file>
+             <file>images/icon.png</file>
+             <file>images/mainwindow.png</file>
+             <file>images/open.png</file>
+             <file>images/wildcard.png</file>
+             <file>index.html</file>
              </files>
          </filterSection>
      </QtHelpProject>
