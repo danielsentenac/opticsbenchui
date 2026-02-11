@@ -122,6 +122,12 @@ h2.memtitle,
   background-image: none !important;
   color: #e6e6e6 !important;
   border-color: #555 !important;
+  box-shadow: none !important;
+}
+
+h2.memtitle::after {
+  content: none !important;
+  display: none !important;
 }
 
 .permalink,
