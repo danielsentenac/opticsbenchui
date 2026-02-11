@@ -191,8 +191,11 @@ class OpticsBenchUIMain : public QMainWindow
   void showApiDocumentation();
   /// Open the configuration dialog.
   void openConfiguration();
-  /// Save acquisition file settings.
-  void saveAcqFile();
+  /// Apply and propagate a configuration directory.
+  /// \param path Directory containing *.db3 files.
+  void applyConfigurationDirectory(const QString& path);
+  /// Save all configuration databases (*.db3) to a selected directory.
+  void saveConfiguration();
   /// Close the tab at a given index.
   /// \param index Tab index.
   void closeTab(int index);
@@ -207,6 +210,7 @@ class OpticsBenchUIMain : public QMainWindow
 
  private:
   QString appDirPath;
+  QString configDirPath;
   Assistant *assistant;
 
   QSignalMapper *signalMapper;

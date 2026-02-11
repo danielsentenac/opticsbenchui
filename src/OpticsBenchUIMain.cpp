@@ -75,6 +75,10 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   : QMainWindow( parent, fl )
 {
   appDirPath = _appDirPath;
+  configDirPath = QDir::currentPath();
+  if (configDirPath.isEmpty()) {
+    configDirPath = QDir::homePath();
+  }
   assistant = new Assistant(appDirPath);
   dacwindow = NULL;
 #if defined(COMEDICOUNTER) || defined(COMEDIDAC)
@@ -102,7 +106,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   //
   // Create Dac manager
   //
-  dac = new DacAdvantech(qdir.currentPath());
+  dac = new DacAdvantech(configDirPath);
   connect(dac,SIGNAL(showWarning(QString)),this,SLOT(showDacWarning(QString)));
   dacwindow = new DacWindow(this,Qt::Window,dac);
   connect(this,SIGNAL(setDbPath(QString)),dacwindow,SLOT(setDbPath(QString)));
@@ -112,7 +116,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   //
   // Create Counter manager
   //
-  comedicounter = new ComediCounter(qdir.currentPath());
+  comedicounter = new ComediCounter(configDirPath);
   connect(comedicounter,SIGNAL(showWarning(QString)),this,SLOT(showComediWarning(QString)));
   comedicounterwindow = new ComediWindow(this,Qt::Window,comedicounter);
   connect(this,SIGNAL(setDbPath(QString)),comedicounterwindow,SLOT(setDbPath(QString)));
@@ -122,7 +126,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   //
   // Create Dac comedi manager
   //
-  comedidac = new ComediDac(qdir.currentPath());
+  comedidac = new ComediDac(configDirPath);
   connect(comedidac,SIGNAL(showWarning(QString)),this,SLOT(showComediWarning(QString)));
   comedidacwindow = new ComediWindow(this,Qt::Window,comedidac);
   connect(this,SIGNAL(setDbPath(QString)),comedidacwindow,SLOT(setDbPath(QString)));
@@ -132,7 +136,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   //
   // Create Dac raspi manager
   //
-  raspidac = new RaspiDac(qdir.currentPath());
+  raspidac = new RaspiDac(configDirPath);
   connect(raspidac,SIGNAL(showWarning(QString)),this,SLOT(showRaspiWarning(QString)));
   raspidacwindow = new RaspiWindow(this,Qt::Window,raspidac);
   connect(this,SIGNAL(setDbPath(QString)),raspidacwindow,SLOT(setDbPath(QString)));
@@ -140,7 +144,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   //
   // Create Motor manager
   //
-  motor = new Motor(0,qdir.currentPath());
+  motor = new Motor(0, configDirPath);
   connect(motor,SIGNAL(showWarning(QString)),this,SLOT(showMotorWarning(QString)));
   motorwindow = new MotorWindow(this,Qt::Window,motor);
   connect(this,SIGNAL(setDbPath(QString)),motorwindow,SLOT(setDbPath(QString)));
@@ -148,7 +152,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
   //
   // Create SuperK manager
   //
-  superk = new SuperK(0,qdir.currentPath());
+  superk = new SuperK(0, configDirPath);
   connect(superk,SIGNAL(showWarning(QString)),this,SLOT(showSuperKWarning(QString)));
   superkwindow = new SuperKWindow(this,Qt::Window,superk);
   connect(this,SIGNAL(setDbPath(QString)),superkwindow,SLOT(setDbPath(QString)));
@@ -241,15 +245,18 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
                                          camerawindowList);
 #endif
 
-  analysiswidget = new AnalysisWidget(qdir.currentPath());
+  analysiswidget = new AnalysisWidget(configDirPath);
   analysiswidget->setObjectName("Analysis");
-  acquisitionwidget = new AcquisitionWidget(qdir.currentPath());
+  acquisitionwidget = new AcquisitionWidget(configDirPath);
   acquisitionwidget->setObjectName("Acquisition");
-  connect(this,SIGNAL(setDbPath(QString)),acquisitionwidget,SLOT(setDbPath(QString)));
-  connect(this,SIGNAL(setDbPath(QString)),analysiswidget,SLOT(setDbPath(QString)));
-  connect(this,SIGNAL(setAcqFile(QString)),acquisitionwidget,SLOT(setAcqFile(QString)));
-  connect(this,SIGNAL(isopenCameraWindow(QVector<bool>)),
-	  acquisitionwidget,SLOT(isopenCameraWindow(QVector<bool>)));
+  connect(this, &OpticsBenchUIMain::setDbPath,
+          acquisitionwidget, &AcquisitionWidget::setDbPath);
+  connect(this, &OpticsBenchUIMain::setDbPath,
+          analysiswidget, &AnalysisWidget::setDbPath);
+  connect(this, &OpticsBenchUIMain::setAcqFile,
+          acquisitionwidget, &AcquisitionWidget::setAcqFile);
+  connect(this, &OpticsBenchUIMain::isopenCameraWindow,
+          acquisitionwidget, &AcquisitionWidget::isopenCameraWindow);
   connect(acquisitionwidget,SIGNAL(showWarning(QString)),this,
 	  SLOT(showAcquisitionWarning(QString)));
   connect(acquisitionwidget,SIGNAL(requestAnalysis()),analysiswidget,
@@ -327,12 +334,7 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
 
  
   menuFile->addAction("Open Configuration", this, SLOT(openConfiguration()) );
-#ifndef NO_HDF5
-  menuFile->addAction("Save Acquisition", this, SLOT(saveAcqFile()) );
-#else
-  QAction* saveAcqAction = menuFile->addAction("Save Acquisition", this, SLOT(saveAcqFile()) );
-  saveAcqAction->setEnabled(false);
-#endif
+  menuFile->addAction("Save Configuration", this, SLOT(saveConfiguration()) );
   menuFile->addAction("Exit", this, SLOT(close()) );
  
   menuHelp->addAction("Documentation",this,SLOT(showDocumentation()));
@@ -395,6 +397,9 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
 
   // Then set the menu bar to the main window
   setMenuBar(menuBar);
+  statusBar()->showMessage(tr("Configuration directory: %1")
+                           .arg(QDir::toNativeSeparators(configDirPath)));
+  applyConfigurationDirectory(configDirPath);
 }
 void OpticsBenchUIMain::closeTab(int index)
 {
@@ -407,26 +412,137 @@ void OpticsBenchUIMain::closeTab(int index)
 }
 
 void OpticsBenchUIMain::openConfiguration() {
-  QString path = "";
-  path = QFileDialog::getExistingDirectory(this, tr("Open Configuration Location"),
-						   QDir::homePath ());
-  if (path != "")
-    emit setDbPath(path);
+  const QString selectedPath = QFileDialog::getExistingDirectory(
+      this, tr("Open Configuration Location"), configDirPath);
+  if (!selectedPath.isEmpty()) {
+    applyConfigurationDirectory(selectedPath);
+  }
 }
-void OpticsBenchUIMain::saveAcqFile() {
-#ifdef NO_HDF5
-  QMessageBox::warning(this, tr("OpticsBenchUI"),
-                       tr("HDF5 support is disabled. Acquisition files cannot be saved."));
-  return;
+
+void OpticsBenchUIMain::applyConfigurationDirectory(const QString& path) {
+  if (path.isEmpty()) {
+    return;
+  }
+  const QString cleanedPath = QDir::cleanPath(QDir::fromNativeSeparators(path));
+  QDir dir(cleanedPath);
+  if (!dir.exists()) {
+    QMessageBox::warning(this, tr("OpticsBenchUI"),
+                         tr("Configuration directory does not exist:\n%1")
+                             .arg(QDir::toNativeSeparators(cleanedPath)));
+    return;
+  }
+  configDirPath = cleanedPath;
+
+#ifdef ADVANTECHDAC
+  if (dacwindow) {
+    dacwindow->setDbPath(configDirPath);
+  }
 #endif
-  QString acqfile = "";
-  acqfile = QFileDialog::getSaveFileName(
-      this, tr("Save Acquisition File in HDF5 format"),
-      Utils::DefaultHdf5Path("Scan"),
-      Utils::Hdf5FileDialogFilter());
-  if (acqfile != "") {
-    acqfile = Utils::EnsureHdf5Extension(acqfile);
-    emit setAcqFile(acqfile);
+#if defined(COMEDICOUNTER) || defined(COMEDIDAC)
+#ifdef COMEDICOUNTER
+  if (comedicounterwindow) {
+    comedicounterwindow->setDbPath(configDirPath);
+  }
+#endif
+#ifdef COMEDIDAC
+  if (comedidacwindow) {
+    comedidacwindow->setDbPath(configDirPath);
+  }
+#endif
+#endif
+#ifdef RASPIDAC
+  if (raspidacwindow) {
+    raspidacwindow->setDbPath(configDirPath);
+  }
+#endif
+  if (motorwindow) {
+    motorwindow->setDbPath(configDirPath);
+  }
+  if (superkwindow) {
+    superkwindow->setDbPath(configDirPath);
+  }
+  if (acquisitionwidget) {
+    acquisitionwidget->setDbPath(configDirPath);
+  }
+  if (analysiswidget) {
+    analysiswidget->setDbPath(configDirPath);
+  }
+
+  statusBar()->showMessage(tr("Configuration directory: %1")
+                           .arg(QDir::toNativeSeparators(configDirPath)));
+}
+void OpticsBenchUIMain::saveConfiguration() {
+  const QString destinationPath = QFileDialog::getExistingDirectory(
+      this, tr("Save Configuration Location"), configDirPath);
+  if (destinationPath.isEmpty()) {
+    return;
+  }
+
+  const QString sourcePath = QDir::cleanPath(QDir::fromNativeSeparators(configDirPath));
+  const QString targetPath =
+      QDir::cleanPath(QDir::fromNativeSeparators(destinationPath));
+  if (sourcePath == targetPath) {
+    statusBar()->showMessage(
+        tr("Configuration already stored in: %1")
+            .arg(QDir::toNativeSeparators(targetPath)),
+        5000);
+    return;
+  }
+
+  QDir sourceDir(sourcePath);
+  if (!sourceDir.exists()) {
+    QMessageBox::warning(
+        this, tr("OpticsBenchUI"),
+        tr("Source configuration directory does not exist:\n%1")
+            .arg(QDir::toNativeSeparators(sourcePath)));
+    return;
+  }
+
+  QDir targetDir(targetPath);
+  if (!targetDir.exists()) {
+    QMessageBox::warning(
+        this, tr("OpticsBenchUI"),
+        tr("Destination directory does not exist:\n%1")
+            .arg(QDir::toNativeSeparators(targetPath)));
+    return;
+  }
+
+  const QStringList dbFiles =
+      sourceDir.entryList(QStringList() << "*.db3", QDir::Files, QDir::Name);
+  if (dbFiles.isEmpty()) {
+    QMessageBox::warning(
+        this, tr("OpticsBenchUI"),
+        tr("No *.db3 configuration files found in:\n%1")
+            .arg(QDir::toNativeSeparators(sourcePath)));
+    return;
+  }
+
+  int copiedCount = 0;
+  QStringList failedFiles;
+  for (const QString& filename : dbFiles) {
+    const QString sourceFilePath = sourceDir.filePath(filename);
+    const QString targetFilePath = targetDir.filePath(filename);
+    if (QFile::exists(targetFilePath) && !QFile::remove(targetFilePath)) {
+      failedFiles << filename;
+      continue;
+    }
+    if (!QFile::copy(sourceFilePath, targetFilePath)) {
+      failedFiles << filename;
+      continue;
+    }
+    copiedCount++;
+  }
+
+  statusBar()->showMessage(
+      tr("Saved %1 configuration file(s) to %2")
+          .arg(copiedCount)
+          .arg(QDir::toNativeSeparators(targetPath)),
+      7000);
+  if (!failedFiles.isEmpty()) {
+    QMessageBox::warning(
+        this, tr("OpticsBenchUI"),
+        tr("Failed to save the following file(s):\n%1")
+            .arg(failedFiles.join("\n")));
   }
 }
 void OpticsBenchUIMain::showDocumentation()

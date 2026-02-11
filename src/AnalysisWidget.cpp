@@ -197,7 +197,20 @@ void AnalysisWidget::InitConfig() {
   analysistable->select();
   analysisrow = analysistable->rowCount();
   analysistable->insertRow(analysisrow);
-  analysisview->resizeColumnsToContents();
+  analysisview->setWordWrap(false);
+  analysisview->setTextElideMode(Qt::ElideRight);
+  if (QHeaderView* header = analysisview->horizontalHeader()) {
+    const int recordWidth = qMax(
+        70, QFontMetrics(header->font()).horizontalAdvance(tr("record")) + 24);
+    header->setSectionResizeMode(0, QHeaderView::Fixed);
+    analysisview->setColumnWidth(0, recordWidth);
+    if (analysistable->columnCount() > 1) {
+      header->setSectionResizeMode(1, QHeaderView::Stretch);
+    }
+    if (analysistable->columnCount() > 2) {
+      header->setSectionResizeMode(2, QHeaderView::Stretch);
+    }
+  }
   analysisview->resizeRowsToContents();
 }
 
