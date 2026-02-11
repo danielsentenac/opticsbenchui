@@ -5,7 +5,23 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 DOXYFILE_PATH="${REPO_ROOT}/docs/Doxyfile"
 API_HTML_DIR="${REPO_ROOT}/docs/api/html"
+DOXYGEN_AWESOME_DIR="${REPO_ROOT}/docs/api/doxygen-awesome"
+DARK_CSS_PATH="${REPO_ROOT}/docs/api/opticsbenchui-dark.css"
 export API_HTML_DIR
+
+if [[ ! -f "${DOXYGEN_AWESOME_DIR}/doxygen-awesome.css" ]]; then
+  git -C "${REPO_ROOT}" submodule update --init --recursive docs/api/doxygen-awesome
+fi
+
+if [[ ! -f "${DOXYGEN_AWESOME_DIR}/doxygen-awesome.css" ]]; then
+  echo "ERROR: Missing docs/api/doxygen-awesome assets."
+  exit 1
+fi
+
+if [[ ! -f "${DARK_CSS_PATH}" ]]; then
+  echo "ERROR: Missing ${DARK_CSS_PATH}."
+  exit 1
+fi
 
 cd "${REPO_ROOT}/docs"
 doxygen "${DOXYFILE_PATH}"

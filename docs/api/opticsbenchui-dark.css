@@ -1,0 +1,397 @@
+html, body {
+  background-color: #2b2b2b;
+  color: #e6e6e6;
+}
+
+body, table, div, p, dl, dt, dd, li, ul, ol, td, th {
+  color: #e6e6e6;
+}
+
+a, a:visited {
+  color: #8ab4f8;
+}
+
+a:hover {
+  color: #a3c3ff;
+}
+
+div.contents, div.header, div.footer, div.headertitle, div.title, div.textblock {
+  background-color: #2b2b2b;
+}
+
+div.header, div.footer, div.headertitle, div.title {
+  border-color: #555;
+}
+
+table, table.memberdecls, table.memitem, table.doxtable {
+  background-color: #353535;
+  border-color: #555;
+}
+
+table, th, td {
+  border-color: #555;
+}
+
+th {
+  background-color: #3a3a3a;
+}
+
+tr:nth-child(even) {
+  background-color: #303030;
+}
+
+/* File list / directory pages */
+table.directory, table.directory td {
+  background-color: #2b2b2b;
+  color: #e6e6e6;
+  border-color: #555;
+}
+
+table.directory tr {
+  background-color: #2b2b2b;
+}
+
+table.directory tr.even {
+  background-color: #303030;
+}
+
+table.directory tr.odd {
+  background-color: #2b2b2b;
+}
+
+table.directory tr:hover td {
+  background-color: #3a3a3a;
+}
+
+div.memproto, div.memdoc {
+  background-color: #303030;
+  border-color: #555;
+}
+
+/* Member sections (class lists) */
+table.memberdecls,
+table.memberdecls td,
+table.memberdecls th,
+table.memitem,
+table.memitem td,
+table.memitem th,
+.memitem,
+.memitemleft,
+.memitemright,
+.memitem td,
+.memitem th,
+.memtitle,
+.memitem .memname,
+.memitem .memname a,
+.memitem .memproto,
+.memitem .memdoc,
+.memitem .memdoc td,
+.memitem .memdoc th {
+  background-color: #2f2f2f !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+.memitem tr:nth-child(even),
+.memitem tr:nth-child(odd),
+table.memberdecls tr:nth-child(even),
+table.memberdecls tr:nth-child(odd) {
+  background-color: #2f2f2f !important;
+}
+
+.memitem tr:hover td,
+table.memberdecls tr:hover td {
+  background-color: #3a3a3a !important;
+}
+
+/* Member title/permalink blocks */
+h2.memtitle,
+h2.memtitle span,
+h2.memtitle a,
+h2.memtitle .permalink,
+h2.memtitle .permalink a {
+  background-color: #2f2f2f !important;
+  background-image: none !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+h2.memtitle,
+.memtitle {
+  background-color: #2f2f2f !important;
+  background-image: none !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+.permalink,
+h2.memtitle .permalink {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.permalink a {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+
+.permalink,
+.permalink a,
+.permalink a:visited,
+.permalink a:hover,
+.permalink a:active,
+.permalink a:focus {
+  background-color: #2f2f2f !important;
+  background-image: none !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+.overload {
+  background-color: #2f2f2f !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+/* Permalink icon blocks */
+.permalink {
+  background-image: none !important;
+}
+
+.permalink a:before {
+  background-image: none !important;
+}
+
+/* Member name tables */
+table.memname,
+table.memname td,
+table.memname th,
+td.memname {
+  background-color: #2f2f2f !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+/* Member labels table (explicit/override tags) */
+table.mlabels,
+table.mlabels td,
+table.mlabels th,
+td.mlabels-left,
+td.mlabels-right,
+span.mlabel {
+  background-color: #2f2f2f !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+#nav-tree, #nav-tree-contents, #nav-tree-contents .selected {
+  background-color: #2b2b2b;
+  color: #e6e6e6;
+}
+
+#nav-tree .selected {
+  background-color: #3a3a3a;
+}
+
+div.navpath, div.navpath ul, div.navpath li {
+  background-color: #2b2b2b;
+  color: #e6e6e6;
+}
+
+div.navpath li.navelem a {
+  color: #8ab4f8;
+}
+
+div.fragment, pre.fragment {
+  background-color: #2f2f2f;
+  border-color: #555;
+  color: #e6e6e6;
+}
+
+code, pre, .line {
+  color: #e6e6e6;
+}
+
+div.line {
+  background-color: #2f2f2f;
+}
+
+.tablist li a, .tablist li a:visited {
+  background-color: #bfc6d4;
+  color: #000000 !important;
+  border-color: #555;
+}
+
+.tablist li a:hover,
+.tablist li a:active {
+  color: #000000 !important;
+  background-color: #c7cedc;
+}
+
+.tablist li.current a {
+  background-color: #d1d7e4;
+  color: #000000 !important;
+}
+
+.tablist li a span,
+.tablist li.current a span {
+  color: #000000 !important;
+}
+
+/* Doxygen SmartMenus tab bar overrides */
+.sm-dox, .sm-dox ul {
+  background-image: none !important;
+}
+
+.sm-dox a,
+.sm-dox a:visited,
+.sm-dox a:focus,
+.sm-dox a:hover,
+.sm-dox a:active,
+.sm-dox a.highlighted,
+.sm-dox a.current {
+  color: #000000 !important;
+  background-color: #bfc6d4 !important;
+  background-image: none !important;
+  text-shadow: none !important;
+}
+
+.sm-dox a:hover,
+.sm-dox a:active,
+.sm-dox a.highlighted {
+  background-color: #c7cedc !important;
+}
+
+.sm-dox ul a,
+.sm-dox ul a:visited,
+.sm-dox ul a:focus,
+.sm-dox ul a:hover,
+.sm-dox ul a:active,
+.sm-dox ul a.highlighted {
+  color: #000000 !important;
+  background-color: #d1d7e4 !important;
+  background-image: none !important;
+  text-shadow: none !important;
+}
+
+.sm-dox a span.sub-arrow {
+  border-color: #000000 transparent transparent transparent !important;
+  background: transparent !important;
+}
+
+/* Invert class/graph images to avoid white backgrounds */
+img[src^="class"],
+img[src*="graph"],
+img[src*="inherit"],
+img[src^="struct"],
+img[src^="namespace"] {
+  background-color: transparent !important;
+  filter: invert(1) hue-rotate(180deg) contrast(1.05);
+}
+
+div#titlearea {
+  background-color: #2b2b2b;
+  border-bottom: 1px solid #555;
+}
+
+/* Title block spacing and full-row background */
+#titlearea table {
+  width: 100%;
+}
+
+#projectalign {
+  padding: 8px 16px;
+}
+
+#projectname,
+#projectbrief {
+  display: block;
+  width: 100%;
+}
+
+#projectname {
+  margin: 0;
+  padding: 4px 0 0 0;
+}
+
+#projectbrief {
+  margin: 0;
+  padding: 2px 0 6px 0;
+}
+
+/* Pull main menu directly under title area */
+#main-nav {
+  margin-top: 0;
+  border-top: 1px solid #3a3a3a;
+  border-bottom: 1px solid #3a3a3a;
+  background-color: #2b2b2b;
+  padding-left: 0;
+}
+
+#main-nav ul,
+.sm-dox {
+  background-color: #2b2b2b !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Left nav background + horizontal separator under menu */
+#side-nav,
+#nav-tree,
+#nav-tree-contents {
+  background-color: #2b2b2b !important;
+  border-top: 1px solid #3a3a3a !important;
+}
+
+/* Override navtree offsets and header strip */
+#nav-tree {
+  background-image: none !important;
+}
+
+#nav-tree-contents {
+  margin-top: 0 !important;
+}
+
+/* Remove the left panel top margin if any */
+#side-nav {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.navpath,
+.navpath ul,
+.navpath li {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Keep split bar (vertical separator) */
+
+/* Remove default menu left inset */
+.sm-dox {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Slightly larger horizontal insets for top-level menu items */
+.sm-dox > li > a,
+.sm-dox > li > a:visited,
+.sm-dox > li > a:focus,
+.sm-dox > li > a:hover,
+.sm-dox > li > a:active {
+  padding-left: 56px !important;
+  padding-right: 56px !important;
+  background-image: none !important;
+  border-bottom: 1px solid #3a3a3a !important;
+}
+
+input, select, textarea {
+  background-color: #303030;
+  color: #e6e6e6;
+  border: 1px solid #555;
+}
