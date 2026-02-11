@@ -74,8 +74,8 @@ signals:
   void showWarning(QString message);
   /// Emit output count and device name.
   /// \param outputs Number of outputs.
-  /// \param QString Device name or mode string.
-  void getOutputs(int outputs,QString);
+  /// \param deviceName Device name or mode string.
+  void getOutputs(int outputs, QString deviceName);
   /// Emit output values (device-specific type).
   /// \param comedivalues Pointer to device-specific values.
   void getOutputValues(void *comedivalues);
