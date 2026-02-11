@@ -58,4 +58,40 @@ for svg in root.rglob("*.svg"):
         continue
     insert_at = match.end()
     svg.write_text(data[:insert_at] + "\n" + style + data[insert_at:], encoding="utf-8")
+
+search_css = root / "search" / "search.css"
+override_start = "/* OpticsBenchUI search readability overrides: begin */"
+override_end = "/* OpticsBenchUI search readability overrides: end */"
+override_block = f"""{override_start}
+.SREntry {{
+  font-size: 14pt !important;
+  line-height: 1.35 !important;
+  padding: 4px 8px !important;
+}}
+
+.SRPage .SREntry {{
+  font-size: 14pt !important;
+  line-height: 1.35 !important;
+  padding: 4px 8px !important;
+}}
+
+.SRSymbol,
+a.SRSymbol,
+a.SRScope,
+span.SRScope {{
+  font-size: 14pt !important;
+  line-height: 1.35 !important;
+}}
+
+.SRPage .SRStatus {{
+  font-size: 11pt !important;
+  line-height: 1.35 !important;
+}}
+{override_end}"""
+
+if search_css.exists():
+    css_data = search_css.read_text(encoding="utf-8")
+    pattern = re.escape(override_start) + r".*?" + re.escape(override_end)
+    css_data = re.sub(pattern, "", css_data, flags=re.S).rstrip() + "\n\n" + override_block + "\n"
+    search_css.write_text(css_data, encoding="utf-8")
 PY

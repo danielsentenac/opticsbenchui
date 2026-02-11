@@ -530,10 +530,34 @@ div#titlearea::before {
   padding-left: 32px !important;
   padding-right: 32px !important;
   font-size: 17px !important;
-  line-height: 1.35 !important;
+  height: 35px !important;
+  line-height: 35px !important;
   font-weight: 500 !important;
   background-image: none !important;
   border-bottom: 1px solid #3a3a3a !important;
+}
+
+/* Keep search box height aligned with top menu buttons */
+#MSearchBox {
+  height: 35px !important;
+}
+
+#MSearchField {
+  height: 33px !important;
+  line-height: 33px !important;
+}
+
+/* Increase quick search suggestion readability */
+#MSearchSelectWindow a.SelectItem,
+#MSearchSelectWindow a.SelectItem:visited {
+  font-size: 17px !important;
+  line-height: 1.35 !important;
+  padding: 6px 10px !important;
+}
+
+#MSearchSelectWindow .SelectItem {
+  font-size: 17px !important;
+  line-height: 1.35 !important;
 }
 
 input, select, textarea {
