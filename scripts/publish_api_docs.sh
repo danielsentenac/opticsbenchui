@@ -1,12 +1,14 @@
 #!/bin/bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 REPO_URL="git@github.com:danielsentenac/opticsbenchui.git"
 WORKDIR="/tmp/obui-ghpages"
-SOURCE_DIR="/home/sentenac/OPTICSBENCHUI/opticsbenchui/docs/api/html"
+SOURCE_DIR="${REPO_ROOT}/docs/api/html"
 
 echo "Building API docs..."
-./make_api_doc.run
+"${SCRIPT_DIR}/make_api_doc.run"
 
 if [[ ! -d "${SOURCE_DIR}" ]]; then
   echo "ERROR: SOURCE_DIR not found: ${SOURCE_DIR}"

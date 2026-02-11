@@ -1,12 +1,12 @@
 PROJECT_NAME           = "OpticsBenchUI"
 PROJECT_BRIEF          = "Optics bench control and data acquisition framework"
-OUTPUT_DIRECTORY       = docs/api
-INPUT                  = . api_groups.h
+OUTPUT_DIRECTORY       = api
+INPUT                  = ../src
 FILE_PATTERNS          = *.h *.cpp
 RECURSIVE              = NO
-EXCLUDE                = docs docs/help docs/api build
+EXCLUDE                = help api ../build
 EXCLUDE_PATTERNS       = */moc_*.cpp
-STRIP_FROM_PATH        = .
+STRIP_FROM_PATH        = ../src
 
 GENERATE_HTML          = YES
 GENERATE_TREEVIEW      = YES
@@ -15,11 +15,11 @@ QUIET                  = YES
 WARN_IF_UNDOCUMENTED   = YES
 WARN_IF_DOC_ERROR      = YES
 INHERIT_DOCS           = YES
-HTML_EXTRA_STYLESHEET  = docs/api/doxygen-awesome/doxygen-awesome.css \
-                         docs/api/opticsbenchui-dark.css
-HTML_EXTRA_FILES       = docs/api/doxygen-awesome/doxygen-awesome-darkmode-toggle.js \
-                         docs/api/doxygen-awesome/doxygen-awesome-fragment-copy-button.js \
-                         docs/api/doxygen-awesome/doxygen-awesome-interactive-toc.js
+HTML_EXTRA_STYLESHEET  = api/doxygen-awesome/doxygen-awesome.css \
+                         api/opticsbenchui-dark.css
+HTML_EXTRA_FILES       = api/doxygen-awesome/doxygen-awesome-darkmode-toggle.js \
+                         api/doxygen-awesome/doxygen-awesome-fragment-copy-button.js \
+                         api/doxygen-awesome/doxygen-awesome-interactive-toc.js
 
 EXTRACT_ALL            = YES
 EXTRACT_PRIVATE        = NO

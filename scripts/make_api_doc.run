@@ -1,9 +1,17 @@
 #!/bin/bash
 set -euo pipefail
 
-doxygen Doxyfile
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+DOXYFILE_PATH="${REPO_ROOT}/docs/Doxyfile"
+API_HTML_DIR="${REPO_ROOT}/docs/api/html"
+export API_HTML_DIR
+
+cd "${REPO_ROOT}/docs"
+doxygen "${DOXYFILE_PATH}"
 
 python3 - <<'PY'
+import os
 import pathlib
 import re
 
@@ -12,9 +20,11 @@ text { fill: #e6e6e6 !important; }
 polygon { fill: #2f2f2f !important; stroke: #9aa0a6 !important; }
 path, line, polyline { stroke: #4e67d6 !important; }
 ]]></style>"""
-signature = "text { fill: #e6e6e6 !important; }"
 
-root = pathlib.Path("docs/api/html")
+root = pathlib.Path(os.environ.get("API_HTML_DIR", ""))
+if not root.exists():
+    raise SystemExit(f"API HTML directory does not exist: {root}")
+
 for svg in root.rglob("*.svg"):
     data = svg.read_text(encoding="utf-8")
     # Remove any previously injected style before the <svg> tag.
