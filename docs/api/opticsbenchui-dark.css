@@ -198,6 +198,33 @@ span.mlabel {
   background-color: #3a3a3a;
 }
 
+/* Improve sidebar readability (higher contrast + larger text) */
+#nav-tree .label,
+#nav-tree a,
+#nav-tree a:visited {
+  color: #d7e3f0 !important;
+  font-size: 18px !important;
+  line-height: 1.45 !important;
+  font-weight: 500 !important;
+  opacity: 1 !important;
+}
+
+#nav-tree a:hover,
+#nav-tree a:focus {
+  color: #f2f7ff !important;
+}
+
+#nav-tree .selected,
+#nav-tree-contents .selected {
+  background-color: #3b4047 !important;
+}
+
+#nav-tree .selected a,
+#nav-tree-contents .selected a {
+  color: #19a7ff !important;
+  font-weight: 700 !important;
+}
+
 div.navpath, div.navpath ul, div.navpath li {
   background-color: #2b2b2b;
   color: #e6e6e6;
@@ -205,6 +232,32 @@ div.navpath, div.navpath ul, div.navpath li {
 
 div.navpath li.navelem a {
   color: #8ab4f8;
+}
+
+/* Make key blue metadata links easier to read */
+div.header .summary,
+div.header .summary a,
+div.header .summary a:visited {
+  color: #5bbdff !important;
+  font-size: 20px !important;
+  line-height: 1.35 !important;
+  font-weight: 600 !important;
+}
+
+div.ingroups,
+div.ingroups a,
+div.ingroups a:visited {
+  color: #5bbdff !important;
+  font-size: 21px !important;
+  line-height: 1.3 !important;
+  font-weight: 600 !important;
+}
+
+div.navpath li.navelem a,
+div.navpath li.navelem a:visited {
+  color: #5bbdff !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
 }
 
 div.fragment, pre.fragment {
@@ -215,6 +268,21 @@ div.fragment, pre.fragment {
 
 code, pre, .line {
   color: #e6e6e6;
+}
+
+/* Make inline code snippets (e.g. #include lines) readable in dark theme */
+code,
+span.tt {
+  background-color: #3a3f46 !important;
+  color: #f0f4fa !important;
+  border: 1px solid #5d6674 !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+
+code a,
+span.tt a {
+  color: #9ad1ff !important;
 }
 
 div.line {
@@ -277,6 +345,13 @@ div.line {
   background-color: #d1d7e4 !important;
   background-image: none !important;
   text-shadow: none !important;
+  font-size: 17px !important;
+  line-height: 1.35 !important;
+  font-weight: 500 !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
 }
 
 .sm-dox a span.sub-arrow {
@@ -295,16 +370,49 @@ img[src^="namespace"] {
 }
 
 div#titlearea {
-  background-color: #2b2b2b;
+  position: relative;
+  background-color: #2b2b2b !important;
   border-bottom: 1px solid #555;
+  overflow: hidden;
+}
+
+div#titlearea::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #2b2b2b;
+  z-index: 0;
 }
 
 /* Title block spacing and full-row background */
 #titlearea table {
+  position: relative;
+  z-index: 1;
+  table-layout: fixed;
   width: 100%;
+  border-collapse: collapse !important;
+}
+
+#titlearea,
+#titlearea table,
+#titlearea table tbody,
+#titlearea table tr,
+#titlearea table td,
+#projectalign,
+#projectname,
+#projectbrief {
+  background-color: #2b2b2b !important;
+  color: #e6e6e6 !important;
+  background-image: none !important;
+}
+
+#titlearea table td {
+  width: 100% !important;
+  border: 0 !important;
 }
 
 #projectalign {
+  width: 100% !important;
   padding: 8px 16px;
 }
 
@@ -316,12 +424,21 @@ div#titlearea {
 
 #projectname {
   margin: 0;
-  padding: 4px 0 0 0;
+  padding: 10px 0 2px 0;
+  font-size: 44px !important;
+  line-height: 1.05 !important;
+  font-weight: 700 !important;
 }
 
 #projectbrief {
   margin: 0;
-  padding: 2px 0 6px 0;
+  padding: 2px 0 12px 0;
+  font-size: 22px !important;
+  line-height: 1.2 !important;
+}
+
+#titlearea table tbody tr {
+  height: auto !important;
 }
 
 /* Pull main menu directly under title area */
@@ -330,7 +447,7 @@ div#titlearea {
   border-top: 1px solid #3a3a3a;
   border-bottom: 1px solid #3a3a3a;
   background-color: #2b2b2b;
-  padding-left: 0;
+  padding-left: 8px;
 }
 
 #main-nav ul,
@@ -378,14 +495,43 @@ div#titlearea {
   padding-right: 0 !important;
 }
 
+/* Add horizontal spacing between top-level menu tabs */
+.sm-dox > li {
+  margin-right: 5px !important;
+}
+
+.sm-dox > li:last-child {
+  margin-right: 0 !important;
+}
+
+/* Add spacing between dropdown submenu entries */
+.sm-dox ul > li {
+  margin-bottom: 3px !important;
+}
+
+.sm-dox ul > li:last-child {
+  margin-bottom: 0 !important;
+}
+
+.sm-dox ul > li > a,
+.sm-dox ul > li > a:visited,
+.sm-dox ul > li > a:focus,
+.sm-dox ul > li > a:hover,
+.sm-dox ul > li > a:active {
+  border-radius: 6px !important;
+}
+
 /* Slightly larger horizontal insets for top-level menu items */
 .sm-dox > li > a,
 .sm-dox > li > a:visited,
 .sm-dox > li > a:focus,
 .sm-dox > li > a:hover,
 .sm-dox > li > a:active {
-  padding-left: 56px !important;
-  padding-right: 56px !important;
+  padding-left: 32px !important;
+  padding-right: 32px !important;
+  font-size: 17px !important;
+  line-height: 1.35 !important;
+  font-weight: 500 !important;
   background-image: none !important;
   border-bottom: 1px solid #3a3a3a !important;
 }
@@ -394,4 +540,12 @@ input, select, textarea {
   background-color: #303030;
   color: #e6e6e6;
   border: 1px solid #555;
+}
+
+/* Hide doxygen-awesome side shadow bars that show up as white blocks */
+td h2.groupheader,
+h2.groupheader {
+  box-shadow: none !important;
+  border-bottom: 1px solid #555 !important;
+  background: transparent !important;
 }
