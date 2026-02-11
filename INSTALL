@@ -2,7 +2,8 @@ INSTALLING OpticsBenchUI 1.1
 
 External packages needed prior to installation:
 
-Graphical user interface is based on Qt 5 or Qt 6 for Linux. Official Qt downloads: https://www.qt.io/download
+Graphical user interface is based on Qt 5 or Qt 6 for Linux and Windows.
+Official Qt downloads: https://www.qt.io/download
 Qt 5 source: git clone git://code.qt.io/qt/qt5.git
 Qt 6 source: git clone git://code.qt.io/qt/qt6.git
 OpticsBenchUI is compiled with Qt5 or Qt6 using the project file OpticsBenchUI.pro. First you need to update OpticsBenchUI.pro according to optional librairies installed and modify it with your personal path installations (INCLUDEPATH, LIBS tags)
@@ -30,17 +31,32 @@ OpticsBenchUI installation steps:
 
 In the source directory (where is present the OpticsBenchUI.pro file):
 
-1) qmake
+Linux build:
 
 Qt 5: qmake-qt5 OpticsBenchUI.pro
 Qt 6: qmake6 OpticsBenchUI.pro
-2) make
+make -j4
 
-This will create an OpticsBenchUI executable
+Windows build (from a Qt command prompt/developer shell):
 
-Optional dependencies (HDF5, OpenGL headers, Qt Multimedia, Standa, USB, Qt SVG) are detected at build time and disabled if missing.
+MinGW kit:
+qmake OpticsBenchUI.pro CONFIG+=release
+mingw32-make -j8
 
-3) Launch OpticsBenchUI. The documentation is accessible from the GUI and includes UI configuration guidance (Help -> User Manual / Getting Started). See the "Compilation Options" help page for a structured list of build defines.
+MSVC kit:
+qmake OpticsBenchUI.pro -spec win32-msvc CONFIG+=release
+nmake
+
+Windows deploy (copy Qt runtime DLLs near the executable):
+windeployqt release\OpticsBenchUI.exe
+
+This creates an OpticsBenchUI executable.
+
+Optional dependencies (HDF5, OpenGL headers, Qt Multimedia, Standa, USB, Qt SVG and hardware SDKs) are detected at build time and disabled if missing.
+
+Run OpticsBenchUI. The documentation is accessible from the GUI and includes UI configuration guidance (Help -> User Manual / Getting Started). See the "Compilation Options" help page for a structured list of build defines.
+
+On startup/open configuration, select the directory containing your *.db3 files (for example data/).
 
 Build options description:
 

@@ -3,6 +3,10 @@
 OpticsBenchUI is a Qt application for controlling optics-bench experiments and
 automated scans across cameras, motors, DACs, lasers, and counters.
 
+Compatibility:
+- Linux
+- Windows
+
 Hardware families include USB/IEEE1394/GigE/Andor/Raptor/Raspberry Pi/Allied Vision
 cameras, Newport/New Focus/PI/Micos/Standa motors, NKT SuperK lasers, and
 Advantech/Comedi/Raspberry Pi DACs.
@@ -84,3 +88,17 @@ DACs and SPI (`ADVANTECHDAC` / `NO_ADVDAQ`, `RASPIDAC` / `NO_SPI`):
 
 - Qt 5: `qmake-qt5 OpticsBenchUI.pro` then `make -j4`
 - Qt 6: `qmake6 OpticsBenchUI.pro` then `make -j4`
+
+Windows (Qt command prompt / developer shell):
+- MinGW kit:
+  - `qmake OpticsBenchUI.pro CONFIG+=release`
+  - `mingw32-make -j8`
+- MSVC kit:
+  - `qmake OpticsBenchUI.pro -spec win32-msvc CONFIG+=release`
+  - `nmake`
+- Deploy Qt runtime next to the executable:
+  - `windeployqt release\\OpticsBenchUI.exe`
+
+Notes:
+- Serial (`ACRSCom`) and Ethernet (`ACEthCom`) communication backends are implemented for both Linux and Windows.
+- Many hardware SDKs remain optional and are enabled/disabled depending on what is installed in your environment.
