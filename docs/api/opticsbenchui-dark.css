@@ -573,3 +573,37 @@ h2.groupheader {
   border-bottom: 1px solid #555 !important;
   background: transparent !important;
 }
+
+/* Remove extended hr shadow strips that appear as white bottom rectangles */
+hr,
+.contents hr {
+  box-shadow: none !important;
+  background: #555 !important;
+  border: 0 !important;
+  height: 1px !important;
+}
+
+/* Keep footer nav-path as a single dark row (no bright breadcrumb blocks) */
+#nav-path,
+#nav-path ul,
+#nav-path li,
+#nav-path li.navelem,
+#nav-path li.footer {
+  background: #2b2b2b !important;
+  background-image: none !important;
+}
+
+#nav-path li.navelem::before,
+#nav-path li.navelem::after,
+#nav-path li.footer::before,
+#nav-path li.footer::after {
+  content: none !important;
+  display: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+#nav-path ul {
+  border-top: 1px solid #555 !important;
+  border-bottom: 0 !important;
+}
