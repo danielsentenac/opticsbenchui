@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FILEPARSER_H
 #define FILEPARSER_H
 
-#include <unistd.h>
+#include "PosixCompat.h"
 
 #include <QDir>
 #include <QFile>

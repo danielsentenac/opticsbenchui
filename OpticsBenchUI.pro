@@ -113,10 +113,11 @@ DEFINES        +=      USBCAMERA
 # RASPI Dac support
 #DEFINES         +=     RASPIDAC
 
-QMAKE_CXXFLAGS += -g `pkg-config --cflags glib-2.0` -fPIC
+unix {
+  QMAKE_CXXFLAGS += -g `pkg-config --cflags glib-2.0` -fPIC
+  QMAKE_LFLAGS += -fPIC
+}
 #QMAKE_CXXFLAGS         +=      -g  -fPIC
-
-QMAKE_LFLAGS += -fPIC
 # External packages
 HDF5_LIB_PATH = /home/sentenac/miniforge3/lib
 COMEDI_LIB_PATH = /usr/local/lib
@@ -264,6 +265,7 @@ HEADERS += src/OpticsBenchUIMain.h \
   src/AnalysisWidget.h \
   src/AnalysisThread.h \
   src/Utils.h \
+  src/PosixCompat.h \
   src/QsLog.h \
   src/QsDebugOutput.h \
   src/QsLogDest.h \
@@ -389,6 +391,10 @@ INCLUDEPATH += \
   }
 }
 LIBS += \
+
+win32 {
+  LIBS += -lws2_32
+}
 
   contains(DEFINES, COMEDICOUNTER)|contains(DEFINES, COMEDIDAC) {
   !exists($$COMEDI_INC_PATH/src/comedi.h)|!exists($$COMEDI_LIB_PATH/libcomedi.so) {

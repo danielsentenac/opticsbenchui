@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef COMEDIDAC
 #include "ComediDac.h"
 #include "Utils.h"
-#include <unistd.h>
+#include "PosixCompat.h"
 
 ComediDac::ComediDac(QString appDirPath)
     : Comedi() {

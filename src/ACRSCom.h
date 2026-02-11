@@ -14,7 +14,16 @@
 #if !defined(_ACRSCOM_H)
 #define _ACRSCOM_H
 
+#include <cstring>
+
+#ifdef Q_OS_WIN
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <windows.h>
+#else
 #include <termios.h>
+#endif
 #include "ACCom.h"
 
 using namespace std;
@@ -30,16 +39,34 @@ public:
     ACCom (device, settings),
     _readDelay (DEFAULT_READ_DELAY)
   {
+    _ispeed = 0;
+    _flow[0] = '\0';
+#ifdef Q_OS_WIN
+    _hCom = INVALID_HANDLE_VALUE;
+#else
+    _hCom = -1;
+#endif
   }
   
   /** Constructor
    */
   ACRSCom (const ACRSCom & channel):
     ACCom (channel),
+#ifdef Q_OS_WIN
+    _hCom (channel._hCom),
+    _readDelay (channel._readDelay),
+    _ispeed (channel._ispeed)
+#else
     _hCom (channel._hCom),
     _commSetup (channel._commSetup),
-    _commOldSetup (channel._commOldSetup), _readDelay (channel._readDelay)
+    _commOldSetup (channel._commOldSetup),
+    _readDelay (channel._readDelay),
+    _ispeed (channel._ispeed)
+#endif
   {
+    _flow[0] = '\0';
+    strncpy(_flow, channel._flow, sizeof(_flow) - 1);
+    _flow[sizeof(_flow) - 1] = '\0';
   }
 
   /**
@@ -97,17 +124,23 @@ private:
   /**
      Internal file descriptor
   */
+#ifdef Q_OS_WIN
+  HANDLE _hCom;
+#else
   int _hCom;
+#endif
 
   /**
      current communication setup
   */
+#ifndef Q_OS_WIN
   struct termios _commSetup;
 
   /**
      former communication setup
   */
   struct termios _commOldSetup;
+#endif
 
   /** 
       The internal baud rate (can be set by the server configuration)

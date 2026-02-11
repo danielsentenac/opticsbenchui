@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AnalysisThread.h"
+#include "PosixCompat.h"
 #include <signal.h>
 #include <errno.h>
 

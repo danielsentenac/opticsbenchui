@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "AcquisitionThread.h"
 #include "Utils.h"
 
-#include <unistd.h>
+#include "PosixCompat.h"
 
 AcquisitionThread::AcquisitionThread(QObject* parent)
     : QThread(parent),

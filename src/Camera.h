@@ -36,6 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMutex>
 #include <QWaitCondition>
 #include <QTime>
+#include "PosixCompat.h"
 #include "QsLog.h"
 
 /// Pixel encoding types reported by camera backends.

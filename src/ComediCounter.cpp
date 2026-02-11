@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef COMEDICOUNTER
 #include "ComediCounter.h"
 #include "Utils.h"
-#include <unistd.h>
+#include "PosixCompat.h"
 ComediCounter::ComediCounter(QString appDirPath)
     : Comedi() {
   path = appDirPath;

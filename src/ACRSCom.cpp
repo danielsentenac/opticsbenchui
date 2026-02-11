@@ -9,13 +9,44 @@
 // D Sentenac 12/06/07 modify serial port settings
 
 #include <sstream>
+#include <cstring>
+#include <cstdio>
+#include <algorithm>
+#ifdef Q_OS_WIN
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <windows.h>
+#else
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <errno.h>
+#endif
 #include "ACRSCom.h"
+#include "PosixCompat.h"
 
+namespace {
+#ifdef Q_OS_WIN
+QString WindowsErrorString(DWORD error_code) {
+  LPSTR msg_buffer = nullptr;
+  const DWORD flags = FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                      FORMAT_MESSAGE_FROM_SYSTEM |
+                      FORMAT_MESSAGE_IGNORE_INSERTS;
+  const DWORD size = FormatMessageA(
+      flags, NULL, error_code, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+      reinterpret_cast<LPSTR>(&msg_buffer), 0, NULL);
+  QString message;
+  if (size && msg_buffer) {
+    message = QString::fromLocal8Bit(msg_buffer).trimmed();
+    LocalFree(msg_buffer);
+  } else {
+    message = QString("Error code %1").arg(static_cast<unsigned long>(error_code));
+  }
+  return message;
+}
+#endif
+}  // namespace
 
 const int ACRSCom::DEFAULT_READ_DELAY = 20;
 
@@ -30,8 +61,59 @@ int
 ACRSCom::Open ()
 {
   int status = -1;
+  _ispeed = 0;
+  _readDelay = DEFAULT_READ_DELAY;
+  std::memset(_flow, 0, sizeof(_flow));
+  const int parsed = sscanf(_settings.c_str(), "%d,%d,%31s",
+                            &_ispeed, &_readDelay, _flow);
+  if (parsed <= 0 || _ispeed <= 0) {
+    ReportError(QString("ACRSCom::Open> Invalid serial settings: %1")
+                .arg(QString(_settings.c_str())));
+    _state = CLOSED;
+    return status;
+  }
+  if (_readDelay <= 0) {
+    _readDelay = DEFAULT_READ_DELAY;
+  }
+  if (parsed < 3) {
+    std::strncpy(_flow, "NONE", sizeof(_flow) - 1);
+    _flow[sizeof(_flow) - 1] = '\0';
+  }
 
-  sscanf (_settings.c_str (), "%d,%d,%s", &_ispeed, &_readDelay,_flow);
+#ifdef Q_OS_WIN
+  QString serial_port = QString(_device.c_str()).trimmed();
+  if (serial_port.startsWith("COM", Qt::CaseInsensitive) &&
+      !serial_port.startsWith("\\\\.\\")) {
+    serial_port.prepend("\\\\.\\");
+  }
+  const QByteArray port_name = serial_port.toLocal8Bit();
+  _hCom = CreateFileA(port_name.constData(),
+                      GENERIC_READ | GENERIC_WRITE,
+                      0,
+                      NULL,
+                      OPEN_EXISTING,
+                      0,
+                      NULL);
+  if (_hCom == INVALID_HANDLE_VALUE)
+    {
+      ReportError(QString("ACRSCom::Open> Unable to open %1: %2")
+                  .arg(serial_port)
+                  .arg(WindowsErrorString(GetLastError())));
+      _state = CLOSED;
+    }
+  else
+    {
+      if (Setup () != -1)
+        {
+          status = 0;
+          _state = OPEN;
+        }
+      else
+        {
+          Close();
+        }
+    }
+#else
   _hCom = open (_device.c_str (), O_RDWR);
   if (_hCom == -1)
     {
@@ -48,6 +130,7 @@ ACRSCom::Open ()
 	  _state = OPEN;
 	}
     }
+#endif
   return status;
 }
 // ----------------------------------------------------------------------------
@@ -62,13 +145,27 @@ ACRSCom::WriteEcho (string message)
   int i = 0;
   char Reply[STRLENGTH];
   char inMessage[STRLENGTH];
-  strcpy(inMessage,message.c_str());
+  std::memset(Reply, 0, sizeof(Reply));
+  std::memset(inMessage, 0, sizeof(inMessage));
+  const size_t max_copy = std::min(message.size(), static_cast<size_t>(STRLENGTH - 1));
+  std::memcpy(inMessage, message.c_str(), max_copy);
   do 
     {
+#ifdef Q_OS_WIN
+      DWORD written = 0;
+      DWORD bytes_read = 0;
+      if (!WriteFile(_hCom, &inMessage[i], 1, &written, NULL) || written != 1) {
+        break;
+      }
+      if (!ReadFile(_hCom, &Reply[i], 1, &bytes_read, NULL) || bytes_read == 0) {
+        break;
+      }
+#else
       write(_hCom, &inMessage[i], 1);
       read(_hCom, &Reply[i], 1);
+#endif
     }
-  while(inMessage[i++] != '\r');
+  while(i < STRLENGTH - 1 && inMessage[i++] != '\r');
   return i;
 }
 // ----------------------------------------------------------------------------
@@ -91,7 +188,20 @@ ACRSCom::Write (string & message, ...)
     }
   }
   va_end(args);
+#ifdef Q_OS_WIN
+  DWORD bytes_written = 0;
+  if (!WriteFile(_hCom, message.c_str(),
+                 static_cast<DWORD>(message.length()),
+                 &bytes_written, NULL))
+    {
+      ReportWarning(QString("ACRSCom::Write> %1")
+                    .arg(WindowsErrorString(GetLastError())));
+      return -1;
+    }
+  return static_cast<int>(bytes_written);
+#else
   return (write (_hCom, message.c_str (), (message.length ())));
+#endif
 }
 
 // ----------------------------------------------------------------------------
@@ -108,6 +218,18 @@ ACRSCom::Read (string & message, ...)
   message.erase();
   do
     {
+#ifdef Q_OS_WIN
+      DWORD bytes_read = 0;
+      if (ReadFile(_hCom, &dataChar, 1, &bytes_read, NULL) && bytes_read > 0)
+        {
+          message += dataChar;
+          nbCharRead++;
+        }
+      else
+        {
+          break;
+        }
+#else
       if (read (_hCom, &dataChar, 1) > 0)
 	{
 	  message += dataChar;
@@ -117,6 +239,7 @@ ACRSCom::Read (string & message, ...)
 	{
 	  break;
 	}
+#endif
     }
   while ((dataChar != '\n'));
   return nbCharRead;
@@ -132,6 +255,22 @@ int
 ACRSCom::Close ()
 {
   int status = 0;
+#ifdef Q_OS_WIN
+  if (_hCom != INVALID_HANDLE_VALUE)
+    {
+      if (!CloseHandle(_hCom))
+        {
+          if (_state == OPEN) {
+            ReportWarning(QString("ACRSCom::Close> Unable to close device: %1")
+                          .arg(WindowsErrorString(GetLastError())));
+            status = -1;
+          }
+        }
+      _hCom = INVALID_HANDLE_VALUE;
+    }
+  _state = CLOSED;
+  return status;
+#else
   if (_state == OPEN)
     {
       tcsetattr (_hCom, TCSANOW, &_commOldSetup);
@@ -148,6 +287,7 @@ ACRSCom::Close ()
       _state = CLOSED;
     }
   return status;
+#endif
 }
 
 // ----------------------------------------------------------------------------
@@ -157,6 +297,67 @@ ACRSCom::Close ()
 int
 ACRSCom::Setup ()
 {
+#ifdef Q_OS_WIN
+  if (_hCom == INVALID_HANDLE_VALUE) {
+    ReportError("ACRSCom::Setup> Invalid serial handle");
+    return -1;
+  }
+  DCB dcb;
+  std::memset(&dcb, 0, sizeof(dcb));
+  dcb.DCBlength = sizeof(dcb);
+  if (!GetCommState(_hCom, &dcb))
+    {
+      ReportError(QString("ACRSCom::Setup> Unable to read current serial settings: %1")
+                  .arg(WindowsErrorString(GetLastError())));
+      return -1;
+    }
+
+  dcb.BaudRate = static_cast<DWORD>(_ispeed);
+  dcb.ByteSize = 8;
+  dcb.Parity = NOPARITY;
+  dcb.StopBits = ONESTOPBIT;
+  dcb.fBinary = TRUE;
+  dcb.fParity = FALSE;
+  dcb.fOutxCtsFlow = FALSE;
+  dcb.fOutxDsrFlow = FALSE;
+  dcb.fDtrControl = DTR_CONTROL_ENABLE;
+  dcb.fDsrSensitivity = FALSE;
+  dcb.fTXContinueOnXoff = TRUE;
+  dcb.fOutX = FALSE;
+  dcb.fInX = FALSE;
+  dcb.fRtsControl = RTS_CONTROL_ENABLE;
+  if (!strcmp(_flow, "XONXOFF")) {
+    QLOG_INFO() << "RS232 uses XONXOFF flow control";
+    dcb.fOutX = TRUE;
+    dcb.fInX = TRUE;
+  } else {
+    QLOG_INFO() << "RS232 uses default (NONE) flow control";
+  }
+
+  if (!SetCommState(_hCom, &dcb))
+    {
+      ReportError(QString("ACRSCom::Setup> Unable to apply serial settings: %1")
+                  .arg(WindowsErrorString(GetLastError())));
+      return -1;
+    }
+
+  COMMTIMEOUTS timeouts;
+  std::memset(&timeouts, 0, sizeof(timeouts));
+  timeouts.ReadIntervalTimeout = MAXDWORD;
+  timeouts.ReadTotalTimeoutMultiplier = 0;
+  timeouts.ReadTotalTimeoutConstant =
+      static_cast<DWORD>(std::max(1, _readDelay) * 100);
+  timeouts.WriteTotalTimeoutMultiplier = 0;
+  timeouts.WriteTotalTimeoutConstant = 500;
+  if (!SetCommTimeouts(_hCom, &timeouts))
+    {
+      ReportError(QString("ACRSCom::Setup> Unable to set serial timeouts: %1")
+                  .arg(WindowsErrorString(GetLastError())));
+      return -1;
+    }
+  PurgeComm(_hCom, PURGE_RXCLEAR | PURGE_TXCLEAR);
+  return 0;
+#else
   int status = 0;
   speed_t speed;
 
@@ -269,4 +470,5 @@ ACRSCom::Setup ()
 	}
     }
   return status;
+#endif
 }

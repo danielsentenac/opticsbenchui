@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Utils.h"
 
-#include <sys/time.h>
+#include <chrono>
 
 #include <QAbstractItemModel>
 #include <QFontMetrics>
@@ -30,9 +30,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Utils {
 double GetTimeMicroseconds() {
-  struct timeval tp;
-  gettimeofday(&tp, nullptr);
-  return tp.tv_sec * 1e6 + tp.tv_usec;
+  const auto now = std::chrono::system_clock::now().time_since_epoch();
+  return static_cast<double>(
+      std::chrono::duration_cast<std::chrono::microseconds>(now).count());
 }
 
 QString BuildDbPath(const QString& baseDir, const QString& filename) {

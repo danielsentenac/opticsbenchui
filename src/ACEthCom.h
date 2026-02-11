@@ -24,7 +24,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #if !defined(_ACETHCOM_H_)
 #define _ACETHCOM_H_
 
+#ifdef Q_OS_WIN
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#else
 #include <sys/select.h>
+#endif
 #include "ACCom.h"
 
 using namespace std;
@@ -40,6 +48,12 @@ public:
     ACCom (device, settings),
     _readDelay (DEFAULT_READ_DELAY), _writeDelay (DEFAULT_WRITE_DELAY)
   {
+#ifdef Q_OS_WIN
+    _sock = INVALID_SOCKET;
+    _wsaInitialized = false;
+#else
+    _sock = -1;
+#endif
     FD_ZERO (&_master);
   }
 
@@ -51,6 +65,9 @@ public:
     _master (channel._master),
     _readDelay (channel._readDelay), _writeDelay (channel._writeDelay)
   {
+#ifdef Q_OS_WIN
+    _wsaInitialized = channel._wsaInitialized;
+#endif
   }
 
   /**
@@ -124,7 +141,11 @@ private:
   /**
      The initial socket file descriptor
   */
+#ifdef Q_OS_WIN
+  SOCKET _sock;
+#else
   int _sock;
+#endif
   
   /**
      The internal file descriptor set
@@ -138,6 +159,9 @@ private:
      The internal write delay
   */
   float _writeDelay;
+#ifdef Q_OS_WIN
+  bool _wsaInitialized;
+#endif
     
 };
 

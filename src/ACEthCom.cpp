@@ -23,22 +23,107 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <stdio.h>
 #include <string.h>
+#include <cstring>
 #include <ctype.h>
-#include <signal.h>
 #include <stdlib.h>
-#include <string.h>
 #include <errno.h>
 #include <limits.h>
+#include <algorithm>
+#ifdef Q_OS_WIN
+#include <ws2tcpip.h>
+#else
+#include <signal.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include <unistd.h>
 #include <fcntl.h>
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <unistd.h>
+#endif
+#include "PosixCompat.h"
 
 #include "ACEthCom.h"
+
+namespace {
+QString SocketErrorString() {
+#ifdef Q_OS_WIN
+  const int error_code = WSAGetLastError();
+  LPSTR msg_buffer = nullptr;
+  const DWORD flags = FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                      FORMAT_MESSAGE_FROM_SYSTEM |
+                      FORMAT_MESSAGE_IGNORE_INSERTS;
+  const DWORD size = FormatMessageA(
+      flags, NULL, static_cast<DWORD>(error_code),
+      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+      reinterpret_cast<LPSTR>(&msg_buffer), 0, NULL);
+  QString message;
+  if (size && msg_buffer) {
+    message = QString::fromLocal8Bit(msg_buffer).trimmed();
+    LocalFree(msg_buffer);
+  } else {
+    message = QString("WSA error %1").arg(error_code);
+  }
+  return message;
+#else
+  return QString(strerror(errno));
+#endif
+}
+
+int SocketWriteAll(
+#ifdef Q_OS_WIN
+    SOCKET sock,
+#else
+    int sock,
+#endif
+    const char* buffer,
+    int length) {
+  int total_written = 0;
+  while (total_written < length) {
+#ifdef Q_OS_WIN
+    const int written = send(sock, buffer + total_written,
+                             length - total_written, 0);
+#else
+    const int written = write(sock, buffer + total_written,
+                              length - total_written);
+#endif
+    if (written <= 0) {
+      return -1;
+    }
+    total_written += written;
+  }
+  return total_written;
+}
+
+int SocketReadOnce(
+#ifdef Q_OS_WIN
+    SOCKET sock,
+#else
+    int sock,
+#endif
+    char* buffer,
+    int length) {
+#ifdef Q_OS_WIN
+  return recv(sock, buffer, length, 0);
+#else
+  return read(sock, buffer, length);
+#endif
+}
+
+bool SocketIsValid(
+#ifdef Q_OS_WIN
+    SOCKET sock
+#else
+    int sock
+#endif
+) {
+#ifdef Q_OS_WIN
+  return sock != INVALID_SOCKET;
+#else
+  return sock >= 0;
+#endif
+}
+}  // namespace
 
 const float
 ACEthCom::DEFAULT_READ_DELAY = 1;
@@ -53,60 +138,101 @@ ACEthCom::DEFAULT_WRITE_DELAY = 1;
 int
 ACEthCom::Open ()
 {
-
   int status = -1;
-  int port;
-  struct in_addr *addr = NULL;
-  struct hostent *host;
-  struct in_addr saddr;
-  struct sockaddr_in address;
-  string connectionAnswer;
-  size_t pos;
-  string ip_address;
-  int on = 1;
-  int error;
-  sscanf (_settings.c_str (), "%d,%f,%f", &port, &_readDelay, &_writeDelay);
+  int port = 0;
+  if (sscanf(_settings.c_str(), "%d,%f,%f", &port, &_readDelay, &_writeDelay) < 1 ||
+      port <= 0) {
+    ReportError(QString("ACEthCom::Open> Invalid ethernet settings: %1")
+                .arg(QString(_settings.c_str())));
+    return status;
+  }
 
   if (_state == CLOSED)
     {
+#ifdef Q_OS_WIN
+      if (!_wsaInitialized) {
+        WSADATA wsa_data;
+        const int wsa_status = WSAStartup(MAKEWORD(2, 2), &wsa_data);
+        if (wsa_status != 0) {
+          ReportError(QString("ACEthCom::Open> WSAStartup failed with code %1")
+                      .arg(wsa_status));
+          return status;
+        }
+        _wsaInitialized = true;
+      }
+      _sock = INVALID_SOCKET;
+#else
       _sock = -1;
-      pos = _device.find(":");
-      ip_address = _device.substr (0,pos); 
-      QLOG_DEBUG ( ) << "IP Address found : " << QString(ip_address.c_str());
-      saddr.s_addr = inet_addr (ip_address.c_str ());
-      if (saddr.s_addr > 0) {
-	addr = &saddr;
+#endif
+
+      size_t pos = _device.find(":");
+      const string ip_address = _device.substr(0, pos);
+      QLOG_DEBUG() << "IP Address found : " << QString(ip_address.c_str());
+
+      struct addrinfo hints;
+      std::memset(&hints, 0, sizeof(hints));
+      hints.ai_family = AF_INET;
+      hints.ai_socktype = SOCK_STREAM;
+      hints.ai_protocol = IPPROTO_TCP;
+
+      struct addrinfo* result = NULL;
+      const string port_string = std::to_string(port);
+      const int gai_status = getaddrinfo(ip_address.c_str(), port_string.c_str(),
+                                         &hints, &result);
+      if (gai_status != 0 || !result) {
+#ifdef Q_OS_WIN
+        ReportError(QString("ACEthCom::Open> getaddrinfo failed: %1")
+                    .arg(gai_status));
+#else
+        ReportError(QString("ACEthCom::Open> %1").arg(QString(gai_strerror(gai_status))));
+#endif
+        return status;
       }
-      if ( ( host = gethostbyname (ip_address.c_str ()) ) ) {
-	addr = (struct in_addr *) *host->h_addr_list;
+
+      bool connected = false;
+      for (struct addrinfo* rp = result; rp != NULL && !connected; rp = rp->ai_next) {
+        _sock = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
+        if (!SocketIsValid(_sock)) {
+          continue;
+        }
+        int on = 1;
+#ifdef Q_OS_WIN
+        if (setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR,
+                       reinterpret_cast<const char*>(&on),
+                       static_cast<int>(sizeof(on))) == SOCKET_ERROR) {
+          ReportWarning(QString("ACEthCom::Open> %1").arg(SocketErrorString()));
+        }
+#else
+        if (setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, &on,
+                       static_cast<socklen_t>(sizeof(on))) == -1) {
+          ReportWarning(QString("ACEthCom::Open> %1").arg(SocketErrorString()));
+        }
+#endif
+#ifdef Q_OS_WIN
+        if (connect(_sock, rp->ai_addr, static_cast<int>(rp->ai_addrlen)) == 0) {
+#else
+        if (connect(_sock, rp->ai_addr, static_cast<socklen_t>(rp->ai_addrlen)) == 0) {
+#endif
+          connected = true;
+          break;
+        }
+#ifdef Q_OS_WIN
+        closesocket(_sock);
+        _sock = INVALID_SOCKET;
+#else
+        close(_sock);
+        _sock = -1;
+#endif
       }
-      if (addr) {
-	memset ((char *) &address, 0, sizeof (address));
-	address.sin_family = AF_INET;
-	address.sin_port = htons (port);
-	address.sin_addr.s_addr = addr->s_addr;
-	_sock = socket (AF_INET, SOCK_STREAM, 0);
-	if (_sock > 0) {
-	  /* Setup the socket option to reuse */
-	  error = setsockopt( _sock, SOL_SOCKET, SO_REUSEADDR, &on,sizeof(on));
-	  if ( error == -1 ) {
-           ReportWarning(QString("ACEthCom::Open> %1").arg(QString(strerror(errno))));
-          }
-          QLOG_DEBUG ( ) << "Connecting to " << QString(inet_ntoa (*addr)) << " on port "
-			 <<  port;
-	  error = connect (_sock, (struct sockaddr *) &address, sizeof (address));
-	  if ( error ) {
-	    ReportError(QString("ACEthCom::Open> %1").arg(QString(strerror(errno))));
-	    ReportError("ACEthCom::Open> Connect failed");
-	    close (_sock);
-	  }
-	  else {
-	    // add the socket to the descriptor set
-	    FD_SET (_sock, &_master);
-	    _state = OPEN;
-	  }
-	}
-	else  ReportWarning(QString("ACEthCom::Open> %1").arg(QString(strerror(errno))));
+
+      freeaddrinfo(result);
+
+      if (!connected) {
+        ReportError(QString("ACEthCom::Open> %1").arg(SocketErrorString()));
+        ReportError("ACEthCom::Open> Connect failed");
+      } else {
+        FD_SET(_sock, &_master);
+        _state = OPEN;
       }
     }
   if (_state == OPEN) {
@@ -126,14 +252,23 @@ ACEthCom::WriteEcho (string message)
   int i = 0;
   char Reply[STRLENGTH];
   char inMessage[STRLENGTH];
-  strcpy(inMessage,message.c_str());
+  std::memset(Reply, 0, sizeof(Reply));
+  std::memset(inMessage, 0, sizeof(inMessage));
+  const size_t max_copy = std::min(message.size(), static_cast<size_t>(STRLENGTH - 1));
+  std::memcpy(inMessage, message.c_str(), max_copy);
   do 
     {
-      write(_sock, &inMessage[i], 1);
+      const int written = SocketWriteAll(_sock, &inMessage[i], 1);
+      if (written != 1) {
+        break;
+      }
       usleep((int)(_writeDelay * 1000000));
-      read(_sock, &Reply[i], 1);
+      const int bytes_read = SocketReadOnce(_sock, &Reply[i], 1);
+      if (bytes_read <= 0) {
+        break;
+      }
     }
-  while(inMessage[i++] != '\r');
+  while(i < STRLENGTH - 1 && inMessage[i++] != '\r');
   
   return i;
 }
@@ -147,7 +282,6 @@ int
 ACEthCom::Write (string & message, ...)
 {
   int bytes_sent = 0;
-  int nwritten;
   const char *buf;
   struct timeval timeDelay;
   fd_set writeFds;		// temp file descriptor list for select()
@@ -174,7 +308,7 @@ ACEthCom::Write (string & message, ...)
   timeDelay.tv_sec = 0;
   timeDelay.tv_usec = (int) (_writeDelay * 1000000);
   
-  if (select (_sock + 1, NULL, &writeFds, NULL, &timeDelay) > 0)
+  if (select (static_cast<int>(_sock) + 1, NULL, &writeFds, NULL, &timeDelay) > 0)
     {
       if (FD_ISSET (_sock, &writeFds))
 	{
@@ -182,15 +316,15 @@ ACEthCom::Write (string & message, ...)
 	  int messageLength = (message.length () + 1);	// Null character included
 	  while (bytes_sent < messageLength)
 	    {
-	      nwritten = write (_sock, buf, messageLength - bytes_sent);
-	      if (nwritten < 0)
-		{
-		  ReportWarning(QString("ACEthCom::Write> %1").arg(QString(strerror(errno))));
-		  bytes_sent = 0;
-		  break;
-		}
-	      bytes_sent += nwritten;
-	      buf += nwritten;
+              const int written = SocketWriteAll(_sock, buf, messageLength - bytes_sent);
+              if (written < 0)
+                {
+                  ReportWarning(QString("ACEthCom::Write> %1").arg(SocketErrorString()));
+                  bytes_sent = 0;
+                  break;
+                }
+              bytes_sent += written;
+              buf += written;
 	    }
 	}
     }
@@ -205,7 +339,6 @@ int
 ACEthCom::WriteRaw (string message)
 {
   int bytes_sent = 0;
-  int nwritten;
   const char *buf;
   struct timeval timeDelay;
 
@@ -215,7 +348,7 @@ ACEthCom::WriteRaw (string message)
   timeDelay.tv_sec = 0;
   timeDelay.tv_usec = (int) (_writeDelay * 1000000);
 
-  if (select (_sock + 1, NULL, &writeFds, NULL, &timeDelay) > 0)
+  if (select (static_cast<int>(_sock) + 1, NULL, &writeFds, NULL, &timeDelay) > 0)
     {
       if (FD_ISSET (_sock, &writeFds))
 	{
@@ -223,15 +356,15 @@ ACEthCom::WriteRaw (string message)
 	  int messageLength = (message.length ()) * sizeof (char);	// Null character NOT included !!
 	  while (bytes_sent < messageLength)
 	    {
-	      nwritten = write (_sock, buf, messageLength - bytes_sent);
-	      if (nwritten < 0)
-		{
-		  ReportWarning(QString("ACEthCom::WriteRaw> %1").arg(QString(strerror(errno))));
-		  bytes_sent = 0;
-		  break;
-		}
-	      bytes_sent += nwritten;
-	      buf += nwritten;
+              const int written = SocketWriteAll(_sock, buf, messageLength - bytes_sent);
+              if (written < 0)
+                {
+                  ReportWarning(QString("ACEthCom::WriteRaw> %1").arg(SocketErrorString()));
+                  bytes_sent = 0;
+                  break;
+                }
+              bytes_sent += written;
+              buf += written;
 	    }
 	}
     }
@@ -273,18 +406,19 @@ ACEthCom::Read (string & message, ...)
 
   // timeout longer on the first loop
   while (bytesRead &&
-	 select (_sock + 1, &readFds, NULL, NULL, &timeDelay) > 0)
+	 select (static_cast<int>(_sock) + 1, &readFds, NULL, NULL, &timeDelay) > 0)
     {
       if (FD_ISSET (_sock, &readFds))
 	{
 	  memset (readBuffer, 0, sizeof (readBuffer));
-	  bytesRead = read (_sock, readBuffer, STRLENGTH);
-          QLOG_DEBUG() << " readBuffer = " << readBuffer
+	  bytesRead = SocketReadOnce(_sock, readBuffer, STRLENGTH);
+          QLOG_DEBUG() << " readBuffer = "
+                       << QString::fromLatin1(readBuffer, bytesRead > 0 ? bytesRead : 0)
                        << " bytesRead = " << bytesRead;
 	  if (bytesRead > 0)
 	    {
 	      totalBytesRead += bytesRead;
-	      message += readBuffer;
+	      message.append(readBuffer, bytesRead);
 	    }
        }
       readFds = _master;
@@ -309,10 +443,14 @@ ACEthCom::ReadDelay (string & message, int usec)
   memset (readBuffer, 0, sizeof (readBuffer)); 
   message.erase ();
   usleep(usec);
-  bytesRead = read(_sock, readBuffer, STRLENGTH);
-  readBuffer[bytesRead] = '\0';
-  message = readBuffer;
-  QLOG_DEBUG ( ) << "ReadDelay> " << QString(readBuffer);
+  bytesRead = SocketReadOnce(_sock, readBuffer, STRLENGTH - 1);
+  if (bytesRead > 0) {
+    readBuffer[bytesRead] = '\0';
+    message = readBuffer;
+    QLOG_DEBUG ( ) << "ReadDelay> " << QString(readBuffer);
+  } else {
+    message.clear();
+  }
   return bytesRead;
 }
 
@@ -325,5 +463,21 @@ ACEthCom::Close ()
 {
   _state = CLOSED;
   FD_ZERO (&_master);
-  return close (_sock);
+  int status = 0;
+  if (SocketIsValid(_sock)) {
+#ifdef Q_OS_WIN
+    status = closesocket(_sock);
+    _sock = INVALID_SOCKET;
+#else
+    status = close(_sock);
+    _sock = -1;
+#endif
+  }
+#ifdef Q_OS_WIN
+  if (_wsaInitialized) {
+    WSACleanup();
+    _wsaInitialized = false;
+  }
+#endif
+  return status;
 }

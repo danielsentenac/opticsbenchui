@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef OPTICSBENCHUIMAIN_H
 #define OPTICSBENCHUIMAIN_H
 
-#include <unistd.h>
+#include "PosixCompat.h"
 
 
 #include <QApplication>

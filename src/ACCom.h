@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <fstream>
 #include <vector>
 #include <stdarg.h>
-#include <unistd.h>
+#include "PosixCompat.h"
 #include "QsLog.h"
 #include <QString>
 #include <QStringList>

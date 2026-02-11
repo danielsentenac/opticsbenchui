@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef RASPIDAC
 #include "RaspiDac.h"
 #include "Utils.h"
-#include <unistd.h>
+#include "PosixCompat.h"
 
 #define LSB(a)    *((unsigned char *)&a)
 #define MSB(a)    *(((unsigned char *)&a) + 1)
