@@ -176,7 +176,7 @@ void MotorWindow::setDbPath(QString _path) {
   actuatortable->setHeaderData(2, Qt::Horizontal, tr("description"));
   actuatortable->setHeaderData(3, Qt::Horizontal, tr("settings"));
   actuatortable->setHeaderData(4, Qt::Horizontal, tr("position"));
-  actuatorview->setColumnHidden (4, true);
+  actuatorview->setColumnHidden (4, false);
   InitConfig();
 }
 void MotorWindow::closeEvent(QCloseEvent* event)
