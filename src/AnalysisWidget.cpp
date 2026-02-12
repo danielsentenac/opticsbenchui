@@ -104,6 +104,7 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
   analysisview->setStyleSheet(kSelectionStylesheet);
   analysisview->setModel(analysistable);
   analysisview->verticalHeader()->hide();
+  analysisview->setProperty("maxAutoColumnWidth", 640);
   analysisview->setItemDelegateForColumn(
       kRecordColumn, new RecordHighlightDelegate(this, analysisview));
   Utils::ConfigureSqlTableView(analysisview);
@@ -202,16 +203,11 @@ void AnalysisWidget::InitConfig() {
   if (QHeaderView* header = analysisview->horizontalHeader()) {
     const int recordWidth = qMax(
         70, QFontMetrics(header->font()).horizontalAdvance(tr("record")) + 24);
-    header->setSectionResizeMode(0, QHeaderView::Fixed);
+    header->setSectionResizeMode(QHeaderView::Interactive);
     analysisview->setColumnWidth(0, recordWidth);
-    if (analysistable->columnCount() > 1) {
-      header->setSectionResizeMode(1, QHeaderView::Stretch);
-    }
-    if (analysistable->columnCount() > 2) {
-      header->setSectionResizeMode(2, QHeaderView::Stretch);
-    }
   }
-  analysisview->resizeRowsToContents();
+  Utils::UpdateSqlTableViewColumnSizing(analysisview);
+  Utils::UpdateSqlTableViewRowSizing(analysisview);
 }
 
 void AnalysisWidget::setupAnalysisTable() {

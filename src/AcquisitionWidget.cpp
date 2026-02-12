@@ -328,8 +328,8 @@ void AcquisitionWidget::InitConfig(bool resizeView) {
   acquisitionrow = acquisitiontable->rowCount();
   acquisitiontable->insertRow(acquisitionrow);
   if (resizeView) {
-    acquisitionview->resizeColumnsToContents();
-    acquisitionview->resizeRowsToContents();
+    Utils::UpdateSqlTableViewColumnSizing(acquisitionview);
+    Utils::UpdateSqlTableViewRowSizing(acquisitionview);
   }
 }
 
@@ -576,25 +576,61 @@ void AcquisitionWidget::getAcquiring(int record) {
     }
   }
   query.exec("update acquisition_sequence set acquiring = ''");
-  query.exec("select record from acquisition_sequence order by record");
-  QLOG_DEBUG() << query.lastError().text();
-  int seq_record = 0;
-  int count = 0;
-  while (query.next()) {
-    seq_record = query.value(0).toInt();
-    if (seq_record < 0) {
-      continue;
+
+  int seq_record = -1;
+  if (record >= 0 && record < sequenceList.size()) {
+    const AcquisitionSequence* sequence = sequenceList.at(record);
+    if (sequence) {
+      seq_record = sequence->seq_record;
     }
-    if (count == record) {
-      break;
-    }
-    count++;
   }
-  QLOG_DEBUG() << seq_record;
-  currentAcquiringRecordValue = seq_record;
+  if (seq_record >= 0) {
+    const int loopIteration = currentLoopIterationForRecord(record);
+    const QString acquiringText =
+        (loopIteration > 0)
+            ? QString("RUNNING LOOP:%1").arg(loopIteration)
+            : QString("RUNNING");
+    query.prepare("update acquisition_sequence set acquiring = ? where record = ?");
+    query.addBindValue(acquiringText);
+    query.addBindValue(seq_record);
+    query.exec();
+    currentAcquiringRecordValue = seq_record;
+    cur_record = seq_record;
+  } else {
+    currentAcquiringRecordValue = -1;
+  }
+
   InitConfig(false);
   acquisitionview->viewport()->update();
-  cur_record = seq_record;
+}
+
+int AcquisitionWidget::currentLoopIterationForRecord(int recordIndex) const {
+  if (recordIndex < 0 || recordIndex >= sequenceList.size()) {
+    return -1;
+  }
+  int loopDepth = 0;
+  for (int i = recordIndex; i >= 0; --i) {
+    const AcquisitionSequence* sequence = sequenceList.at(i);
+    if (!sequence || sequence->loop != AcquisitionSequence::IS_LOOP) {
+      continue;
+    }
+    if (sequence->loopends == AcquisitionSequence::LOOP_END) {
+      loopDepth++;
+      continue;
+    }
+    if (sequence->loopends == AcquisitionSequence::LOOP_START) {
+      if (loopDepth > 0) {
+        loopDepth--;
+        continue;
+      }
+      if (sequence->loopNumber > 0) {
+        const int rawIteration =
+            sequence->loopNumber - sequence->remainingLoops + 1;
+        return qBound(1, rawIteration, sequence->loopNumber);
+      }
+    }
+  }
+  return -1;
 }
 
 void AcquisitionWidget::setAcquiringToLastRecord() {

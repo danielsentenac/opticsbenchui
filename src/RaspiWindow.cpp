@@ -125,8 +125,8 @@ void RaspiWindow::InitConfig() {
   raspitable->select();
   raspirow = raspitable->rowCount();
   raspitable->insertRow(raspirow);
-  raspiview->resizeColumnsToContents();
-  raspiview->resizeRowsToContents();
+  Utils::UpdateSqlTableViewColumnSizing(raspiview);
+  Utils::UpdateSqlTableViewRowSizing(raspiview);
 
 }
 

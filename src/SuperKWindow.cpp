@@ -129,8 +129,8 @@ void SuperKWindow::InitConfig() {
   drivertable->select();
   driverrow = drivertable->rowCount();
   drivertable->insertRow(driverrow);
-  driverview->resizeColumnsToContents();
-  driverview->resizeRowsToContents();
+  Utils::UpdateSqlTableViewColumnSizing(driverview);
+  Utils::UpdateSqlTableViewRowSizing(driverview);
 
 }
 

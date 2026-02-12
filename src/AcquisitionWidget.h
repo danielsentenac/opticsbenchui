@@ -151,6 +151,7 @@ private:
   void updateStatusForRecord(const QString& status, int record);
   void setAcquiringToLastRecord();
   void clearAcquiringHighlight();
+  int currentLoopIterationForRecord(int recordIndex) const;
   QString statusFromSuccess(bool success) const;
   QString formatElapsed(qint64 elapsedMs) const;
 

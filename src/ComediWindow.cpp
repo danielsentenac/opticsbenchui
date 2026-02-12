@@ -122,8 +122,8 @@ void ComediWindow::InitConfig() {
   comeditable->select();
   comedirow = comeditable->rowCount();
   comeditable->insertRow(comedirow);
-  comediview->resizeColumnsToContents();
-  comediview->resizeRowsToContents();
+  Utils::UpdateSqlTableViewColumnSizing(comediview);
+  Utils::UpdateSqlTableViewRowSizing(comediview);
 
 }
 

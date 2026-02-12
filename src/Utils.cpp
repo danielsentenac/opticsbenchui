@@ -104,6 +104,20 @@ void ReportWarning(const char* logContext, const QString& message) {
 }
 
 namespace {
+QVector<int> VisibleColumnIndices(QTableView* view, int columns) {
+  QVector<int> visible;
+  if (!view || columns <= 0) {
+    return visible;
+  }
+  visible.reserve(columns);
+  for (int c = 0; c < columns; ++c) {
+    if (!view->isColumnHidden(c)) {
+      visible.push_back(c);
+    }
+  }
+  return visible;
+}
+
 bool ModelHasLongText(QAbstractItemModel* model, int threshold) {
   if (!model) {
     return false;
@@ -221,16 +235,20 @@ class SqlTableViewResizer : public QObject {
     if (columns <= 0) {
       return;
     }
+    const QVector<int> visible = VisibleColumnIndices(view, columns);
+    if (visible.isEmpty()) {
+      return;
+    }
     int total = 0;
-    for (int c = 0; c < columns; ++c) {
+    for (int c : visible) {
       total += header->sectionSize(c);
     }
     const int viewportWidth = view->viewport()->width();
     if (viewportWidth > total) {
       const int extra = viewportWidth - total;
       QVector<int> indices;
-      indices.reserve(columns);
-      for (int c = 0; c < columns; ++c) {
+      indices.reserve(visible.size());
+      for (int c : visible) {
         if (c != resizedColumn) {
           indices.push_back(c);
         }
@@ -260,8 +278,8 @@ class SqlTableViewResizer : public QObject {
     if (viewportWidth < total) {
       const int deficit = total - viewportWidth;
       QVector<int> indices;
-      indices.reserve(columns);
-      for (int c = 0; c < columns; ++c) {
+      indices.reserve(visible.size());
+      for (int c : visible) {
         if (c != resizedColumn) {
           indices.push_back(c);
         }
@@ -367,18 +385,30 @@ void UpdateSqlTableViewColumnSizing(QTableView* view) {
   if (!header) {
     return;
   }
+  const QVector<int> visible = VisibleColumnIndices(view, columns);
+  if (visible.isEmpty()) {
+    return;
+  }
+
   const bool stretchLast = view->property("stretchLastColumn").toBool();
   const int fixedLastWidth = view->property("fixedLastColumnWidth").toInt();
   const bool hasFixedLast = fixedLastWidth > 0;
   const bool disableLastExpand =
       view->property("disableLastColumnExpand").toBool();
+  const int configuredMaxWidth = view->property("maxAutoColumnWidth").toInt();
+  const int viewportWidth = qMax(view->viewport()->width(), 0);
+  const int adaptiveMaxWidth =
+      viewportWidth > 0 ? qMax(220, viewportWidth * 45 / 100) : 520;
+  const int maxAutoColumnWidth =
+      configuredMaxWidth > 0 ? configuredMaxWidth : adaptiveMaxWidth;
   header->setStretchLastSection(stretchLast);
+  const int lastVisibleColumn = visible.last();
   if (hasFixedLast) {
-    header->setSectionResizeMode(columns - 1, QHeaderView::Fixed);
+    header->setSectionResizeMode(lastVisibleColumn, QHeaderView::Fixed);
   }
   view->resizeColumnsToContents();
   if (hasFixedLast) {
-    view->setColumnWidth(columns - 1, fixedLastWidth);
+    view->setColumnWidth(lastVisibleColumn, fixedLastWidth);
   }
   // Ensure headers remain readable.
   QVector<int> headerMinWidths;
@@ -391,30 +421,84 @@ void UpdateSqlTableViewColumnSizing(QTableView* view) {
     headerMinWidths.push_back(minWidth);
     header->resizeSection(c, qMax(header->sectionSize(c), minWidth));
   }
-  QVector<int> widths;
-  widths.reserve(columns);
+  QVector<int> widths(columns, 0);
   int total = 0;
-  const int lastColumn = columns - 1;
-  const int lastLimit = stretchLast ? lastColumn : columns;
-  for (int c = 0; c < lastLimit; ++c) {
-    const int width = qMax(header->sectionSize(c), headerMinWidths[c]);
-    widths.push_back(width);
+  for (int c : visible) {
+    int width = qMax(header->sectionSize(c), headerMinWidths[c]);
+    if (!(hasFixedLast && c == lastVisibleColumn)) {
+      width = qMin(width, maxAutoColumnWidth);
+    }
+    widths[c] = width;
     total += width;
   }
-  const int viewportWidth = view->viewport()->width();
   if (stretchLast) {
-    for (int c = 0; c < lastLimit; ++c) {
+    int used = 0;
+    for (int c : visible) {
+      if (c == lastVisibleColumn) {
+        continue;
+      }
+      used += widths[c];
       view->setColumnWidth(c, widths[c]);
     }
+    const int lastWidth =
+        hasFixedLast
+            ? qMax(fixedLastWidth, headerMinWidths[lastVisibleColumn])
+            : qMax(headerMinWidths[lastVisibleColumn], viewportWidth - used);
+    view->setColumnWidth(lastVisibleColumn, lastWidth);
     return;
   }
-  if (!disableLastExpand && !hasFixedLast && viewportWidth > total) {
-    const int extra = viewportWidth - total;
-    widths[lastColumn] += extra;
+
+  if (viewportWidth > 0 && total > viewportWidth) {
+    int shrinkable = 0;
+    for (int c : visible) {
+      if (hasFixedLast && c == lastVisibleColumn) {
+        continue;
+      }
+      shrinkable += qMax(0, widths[c] - headerMinWidths[c]);
+    }
+    int deficit = total - viewportWidth;
+    if (shrinkable > 0) {
+      int distributed = 0;
+      for (int c : visible) {
+        if (hasFixedLast && c == lastVisibleColumn) {
+          continue;
+        }
+        const int capacity = qMax(0, widths[c] - headerMinWidths[c]);
+        if (capacity <= 0) {
+          continue;
+        }
+        const int delta = qMin(capacity, (deficit * capacity) / shrinkable);
+        widths[c] -= delta;
+        distributed += delta;
+      }
+      int remainder = deficit - distributed;
+      while (remainder > 0) {
+        bool changed = false;
+        for (int c : visible) {
+          if (hasFixedLast && c == lastVisibleColumn) {
+            continue;
+          }
+          if (widths[c] > headerMinWidths[c]) {
+            widths[c]--;
+            remainder--;
+            changed = true;
+            if (remainder == 0) {
+              break;
+            }
+          }
+        }
+        if (!changed) {
+          break;
+        }
+      }
+    }
+  } else if (!disableLastExpand && !hasFixedLast && viewportWidth > total) {
+    widths[lastVisibleColumn] += (viewportWidth - total);
   }
-  for (int c = 0; c < columns; ++c) {
+
+  for (int c : visible) {
     const int width =
-        (hasFixedLast && c == lastColumn)
+        (hasFixedLast && c == lastVisibleColumn)
             ? qMax(fixedLastWidth, headerMinWidths[c])
             : qMax(widths[c], headerMinWidths[c]);
     view->setColumnWidth(c, width);

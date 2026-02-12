@@ -809,9 +809,6 @@ void AcquisitionThread::nextRecord(AcquisitionSequence *sequence, int cur_record
           if (tmpSequence->remainingLoops > 1) {
             record = tmpSequence->record;
             tmpSequence->remainingLoops--;
-            if (tmpSequence->loopSnake) {
-              tmpSequence->loopReverse = !tmpSequence->loopReverse;
-            }
             updateChildSnakeReverse(i, cur_record, false);
             // Set new group name
             if (sequence->inc_group >= 10) {
@@ -829,7 +826,6 @@ void AcquisitionThread::nextRecord(AcquisitionSequence *sequence, int cur_record
             // reset remainScans and go to next record
             QLOG_DEBUG() << "AcquisitionThread::nextRecord> RemainingLoops = 1";
             tmpSequence->remainingLoops = tmpSequence->loopNumber;
-            tmpSequence->loopReverse = false;
             updateChildSnakeReverse(i, cur_record, true);
             // reset inc_group number for the entire loop sequence
             for (int j = cur_record; j >= i; j--) {

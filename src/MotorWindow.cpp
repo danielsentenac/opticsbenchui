@@ -193,24 +193,24 @@ void MotorWindow::InitConfig() {
   comtable->select();
   comrow = comtable->rowCount();
   comtable->insertRow(comrow);
-  comview->resizeColumnsToContents();
-  comview->resizeRowsToContents();
+  Utils::UpdateSqlTableViewColumnSizing(comview);
+  Utils::UpdateSqlTableViewRowSizing(comview);
   // Set where clause
   // QLineEdit shows person lastname that id is given parameter
   //drivertable->setFilter(QString("name=*").arg(name));
   drivertable->select();
   driverrow = drivertable->rowCount();
   drivertable->insertRow(driverrow);
-  driverview->resizeColumnsToContents();
-  driverview->resizeRowsToContents();
+  Utils::UpdateSqlTableViewColumnSizing(driverview);
+  Utils::UpdateSqlTableViewRowSizing(driverview);
   // Set where clause
   // QLineEdit shows person lastname that id is given parameter
   //actuatortable->setFilter(QString("name=*").arg(name));
   actuatortable->select();
   actuatorrow = actuatortable->rowCount();
   actuatortable->insertRow(actuatorrow);
-  actuatorview->resizeColumnsToContents();
-  actuatorview->resizeRowsToContents();
+  Utils::UpdateSqlTableViewColumnSizing(actuatorview);
+  Utils::UpdateSqlTableViewRowSizing(actuatorview);
 
 }
 
@@ -230,8 +230,8 @@ void MotorWindow::refreshActuatorTable() {
     return;
   }
   actuatortable->select();
-  actuatorview->resizeColumnsToContents();
-  actuatorview->resizeRowsToContents();
+  Utils::UpdateSqlTableViewColumnSizing(actuatorview);
+  Utils::UpdateSqlTableViewRowSizing(actuatorview);
 }
 void 
 MotorWindow::load(){

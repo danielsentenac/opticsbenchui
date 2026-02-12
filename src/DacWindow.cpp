@@ -118,8 +118,8 @@ void DacWindow::InitConfig() {
   dactable->select();
   dacrow = dactable->rowCount();
   dactable->insertRow(dacrow);
-  dacview->resizeColumnsToContents();
-  dacview->resizeRowsToContents();
+  Utils::UpdateSqlTableViewColumnSizing(dacview);
+  Utils::UpdateSqlTableViewRowSizing(dacview);
 
 }
 
