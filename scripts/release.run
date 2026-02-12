@@ -1,0 +1,84 @@
+#!/bin/bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+VERSION="${1:-v1.4}"
+
+if [[ ! "${VERSION}" =~ ^v[0-9]+(\.[0-9]+)*$ ]]; then
+  echo "ERROR: version must look like v1.4"
+  exit 1
+fi
+
+HELP_VERSION="${VERSION#v}"
+DOXYFILE="${REPO_ROOT}/docs/Doxyfile"
+HELP_INDEX="${REPO_ROOT}/docs/help/index.html"
+
+cd "${REPO_ROOT}"
+
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "ERROR: working tree is not clean. Commit or stash changes first."
+  exit 1
+fi
+
+if git rev-parse -q --verify "refs/tags/${VERSION}" >/dev/null; then
+  echo "ERROR: local tag ${VERSION} already exists."
+  exit 1
+fi
+
+if git ls-remote --tags origin "refs/tags/${VERSION}" | grep -q "${VERSION}$"; then
+  echo "ERROR: remote tag ${VERSION} already exists."
+  exit 1
+fi
+
+if [[ ! -f "${DOXYFILE}" ]]; then
+  echo "ERROR: missing ${DOXYFILE}"
+  exit 1
+fi
+
+if [[ ! -f "${HELP_INDEX}" ]]; then
+  echo "ERROR: missing ${HELP_INDEX}"
+  exit 1
+fi
+
+echo "Updating docs version to ${VERSION}..."
+sed -i -E "s|^PROJECT_NUMBER[[:space:]]*=.*$|PROJECT_NUMBER         = \"${VERSION}\"|" "${DOXYFILE}"
+sed -i -E "s|(OpticsBenchUI Documentation \\(version )[0-9]+(\\.[0-9]+)*\\)|\\1${HELP_VERSION})|" "${HELP_INDEX}"
+
+echo "Rebuilding Qt help package..."
+"${SCRIPT_DIR}/make_doc.run"
+
+echo "Committing version update..."
+git add -u docs/Doxyfile docs/help
+if git diff --cached --quiet; then
+  echo "ERROR: no changes detected after version update."
+  exit 1
+fi
+git commit -m "Release ${VERSION}: update API/help docs version"
+
+BRANCH="$(git branch --show-current)"
+echo "Pushing branch ${BRANCH}..."
+git push origin "${BRANCH}"
+
+echo "Creating and pushing tag ${VERSION}..."
+git tag -a "${VERSION}" -m "${VERSION}"
+git push origin "${VERSION}"
+
+echo "Publishing API docs (gh-pages)..."
+"${SCRIPT_DIR}/publish_api_docs.sh"
+
+if ! command -v gh >/dev/null 2>&1; then
+  echo "WARNING: gh CLI not found. Skipping GitHub release creation."
+  exit 0
+fi
+
+if gh release view "${VERSION}" >/dev/null 2>&1; then
+  echo "WARNING: release ${VERSION} already exists. Skipping creation."
+  exit 0
+fi
+
+echo "Creating GitHub release ${VERSION}..."
+gh release create "${VERSION}" --title "${VERSION}" --generate-notes
+
+echo "Done."
