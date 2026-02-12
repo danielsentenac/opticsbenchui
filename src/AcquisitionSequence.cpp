@@ -233,10 +233,11 @@ AcquisitionSequence::prepare() {
       }
       else if (subscanplanList.at(j) == "LOOPMODE" &&
                subscanplanList.size() > j + 1) {
-        loopSnake = (subscanplanList.at(j + 1) == "SNAKE");
+        loopSnake = (subscanplanList.at(j + 1).trimmed().compare(
+                         "SNAKE", Qt::CaseInsensitive) == 0);
       }
     }
-  } 
+  }
   // Treat settingsList
   QStringList settingsList;
   QStringList subsettingsList;
