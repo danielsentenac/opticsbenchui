@@ -1,5 +1,5 @@
 PROJECT_NAME           = "OpticsBenchUI"
-PROJECT_NUMBER         = "v1.3"
+PROJECT_NUMBER         = "v1.5"
 PROJECT_BRIEF          = "Optics bench control and data acquisition framework"
 OUTPUT_DIRECTORY       = api
 INPUT                  = ../src
