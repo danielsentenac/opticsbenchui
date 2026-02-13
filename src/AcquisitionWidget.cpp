@@ -55,10 +55,9 @@ class RecordHighlightDelegate : public QStyledItemDelegate {
     if ((index.column() == kRecordColumn ||
          index.column() == kAcquiringColumn) &&
         widget != nullptr) {
-      const int current = widget->currentAcquiringRecord();
-      if (current >= 0 && index.sibling(index.row(), kRecordColumn)
-                              .data()
-                              .toInt() == current) {
+      const QString acquiringValue =
+          index.sibling(index.row(), kAcquiringColumn).data().toString().trimmed();
+      if (!acquiringValue.isEmpty()) {
         const QColor highlightColor(230, 126, 34);
         painter->save();
         painter->fillRect(opt.rect, highlightColor);
@@ -585,29 +584,41 @@ void AcquisitionWidget::getAcquiring(int record) {
     }
   }
   if (seq_record >= 0) {
-    const int loopIteration = currentLoopIterationForRecord(record);
-    const QString acquiringText =
-        (loopIteration > 0)
-            ? QString("RUNNING LOOP:%1").arg(loopIteration)
-            : QString("RUNNING");
-    query.prepare("update acquisition_sequence set acquiring = ? where record = ?");
-    query.addBindValue(acquiringText);
-    query.addBindValue(seq_record);
-    query.exec();
+    const QVector<QPair<int, int>> loopIterations =
+        currentLoopIterationsForRecord(record);
+    QSet<int> loopRecords;
+    for (const QPair<int, int>& loopInfo : loopIterations) {
+      if (loopInfo.first < 0) {
+        continue;
+      }
+      loopRecords.insert(loopInfo.first);
+      query.prepare("update acquisition_sequence set acquiring = ? where record = ?");
+      query.addBindValue(QString("RUNNING LOOP=%1").arg(loopInfo.second));
+      query.addBindValue(loopInfo.first);
+      query.exec();
+    }
+    if (!loopRecords.contains(seq_record)) {
+      query.prepare("update acquisition_sequence set acquiring = ? where record = ?");
+      query.addBindValue(QString("RUNNING"));
+      query.addBindValue(seq_record);
+      query.exec();
+    }
     currentAcquiringRecordValue = seq_record;
     cur_record = seq_record;
   } else {
     currentAcquiringRecordValue = -1;
   }
-
   InitConfig(false);
   acquisitionview->viewport()->update();
 }
 
-int AcquisitionWidget::currentLoopIterationForRecord(int recordIndex) const {
+QVector<QPair<int, int>> AcquisitionWidget::currentLoopIterationsForRecord(
+    int recordIndex) const {
+  QVector<QPair<int, int>> iterations;
   if (recordIndex < 0 || recordIndex >= sequenceList.size()) {
-    return -1;
+    return iterations;
   }
+
   int loopDepth = 0;
   for (int i = recordIndex; i >= 0; --i) {
     const AcquisitionSequence* sequence = sequenceList.at(i);
@@ -623,16 +634,18 @@ int AcquisitionWidget::currentLoopIterationForRecord(int recordIndex) const {
         loopDepth--;
         continue;
       }
-      if (sequence->loopNumber > 0) {
+      if (sequence->loopNumber > 0 && sequence->seq_record >= 0) {
         const int rawIteration =
             sequence->loopNumber - sequence->remainingLoops + 1;
-        return qBound(1, rawIteration, sequence->loopNumber);
+        iterations.prepend(
+            qMakePair(sequence->seq_record,
+                      qBound(1, rawIteration, sequence->loopNumber)));
       }
     }
   }
-  return -1;
-}
 
+  return iterations;
+}
 void AcquisitionWidget::setAcquiringToLastRecord() {
   QSqlQuery query(QSqlDatabase::database(path));
   query.exec("update acquisition_sequence set acquiring = ''");
