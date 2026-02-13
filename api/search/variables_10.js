@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['range_1689',['range',['../structDriverDefinition_1_1DriverFeature.html#a9a6dd10bd88c6b9a0a1973a934e98521',1,'DriverDefinition::DriverFeature']]],
+  ['raptorfalcon_5faoi_5fsettings_1690',['raptorfalcon_aoi_settings',['../CameraRAPTORFALCON_8cpp.html#a275562847f819fad5695cdcafc5d5064',1,'CameraRAPTORFALCON.cpp']]],
+  ['raptorfalcon_5fbinning_5fsettings_1691',['raptorfalcon_binning_settings',['../CameraRAPTORFALCON_8cpp.html#ab69c83b3af43acdb903b6018d6207cd5',1,'CameraRAPTORFALCON.cpp']]],
+  ['raptorfalcon_5ffeatures_1692',['raptorfalcon_features',['../CameraRAPTORFALCON_8cpp.html#a824aca2bc20832079c448598bd392a79',1,'CameraRAPTORFALCON.cpp']]],
+  ['raptorfalcon_5fprops_1693',['raptorfalcon_props',['../CameraRAPTORFALCON_8cpp.html#a1084b33d46da19889c448985242b261a',1,'CameraRAPTORFALCON.cpp']]],
+  ['raptorninox640_5faoi_5fsettings_1694',['raptorninox640_aoi_settings',['../CameraRAPTORNINOX640_8cpp.html#acd9e1c367226f8b928d87fb79a694306',1,'CameraRAPTORNINOX640.cpp']]],
+  ['raptorninox640_5ffeatures_1695',['raptorninox640_features',['../CameraRAPTORNINOX640_8cpp.html#afa6d200c0f316388d41ed22e5793bd18',1,'CameraRAPTORNINOX640.cpp']]],
+  ['raptorninox640_5fgains_1696',['raptorninox640_gains',['../CameraRAPTORNINOX640_8cpp.html#a3991631f43799db74142ded905e654c7',1,'CameraRAPTORNINOX640.cpp']]],
+  ['raptorninox640_5fnuc_1697',['raptorninox640_nuc',['../CameraRAPTORNINOX640_8cpp.html#a1aedee67f61e6347bb829f6c89030698',1,'CameraRAPTORNINOX640.cpp']]],
+  ['raptorninox640_5fprops_1698',['raptorninox640_props',['../CameraRAPTORNINOX640_8cpp.html#a14838439f0f854823f8d01b92570c361',1,'CameraRAPTORNINOX640.cpp']]],
+  ['raspi_5faoi_5fsettings_1699',['raspi_aoi_settings',['../CameraRaspi_8cpp.html#a31df7580252ed0020f9683c0afd78b64',1,'CameraRaspi.cpp']]],
+  ['raspi_5fawb_1700',['raspi_awb',['../CameraRaspi_8cpp.html#a8ccbde70168ca67f881144970287a10a',1,'CameraRaspi.cpp']]],
+  ['raspi_5fencodings_1701',['raspi_encodings',['../CameraRaspi_8cpp.html#a33e0608b0188f7b7b4b35b8ef3612bc1',1,'CameraRaspi.cpp']]],
+  ['raspi_5fexposure_1702',['raspi_exposure',['../CameraRaspi_8cpp.html#a9e605880357e37b8a03beb98d920a728',1,'CameraRaspi.cpp']]],
+  ['raspi_5ffeatures_1703',['raspi_features',['../CameraRaspi_8cpp.html#a85bffcd6d48e6317a093895ce79ba8a8',1,'CameraRaspi.cpp']]],
+  ['raspi_5fprops_1704',['raspi_props',['../CameraRaspi_8cpp.html#a6698351b3311131a7b9b629ddffbcbe6',1,'CameraRaspi.cpp']]],
+  ['raspitype_1705',['raspitype',['../classRaspiDac.html#ad0c81b26d11dc7d5dc1927f38270d691',1,'RaspiDac::raspitype()'],['../classRaspi.html#a55c8556e1cdc37f61e296bac305ef1ea',1,'Raspi::raspitype()']]],
+  ['raspiwidget_1706',['raspiWidget',['../classRaspiWindow.html#ab48ac7dbc0fafa7c7155a375c974b18d',1,'RaspiWindow']]],
+  ['record_1707',['record',['../structAnalysisTask.html#a1a0369aa73fc616b0fe1c0ca49c18ace',1,'AnalysisTask::record()'],['../classAcquisitionSequence.html#a90d03b6a49a7fee01486bc6e538ad5cf',1,'AcquisitionSequence::record()']]],
+  ['refgrp_1708',['refgrp',['../classAcquisitionSequence.html#a2f85b13869e87c6ec1179aebbb321f0a',1,'AcquisitionSequence']]],
+  ['remainingloops_1709',['remainingLoops',['../classAcquisitionSequence.html#ac9fe4261d24e2d3e72408e40d985cab9',1,'AcquisitionSequence']]],
+  ['reset_1710',['reset',['../classAcquisitionSequence.html#a673b4906bdfacc913700fff6046666f7',1,'AcquisitionSequence']]],
+  ['rs_5fcom_1711',['RS_COM',['../classACCom.html#adad91ee6b31c930644dd8de26fe58f82',1,'ACCom']]]
+];

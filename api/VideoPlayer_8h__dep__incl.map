@@ -1,0 +1,8 @@
+<map id="VideoPlayer.h" name="VideoPlayer.h">
+<area shape="rect" id="node1" title="Video Player component." alt="" coords="209,5,355,37"/>
+<area shape="rect" id="node2" href="$CameraWindow_8h.html" title="Camera backend for Window." alt="" coords="90,85,274,117"/>
+<area shape="rect" id="node6" href="$VideoPlayer_8cpp.html" title="Video Player component." alt="" coords="298,85,466,117"/>
+<area shape="rect" id="node3" href="$CameraWindow_8cpp.html" title="Camera backend for Window." alt="" coords="5,245,212,277"/>
+<area shape="rect" id="node4" href="$OpticsBenchUIMain_8h.html" title="Main application window." alt="" coords="146,165,367,197"/>
+<area shape="rect" id="node5" href="$OpticsBenchUIMain_8cpp.html" title="Main application window." alt="" coords="237,245,479,277"/>
+</map>

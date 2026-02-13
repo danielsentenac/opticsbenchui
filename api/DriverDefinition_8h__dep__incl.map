@@ -1,0 +1,38 @@
+<map id="DriverDefinition.h" name="DriverDefinition.h">
+<area shape="rect" id="node1" title="Driver implementation for Definition." alt="" coords="1375,5,1561,37"/>
+<area shape="rect" id="node2" href="$Driver_8h.html" title="Driver implementation for ." alt="" coords="1421,85,1515,117"/>
+<area shape="rect" id="node3" href="$Driver_8cpp.html" title="Driver implementation for ." alt="" coords="1067,255,1184,287"/>
+<area shape="rect" id="node4" href="$DriverMicos__Pollux_8h.html" title="Driver implementation for Micos Pollux." alt="" coords="59,165,272,197"/>
+<area shape="rect" id="node6" href="$DriverNewFocus__8750__Cl_8h.html" title="Driver implementation for New Focus 8750 Cl." alt="" coords="296,165,571,197"/>
+<area shape="rect" id="node8" href="$DriverNewFocus__8750__Ol_8h.html" title="Driver implementation for New Focus 8750 Ol." alt="" coords="595,165,871,197"/>
+<area shape="rect" id="node10" href="$DriverNewPort__AGUC2_8h.html" title="This file provides a class implementing a AGUC2 driver for a non specified controller using only the ..." alt="" coords="896,165,1144,197"/>
+<area shape="rect" id="node12" href="$DriverNewPort__NSC200_8h.html" title="Driver implementation for New Port NSC 200." alt="" coords="1219,165,1477,197"/>
+<area shape="rect" id="node14" href="$DriverPI__C509_8h.html" title="Driver implementation for PI C 509." alt="" coords="1502,165,1674,197"/>
+<area shape="rect" id="node16" href="$DriverPI__C862_8h.html" title="Driver implementation for PI C 862." alt="" coords="1698,165,1870,197"/>
+<area shape="rect" id="node18" href="$DriverPI__E725_8h.html" title="Driver implementation for PI E 725." alt="" coords="1895,165,2065,197"/>
+<area shape="rect" id="node20" href="$DriverStanda__uSMC_8h.html" title="This file provides a class implementing a AGUC2 driver for a non specified controller using only the ..." alt="" coords="2407,165,2631,197"/>
+<area shape="rect" id="node22" href="$DriverStanda__uSMC2_8h.html" title="This file provides a class implementing a USMC driver for a non specified controller using only the c..." alt="" coords="2090,165,2326,197"/>
+<area shape="rect" id="node24" href="$Motor_8h.html" title="Motor device interface." alt="" coords="2920,165,3011,197"/>
+<area shape="rect" id="node5" href="$DriverMicos__Pollux_8cpp.html" title="Driver implementation for Micos Pollux." alt="" coords="5,255,240,287"/>
+<area shape="rect" id="node7" href="$DriverNewFocus__8750__Cl_8cpp.html" title="Driver implementation for New Focus 8750 Cl." alt="" coords="264,245,493,297"/>
+<area shape="rect" id="node9" href="$DriverNewFocus__8750__Ol_8cpp.html" title="Driver implementation for New Focus 8750 Ol." alt="" coords="517,245,747,297"/>
+<area shape="rect" id="node11" href="$DriverNewPort__AGUC2_8cpp.html" title="This file provides a AGUC2 class implementing a driver for a non specified controller only the Custom..." alt="" coords="771,255,1042,287"/>
+<area shape="rect" id="node13" href="$DriverNewPort__NSC200_8cpp.html" title="Driver implementation for New Port NSC 200." alt="" coords="1208,255,1488,287"/>
+<area shape="rect" id="node15" href="$DriverPI__C509_8cpp.html" title="Driver implementation for PI C 509." alt="" coords="1512,255,1707,287"/>
+<area shape="rect" id="node17" href="$DriverPI__C862_8cpp.html" title="Driver implementation for PI C 862." alt="" coords="1731,255,1925,287"/>
+<area shape="rect" id="node19" href="$DriverPI__E725_8cpp.html" title="Driver implementation for PI E 725." alt="" coords="1950,255,2143,287"/>
+<area shape="rect" id="node21" href="$DriverStanda__uSMC_8cpp.html" title="This file provides a AGUC2 class implementing a driver for a non specified controller only the Custom..." alt="" coords="2451,255,2698,287"/>
+<area shape="rect" id="node23" href="$DriverStanda__uSMC2_8cpp.html" title="This file provides a USMC class implementing a driver for a non specified controller only the Custom ..." alt="" coords="2168,255,2427,287"/>
+<area shape="rect" id="node25" href="$AcquisitionThread_8h.html" title="Acquisition worker thread." alt="" coords="2723,255,2928,287"/>
+<area shape="rect" id="node29" href="$OpticsBenchUIMain_8h.html" title="Main application window." alt="" coords="2909,425,3131,457"/>
+<area shape="rect" id="node32" href="$Motor_8cpp.html" title="Motor device interface." alt="" coords="3003,255,3117,287"/>
+<area shape="rect" id="node33" href="$MotorControlWidget_8h.html" title="Motor control widget." alt="" coords="3141,255,3365,287"/>
+<area shape="rect" id="node26" href="$AcquisitionThread_8cpp.html" title="Acquisition worker thread." alt="" coords="2469,345,2696,377"/>
+<area shape="rect" id="node27" href="$AcquisitionWidget_8h.html" title="Acquisition widget." alt="" coords="2721,345,2927,377"/>
+<area shape="rect" id="node28" href="$AcquisitionWidget_8cpp.html" title="Acquisition widget." alt="" coords="2657,425,2885,457"/>
+<area shape="rect" id="node30" href="$CameraWindow_8cpp.html" title="Camera backend for Window." alt="" coords="2793,505,2999,537"/>
+<area shape="rect" id="node31" href="$OpticsBenchUIMain_8cpp.html" title="Main application window." alt="" coords="3024,505,3267,537"/>
+<area shape="rect" id="node34" href="$MotorControlWidget_8cpp.html" title="Motor control widget." alt="" coords="3003,345,3250,377"/>
+<area shape="rect" id="node35" href="$MotorWindow_8h.html" title="Motor window." alt="" coords="3275,345,3440,377"/>
+<area shape="rect" id="node36" href="$MotorWindow_8cpp.html" title="Motor window." alt="" coords="3264,425,3451,457"/>
+</map>

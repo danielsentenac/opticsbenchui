@@ -1,0 +1,9 @@
+<map id="DacControlWidget.h" name="DacControlWidget.h">
+<area shape="rect" id="node1" title="Dac control widget." alt="" coords="121,5,328,37"/>
+<area shape="rect" id="node2" href="$DacControlWidget_8cpp.html" title="Dac control widget." alt="" coords="5,85,233,117"/>
+<area shape="rect" id="node3" href="$DacWindow_8h.html" title="Dac window." alt="" coords="258,85,405,117"/>
+<area shape="rect" id="node4" href="$DacWindow_8cpp.html" title="Dac window." alt="" coords="136,165,305,197"/>
+<area shape="rect" id="node5" href="$OpticsBenchUIMain_8h.html" title="Main application window." alt="" coords="330,165,551,197"/>
+<area shape="rect" id="node6" href="$CameraWindow_8cpp.html" title="Camera backend for Window." alt="" coords="212,245,419,277"/>
+<area shape="rect" id="node7" href="$OpticsBenchUIMain_8cpp.html" title="Main application window." alt="" coords="443,245,686,277"/>
+</map>

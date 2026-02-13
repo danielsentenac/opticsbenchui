@@ -1,0 +1,5 @@
+<map id="QsLogging::Destination" name="QsLogging::Destination">
+<area shape="rect" id="node1" title=" " alt="" coords="237,5,476,37"/>
+<area shape="rect" id="node2" href="$classQsLogging_1_1DebugOutputDestination.html" title="Debug output log destination." alt="" coords="5,85,369,117"/>
+<area shape="rect" id="node3" href="$classQsLogging_1_1FileDestination.html" title="File&#45;based log destination." alt="" coords="393,85,661,117"/>
+</map>
