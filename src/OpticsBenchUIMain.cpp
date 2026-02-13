@@ -816,7 +816,7 @@ int main(int argc, char *argv[])
               << " started : " <<  app.applicationDirPath();
   OpticsBenchUIMain* OpticsBenchUI =
       new OpticsBenchUIMain(app.applicationDirPath(), nullptr, Qt::Window);
-  OpticsBenchUI->setWindowTitle("OpticsBenchUI");
+  OpticsBenchUI->setWindowTitle(QString("OpticsBenchUI v%1").arg(QString::fromLatin1(OPTICSBENCHUIVERSION)));
   OpticsBenchUI->show();
   foreach (const QString &path, app.libraryPaths())
   QLOG_DEBUG() << path;

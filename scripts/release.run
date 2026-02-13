@@ -12,6 +12,7 @@ if [[ ! "${VERSION}" =~ ^v[0-9]+(\.[0-9]+)*$ ]]; then
 fi
 
 HELP_VERSION="${VERSION#v}"
+PRO_FILE="${REPO_ROOT}/OpticsBenchUI.pro"
 DOXYFILE="${REPO_ROOT}/docs/Doxyfile"
 HELP_INDEX="${REPO_ROOT}/docs/help/index.html"
 
@@ -32,6 +33,11 @@ if git ls-remote --tags origin "refs/tags/${VERSION}" | grep -q "${VERSION}$"; t
   exit 1
 fi
 
+if [[ ! -f "${PRO_FILE}" ]]; then
+  echo "ERROR: missing ${PRO_FILE}"
+  exit 1
+fi
+
 if [[ ! -f "${DOXYFILE}" ]]; then
   echo "ERROR: missing ${DOXYFILE}"
   exit 1
@@ -42,7 +48,8 @@ if [[ ! -f "${HELP_INDEX}" ]]; then
   exit 1
 fi
 
-echo "Updating docs version to ${VERSION}..."
+echo "Updating app and docs version to ${VERSION}..."
+sed -i -E "s|^VERSION[[:space:]]*=.*$|VERSION = ${HELP_VERSION}|" "${PRO_FILE}"
 sed -i -E "s|^PROJECT_NUMBER[[:space:]]*=.*$|PROJECT_NUMBER         = \"${VERSION}\"|" "${DOXYFILE}"
 sed -i -E "s|(OpticsBenchUI Documentation \\(version )[0-9]+(\\.[0-9]+)*\\)|\\1${HELP_VERSION})|" "${HELP_INDEX}"
 
@@ -50,12 +57,12 @@ echo "Rebuilding Qt help package..."
 "${SCRIPT_DIR}/make_doc.run"
 
 echo "Committing version update..."
-git add -u docs/Doxyfile docs/help
+git add -u OpticsBenchUI.pro docs/Doxyfile docs/help
 if git diff --cached --quiet; then
   echo "ERROR: no changes detected after version update."
   exit 1
 fi
-git commit -m "Release ${VERSION}: update API/help docs version"
+git commit -m "Release ${VERSION}: update app/help/api version"
 
 BRANCH="$(git branch --show-current)"
 echo "Pushing branch ${BRANCH}..."
