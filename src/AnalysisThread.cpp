@@ -24,6 +24,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "PosixCompat.h"
 #include <signal.h>
 #include <errno.h>
+#include <QtCore/QFileInfo>
+#include <QtCore/QProcessEnvironment>
+#include <QtCore/QStandardPaths>
 
 namespace {
 #ifdef Q_OS_UNIX
@@ -46,6 +49,67 @@ void KillProcessTree(qint64 pid, int sig) {
   ::kill(target, sig);
 }
 #endif
+
+bool IsPythonScriptPath(const QString& path) {
+  const QString cleanPath = path.trimmed();
+  return cleanPath.endsWith(".py", Qt::CaseInsensitive);
+}
+
+QString ShellEscape(const QString& value) {
+  QString escaped = value;
+  escaped.replace('\'', "'\"'\"'");
+  return "'" + escaped + "'";
+}
+
+QString BuildShellCommand(const QString& program,
+                          const QStringList& arguments) {
+  QStringList commandParts;
+  commandParts << ShellEscape(program);
+  for (const QString& argument : arguments) {
+    commandParts << ShellEscape(argument);
+  }
+  return commandParts.join(' ');
+}
+
+QString ResolveBashExecutable() {
+  const QString bash = QStandardPaths::findExecutable("bash");
+  if (!bash.isEmpty()) {
+    return bash;
+  }
+
+  const QFileInfo fallbackBash("/bin/bash");
+  if (fallbackBash.exists() && fallbackBash.isExecutable()) {
+    return fallbackBash.absoluteFilePath();
+  }
+
+  return QString();
+}
+
+QString ResolvePythonInterpreter() {
+  const QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+  const QString configuredPython = env.value("OPTICSBENCHUI_PYTHON").trimmed();
+  if (!configuredPython.isEmpty()) {
+    return configuredPython;
+  }
+
+  const QString python = QStandardPaths::findExecutable("python");
+  if (!python.isEmpty()) {
+    return python;
+  }
+
+  const QString python3 = QStandardPaths::findExecutable("python3");
+  if (!python3.isEmpty()) {
+    return python3;
+  }
+
+#ifdef Q_OS_WIN
+  const QString pyLauncher = QStandardPaths::findExecutable("py");
+  if (!pyLauncher.isEmpty()) {
+    return pyLauncher;
+  }
+#endif
+  return QString();
+}
 }  // namespace
 
 AnalysisThread::AnalysisThread(QObject* parent)
@@ -114,6 +178,7 @@ void AnalysisThread::run() {
 
     QString program = task.codePath.trimmed();
     QStringList arguments = splitArguments(task.arguments);
+    bool runInLoginShell = false;
     if (program.contains(' ')) {
       const QStringList commandParts = splitArguments(program);
       if (!commandParts.isEmpty()) {
@@ -126,15 +191,57 @@ void AnalysisThread::run() {
       }
     }
 
+    // Run Python scripts through an explicit interpreter so dependencies
+    // resolve from the expected Python environment.
+    if (IsPythonScriptPath(program)) {
+      runInLoginShell = true;
+      const QString pythonInterpreter = ResolvePythonInterpreter();
+      if (!pythonInterpreter.isEmpty()) {
+        arguments.prepend(program);
+#ifdef Q_OS_WIN
+        const QString pyName =
+            QFileInfo(pythonInterpreter).fileName().toLower();
+        if (pyName == "py" || pyName == "py.exe") {
+          arguments.prepend("-3");
+        }
+#endif
+        program = pythonInterpreter;
+      } else {
+        emit showWarning(
+            "No Python interpreter found in PATH. Trying direct script run.");
+      }
+    }
+
+    QString launchProgram = program;
+    QStringList launchArguments = arguments;
+#ifdef Q_OS_UNIX
+    if (runInLoginShell) {
+      const QString bash = ResolveBashExecutable();
+      if (!bash.isEmpty()) {
+        const QString command = BuildShellCommand(program, arguments);
+        launchProgram = bash;
+        launchArguments =
+            QStringList() << "-lc"
+                          << QString("if [ -f \"$HOME/.bashrc\" ]; then "
+                                     ". \"$HOME/.bashrc\" >/dev/null 2>&1; "
+                                     "fi; %1")
+                                 .arg(command);
+      } else {
+        emit showWarning("bash not found; running analysis without shell init.");
+      }
+    }
+#endif
+
     QProcess localProcess;
     localProcess.setProcessChannelMode(QProcess::MergedChannels);
-    localProcess.start(program, arguments);
+    localProcess.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
+    localProcess.start(launchProgram, launchArguments);
 
     if (!localProcess.waitForStarted()) {
       const QString output =
           "Unable to start command.\n"
-          "Command: " + program + "\n"
-          "Arguments: " + arguments.join(' ') + "\n"
+          "Command: " + launchProgram + "\n"
+          "Arguments: " + launchArguments.join(' ') + "\n"
           "Error: " + localProcess.errorString();
       emit analysisFinished(task.record, false, output);
       emit showWarning("Unable to start analysis command: " + task.codePath);
