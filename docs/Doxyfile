@@ -17,7 +17,8 @@ WARN_IF_UNDOCUMENTED   = YES
 WARN_IF_DOC_ERROR      = YES
 INHERIT_DOCS           = YES
 HTML_EXTRA_STYLESHEET  = api/doxygen-awesome/doxygen-awesome.css \
-                         api/opticsbenchui-dark.css
+                         api/opticsbenchui-dark.css \
+                         opticsbenchui-overrides.css
 HTML_EXTRA_FILES       = api/doxygen-awesome/doxygen-awesome-darkmode-toggle.js \
                          api/doxygen-awesome/doxygen-awesome-fragment-copy-button.js \
                          api/doxygen-awesome/doxygen-awesome-interactive-toc.js

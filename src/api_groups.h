@@ -22,7 +22,7 @@
 /// - \ref utils "Utilities": Helpers, logging, and parsing.
 
 /// \page getting_started Getting Started
-/// **INSTALLING OpticsBenchUI 1.1**
+/// **INSTALLING OpticsBenchUI**
 ///
 /// External packages needed prior to installation:
 ///
