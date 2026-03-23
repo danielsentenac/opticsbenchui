@@ -122,6 +122,9 @@ unix {
 exists($$(HOME)/miniforge3/include/hdf5.h) {
   HDF5_LIB_PATH = $$(HOME)/miniforge3/lib
   HDF5_INC_PATH = $$(HOME)/miniforge3/include
+} else:exists(/usr/lib64/libhdf5.so) {
+  HDF5_LIB_PATH = /usr/lib64
+  HDF5_INC_PATH = /usr/include
 } else {
   HDF5_LIB_PATH = /usr/lib
   HDF5_INC_PATH = /usr/include
