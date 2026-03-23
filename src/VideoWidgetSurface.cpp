@@ -93,6 +93,11 @@ void VideoWidgetSurface::updateVideoRect()
 }
 //! [5]
 //! [6]
+void VideoWidgetSurface::setZoomRect(const QRect &zoomRect)
+{
+    this->zoomRect = zoomRect;
+}
+
 void VideoWidgetSurface::paint(QPainter *painter)
 {
     if (currentFrame.map(QAbstractVideoBuffer::ReadOnly)) {
@@ -107,7 +112,8 @@ void VideoWidgetSurface::paint(QPainter *painter)
                 currentFrame.height(),
                 currentFrame.bytesPerLine(),
                 imageFormat);
-        painter->drawImage(targetRect, image, sourceRect);
+        const QRect srcRect = zoomRect.isValid() ? zoomRect : sourceRect;
+        painter->drawImage(targetRect, image, srcRect);
         painter->setTransform(oldTransform);
         currentFrame.unmap();
     }

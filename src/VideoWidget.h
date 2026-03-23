@@ -6,6 +6,8 @@
 #define VIDEOWIDGET_H
 #include <QtGlobal>
 #include <QWidget>
+#include <QPoint>
+#include <QRectF>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <QImage>
 #include <QRect>
@@ -17,6 +19,8 @@
 //! [0]
 /// \ingroup ui
 /// Widget for rendering video frames from a surface.
+/// Supports rubber-band zoom (draw a rectangle with the mouse) and
+/// double-click to reset to full view.
 class VideoWidget : public QWidget
 {
     Q_OBJECT
@@ -43,6 +47,14 @@ protected:
     /// Handle resize events.
     /// \param event Resize event.
     void resizeEvent(QResizeEvent *event) override;
+    /// Start a rubber-band zoom selection.
+    void mousePressEvent(QMouseEvent *event) override;
+    /// Update the rubber-band selection rectangle.
+    void mouseMoveEvent(QMouseEvent *event) override;
+    /// Finish the rubber-band selection and apply zoom.
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    /// Reset zoom to full view.
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
 private:
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
     VideoWidgetSurface *surface;
@@ -51,6 +63,15 @@ private:
     QImage currentImage;
     QRect targetRect;
 #endif
+    /// Currently visible region of the image (empty = full view).
+    QRectF zoomRect;
+    bool isSelecting = false;
+    QPoint selectionStart;
+    QPoint selectionEnd;
+    /// Map a widget-space point to image-space coordinates given current zoom.
+    QPointF widgetToImage(const QPoint &pt) const;
+    /// Commit the current zoomRect to the display.
+    void applyZoom();
 };
 //! [0]
 #endif // VIDEOWIDGET_H

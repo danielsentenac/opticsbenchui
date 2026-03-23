@@ -39,6 +39,10 @@ public:
     bool present(const QVideoFrame &frame) override;
     /// Return the target rectangle for video.
     QRect videoRect() const { return targetRect; }
+    /// Return the source viewport rectangle (full frame region).
+    QRect getSourceRect() const { return sourceRect; }
+    /// Override the source region drawn (empty rect = use full sourceRect).
+    void setZoomRect(const QRect &zoomRect);
     /// Recompute the video rectangle.
     void updateVideoRect();
     /// Paint the current frame.
@@ -50,6 +54,7 @@ private:
     QRect targetRect;
     QSize imageSize;
     QRect sourceRect;
+    QRect zoomRect;
     QVideoFrame currentFrame;
 };
 //! [0]
