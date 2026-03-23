@@ -1,0 +1,4 @@
+<map id="TimeScaleDraw" name="TimeScaleDraw">
+<area shape="rect" id="node1" title="Scale draw that formats axis labels as elapsed time." alt="" coords="5,85,169,117"/>
+<area shape="rect" id="node2" title=" " alt="" coords="9,5,165,37"/>
+</map>

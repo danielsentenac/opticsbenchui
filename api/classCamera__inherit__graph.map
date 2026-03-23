@@ -1,0 +1,13 @@
+<map id="Camera" name="Camera">
+<area shape="rect" id="node1" title=" " alt="" coords="155,229,249,261"/>
+<area shape="rect" id="node3" href="$classCameraAlliedVision.html" title=" " alt="" coords="330,5,530,37"/>
+<area shape="rect" id="node4" href="$classCameraGiGE.html" title=" " alt="" coords="361,61,499,93"/>
+<area shape="rect" id="node5" href="$classCameraIEEE1394.html" title=" " alt="" coords="338,117,522,149"/>
+<area shape="rect" id="node6" href="$classCameraNeo.html" title=" " alt="" coords="365,173,495,205"/>
+<area shape="rect" id="node7" href="$classCameraRAPTORFALCON.html" title=" " alt="" coords="309,229,551,261"/>
+<area shape="rect" id="node8" href="$classCameraRAPTORNINOX640.html" title=" " alt="" coords="297,285,563,317"/>
+<area shape="rect" id="node9" href="$classCameraRaspi.html" title=" " alt="" coords="357,341,503,373"/>
+<area shape="rect" id="node10" href="$classCameraUSB.html" title=" " alt="" coords="363,397,497,429"/>
+<area shape="rect" id="node11" href="$classCameraZyla.html" title=" " alt="" coords="363,453,497,485"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,229,107,261"/>
+</map>

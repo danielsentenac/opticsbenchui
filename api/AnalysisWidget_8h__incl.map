@@ -1,0 +1,11 @@
+<map id="AnalysisWidget.h" name="AnalysisWidget.h">
+<area shape="rect" id="node1" title="Analysis widget." alt="" coords="236,5,419,37"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,85,79,117"/>
+<area shape="rect" id="node3" title=" " alt="" coords="103,85,221,117"/>
+<area shape="rect" id="node4" title=" " alt="" coords="246,85,409,117"/>
+<area shape="rect" id="node5" href="$QsLog_8h.html" title="Qs Log logging support." alt="" coords="402,165,501,197"/>
+<area shape="rect" id="node8" href="$AnalysisThread_8h.html" title="Analysis worker thread." alt="" coords="483,85,665,117"/>
+<area shape="rect" id="node6" title=" " alt="" coords="342,245,441,277"/>
+<area shape="rect" id="node7" title=" " alt="" coords="465,245,558,277"/>
+<area shape="rect" id="node9" title=" " alt="" coords="531,165,617,197"/>
+</map>

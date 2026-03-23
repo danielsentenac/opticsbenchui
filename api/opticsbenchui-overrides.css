@@ -1,0 +1,19 @@
+/* OpticsBenchUI Doxygen overrides */
+
+/* Enlarge the brief/abstract text shown below page titles.
+ * This primarily affects file pages (e.g. *.h File Reference) where
+ * the brief often starts with "Abstract ...". */
+.contents > p {
+  font-size: 1.12rem;
+  line-height: 1.5;
+}
+
+/* Make function type labels (e.g. "pure virtual", "signal") more prominent
+ * in member/function descriptions. */
+.memitem .mlabels .mlabel,
+.memproto .mlabels .mlabel,
+.memdoc .mlabels .mlabel {
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.25em 0.55em;
+}
