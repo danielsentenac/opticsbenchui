@@ -33,8 +33,8 @@ qtHaveModule(multimediawidgets) {
   DEFINES += NO_MULTIMEDIA
 }
 
-!exists(/usr/include/GL/src/gl.h) {
-  !exists(/usr/local/include/GL/src/gl.h) {
+!exists(/usr/include/GL/gl.h) {
+  !exists(/usr/local/include/GL/gl.h) {
     DEFINES += NO_OPENGL QT_NO_OPENGL
     message("OpenGL headers not found. Building without OpenGL support.")
   }
@@ -119,7 +119,13 @@ unix {
 }
 #QMAKE_CXXFLAGS         +=      -g  -fPIC
 # External packages
-HDF5_LIB_PATH = /home/sentenac/miniforge3/lib
+exists($$(HOME)/miniforge3/include/hdf5.h) {
+  HDF5_LIB_PATH = $$(HOME)/miniforge3/lib
+  HDF5_INC_PATH = $$(HOME)/miniforge3/include
+} else {
+  HDF5_LIB_PATH = /usr/lib
+  HDF5_INC_PATH = /usr/include
+}
 COMEDI_LIB_PATH = /usr/local/lib
 QWTPLOT_LIB_PATH = /usr/lib64
 ADVDAQ_LIB_PATH = /usr/lib
@@ -137,7 +143,6 @@ ALLIEDVISION_LIB_PATH = /usr/local/VimbaX/lib
 SPI_LIB_PATH = /usr/local/lib
 
 
-HDF5_INC_PATH = /home/sentenac/miniforge3/include
 COMEDI_INC_PATH = /usr/local/include
 QWTPLOT_INC_PATH = /usr/include/qwt
 ADVDAQ_INC_PATH = /usr/local/include/Advantech
@@ -188,10 +193,10 @@ contains(DEFINES, ADVANTECHDAC) {
 
 HDF5_HEADERS_FOUND = 0
 HDF5_EXTRA_INC_PATH =
-exists($$HDF5_INC_PATH/src/hdf5.h) {
+exists($$HDF5_INC_PATH/hdf5.h) {
   HDF5_HEADERS_FOUND = 1
 }
-exists($$HDF5_INC_PATH/hdf5/serial/src/hdf5.h) {
+exists($$HDF5_INC_PATH/hdf5/serial/hdf5.h) {
   HDF5_HEADERS_FOUND = 1
   HDF5_EXTRA_INC_PATH = $$HDF5_INC_PATH/hdf5/serial
 }
