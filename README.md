@@ -14,7 +14,7 @@ Advantech/Comedi/Raspberry Pi DACs.
 ### API Documentation (GitHub Pages)
 
 GitHub Pages URL:
-- https://danielsentenac.github.io/opticsbenchui/api/
+- https://anonymous.github.io/opticsbenchui/api/
 
 ### External Libraries (.pro)
 

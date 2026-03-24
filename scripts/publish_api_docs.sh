@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-REPO_URL="git@github.com:danielsentenac/opticsbenchui.git"
+REPO_URL="git@github.com:anonymous/opticsbenchui.git"
 WORKDIR="/tmp/obui-ghpages"
 SOURCE_DIR="${REPO_ROOT}/docs/api/html"
 
@@ -51,4 +51,4 @@ git push -u origin gh-pages --force
 
 echo "Pushed commit: $(git rev-parse --short HEAD)"
 
-echo "Done. URL: https://danielsentenac.github.io/opticsbenchui/api/"
+echo "Done. URL: https://anonymous.github.io/opticsbenchui/api/"
