@@ -4,7 +4,7 @@
 
 TEMPLATE = app
 
-VERSION = 1.4
+VERSION = 1.7
 
 TARGET = OpticsBenchUI
 
