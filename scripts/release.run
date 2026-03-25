@@ -4,7 +4,13 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-VERSION="${1:-v1.4}"
+if [[ $# -ne 1 ]]; then
+  echo "Usage: $(basename "$0") <tag>"
+  echo "Example: $(basename "$0") v1.4"
+  exit 1
+fi
+
+VERSION="$1"
 
 if [[ ! "${VERSION}" =~ ^v[0-9]+(\.[0-9]+)*$ ]]; then
   echo "ERROR: version must look like v1.4"
