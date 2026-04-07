@@ -55,7 +55,7 @@ void VideoWidget::paintEvent(QPaintEvent *event)
     }
     // Draw rubber-band selection rectangle
     if (isSelecting) {
-        QRect selRect = QRect(selectionStart, selectionEnd).normalized();
+        const QRect selRect = selectionRect();
         painter.setPen(QPen(Qt::white, 1, Qt::DashLine));
         painter.setBrush(QColor(255, 255, 255, 30));
         painter.drawRect(selRect);
@@ -141,7 +141,7 @@ void VideoWidget::paintEvent(QPaintEvent *event)
 
     // Draw rubber-band selection rectangle
     if (isSelecting) {
-        QRect selRect = QRect(selectionStart, selectionEnd).normalized();
+        const QRect selRect = selectionRect();
         painter.setPen(QPen(Qt::white, 1, Qt::DashLine));
         painter.setBrush(QColor(255, 255, 255, 30));
         painter.drawRect(selRect);
@@ -196,6 +196,16 @@ void VideoWidget::applyZoom()
 
 #endif
 
+QRect VideoWidget::selectionRect() const
+{
+    const int deltaX = selectionEnd.x() - selectionStart.x();
+    const int deltaY = selectionEnd.y() - selectionStart.y();
+    const int side = qMin(qAbs(deltaX), qAbs(deltaY));
+    const int endX = selectionStart.x() + (deltaX < 0 ? -side : side);
+    const int endY = selectionStart.y() + (deltaY < 0 ? -side : side);
+    return QRect(selectionStart, QPoint(endX, endY)).normalized();
+}
+
 // ---------------------------------------------------------------------------
 // Mouse events – shared by both Qt5 and Qt6 paths
 // ---------------------------------------------------------------------------
@@ -225,7 +235,7 @@ void VideoWidget::mouseReleaseEvent(QMouseEvent *event)
         isSelecting = false;
         selectionEnd = event->pos();
 
-        const QRect selRect = QRect(selectionStart, selectionEnd).normalized();
+        const QRect selRect = selectionRect();
         if (selRect.width() > 5 && selRect.height() > 5) {
             const QPointF imgTL = widgetToImage(selRect.topLeft());
             const QPointF imgBR = widgetToImage(selRect.bottomRight());

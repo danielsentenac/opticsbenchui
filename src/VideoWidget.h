@@ -68,6 +68,8 @@ private:
     bool isSelecting = false;
     QPoint selectionStart;
     QPoint selectionEnd;
+    /// Return the current rubber-band selection constrained to a square.
+    QRect selectionRect() const;
     /// Map a widget-space point to image-space coordinates given current zoom.
     QPointF widgetToImage(const QPoint &pt) const;
     /// Commit the current zoomRect to the display.
