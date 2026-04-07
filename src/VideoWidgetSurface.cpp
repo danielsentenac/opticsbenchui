@@ -86,10 +86,10 @@ bool VideoWidgetSurface::present(const QVideoFrame &frame)
 //! [5]
 void VideoWidgetSurface::updateVideoRect()
 {
-    QSize size = zoomRect.isValid() ? zoomRect.size() : surfaceFormat().sizeHint();
-    const Qt::AspectRatioMode mode = zoomRect.isValid()
-            ? Qt::KeepAspectRatio
-            : Qt::KeepAspectRatioByExpanding;
+    QSize size = zoomRect.isValid() ? zoomRect.size() : sourceRect.size();
+    if (size.isEmpty())
+        size = surfaceFormat().sizeHint();
+    const Qt::AspectRatioMode mode = Qt::KeepAspectRatioByExpanding;
     size.scale(widget->size(), mode);
     targetRect = QRect(QPoint(0, 0), size);
     targetRect.moveCenter(widget->rect().center());

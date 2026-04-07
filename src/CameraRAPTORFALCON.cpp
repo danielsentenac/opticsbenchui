@@ -78,9 +78,9 @@ CameraRAPTORFALCON::CameraRAPTORFALCON()
   snapshot32 = nullptr;
   suspend = true;
   has_started = false;
-  mutex = new QMutex(QMutex::NonRecursive);
-  snapshotMutex = new QMutex(QMutex::Recursive);
-  acquireMutex = new QMutex(QMutex::Recursive);
+  mutex = new QMutex();
+  snapshotMutex = new QRecursiveMutex();
+  acquireMutex = new QRecursiveMutex();
   acqstart = new QWaitCondition();
   acqend = new QWaitCondition();
   modeCheckEnabled = true;

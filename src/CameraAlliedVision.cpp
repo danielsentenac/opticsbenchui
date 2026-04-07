@@ -118,9 +118,9 @@ CameraAlliedVision::CameraAlliedVision()
   snapshot32 = nullptr;
   suspend = true;
   has_started = false;
-  mutex = new QMutex(QMutex::NonRecursive);
-  snapshotMutex = new QMutex(QMutex::Recursive);
-  acquireMutex = new QMutex(QMutex::Recursive);
+  mutex = new QMutex();
+  snapshotMutex = new QRecursiveMutex();
+  acquireMutex = new QRecursiveMutex();
   acqstart = new QWaitCondition();
   acqend = new QWaitCondition();
   id = 0;
@@ -714,7 +714,6 @@ CameraAlliedVision::connectCamera() {
   snapshot32 = (int*)malloc( sizeof(int) * width * height);
 
   image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
-  buffer = nullptr;
   image->setColorTable(*table);
   
   // Setup camera frames and start capture
@@ -774,11 +773,11 @@ CameraAlliedVision::acquireImage() {
   // Lock the acquisition
   snapshotMutex->lock();
   usleep(10000);
-  buffer = frameObs->GetImage();
-  while ( buffer == nullptr) {
+  uchar *frameBuffer = frameObs->GetImage();
+  while ( frameBuffer == nullptr) {
       QLOG_DEBUG() << "BUFFER IS nullptr...ACQUIRE ";
       usleep(10000);
-      buffer = frameObs->GetImage();
+      frameBuffer = frameObs->GetImage();
   }
   QLOG_DEBUG() << "GETIMAGE DONE "; 
   
@@ -787,18 +786,19 @@ CameraAlliedVision::acquireImage() {
      min = 255;
      avg = 0;
      for (int i = 0; i < height*width; i++) {
-       if (buffer[i] < min) {
-          min = buffer[i];
+       if (frameBuffer[i] < min) {
+          min = frameBuffer[i];
        }
-       else if (buffer[i] > max) {
-          max = buffer[i];
+       else if (frameBuffer[i] > max) {
+          max = frameBuffer[i];
        }
-       avg+=buffer[i];
+       avg+=frameBuffer[i];
      }
      avg = (int) (avg / (width * height));
      QLOG_DEBUG() << "min = " << min;
      QLOG_DEBUG() << "max = " << max;
      QLOG_DEBUG() << "avg = " << avg;
+     memcpy(buffer, frameBuffer, width * height * sizeof(uchar));
      snapshotMutex->unlock();
   /*if (vflip) {
       buffer = reversebytes(buffer,height * width);

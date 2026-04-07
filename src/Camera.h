@@ -177,9 +177,9 @@ class Camera : public QThread
   /// General mutex for camera operations.
   QMutex *mutex = nullptr;
   /// Mutex for snapshot operations.
-  QMutex *snapshotMutex = nullptr;
+  QRecursiveMutex *snapshotMutex = nullptr;
   /// Mutex for acquisition operations.
-  QMutex *acquireMutex = nullptr;
+  QRecursiveMutex *acquireMutex = nullptr;
   /// Wait condition for acquisition start.
   QWaitCondition *acqstart = nullptr;
   /// Wait condition for acquisition end.

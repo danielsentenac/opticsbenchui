@@ -237,9 +237,9 @@ CameraUSB::CameraUSB()
 #endif
     suspend = true;
     has_started = false;
-    mutex = new QMutex(QMutex::NonRecursive);
-    snapshotMutex = new QMutex(QMutex::Recursive);
-    acquireMutex = new QMutex(QMutex::Recursive);
+    mutex = new QMutex();
+    snapshotMutex = new QRecursiveMutex();
+    acquireMutex = new QRecursiveMutex();
     acqstart = new QWaitCondition();
     acqend = new QWaitCondition();
     frameAvailable = false;
@@ -346,9 +346,7 @@ int CameraUSB::findCamera()
 #else
     for (const QCameraDevice &device : cameras) {
         cameralist.push_back(new QCameraDevice(device));
-        const QString vendor = device.manufacturer().isEmpty()
-                                   ? QStringLiteral("USB")
-                                   : device.manufacturer();
+        const QString vendor = QStringLiteral("USB");
         const QString model = device.description().isEmpty()
                                   ? QStringLiteral("Camera")
                                   : device.description();
@@ -389,9 +387,7 @@ void CameraUSB::setCamera(void *_camera, int _id)
     if (_camera != nullptr) {
         const QCameraDevice *device = static_cast<QCameraDevice *>(_camera);
         camera = new QCamera(*device);
-        vendor = device->manufacturer().isEmpty()
-                     ? QStringLiteral("USB")
-                     : device->manufacturer();
+        vendor = QStringLiteral("USB");
         model = device->description().isEmpty()
                     ? QStringLiteral("Camera")
                     : device->description();
@@ -401,9 +397,7 @@ void CameraUSB::setCamera(void *_camera, int _id)
             return;
         }
         camera = new QCamera(cameras[_id]);
-        vendor = cameras[_id].manufacturer().isEmpty()
-                     ? QStringLiteral("USB")
-                     : cameras[_id].manufacturer();
+        vendor = QStringLiteral("USB");
         model = cameras[_id].description().isEmpty()
                     ? QStringLiteral("Camera")
                     : cameras[_id].description();
