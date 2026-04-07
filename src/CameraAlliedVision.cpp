@@ -671,7 +671,7 @@ CameraAlliedVision::findCamera() {
   err = camera->Open(VmbAccessModeFull);
 
   if ( err != VmbErrorSuccess ) {
-    QLOG_ERROR() << "Error opening ALLIEDVISION camera : error=" << QString(err);
+    QLOG_ERROR() << "Error opening ALLIEDVISION camera : error=" << static_cast<int>(err);
     sys.Shutdown();
     return -1;
   }
