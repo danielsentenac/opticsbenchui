@@ -25,6 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 MotorControlWidget::MotorControlWidget(QVector<QString>  *_actuatorList)
  
 {
+  motor = NULL;
+  timer = NULL;
   actuatorList = _actuatorList;
   
   QGridLayout *layout = new QGridLayout(this);
@@ -38,6 +40,9 @@ MotorControlWidget::MotorControlWidget(QVector<QString>  *_actuatorList)
   connect( absButton, SIGNAL(clicked()), this, SLOT(moveAbsolute()));
   stopButton= new  QPushButton("Stop");
   connect( stopButton, SIGNAL(clicked()), this, SLOT(stopMotor()));
+  defineHomeButton = new QPushButton("Define Home");
+  defineHomeButton->setEnabled(false);
+  connect(defineHomeButton, SIGNAL(clicked()), this, SLOT(defineHome()));
   to_position = new QLineEdit();
   to_position->setFixedWidth(150);
   to_positionLabel = new QLabel("Go to position");
@@ -46,11 +51,13 @@ MotorControlWidget::MotorControlWidget(QVector<QString>  *_actuatorList)
   cur_position->setFixedWidth(150);
   actuatorCombo = new QComboBox();
   actuatorCombo->setFixedWidth(150);
+  connect(actuatorCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateCapabilities()));
   descriptionLabel = new QLabel();
   
   layout->addWidget(connectButton,0,0,1,1);
   layout->addWidget(actuatorCombo,0,1,1,1);
   layout->addWidget(descriptionLabel,0,2,1,3);
+  layout->addWidget(defineHomeButton,1,2,1,1);
   layout->addWidget(forwardButton,2,2,1,1);
   layout->addWidget(backwardButton,3,2,1,1);
   layout->addWidget(absButton,4,2,1,1);
@@ -92,12 +99,14 @@ MotorControlWidget::setActuatorList(QVector<QString>  *_actuatorList) {
   actuatorCombo->clear();
   for (int i = 0 ; i < actuatorList->size(); i++)
     actuatorCombo->addItem(actuatorList->at(i));
+  updateCapabilities();
 }
 void
 MotorControlWidget::connectMotor() {
   QString actuator;
   actuator = actuatorCombo->itemText(actuatorCombo->currentIndex());
   motor->connectMotor(actuator);
+  updateCapabilities();
 }
 void
 MotorControlWidget::moveForward() {
@@ -131,6 +140,18 @@ MotorControlWidget::stopMotor() {
   motor->stopMotor(actuator);
   timer->start(100);
 }
+void
+MotorControlWidget::defineHome() {
+  if (!motor) {
+    return;
+  }
+  const QString actuator = actuatorCombo->itemText(actuatorCombo->currentIndex());
+  if (actuator.isEmpty()) {
+    return;
+  }
+  motor->defineHome(actuator);
+  updateCapabilities();
+}
 void 
 MotorControlWidget::getDescription(QString description) {
   descriptionLabel->setText(tr("Connected to : %1").arg(description));
@@ -149,4 +170,17 @@ void MotorControlWidget::refreshCurrentPosition() {
     return;
   }
   motor->refreshPositionFromDb(actuator);
+  updateCapabilities();
+}
+
+void MotorControlWidget::updateCapabilities() {
+  if (!defineHomeButton) {
+    return;
+  }
+  if (!motor || !actuatorCombo) {
+    defineHomeButton->setEnabled(false);
+    return;
+  }
+  const QString actuator = actuatorCombo->itemText(actuatorCombo->currentIndex());
+  defineHomeButton->setEnabled(!actuator.isEmpty() && motor->canDefineHome(actuator));
 }

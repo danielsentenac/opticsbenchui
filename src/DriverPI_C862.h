@@ -90,6 +90,8 @@ class DriverPI_C862 : public Driver
     virtual int MoveAbs(string actuatorSetting, float absPos, int unit) const;
     /// Stop the actuator.
     virtual int Stop(string actuatorSetting) const;
+    /// Define the current actuator position as home.
+    virtual int DefineHome(string actuatorSetting) const;
     /// Check whether the last operation has completed.
     virtual int OperationComplete(
                      string& rstateData,
@@ -103,6 +105,8 @@ class DriverPI_C862 : public Driver
                             float valueToConvert, 
                             float& rconvertedValue,
                             float& rrange) const;
+    /// Report whether the driver supports defining the current position as home.
+    virtual bool SupportsDefineHome() const { return true; }
 
   protected : 
     /// Serial buffer size.
