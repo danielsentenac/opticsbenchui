@@ -378,6 +378,34 @@ int DriverPI_C862::Stop(string actuatorSetting) const
 }
 
 //
+// DefineHome implementation
+//
+// 1. send "DH<CR>" to define the current position as zero
+//
+int DriverPI_C862::DefineHome(string actuatorSetting) const
+{
+  QLOG_DEBUG() << "DriverPI_C862::DefineHome";
+
+  (void)actuatorSetting;
+
+  string command = "DH\r";
+
+  if (SendAddressCode() != 0) {
+    QLOG_DEBUG() << "Could not send address code";
+    return -1;
+  }
+
+  if (_pcommChannel->Write(command,NULL) < (int)command.length()) {
+    ReportCommError(QString("Unable to write to port, command %1")
+                    .arg(QString(command.c_str())));
+    return -1;
+  }
+
+  _originOffset = 0.;
+  return 0;
+}
+
+//
 // OperationComplete implementation
 //
 // 1. send "TS<CR>" to retrieve the status

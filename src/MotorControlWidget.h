@@ -60,6 +60,8 @@ class MotorControlWidget : public QWidget
   void moveAbsolute();
   /// Stop the motor.
   void stopMotor();
+  /// Define the current position as home.
+  void defineHome();
   /// Update the current position display.
   /// \param position Current position.
   void getPosition(float position);
@@ -70,6 +72,8 @@ class MotorControlWidget : public QWidget
   void stopTimer();
   /// Refresh current position from DB after external updates.
   void refreshCurrentPosition();
+  /// Refresh driver-dependent control availability.
+  void updateCapabilities();
 
  private:
 
@@ -79,6 +83,7 @@ class MotorControlWidget : public QWidget
   QPushButton *backwardButton;
   QPushButton *absButton;
   QPushButton *stopButton;
+  QPushButton *defineHomeButton;
   QLineEdit   *to_position;
   QLabel      *to_positionLabel;
   QLabel      *cur_positionLabel;

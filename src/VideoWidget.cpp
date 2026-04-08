@@ -55,7 +55,7 @@ void VideoWidget::paintEvent(QPaintEvent *event)
     }
     // Draw rubber-band selection rectangle
     if (isSelecting) {
-        QRect selRect = QRect(selectionStart, selectionEnd).normalized();
+        const QRect selRect = selectionRect();
         painter.setPen(QPen(Qt::white, 1, Qt::DashLine));
         painter.setBrush(QColor(255, 255, 255, 30));
         painter.drawRect(selRect);
@@ -81,6 +81,20 @@ QPointF VideoWidget::widgetToImage(const QPoint &pt) const
     QPointF result(src.x() + relX * src.width(), src.y() + relY * src.height());
     result.setX(qBound(src.left(), result.x(), src.right()));
     result.setY(qBound(src.top(), result.y(), src.bottom()));
+    return result;
+}
+
+QPointF VideoWidget::imageToWidget(const QPointF &pt) const
+{
+    const QRect tgt = surface->videoRect();
+    if (tgt.width() == 0 || tgt.height() == 0)
+        return QPointF();
+    const QRectF src = zoomRect.isValid() ? zoomRect : QRectF(surface->getSourceRect());
+    const float relX = (pt.x() - src.x()) / static_cast<float>(src.width());
+    const float relY = (pt.y() - src.y()) / static_cast<float>(src.height());
+    QPointF result(tgt.x() + relX * tgt.width(), tgt.y() + relY * tgt.height());
+    result.setX(qBound(static_cast<qreal>(tgt.left()), result.x(), static_cast<qreal>(tgt.right())));
+    result.setY(qBound(static_cast<qreal>(tgt.top()), result.y(), static_cast<qreal>(tgt.bottom())));
     return result;
 }
 
@@ -141,7 +155,7 @@ void VideoWidget::paintEvent(QPaintEvent *event)
 
     // Draw rubber-band selection rectangle
     if (isSelecting) {
-        QRect selRect = QRect(selectionStart, selectionEnd).normalized();
+        const QRect selRect = selectionRect();
         painter.setPen(QPen(Qt::white, 1, Qt::DashLine));
         painter.setBrush(QColor(255, 255, 255, 30));
         painter.drawRect(selRect);
@@ -163,10 +177,9 @@ void VideoWidget::updateVideoRect()
 
     QSize size;
     if (zoomRect.isValid()) {
-        // Maintain the zoom region's aspect ratio without cropping
         size = QSize(static_cast<int>(zoomRect.width()),
                      static_cast<int>(zoomRect.height()));
-        size.scale(this->size(), Qt::KeepAspectRatio);
+        size.scale(this->size(), Qt::KeepAspectRatioByExpanding);
     } else {
         size = currentImage.size();
         size.scale(this->size(), Qt::KeepAspectRatioByExpanding);
@@ -188,6 +201,20 @@ QPointF VideoWidget::widgetToImage(const QPoint &pt) const
     return result;
 }
 
+QPointF VideoWidget::imageToWidget(const QPointF &pt) const
+{
+    if (currentImage.isNull() || targetRect.width() == 0 || targetRect.height() == 0)
+        return QPointF();
+    const QRectF src = zoomRect.isValid() ? zoomRect : QRectF(currentImage.rect());
+    const float relX = (pt.x() - src.x()) / static_cast<float>(src.width());
+    const float relY = (pt.y() - src.y()) / static_cast<float>(src.height());
+    QPointF result(targetRect.x() + relX * targetRect.width(),
+                   targetRect.y() + relY * targetRect.height());
+    result.setX(qBound(static_cast<qreal>(targetRect.left()), result.x(), static_cast<qreal>(targetRect.right())));
+    result.setY(qBound(static_cast<qreal>(targetRect.top()), result.y(), static_cast<qreal>(targetRect.bottom())));
+    return result;
+}
+
 void VideoWidget::applyZoom()
 {
     updateVideoRect();
@@ -195,6 +222,27 @@ void VideoWidget::applyZoom()
 }
 
 #endif
+
+QRect VideoWidget::selectionRect() const
+{
+    const QRectF imageRect = selectionImageRect();
+    if (!imageRect.isValid())
+        return QRect();
+    return QRect(imageToWidget(imageRect.topLeft()).toPoint(),
+                 imageToWidget(imageRect.bottomRight()).toPoint()).normalized();
+}
+
+QRectF VideoWidget::selectionImageRect() const
+{
+    const QPointF imageStart = widgetToImage(selectionStart);
+    const QPointF imageEnd = widgetToImage(selectionEnd);
+    const qreal deltaX = imageEnd.x() - imageStart.x();
+    const qreal deltaY = imageEnd.y() - imageStart.y();
+    const qreal side = qMin(qAbs(deltaX), qAbs(deltaY));
+    const qreal endX = imageStart.x() + (deltaX < 0 ? -side : side);
+    const qreal endY = imageStart.y() + (deltaY < 0 ? -side : side);
+    return QRectF(imageStart, QPointF(endX, endY)).normalized();
+}
 
 // ---------------------------------------------------------------------------
 // Mouse events – shared by both Qt5 and Qt6 paths
@@ -225,16 +273,11 @@ void VideoWidget::mouseReleaseEvent(QMouseEvent *event)
         isSelecting = false;
         selectionEnd = event->pos();
 
-        const QRect selRect = QRect(selectionStart, selectionEnd).normalized();
-        if (selRect.width() > 5 && selRect.height() > 5) {
-            const QPointF imgTL = widgetToImage(selRect.topLeft());
-            const QPointF imgBR = widgetToImage(selRect.bottomRight());
-            QRectF newZoom = QRectF(imgTL, imgBR).normalized();
-            if (newZoom.width() > 4 && newZoom.height() > 4) {
-                zoomRect = newZoom;
-                applyZoom();
-                return;
-            }
+        const QRectF newZoom = selectionImageRect();
+        if (newZoom.width() > 4 && newZoom.height() > 4) {
+            zoomRect = newZoom;
+            applyZoom();
+            return;
         }
         update();
     }

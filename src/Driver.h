@@ -215,6 +215,11 @@ class Driver
     /// \param buffer Command buffer.
     /// \param rply Output reply string.
     virtual int SendGeneralCommand(char* buffer,string& rply) const ;
+    /// Define the current actuator position as home (position 0).
+    /// \param actuatorSetting Settings string for the targeted actuator.
+    virtual int DefineHome(string actuatorSetting) const { return -1; }
+    /// Report whether the driver supports defining the current position as home.
+    virtual bool SupportsDefineHome() const { return false; }
     /// Optional shutdown hook; default is no-op.
     /// \param actuatorSetting Settings string for shutdown.
     virtual int Exit(string actuatorSetting){ return 0; }

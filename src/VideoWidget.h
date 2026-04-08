@@ -68,8 +68,14 @@ private:
     bool isSelecting = false;
     QPoint selectionStart;
     QPoint selectionEnd;
+    /// Return the current rubber-band selection mapped back to widget space.
+    QRect selectionRect() const;
+    /// Return the current rubber-band selection constrained to a square in image space.
+    QRectF selectionImageRect() const;
     /// Map a widget-space point to image-space coordinates given current zoom.
     QPointF widgetToImage(const QPoint &pt) const;
+    /// Map an image-space point back to widget coordinates given current zoom.
+    QPointF imageToWidget(const QPointF &pt) const;
     /// Commit the current zoomRect to the display.
     void applyZoom();
 };

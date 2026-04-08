@@ -67,6 +67,9 @@ class Motor : public QObject
   /// Stop the current actuator motion.
   /// \param newactuator Actuator identifier from the database.
   void  stopMotor(QString newactuator);
+  /// Define the current actuator position as home (position 0).
+  /// \param newactuator Actuator identifier from the database.
+  void  defineHome(QString newactuator);
   /// Set the path to the motor database.
   /// \param _path Filesystem path to the motor SQLite DB.
   void  setDbPath(QString _path);
@@ -82,6 +85,9 @@ class Motor : public QObject
   /// Refresh cached position from the DB.
   /// \param newactuator Actuator identifier from the database.
   void refreshPositionFromDb(QString newactuator);
+  /// Return whether the connected actuator supports defining the current position as home.
+  /// \param newactuator Actuator identifier from the database.
+  bool canDefineHome(QString newactuator) const;
   
   // parameters
   /// Per-actuator completion flags.

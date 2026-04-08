@@ -375,6 +375,50 @@ Motor::stopMotor(QString newactuator) {
     } 
   }
 }
+void
+Motor::defineHome(QString newactuator) {
+  for (int i = 0 ; i < actuator.size(); i++) {
+    if (actuator.at(i) != newactuator) {
+      continue;
+    }
+    if (!connectSuccess.at(i)) {
+      Utils::EmitWarning(this, __FUNCTION__,
+                         tr("Connect %1 before defining home").arg(newactuator));
+      return;
+    }
+    if (!actuatorDriver.at(i) || !actuatorDriver.at(i)->SupportsDefineHome()) {
+      Utils::EmitWarning(this, __FUNCTION__,
+                         tr("%1 does not support Define Home").arg(newactuator));
+      return;
+    }
+    if (actuatorDriver.at(i)->DefineHome(actuatorSettings.at(i).toStdString()) != 0) {
+      Utils::EmitWarning(this, __FUNCTION__,
+                         tr("Could not define home for %1").arg(newactuator));
+      return;
+    }
+
+    position.replace(i, 0.f);
+    QString positionQString;
+    positionQString.setNum(position.at(i), 'f', 3);
+    emit getPosition(position.at(i));
+
+    QSqlDatabase db = connectDb(path);
+    QSqlQuery query(db);
+    query.prepare("update motor_actuator set position = ? where name = ?");
+    query.addBindValue(positionQString);
+    query.addBindValue(actuator.at(i));
+    if (!query.exec()) {
+      QLOG_WARN() << "Motor::defineHome> " << query.lastError().text();
+      return;
+    }
+
+    emit dbPositionUpdated();
+    return;
+  }
+
+  Utils::EmitWarning(this, __FUNCTION__,
+                     tr("Cannot find connected actuator %1").arg(newactuator));
+}
 float
 Motor::getPosition(QString newactuator) {
   float actuposition = 0;
@@ -440,6 +484,17 @@ Motor::refreshPositionFromDb(QString newactuator) {
       return;
     }
   }
+}
+bool
+Motor::canDefineHome(QString newactuator) const {
+  for (int i = 0 ; i < actuator.size(); i++) {
+    if (actuator.at(i) == newactuator) {
+      return connectSuccess.at(i) &&
+             actuatorDriver.at(i) &&
+             actuatorDriver.at(i)->SupportsDefineHome();
+    }
+  }
+  return false;
 }
 int 
 Motor::getOperationComplete(QString newactuator) {
