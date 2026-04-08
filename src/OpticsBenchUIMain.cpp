@@ -23,12 +23,48 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "OpticsBenchUIMain.h"
 #include "Utils.h"
 #include <QDesktopServices>
+#include <QFile>
 #include <QUrl>
 #include <QScreen>
 #include <QGuiApplication>
 #include <functional>
 
 namespace {
+QString resolveResourceRoot(const QString &startDir)
+{
+  const auto findFrom = [](const QString &root) -> QString {
+    QDir candidate(root);
+    while (true) {
+      if (QFile::exists(candidate.filePath("docs/help/OpticsBenchUIColl.qhc"))) {
+        return candidate.absolutePath();
+      }
+      if (!candidate.cdUp()) {
+        break;
+      }
+    }
+    return QString();
+  };
+
+  const QString binaryCandidate = findFrom(startDir);
+  if (!binaryCandidate.isEmpty()) {
+    return binaryCandidate;
+  }
+
+  const QString currentCandidate = findFrom(QDir::currentPath());
+  if (!currentCandidate.isEmpty()) {
+    return currentCandidate;
+  }
+
+#ifdef OPTICSBENCHUI_SOURCE_ROOT
+  const QString sourceRoot = QString::fromLatin1(OPTICSBENCHUI_SOURCE_ROOT);
+  if (QFile::exists(QDir(sourceRoot).filePath("docs/help/OpticsBenchUIColl.qhc"))) {
+    return sourceRoot;
+  }
+#endif
+
+  return startDir;
+}
+
 template <typename CameraType>
 void setupCameraManager(Camera *&manager,
                         const QString &label,
@@ -812,10 +848,13 @@ int main(int argc, char *argv[])
   QLOG_INFO() << "Built with Qt" << QT_VERSION_STR << "running on" << qVersion();
   QLOG_INFO() << "Qt User Data location : " 
               << QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation); 
+  const QString binaryDir = app.applicationDirPath();
+  const QString resourceRoot = resolveResourceRoot(binaryDir);
   QLOG_INFO() << "OpticsBenchUI version " << OPTICSBENCHUIVERSION
-              << " started : " <<  app.applicationDirPath();
+              << " started : " <<  binaryDir;
+  QLOG_INFO() << "OpticsBenchUI resource root : " << resourceRoot;
   OpticsBenchUIMain* OpticsBenchUI =
-      new OpticsBenchUIMain(app.applicationDirPath(), nullptr, Qt::Window);
+      new OpticsBenchUIMain(resourceRoot, nullptr, Qt::Window);
   OpticsBenchUI->setWindowTitle(QString("OpticsBenchUI v%1").arg(QString::fromLatin1(OPTICSBENCHUIVERSION)));
   OpticsBenchUI->show();
   foreach (const QString &path, app.libraryPaths())
