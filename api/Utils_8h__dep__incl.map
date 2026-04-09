@@ -1,0 +1,47 @@
+<map id="Utils.h" name="Utils.h">
+<area shape="rect" id="node1" title="Utility helpers." alt="" coords="2396,5,2477,37"/>
+<area shape="rect" id="node2" href="$ACCom_8cpp.html" title="AC communication backend for AC Com." alt="" coords="5,85,135,117"/>
+<area shape="rect" id="node3" href="$AcquisitionThread_8cpp.html" title="Acquisition worker thread." alt="" coords="915,245,1142,277"/>
+<area shape="rect" id="node4" href="$AcquisitionWidget_8cpp.html" title="Acquisition widget." alt="" coords="556,325,784,357"/>
+<area shape="rect" id="node5" href="$AnalysisWidget_8cpp.html" title="Analysis widget." alt="" coords="2500,85,2704,117"/>
+<area shape="rect" id="node6" href="$CameraAlliedVision_8cpp.html" title="Camera backend for Allied Vision." alt="" coords="2729,85,2969,117"/>
+<area shape="rect" id="node7" href="$CameraControlWidget_8cpp.html" title="Camera backend for Control Widget." alt="" coords="2993,85,3259,117"/>
+<area shape="rect" id="node8" href="$CameraGiGE_8cpp.html" title="Camera backend for Gi GE." alt="" coords="3283,85,3462,117"/>
+<area shape="rect" id="node9" href="$CameraIEEE1394_8cpp.html" title="Camera backend for IEEE 1394." alt="" coords="3486,85,3710,117"/>
+<area shape="rect" id="node10" href="$CameraNeo_8cpp.html" title="Camera backend for Neo." alt="" coords="3734,85,3905,117"/>
+<area shape="rect" id="node11" href="$CameraRAPTORFALCON_8cpp.html" title="Camera backend for RAPTORFALCON." alt="" coords="3929,85,4211,117"/>
+<area shape="rect" id="node12" href="$CameraRAPTORNINOX640_8cpp.html" title="Camera backend for RAPTORNINOX 640." alt="" coords="4236,85,4541,117"/>
+<area shape="rect" id="node13" href="$CameraRaspi_8cpp.html" title="Camera backend for Raspi." alt="" coords="4565,85,4751,117"/>
+<area shape="rect" id="node14" href="$CameraUSB_8cpp.html" title="Camera backend for USB." alt="" coords="4775,85,4949,117"/>
+<area shape="rect" id="node15" href="$CameraZyla_8cpp.html" title="Camera backend for Zyla." alt="" coords="4973,85,5148,117"/>
+<area shape="rect" id="node16" href="$ComediCounter_8cpp.html" title="Comedi Counter source file." alt="" coords="261,165,465,197"/>
+<area shape="rect" id="node17" href="$ComediCounter_8h.html" title="Comedi Counter source file." alt="" coords="272,85,455,117"/>
+<area shape="rect" id="node20" href="$OpticsBenchUIMain_8cpp.html" title="Main application window." alt="" coords="1973,405,2215,437"/>
+<area shape="rect" id="node21" href="$ComediDac_8cpp.html" title="Comedi Dac source file." alt="" coords="1257,165,1424,197"/>
+<area shape="rect" id="node22" href="$ComediDac_8h.html" title="Comedi Dac source file." alt="" coords="1268,85,1413,117"/>
+<area shape="rect" id="node23" href="$ComediWindow_8cpp.html" title="Comedi window." alt="" coords="5172,85,5376,117"/>
+<area shape="rect" id="node24" href="$DacAdvantech_8cpp.html" title="Dac Advantech source file." alt="" coords="1966,165,2161,197"/>
+<area shape="rect" id="node25" href="$DacAdvantech_8h.html" title="Dac Advantech source file." alt="" coords="1897,85,2070,117"/>
+<area shape="rect" id="node26" href="$DacWindow_8cpp.html" title="Dac window." alt="" coords="5400,85,5569,117"/>
+<area shape="rect" id="node27" href="$Driver_8cpp.html" title="Driver implementation for ." alt="" coords="5594,85,5711,117"/>
+<area shape="rect" id="node28" href="$Motor_8cpp.html" title="Motor device interface." alt="" coords="489,165,603,197"/>
+<area shape="rect" id="node29" href="$Motor_8h.html" title="Motor device interface." alt="" coords="745,85,835,117"/>
+<area shape="rect" id="node35" href="$MotorWindow_8cpp.html" title="Motor window." alt="" coords="1809,325,1995,357"/>
+<area shape="rect" id="node36" href="$RaspiDac_8cpp.html" title="Raspi Dac source file." alt="" coords="2236,165,2384,197"/>
+<area shape="rect" id="node37" href="$RaspiDac_8h.html" title="Raspi Dac source file." alt="" coords="2145,85,2272,117"/>
+<area shape="rect" id="node38" href="$RaspiWindow_8cpp.html" title="Raspi window." alt="" coords="5736,85,5921,117"/>
+<area shape="rect" id="node39" href="$SuperK_8cpp.html" title="Super K device interface." alt="" coords="1761,165,1891,197"/>
+<area shape="rect" id="node40" href="$SuperK_8h.html" title="Super K device interface." alt="" coords="1565,85,1671,117"/>
+<area shape="rect" id="node44" href="$SuperKWindow_8cpp.html" title="Super K window." alt="" coords="2027,325,2228,357"/>
+<area shape="rect" id="node45" href="$Utils_8cpp.html" title="Utility helpers." alt="" coords="5945,85,6048,117"/>
+<area shape="rect" id="node18" href="$OpticsBenchUIMain_8h.html" title="Main application window." alt="" coords="1303,325,1525,357"/>
+<area shape="rect" id="node19" href="$CameraWindow_8cpp.html" title="Camera backend for Window." alt="" coords="1311,405,1517,437"/>
+<area shape="rect" id="node30" href="$AcquisitionThread_8h.html" title="Acquisition worker thread." alt="" coords="977,165,1182,197"/>
+<area shape="rect" id="node32" href="$MotorControlWidget_8h.html" title="Motor control widget." alt="" coords="678,165,902,197"/>
+<area shape="rect" id="node31" href="$AcquisitionWidget_8h.html" title="Acquisition widget." alt="" coords="1167,245,1373,277"/>
+<area shape="rect" id="node33" href="$MotorControlWidget_8cpp.html" title="Motor control widget." alt="" coords="644,245,891,277"/>
+<area shape="rect" id="node34" href="$MotorWindow_8h.html" title="Motor window." alt="" coords="454,245,619,277"/>
+<area shape="rect" id="node41" href="$SuperKControlWidget_8h.html" title="Super K control widget." alt="" coords="1499,165,1737,197"/>
+<area shape="rect" id="node42" href="$SuperKControlWidget_8cpp.html" title="Super K control widget." alt="" coords="1499,245,1758,277"/>
+<area shape="rect" id="node43" href="$SuperKWindow_8h.html" title="Super K window." alt="" coords="1782,245,1961,277"/>
+</map>

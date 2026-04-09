@@ -1,0 +1,17 @@
+<map id="AcquisitionSequence.h" name="AcquisitionSequence.h">
+<area shape="rect" id="node1" title="Acquisition sequence model." alt="" coords="206,5,438,37"/>
+<area shape="rect" id="node2" title=" " alt="" coords="17,85,136,117"/>
+<area shape="rect" id="node3" title=" " alt="" coords="161,85,243,117"/>
+<area shape="rect" id="node4" title=" " alt="" coords="267,85,377,117"/>
+<area shape="rect" id="node5" href="$FileParser_8h.html" title="Acquisition file parser." alt="" coords="401,85,528,117"/>
+<area shape="rect" id="node13" href="$QsLog_8h.html" title="Qs Log logging support." alt="" coords="717,165,815,197"/>
+<area shape="rect" id="node6" href="$PosixCompat_8h.html" title=" " alt="" coords="39,165,199,197"/>
+<area shape="rect" id="node9" title=" " alt="" coords="223,165,287,197"/>
+<area shape="rect" id="node10" title=" " alt="" coords="311,165,378,197"/>
+<area shape="rect" id="node11" title=" " alt="" coords="402,165,527,197"/>
+<area shape="rect" id="node12" title=" " alt="" coords="552,165,692,197"/>
+<area shape="rect" id="node7" title=" " alt="" coords="5,245,108,277"/>
+<area shape="rect" id="node8" title=" " alt="" coords="133,245,231,277"/>
+<area shape="rect" id="node14" title=" " alt="" coords="657,245,755,277"/>
+<area shape="rect" id="node15" title=" " alt="" coords="779,245,873,277"/>
+</map>

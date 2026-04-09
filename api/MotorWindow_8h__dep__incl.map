@@ -1,0 +1,7 @@
+<map id="MotorWindow.h" name="MotorWindow.h">
+<area shape="rect" id="node1" title="Motor window." alt="" coords="129,5,295,37"/>
+<area shape="rect" id="node2" href="$MotorWindow_8cpp.html" title="Motor window." alt="" coords="5,85,192,117"/>
+<area shape="rect" id="node3" href="$OpticsBenchUIMain_8h.html" title="Main application window." alt="" coords="216,85,437,117"/>
+<area shape="rect" id="node4" href="$CameraWindow_8cpp.html" title="Camera backend for Window." alt="" coords="98,165,305,197"/>
+<area shape="rect" id="node5" href="$OpticsBenchUIMain_8cpp.html" title="Main application window." alt="" coords="329,165,572,197"/>
+</map>
