@@ -69,6 +69,9 @@ class SuperK : public QObject
   /// Return nonzero when the driver operation is complete.
   /// \param newdriver Driver identifier from the database.
   int   getOperationComplete(QString newdriver);
+  /// Return whether the driver is currently connected and usable.
+  /// \param newdriver Driver identifier from the database.
+  bool isConnected(QString newdriver) const;
   /// Read current power setting.
   /// \param newdriver Driver identifier from the database.
   int   getPower(QString newdriver);

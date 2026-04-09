@@ -141,6 +141,7 @@ protected:
 
 private:
   bool shouldStop() const;
+  void abortAcquisition(const QString& message);
   /// Execute one acquisition sequence.
   /// \param sequence Sequence to execute.
   void execute(AcquisitionSequence *sequence);
@@ -190,6 +191,8 @@ private:
   bool filesuccess;
   bool treatmentsuccess;
   bool suspend;
+  bool abortedByError;
+  QString abortReason;
   QString activeMotorName;
 
   // Data File

@@ -330,6 +330,18 @@ SuperK::getOperationComplete(QString newdriver)
   }
   return status;
 }
+
+bool
+SuperK::isConnected(QString newdriver) const
+{
+  for (int i = 0; i < driver.size(); i++) {
+    if (driver.at(i) == newdriver) {
+      return connectSuccess.at(i);
+    }
+  }
+  return false;
+}
+
 void
 SuperK::operationComplete() 
 {
@@ -343,6 +355,11 @@ SuperK::operationComplete()
 	iscompleting = true;
 	success = driverSuperK.at(i)->operationComplete();
         QLOG_DEBUG() << "SuperK::operationComplete success:" << success;
+        if (success < 0) {
+          operationcomplete.replace(i, success);
+          iscompleting = false;
+          break;
+        }
         driverSuperK.at(i)->getPower(power);
         driverSuperK.at(i)->getNd(nd);
 	driverSuperK.at(i)->getSwp(swp);

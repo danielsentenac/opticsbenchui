@@ -507,6 +507,17 @@ Motor::getOperationComplete(QString newactuator) {
   }
   return status;
 }
+
+bool
+Motor::isConnected(QString newactuator) const {
+  for (int i = 0; i < actuator.size(); i++) {
+    if (actuator.at(i) == newactuator) {
+      return connectSuccess.at(i);
+    }
+  }
+  return false;
+}
+
 void
 Motor::operationComplete() {
   
@@ -524,6 +535,11 @@ Motor::operationComplete() {
 	success = actuatorDriver.at(i)->OperationComplete(stateData,
 							  actuatorSettings.at(i).toStdString(),
 							  limitSwitch);
+        if (success < 0) {
+          operationcomplete.replace(i, success);
+          iscompleting = false;
+          break;
+        }
 	posStatus = actuatorDriver.at(i)->GetPos(actuatorSettings.at(i).toStdString(),curpos);
 	if (posStatus == 0) {
 	  position.replace(i, curpos);

@@ -48,11 +48,13 @@ AcquisitionThread::AcquisitionThread(QObject* parent)
       filesuccess(false),
       treatmentsuccess(false),
       suspend(true),
+      abortedByError(false),
       file_id(0),
       ids(),
       status(0),
       filename(),
       filenumber(0),
+      abortReason(),
       activeMotorName() {}
 
 AcquisitionThread::~AcquisitionThread() {
@@ -128,6 +130,8 @@ void AcquisitionThread::stop() {
 void AcquisitionThread::run() {
   if (suspend) {
     suspend = false;
+    abortedByError = false;
+    abortReason.clear();
 
     /* create a new data File */
 #ifdef NO_HDF5
@@ -160,7 +164,15 @@ void AcquisitionThread::run() {
       sequence->etime = Utils::GetTimeMicroseconds();
       int cur_record = record;
       this->execute(sequence);
+      if (shouldStop()) {
+        stoppedEarly = true;
+        break;
+      }
       this->nextRecord(sequence, cur_record);
+      if (shouldStop()) {
+        stoppedEarly = true;
+        break;
+      }
       QLOG_DEBUG() << "AcquisitionThread::run> Start sequence " << sequence->seq_record;
       this->saveData(sequence, cur_record);
       if (sequence->settings.contains("ANALYSIS=START")) {
@@ -191,8 +203,13 @@ void AcquisitionThread::run() {
     QLOG_INFO() << "AcquisitionThread::run> stop Acquisition : "
                 << Utils::CurrentTimestampString();
     if (stoppedEarly) {
-      QLOG_INFO() << "AcquisitionThread::run> Stopped by user.";
-      emit showWarning("Stopped by user.");
+      if (abortedByError) {
+        QLOG_WARN() << "AcquisitionThread::run> Stopped after fatal error:"
+                    << abortReason;
+      } else {
+        QLOG_INFO() << "AcquisitionThread::run> Stopped by user.";
+        emit showWarning("Stopped by user.");
+      }
     }
     emit getAcquiring(record);
     filenumber++;
@@ -269,6 +286,18 @@ void AcquisitionThread::run() {
   suspend = true;
   QLOG_DEBUG() << "AcquisitionThread::run> End of thread";
 }
+
+void AcquisitionThread::abortAcquisition(const QString& message) {
+  if (abortedByError) {
+    return;
+  }
+  abortedByError = true;
+  abortReason = message;
+  QLOG_WARN() << "AcquisitionThread::abortAcquisition>" << message;
+  emit showWarning(message);
+  stop();
+}
+
 void AcquisitionThread::execute(AcquisitionSequence *sequence) {
   if (shouldStop()) {
     return;
@@ -284,7 +313,18 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
               << sequence->loopends;
   
   if (sequence->instrumentType == "MOTOR") {
+    if (!motor) {
+      sequence->status = false;
+      abortAcquisition("MOTOR is not configured");
+      return;
+    }
     motor->connectMotor(sequence->instrumentName);
+    if (!motor->isConnected(sequence->instrumentName)) {
+      sequence->status = false;
+      abortAcquisition(QString("Could not connect motor %1")
+                           .arg(sequence->instrumentName));
+      return;
+    }
     motor->updateDbPosition(sequence->instrumentName);
     activeMotorName = sequence->instrumentName;
     
@@ -304,7 +344,18 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       motor->moveAbsolute(sequence->instrumentName, motorValue);
     }
     // Wait for motor movement to be completed
-    while (motor->getOperationComplete(sequence->instrumentName) <= 0) {
+    while (!shouldStop()) {
+      const int motorStatus = motor->getOperationComplete(sequence->instrumentName);
+      if (motorStatus > 0) {
+        break;
+      }
+      if (motorStatus < 0) {
+        sequence->status = false;
+        activeMotorName.clear();
+        abortAcquisition(QString("Motor communication failed for %1")
+                             .arg(sequence->instrumentName));
+        return;
+      }
       if (shouldStop()) {
         motor->stopMotor(sequence->instrumentName);
         break;
@@ -330,7 +381,18 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     activeMotorName.clear();
   }
   else if (sequence->instrumentType == "SUPERK") {
+    if (!superk) {
+      sequence->status = false;
+      abortAcquisition("SUPERK is not configured");
+      return;
+    }
     superk->connectSuperK(sequence->instrumentName);
+    if (!superk->isConnected(sequence->instrumentName)) {
+      sequence->status = false;
+      abortAcquisition(QString("Could not connect SuperK %1")
+                           .arg(sequence->instrumentName));
+      return;
+    }
     if (sequence->superkPowerValue > -88888) {
       superk->setPower(sequence->instrumentName,
                        sequence->superkPowerValue * 10);
@@ -434,13 +496,32 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     }
     
     // Wait for superk to be completed
-    while (superk->getOperationComplete(sequence->instrumentName) <= 0) {
+    while (!shouldStop()) {
+      const int superkStatus = superk->getOperationComplete(sequence->instrumentName);
+      if (superkStatus > 0) {
+        break;
+      }
+      if (superkStatus < 0) {
+        sequence->status = false;
+        abortAcquisition(QString("SuperK communication failed for %1")
+                             .arg(sequence->instrumentName));
+        return;
+      }
       usleep(100);
       superk->operationComplete();
+    }
+    if (shouldStop()) {
+      sequence->status = false;
+      return;
     }
     sequence->status = true;
   }
   else if (sequence->instrumentType == "DAC") {
+    if (!dac) {
+      sequence->status = false;
+      abortAcquisition("DAC is not configured");
+      return;
+    }
     QLOG_INFO() << "AcquisitionThread::execute> connecting DAC ..." << sequence->instrumentName;
     dacsuccess = dac->connectDac(sequence->instrumentName);
     QLOG_INFO() << "AcquisitionThread::execute> DAC " << sequence->instrumentName
@@ -461,13 +542,17 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       }
     }
     sequence->status = dacsuccess;
+    if (!dacsuccess) {
+      abortAcquisition(QString("DAC operation failed for %1")
+                           .arg(sequence->instrumentName));
+      return;
+    }
     //emit getDacStatus(dacsuccess);
   }
   else if (sequence->instrumentType == "COMEDICOUNTER") {
     if (!comedicounter) {
-      Utils::EmitWarning(this, __FUNCTION__,
-                         "COMEDICOUNTER is not configured");
       sequence->status = false;
+      abortAcquisition("COMEDICOUNTER is not configured");
       return;
     }
     QLOG_INFO() << "AcquisitionThread::execute> connecting COMEDI COUNTER ..." << sequence->instrumentName
@@ -494,13 +579,17 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
                   << comedicountersuccess;
     }
     sequence->status = comedicountersuccess;
+    if (!comedicountersuccess) {
+      abortAcquisition(QString("COMEDICOUNTER operation failed for %1")
+                           .arg(sequence->instrumentName));
+      return;
+    }
     //emit getComediStatus(comedicountersuccess);
   }
   else if (sequence->instrumentType == "COMEDIDAC") {
     if (!comedidac) {
-      Utils::EmitWarning(this, __FUNCTION__,
-                         "COMEDIDAC is not configured");
       sequence->status = false;
+      abortAcquisition("COMEDIDAC is not configured");
       return;
     }
     QLOG_INFO() << "AcquisitionThread::execute> connecting COMEDI DAC ..." << sequence->instrumentName;
@@ -511,32 +600,36 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     if (comedidacsuccess == true) {
       if (sequence->dacRValue != 0) {
         double dacValue;
-        comedidacsuccess |=
+        comedidacsuccess &=
             comedidac->getComediValue(sequence->instrumentName,
                                       sequence->dacOutput, dacValue);
         dacValue += sequence->dacRValue;
-        comedidacsuccess |=
+        comedidacsuccess &=
             comedidac->setComediValue(sequence->instrumentName,
                                       sequence->dacOutput, (void*)&dacValue);
       }
       else {
-        comedidacsuccess |=
+        comedidacsuccess &=
             comedidac->setComediValue(sequence->instrumentName,
                                       sequence->comediOutput,
                                       (void*)&sequence->dacValue);
       }
-      comedidacsuccess |=
+      comedidacsuccess &=
           comedidac->getComediValue(sequence->instrumentName,
                                     sequence->dacOutput, sequence->dacValue);
     }
     sequence->status = comedidacsuccess;
+    if (!comedidacsuccess) {
+      abortAcquisition(QString("COMEDIDAC operation failed for %1")
+                           .arg(sequence->instrumentName));
+      return;
+    }
     //emit getComediStatus(comedidacsuccess);
   }
   else if (sequence->instrumentType == "RASPIDAC") {
     if (!raspidac) {
-      Utils::EmitWarning(this, __FUNCTION__,
-                         "RASPIDAC is not configured");
       sequence->status = false;
+      abortAcquisition("RASPIDAC is not configured");
       return;
     }
     QLOG_INFO() << "AcquisitionThread::execute> connecting RASPI DAC ..." << sequence->instrumentName;
@@ -547,25 +640,30 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
     if (raspidacsuccess == true) {
       if (sequence->dacRValue != 0) {
         double dacValue;
-        raspidacsuccess |=
+        raspidacsuccess &=
             raspidac->getRaspiValue(sequence->instrumentName,
                                     sequence->dacOutput, dacValue);
         dacValue += sequence->dacRValue;
-        raspidacsuccess |=
+        raspidacsuccess &=
             raspidac->setRaspiValue(sequence->instrumentName,
                                     sequence->dacOutput, (void*)&dacValue);
       }
       else {
-        raspidacsuccess |=
+        raspidacsuccess &=
             raspidac->setRaspiValue(sequence->instrumentName,
                                     sequence->comediOutput,
                                     (void*)&sequence->dacValue);
       }
-      raspidacsuccess |=
+      raspidacsuccess &=
           raspidac->getRaspiValue(sequence->instrumentName,
                                   sequence->dacOutput, sequence->dacValue);
     }
     sequence->status = raspidacsuccess;
+    if (!raspidacsuccess) {
+      abortAcquisition(QString("RASPIDAC operation failed for %1")
+                           .arg(sequence->instrumentName));
+      return;
+    }
     //emit getRaspiStatus(raspidacsuccess);
   }
 

@@ -76,6 +76,9 @@ class Motor : public QObject
   /// Return nonzero when the actuator operation is complete.
   /// \param newactuator Actuator identifier from the database.
   int   getOperationComplete(QString newactuator);
+  /// Return whether the actuator is currently connected and usable.
+  /// \param newactuator Actuator identifier from the database.
+  bool isConnected(QString newactuator) const;
   /// Read current actuator position.
   /// \param newactuator Actuator identifier from the database.
   float getPosition(QString newactuator);
