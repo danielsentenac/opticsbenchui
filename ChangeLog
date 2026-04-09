@@ -74,3 +74,9 @@ ver 1.2 (2026-02-08)
 4- Improve camera window resizing and video scaling behavior.
 5- Refactor layout: move sources to src/ and clean root; move databases to data/ and scripts/ to scripts/.
 6- Fix shutdown stability by avoiding self-deletion on close.
+
+ver 1.8 (2026-04-09)
+1- Add reusable ENV / EXPORT variables to the Analysis panel, with $NAME and ${NAME} expansion.
+2- Improve the Analysis panel layout with better default column sizing and a fully flexible top/bottom splitter.
+3- Clarify the Analysis help pages and refresh the packaged help bundle for the new syntax.
+4- Fix release automation so tracked API docs are rebuilt during release and gh-pages publishing follows the origin repository.

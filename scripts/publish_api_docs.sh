@@ -3,9 +3,30 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-REPO_URL="git@github.com:anonymous/opticsbenchui.git"
 WORKDIR="/tmp/obui-ghpages"
 SOURCE_DIR="${REPO_ROOT}/docs/api/html"
+REMOTE_URL="$(git -C "${REPO_ROOT}" remote get-url origin)"
+
+case "${REMOTE_URL}" in
+  git@github.com:*)
+    REPO_PATH="${REMOTE_URL#git@github.com:}"
+    ;;
+  https://github.com/*)
+    REPO_PATH="${REMOTE_URL#https://github.com/}"
+    ;;
+  ssh://git@github.com/*)
+    REPO_PATH="${REMOTE_URL#ssh://git@github.com/}"
+    ;;
+  *)
+    echo "ERROR: origin remote must point to GitHub: ${REMOTE_URL}"
+    exit 1
+    ;;
+esac
+
+REPO_PATH="${REPO_PATH%.git}"
+REPO_OWNER="${REPO_PATH%%/*}"
+REPO_NAME="${REPO_PATH##*/}"
+PAGES_URL="https://${REPO_OWNER}.github.io/${REPO_NAME}/api/"
 
 echo "Building API docs..."
 "${SCRIPT_DIR}/make_api_doc.run"
@@ -22,7 +43,7 @@ fi
 
 echo "Publishing to gh-pages..."
 rm -rf "${WORKDIR}"
-git clone "${REPO_URL}" "${WORKDIR}"
+git clone "${REMOTE_URL}" "${WORKDIR}"
 cd "${WORKDIR}"
 
 if git show-ref --verify --quiet refs/heads/gh-pages; then
@@ -51,4 +72,4 @@ git push -u origin gh-pages --force
 
 echo "Pushed commit: $(git rev-parse --short HEAD)"
 
-echo "Done. URL: https://anonymous.github.io/opticsbenchui/api/"
+echo "Done. URL: ${PAGES_URL}"
