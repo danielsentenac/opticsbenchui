@@ -123,9 +123,11 @@ CameraGiGE::CameraGiGE()
 
 CameraGiGE::~CameraGiGE()
 {
-  QLOG_INFO() << "Deleting CameraGiGE";
+  QLOG_INFO() << "Deleting CameraGiGE" << instanceRoleLabel();
   stop();
-  cleanup_and_exit();
+  if (ownsBackendCleanup()) {
+    cleanup_and_exit();
+  }
   delete mutex;
   delete snapshotMutex;
   delete acqstart;

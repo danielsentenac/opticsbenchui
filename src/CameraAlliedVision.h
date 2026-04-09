@@ -49,6 +49,8 @@ class CameraAlliedVision : public Camera
   /// \param _camera Backend camera pointer.
   /// \param _id Camera index.
   void setCamera(void *_camera, int _id) override;
+  /// Release the discovery-manager references after handing the camera to a live instance.
+  void releaseDiscoveryOwnership() override;
   /// Query and cache camera features.
   void getFeatures() override;
   /// Acquire a single 8-bit image.
@@ -98,6 +100,7 @@ class CameraAlliedVision : public Camera
   int  connectCamera() override;
   int  acquireImage() override;
   void cleanup_and_exit() override;
+  void stopStreamingAndCloseCamera();
   /**
   * \brief IFrameObserver implementation for asynchronous image acquisition
   */
@@ -153,6 +156,7 @@ class CameraAlliedVision : public Camera
   double shutterspeed = 0.0;
   unsigned char *data = nullptr;
   bool systemStarted = false;
+  bool continuousAcquisitionStarted = false;
   int encoding_num = 0;
   int awb_num = 0;
   int exposure_num = 0;

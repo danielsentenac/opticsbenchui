@@ -155,6 +155,12 @@ class Camera : public QThread
     table = &gray;
   }
   ~Camera() override = default;
+  /// Mark this instance as the discovery manager.
+  void markAsDiscoveryManager() { instanceRole = "manager"; }
+  /// Mark this instance as a live camera object.
+  void markAsLiveCamera() { instanceRole = "camera"; }
+  /// Return the role label used in lifecycle logging.
+  QString instanceRoleLabel() const { return instanceRole; }
   /// Stop acquisition and release resources.
   virtual void stop() = 0;
   /// Discover available cameras.
@@ -173,6 +179,10 @@ class Camera : public QThread
   virtual ushort *getSnapshot16() = 0;
   /// Acquire a single 32-bit snapshot.
   virtual int *getSnapshot32() = 0;
+  /// Relinquish backend cleanup ownership after discovery handoff.
+  virtual void releaseDiscoveryOwnership() { ownsBackendResources = false; }
+  /// True when this instance should release backend resources on destruction.
+  bool ownsBackendCleanup() const { return ownsBackendResources; }
  
   /// General mutex for camera operations.
   QMutex *mutex = nullptr;
@@ -260,6 +270,10 @@ class Camera : public QThread
   QVector<double> featureAbsValueList;
   /// Available feature abs capable list.
   QVector<int> featureAbsCapableList;
+  /// True when this instance owns backend cleanup responsibility.
+  bool ownsBackendResources = true;
+  /// Human-readable lifecycle role for logging.
+  QString instanceRole = "camera";
   
   /// Available properties list.
   QVector<QString> propList;

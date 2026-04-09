@@ -126,9 +126,11 @@ CameraRaspi::CameraRaspi()
 
 CameraRaspi::~CameraRaspi()
 {
-  QLOG_INFO() << "Deleting CameraRaspi";
+  QLOG_INFO() << "Deleting CameraRaspi" << instanceRoleLabel();
   stop();
-  cleanup_and_exit();
+  if (ownsBackendCleanup()) {
+    cleanup_and_exit();
+  }
   delete mutex;
   delete snapshotMutex;
   delete acquireMutex;

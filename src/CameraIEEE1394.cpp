@@ -130,9 +130,11 @@ CameraIEEE1394::CameraIEEE1394()
 
 CameraIEEE1394::~CameraIEEE1394()
 {
-  QLOG_INFO() << "Deleting CameraIEEE1394";
+  QLOG_INFO() << "Deleting CameraIEEE1394" << instanceRoleLabel();
   stop();
-  cleanup_and_exit();
+  if (ownsBackendCleanup()) {
+    cleanup_and_exit();
+  }
   delete mutex;
   delete snapshotMutex;
   delete acquireMutex;

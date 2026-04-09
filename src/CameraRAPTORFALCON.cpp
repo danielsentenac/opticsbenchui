@@ -90,9 +90,11 @@ CameraRAPTORFALCON::CameraRAPTORFALCON()
 
 CameraRAPTORFALCON::~CameraRAPTORFALCON()
 {
-  QLOG_DEBUG() << "Deleting CameraRAPTORFALCON";
+  QLOG_INFO() << "Deleting CameraRAPTORFALCON" << instanceRoleLabel();
   stop();
-  cleanup_and_exit();
+  if (ownsBackendCleanup()) {
+    cleanup_and_exit();
+  }
   delete mutex;
   delete snapshotMutex;
   delete acquireMutex;

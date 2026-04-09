@@ -214,6 +214,7 @@ class OpticsBenchUIMain : public QMainWindow
   /// \param initialPath Initial directory path.
   /// \return Selected directory, or empty string if canceled.
   QString selectDirectory(const QString& title, const QString& initialPath);
+  void closeCameraWindows();
 
   QString appDirPath;
   QString configDirPath;

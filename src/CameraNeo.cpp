@@ -153,9 +153,11 @@ CameraNeo::CameraNeo()
 
 CameraNeo::~CameraNeo()
 {
-  QLOG_INFO() << "Deleting CameraNeo";
+  QLOG_INFO() << "Deleting CameraNeo" << instanceRoleLabel();
   stop();
-  cleanup_and_exit();
+  if (ownsBackendCleanup()) {
+    cleanup_and_exit();
+  }
   delete mutex;
   delete snapshotMutex;
   delete acquireMutex;

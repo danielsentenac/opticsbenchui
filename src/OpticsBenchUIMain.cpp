@@ -122,6 +122,7 @@ void setupCameraManager(Camera *&manager,
                         QVector<CameraWindow *> &cameraWindowList)
 {
   manager = new CameraType();
+  manager->markAsDiscoveryManager();
   if (manager->findCamera() != 0) {
     manager->num = 0;
     manager->cameralist.clear();
@@ -134,11 +135,13 @@ void setupCameraManager(Camera *&manager,
 
   for (int i = 0; i < available; i++) {
     Camera *camera = new CameraType();
+    camera->markAsLiveCamera();
     camera->setCamera(manager->cameralist.at(i), i);
     cameraList.push_back(camera);
     isOpenCameraWindow.push_back(false);
     cameraWindowList.push_back(NULL);
   }
+  manager->releaseDiscoveryOwnership();
 }
 
 void addCameraMenuActions(Camera *manager,
@@ -179,6 +182,15 @@ OpticsBenchUIMain::OpticsBenchUIMain( QString _appDirPath, QMainWindow* parent, 
 #endif
   motorwindow = NULL;
   superkwindow = NULL;
+  cameraUSBMgr = nullptr;
+  cameraIEEE1394Mgr = nullptr;
+  cameraGiGEMgr = nullptr;
+  cameraNeoMgr = nullptr;
+  cameraZylaMgr = nullptr;
+  cameraRAPTORFALCONMgr = nullptr;
+  cameraRAPTORNINOX640Mgr = nullptr;
+  cameraRaspiMgr = nullptr;
+  cameraAlliedVisionMgr = nullptr;
   isopencamerawindow.clear();
   isopenanalysiswidget = false; 
   isopenacquisitionwidget = false;
@@ -728,6 +740,7 @@ void OpticsBenchUIMain::openRaspiDacWindow() {
 
 OpticsBenchUIMain::~OpticsBenchUIMain()
 {
+  closeCameraWindows();
   delete acquisitionwidget;
   delete assistant;
   if (dacwindow) delete dacwindow;
@@ -737,15 +750,39 @@ OpticsBenchUIMain::~OpticsBenchUIMain()
 #endif
   if (motorwindow) delete motorwindow;
   if (superkwindow) delete superkwindow;
-  for (int i = 0 ; i < camerawindowList.size() ; i++) {
-    camerawindowList.replace(i, nullptr);
-  }
   for (int i = 0 ; i < cameraList.size() ; i++) {
     QLOG_INFO() << " Exiting Camera " << i;
      delete cameraList.at(i);
    }
+  delete cameraUSBMgr;
+  delete cameraIEEE1394Mgr;
+  delete cameraGiGEMgr;
+  delete cameraNeoMgr;
+  delete cameraZylaMgr;
+  delete cameraRAPTORFALCONMgr;
+  delete cameraRAPTORNINOX640Mgr;
+  delete cameraRaspiMgr;
+  delete cameraAlliedVisionMgr;
   QLOG_INFO() << "OpticsBenchUI ended";
 }
+
+void OpticsBenchUIMain::closeCameraWindows() {
+  for (int i = 0; i < camerawindowList.size(); i++) {
+    CameraWindow* camerawindow = camerawindowList.at(i);
+    if (i < isopencamerawindow.size()) {
+      isopencamerawindow.replace(i, false);
+    }
+    if (!camerawindow) {
+      continue;
+    }
+    camerawindowList.replace(i, nullptr);
+    delete camerawindow;
+  }
+  if (!isopencamerawindow.isEmpty()) {
+    emit isopenCameraWindow(isopencamerawindow);
+  }
+}
+
 void OpticsBenchUIMain::setOpenCameraWindow(bool isopen, int cameranumber){
   isopencamerawindow.replace(cameranumber,isopen);
    emit isopenCameraWindow(isopencamerawindow);
@@ -760,6 +797,7 @@ void OpticsBenchUIMain::keyPressEvent(QKeyEvent *e) {
   
 void OpticsBenchUIMain::closeEvent(QCloseEvent* event)
 {
+  closeCameraWindows();
   event->accept();
 }
 void myMessageOutput(QtMsgType type, const QMessageLogContext &, const QString & str) {
@@ -864,6 +902,22 @@ void
 OpticsBenchUIMain::showCameraControlWidgetWarning(QString message) {
   QMessageBox::warning(this, "CameraControlWidget Error:", message);
 }
+
+namespace {
+constexpr qreal kAppFontPointSizeDelta = 2.0;
+constexpr int kAppFontPixelSizeDelta = 3;
+
+QFont BuildApplicationFont(const QFont& baseFont) {
+  QFont font(baseFont);
+  if (font.pointSizeF() > 0.0) {
+    font.setPointSizeF(font.pointSizeF() + kAppFontPointSizeDelta);
+  } else if (font.pixelSize() > 0) {
+    font.setPixelSize(font.pixelSize() + kAppFontPixelSizeDelta);
+  }
+  return font;
+}
+}  // namespace
+
 int main(int argc, char *argv[])
 {
 #ifdef GIGECAMERA
@@ -885,6 +939,7 @@ int main(int argc, char *argv[])
 
   QApplication app(argc, argv); 
   app.setStyle("Fusion");
+  app.setFont(BuildApplicationFont(app.font()));
   QPalette darkPalette;
   darkPalette.setColor(QPalette::Window, QColor(30, 30, 30));
   darkPalette.setColor(QPalette::WindowText, QColor(230, 230, 230));
@@ -929,5 +984,7 @@ int main(int argc, char *argv[])
   QLOG_INFO() << " X,Y " << desktop->screenGeometry(0).width() << " "
               << desktop->screenGeometry(0).height();
 #endif
-  return app.exec();
+  const int exitCode = app.exec();
+  delete OpticsBenchUI;
+  return exitCode;
 }

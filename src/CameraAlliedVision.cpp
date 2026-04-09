@@ -130,34 +130,24 @@ CameraAlliedVision::CameraAlliedVision()
 
 CameraAlliedVision::~CameraAlliedVision()
 {
-  QLOG_INFO() << "Deleting CameraAlliedVision";
+  QLOG_INFO() << "Deleting CameraAlliedVision" << instanceRoleLabel();
   stop();
+  if (ownsBackendCleanup()) {
+    stopStreamingAndCloseCamera();
+    cleanup_and_exit();
+  }
   delete mutex;
   delete snapshotMutex;
   delete acquireMutex;
   delete acqstart;
   delete acqend;
-  try
-    {
-         if (camera) {
-           camera->StopContinuousImageAcquisition();
-         }
-         if (systemStarted) {
-           sys.Shutdown();
-           systemStarted = false;
-         }
-    }
-    catch(std::runtime_error& e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    
 }
 void
 CameraAlliedVision::setCamera(void* _camera, int _id)
 {
  QLOG_DEBUG () << " Getting camera pointer " << _camera;
  camera = ((VmbCPP::CameraPtr*)_camera)[0];
+ systemStarted = true;
  vendor = "AlliedVision";
  string modelStr;
  camera->GetName(modelStr);
@@ -333,8 +323,19 @@ CameraAlliedVision::setCamera(void* _camera, int _id)
 
  
  QLOG_DEBUG() << "CameraAlliedVision::setCamera " << vendor << " model : "
-              << model << " - Err : " << camera_err;
+             << model << " - Err : " << camera_err;
 }
+
+void CameraAlliedVision::releaseDiscoveryOwnership() {
+  Camera::releaseDiscoveryOwnership();
+  cameralist.clear();
+  camera.reset();
+  streams.clear();
+  cameras.clear();
+  continuousAcquisitionStarted = false;
+  systemStarted = false;
+}
+
 uchar* 
 CameraAlliedVision::getSnapshot() {
   snapshotMutex->lock();
@@ -370,7 +371,23 @@ void
 CameraAlliedVision::stop() {
   suspend = true;
   has_started = false;
-  wait();
+  try {
+    if (camera && continuousAcquisitionStarted) {
+      const VmbErrorType err = camera->StopContinuousImageAcquisition();
+      if (err != VmbErrorSuccess) {
+        QLOG_WARN() << "CameraAlliedVision::stop> Could not stop acquisition; error = "
+                    << QString::number(err);
+      }
+      continuousAcquisitionStarted = false;
+    }
+  }
+  catch (const std::exception& e) {
+    QLOG_WARN() << "CameraAlliedVision::stop> Exception while stopping acquisition: "
+                << e.what();
+  }
+  if (isRunning()) {
+    wait();
+  }
   exit();  
 }
 
@@ -625,16 +642,12 @@ int
 CameraAlliedVision::findCamera() {
   /* Find available AlliedVision cameras */
   num = 0;
+  stopStreamingAndCloseCamera();
   cameralist.clear();
   vendorlist.clear();
   modelist.clear();
   cameras.clear();
   camera.reset();
-
-  if (systemStarted) {
-    sys.Shutdown();
-    systemStarted = false;
-  }
 
   VmbVersionInfo_t versionInfo;
   sys.QueryVersion(versionInfo);
@@ -741,6 +754,8 @@ CameraAlliedVision::connectCamera() {
   VmbErrorType err = camera->StartContinuousImageAcquisition(5,(VmbCPP::IFrameObserverPtr)(frameObs));
   if (err != VmbErrorSuccess)
      QLOG_ERROR() << "CameraAlliedVision::connectCamera> Could not start Acquisition; error = " << QString::number(err);
+  else
+     continuousAcquisitionStarted = true;
      
   VmbUint32_t nPayloadSize;
   err = camera->GetPayloadSize(nPayloadSize);
@@ -775,9 +790,58 @@ CameraAlliedVision::cleanup_and_exit()
   if (snapshot) { free(snapshot); snapshot = nullptr;}
   if (buffer32) { free(buffer32); buffer32 = nullptr;}
   if (snapshot32) { free(snapshot32); snapshot32 = nullptr;}
-  if (image) delete image;
+  if (snapshot16) { free(snapshot16); snapshot16 = nullptr;}
+  if (image) {
+    delete image;
+    image = nullptr;
+  }
 
   return;
+}
+
+void CameraAlliedVision::stopStreamingAndCloseCamera() {
+  try {
+    if (camera) {
+      if (continuousAcquisitionStarted) {
+        const VmbErrorType stopErr = camera->StopContinuousImageAcquisition();
+        if (stopErr != VmbErrorSuccess) {
+          QLOG_WARN()
+              << "CameraAlliedVision::stopStreamingAndCloseCamera> Could not stop acquisition; error = "
+              << QString::number(stopErr);
+        }
+        continuousAcquisitionStarted = false;
+      }
+
+      const VmbErrorType closeErr = camera->Close();
+      if (closeErr != VmbErrorSuccess) {
+        QLOG_WARN()
+            << "CameraAlliedVision::stopStreamingAndCloseCamera> Could not close camera; error = "
+            << QString::number(closeErr);
+      }
+      camera.reset();
+    }
+  }
+  catch (const std::exception& e) {
+    QLOG_WARN()
+        << "CameraAlliedVision::stopStreamingAndCloseCamera> Exception during camera close: "
+        << e.what();
+  }
+
+  frameObs = nullptr;
+  streams.clear();
+  cameras.clear();
+
+  if (systemStarted) {
+    try {
+      sys.Shutdown();
+    }
+    catch (const std::exception& e) {
+      QLOG_WARN()
+          << "CameraAlliedVision::stopStreamingAndCloseCamera> Exception during Vimba shutdown: "
+          << e.what();
+    }
+    systemStarted = false;
+  }
 }
 
 int 
@@ -793,8 +857,13 @@ CameraAlliedVision::acquireImage() {
   // Lock the acquisition
   snapshotMutex->lock();
   usleep(10000);
-  uchar *frameBuffer = frameObs->GetImage();
+  uchar *frameBuffer = frameObs != nullptr ? frameObs->GetImage() : nullptr;
   while ( frameBuffer == nullptr) {
+      if (suspend || !continuousAcquisitionStarted || frameObs == nullptr) {
+          snapshotMutex->unlock();
+          acquireMutex->unlock();
+          return 0;
+      }
       QLOG_DEBUG() << "BUFFER IS nullptr...ACQUIRE ";
       usleep(10000);
       frameBuffer = frameObs->GetImage();

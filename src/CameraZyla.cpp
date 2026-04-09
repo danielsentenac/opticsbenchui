@@ -168,9 +168,11 @@ CameraZyla::CameraZyla()
 
 CameraZyla::~CameraZyla()
 {
-  QLOG_INFO() << "Deleting CameraZyla";
+  QLOG_INFO() << "Deleting CameraZyla" << instanceRoleLabel();
   stop();
-  cleanup_and_exit();
+  if (ownsBackendCleanup()) {
+    cleanup_and_exit();
+  }
   delete mutex;
   delete snapshotMutex;
   delete acquireMutex;

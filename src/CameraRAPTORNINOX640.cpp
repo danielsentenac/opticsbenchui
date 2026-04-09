@@ -90,9 +90,11 @@ CameraRAPTORNINOX640::CameraRAPTORNINOX640()
 
 CameraRAPTORNINOX640::~CameraRAPTORNINOX640()
 {
-  QLOG_DEBUG() << "Deleting CameraRAPTORNINOX640";
+  QLOG_INFO() << "Deleting CameraRAPTORNINOX640" << instanceRoleLabel();
   stop();
-  cleanup_and_exit();
+  if (ownsBackendCleanup()) {
+    cleanup_and_exit();
+  }
   delete mutex;
   delete snapshotMutex;
   delete acquireMutex;
