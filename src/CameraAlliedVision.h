@@ -152,6 +152,7 @@ class CameraAlliedVision : public Camera
   double exposure_compensation = 0.0;
   double shutterspeed = 0.0;
   unsigned char *data = nullptr;
+  bool systemStarted = false;
   int encoding_num = 0;
   int awb_num = 0;
   int exposure_num = 0;

@@ -65,6 +65,55 @@ QString resolveResourceRoot(const QString &startDir)
   return startDir;
 }
 
+int normalizeCameraManager(Camera *manager, const QString &label)
+{
+  if (!manager) {
+    return 0;
+  }
+
+  int available = qMax(manager->num, 0);
+  available = qMin(available, manager->cameralist.size());
+  available = qMin(available, manager->vendorlist.size());
+  available = qMin(available, manager->modelist.size());
+
+  QVector<void *> normalizedCameras;
+  QVector<QString> normalizedVendors;
+  QVector<QString> normalizedModels;
+  normalizedCameras.reserve(available);
+  normalizedVendors.reserve(available);
+  normalizedModels.reserve(available);
+
+  for (int i = 0; i < available; ++i) {
+    void *cameraHandle = manager->cameralist.at(i);
+    if (cameraHandle == nullptr) {
+      QLOG_WARN() << "Ignoring null camera handle for" << label
+                  << "camera index" << i;
+      continue;
+    }
+    normalizedCameras.push_back(cameraHandle);
+    normalizedVendors.push_back(manager->vendorlist.at(i));
+    normalizedModels.push_back(manager->modelist.at(i));
+  }
+
+  if (manager->num != normalizedCameras.size() ||
+      manager->cameralist.size() != normalizedCameras.size() ||
+      manager->vendorlist.size() != normalizedVendors.size() ||
+      manager->modelist.size() != normalizedModels.size()) {
+    QLOG_WARN() << "Camera discovery mismatch for" << label
+                << ": num=" << manager->num
+                << " handles=" << manager->cameralist.size()
+                << " vendors=" << manager->vendorlist.size()
+                << " models=" << manager->modelist.size()
+                << " normalized=" << normalizedCameras.size();
+  }
+
+  manager->cameralist = normalizedCameras;
+  manager->vendorlist = normalizedVendors;
+  manager->modelist = normalizedModels;
+  manager->num = normalizedCameras.size();
+  return manager->num;
+}
+
 template <typename CameraType>
 void setupCameraManager(Camera *&manager,
                         const QString &label,
@@ -73,10 +122,17 @@ void setupCameraManager(Camera *&manager,
                         QVector<CameraWindow *> &cameraWindowList)
 {
   manager = new CameraType();
-  manager->findCamera();
-  QLOG_INFO() << "Found " << manager->num << " " << label << " camera";
+  if (manager->findCamera() != 0) {
+    manager->num = 0;
+    manager->cameralist.clear();
+    manager->vendorlist.clear();
+    manager->modelist.clear();
+  }
 
-  for (int i = 0; i < manager->num; i++) {
+  const int available = normalizeCameraManager(manager, label);
+  QLOG_INFO() << "Found " << available << " " << label << " camera";
+
+  for (int i = 0; i < available; i++) {
     Camera *camera = new CameraType();
     camera->setCamera(manager->cameralist.at(i), i);
     cameraList.push_back(camera);

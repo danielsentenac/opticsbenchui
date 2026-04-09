@@ -139,9 +139,13 @@ CameraAlliedVision::~CameraAlliedVision()
   delete acqend;
   try
     {
-         camera->StopContinuousImageAcquisition();
-         sys.Shutdown();
-         //cleanup_and_exit();
+         if (camera) {
+           camera->StopContinuousImageAcquisition();
+         }
+         if (systemStarted) {
+           sys.Shutdown();
+           systemStarted = false;
+         }
     }
     catch(std::runtime_error& e)
     {
@@ -619,11 +623,19 @@ CameraAlliedVision::getFeatures() {
 
 int 
 CameraAlliedVision::findCamera() {
-  int i;
-  /* Find available AlliedVision cameras*/
-  // Allocate camera list
-  // Open Camera with id = 0;
-  num = 0; // no camera found yet
+  /* Find available AlliedVision cameras */
+  num = 0;
+  cameralist.clear();
+  vendorlist.clear();
+  modelist.clear();
+  cameras.clear();
+  camera.reset();
+
+  if (systemStarted) {
+    sys.Shutdown();
+    systemStarted = false;
+  }
+
   VmbVersionInfo_t versionInfo;
   sys.QueryVersion(versionInfo);
   QLOG_INFO() << "Vmb Version Major: " << versionInfo.major << " Minor: " << versionInfo.minor << " Patch: " << versionInfo.patch;
@@ -631,6 +643,7 @@ CameraAlliedVision::findCamera() {
   VmbErrorType err = sys.Startup();           // Initialize the Vmb API
   
   if (VmbErrorSuccess == err) {
+      systemStarted = true;
 
       VmbCPP::TransportLayerPtrVector transportlayers;     // A vector of std::shared_ptr<AVT::VmbAPI::TransportLayer> objects
       err = sys.GetTransportLayers(transportlayers);       // Fetch all transport layers
@@ -644,8 +657,7 @@ CameraAlliedVision::findCamera() {
 
           
           err = sys.GetCameras(cameras);          // Fetch all cameras
-          if (VmbErrorSuccess == err) {
-              num = 1; // Found camera
+          if (VmbErrorSuccess == err && !cameras.empty()) {
               QLOG_INFO() << "CameraAlliedVision::findCamera> opening camera 0";
 
               // Query all static details of all known cameras and print them out.
@@ -654,15 +666,19 @@ CameraAlliedVision::findCamera() {
               PrintCameraInfo(camera);
           }
           else {
-              QLOG_INFO() << "Could not list cameras. Error code: " << err;
+              if (VmbErrorSuccess == err) {
+                QLOG_INFO() << "No Allied Vision cameras found.";
+              } else {
+                QLOG_INFO() << "Could not list cameras. Error code: " << err;
+              }
               sys.Shutdown();
+              systemStarted = false;
               return -1;
           }
                 
    }
    else {
        QLOG_INFO() << "Could not start system. Error code: " << err;
-       sys.Shutdown();
        return -1;
    }
    
@@ -672,15 +688,19 @@ CameraAlliedVision::findCamera() {
 
   if ( err != VmbErrorSuccess ) {
     QLOG_ERROR() << "Error opening ALLIEDVISION camera : error=" << static_cast<int>(err);
+    camera.reset();
+    cameras.clear();
     sys.Shutdown();
+    systemStarted = false;
     return -1;
   }
   string name;
   err = camera->GetName(name);
   QLOG_INFO() << "CameraAlliedVision::findCamera> camera " << QString::fromStdString(name) << " open ";
+  num = 1;
   cameralist.push_back(&camera);
   vendorlist.push_back("AlliedVision");
-  modelist.push_back("V4");
+  modelist.push_back(QString::fromStdString(name));
   return (0);
 }
 int 
