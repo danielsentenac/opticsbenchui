@@ -36,6 +36,11 @@ features when missing.
 Analysis tasks:
 Analysis sequences are configured in analysis.db3 (table: analysis_sequence).
 Use the Analysis panel to define command-line tasks (code path + arguments).
+Use `ENV` / `EXPORT` rows with `NAME=value` in the arguments column to define
+reusable variables. The code path cell must contain only `ENV` or `EXPORT` for
+these declaration rows. Later rows can reference variables as `$NAME` or
+`${NAME}`. Ordinary command rows may still use a full command line in the code
+path cell.
 Add ANALYSE=START in acquisition settings to auto-run the analysis list.
 
 Data and plotting (HDF5 / NO_HDF5, COMEDICOUNTER, COMEDIDAC):

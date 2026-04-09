@@ -20,13 +20,39 @@
       </tr>
       <tr>
         <td>code path</td>
-        <td>Full path to the executable or script to run.</td>
+        <td>
+          Full path to the executable or script to run. Use <b>ENV</b> (or
+          <b>EXPORT</b>) here to declare reusable variables instead of running
+          a command. For variable rows, the cell must contain only
+          <b>ENV</b> or <b>EXPORT</b>. Ordinary rows may still contain a full
+          command line if preferred.
+        </td>
       </tr>
       <tr>
         <td>arguments</td>
-        <td>Arguments passed to the command (space-separated).</td>
+        <td>
+          Arguments passed to the command (space-separated). Variable rows use
+          <b>NAME=value</b> assignments here. Later rows can reuse variables as
+          <b>$NAME</b> or <b>${NAME}</b> in both <b>code path</b> and
+          <b>arguments</b>. Declarations such as <b>ENV NAME=value</b> in the
+          <b>code path</b> cell are not supported.
+        </td>
       </tr>
     </table>
+    <p>
+      Example:
+      <br>
+      <b>record 0</b>: code path = <b>ENV</b>, arguments =
+      <b>DATA_ROOT="/data/2026/run 4"</b>
+      <br>
+      <b>record 1</b>: code path = <b>${DATA_ROOT}/process.py</b>, arguments =
+      <b>--input ${DATA_ROOT}/raw.h5</b>
+    </p>
+    <p>
+      Ordinary command rows may also place the full command line in
+      <b>code path</b>, for example
+      <b>${DATA_ROOT}/process.py --input ${DATA_ROOT}/raw.h5</b>.
+    </p>
     <p>
       To trigger analysis automatically after a specific acquisition row, add
       <b>ANALYSIS=START</b> to the acquisition <b>settings</b> column. This will

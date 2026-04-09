@@ -35,6 +35,8 @@ struct AnalysisTask {
   QString codePath;
   /// Raw argument string (split by QProcess).
   QString arguments;
+  /// Environment overrides accumulated from prior ENV rows.
+  QMap<QString, QString> environment;
 };
 
 /// \ingroup analysis

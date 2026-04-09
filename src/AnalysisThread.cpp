@@ -168,7 +168,9 @@ void AnalysisThread::run() {
       }
     }
     if (task.codePath.trimmed().isEmpty()) {
-      emit showWarning("Analysis task has empty code path; skipping.");
+      const QString message = "Analysis task has empty code path; skipping.";
+      emit showWarning(message);
+      emit analysisFinished(task.record, false, message);
       continue;
     }
 
@@ -234,7 +236,13 @@ void AnalysisThread::run() {
 
     QProcess localProcess;
     localProcess.setProcessChannelMode(QProcess::MergedChannels);
-    localProcess.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
+    QProcessEnvironment processEnvironment =
+        QProcessEnvironment::systemEnvironment();
+    for (QMap<QString, QString>::const_iterator it = task.environment.constBegin();
+         it != task.environment.constEnd(); ++it) {
+      processEnvironment.insert(it.key(), it.value());
+    }
+    localProcess.setProcessEnvironment(processEnvironment);
     localProcess.start(launchProgram, launchArguments);
 
     if (!localProcess.waitForStarted()) {

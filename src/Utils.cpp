@@ -179,6 +179,47 @@ bool ModelHasWrappedContent(QTableView* view) {
   }
   return false;
 }
+
+bool IsFixedSection(const QHeaderView* header, int logicalIndex) {
+  return header != nullptr &&
+         header->sectionResizeMode(logicalIndex) == QHeaderView::Fixed;
+}
+
+QVector<int> GrowColumnIndices(QTableView* view,
+                               const QVector<int>& visible,
+                               const QHeaderView* header) {
+  QVector<int> growColumns;
+  if (!view || !header) {
+    return growColumns;
+  }
+
+  const QVariant property = view->property("growColumns");
+  if (property.isValid()) {
+    const QVariantList configured = property.toList();
+    growColumns.reserve(configured.size());
+    for (const QVariant& value : configured) {
+      bool ok = false;
+      const int column = value.toInt(&ok);
+      if (!ok || !visible.contains(column) || IsFixedSection(header, column)) {
+        continue;
+      }
+      if (!growColumns.contains(column)) {
+        growColumns.push_back(column);
+      }
+    }
+  }
+
+  if (!growColumns.isEmpty()) {
+    return growColumns;
+  }
+
+  for (int column : visible) {
+    if (!IsFixedSection(header, column)) {
+      growColumns.push_back(column);
+    }
+  }
+  return growColumns;
+}
 }  // namespace
 
 namespace {
@@ -451,7 +492,7 @@ void UpdateSqlTableViewColumnSizing(QTableView* view) {
   if (viewportWidth > 0 && total > viewportWidth) {
     int shrinkable = 0;
     for (int c : visible) {
-      if (hasFixedLast && c == lastVisibleColumn) {
+      if ((hasFixedLast && c == lastVisibleColumn) || IsFixedSection(header, c)) {
         continue;
       }
       shrinkable += qMax(0, widths[c] - headerMinWidths[c]);
@@ -460,7 +501,7 @@ void UpdateSqlTableViewColumnSizing(QTableView* view) {
     if (shrinkable > 0) {
       int distributed = 0;
       for (int c : visible) {
-        if (hasFixedLast && c == lastVisibleColumn) {
+        if ((hasFixedLast && c == lastVisibleColumn) || IsFixedSection(header, c)) {
           continue;
         }
         const int capacity = qMax(0, widths[c] - headerMinWidths[c]);
@@ -475,7 +516,8 @@ void UpdateSqlTableViewColumnSizing(QTableView* view) {
       while (remainder > 0) {
         bool changed = false;
         for (int c : visible) {
-          if (hasFixedLast && c == lastVisibleColumn) {
+          if ((hasFixedLast && c == lastVisibleColumn) ||
+              IsFixedSection(header, c)) {
             continue;
           }
           if (widths[c] > headerMinWidths[c]) {
@@ -493,7 +535,25 @@ void UpdateSqlTableViewColumnSizing(QTableView* view) {
       }
     }
   } else if (!disableLastExpand && !hasFixedLast && viewportWidth > total) {
-    widths[lastVisibleColumn] += (viewportWidth - total);
+    const int extra = viewportWidth - total;
+    const QVector<int> growColumns = GrowColumnIndices(view, visible, header);
+    if (growColumns.isEmpty()) {
+      widths[lastVisibleColumn] += extra;
+    } else {
+      int weightSum = 0;
+      for (int c : growColumns) {
+        weightSum += qMax(widths[c], 1);
+      }
+      int distributed = 0;
+      for (int c : growColumns) {
+        const int delta = (extra * qMax(widths[c], 1)) / qMax(weightSum, 1);
+        widths[c] += delta;
+        distributed += delta;
+      }
+      if (distributed < extra) {
+        widths[growColumns.last()] += (extra - distributed);
+      }
+    }
   }
 
   for (int c : visible) {

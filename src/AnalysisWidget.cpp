@@ -22,12 +22,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "AnalysisWidget.h"
 #include "Utils.h"
+#include <QtCore/QProcessEnvironment>
+#include <QtCore/QRegularExpression>
 
 namespace {
 const char kSelectionStylesheet[] =
     "QTreeView::item:selected{background-color: palette(highlight); "
     "color: palette(highlightedText);};";
 constexpr int kRecordColumn = 0;
+const QRegularExpression kEnvironmentReferenceRegex(
+    "\\$\\{([A-Za-z_][A-Za-z0-9_]*)\\}|\\$([A-Za-z_][A-Za-z0-9_]*)");
+const QRegularExpression kEnvironmentNameRegex("[A-Za-z_][A-Za-z0-9_]*");
 
 QString FormatElapsed(qint64 elapsedMs) {
   const qint64 totalSeconds = elapsedMs / 1000;
@@ -38,6 +43,86 @@ QString FormatElapsed(qint64 elapsedMs) {
       .arg(hours, 2, 10, QLatin1Char('0'))
       .arg(minutes, 2, 10, QLatin1Char('0'))
       .arg(seconds, 2, 10, QLatin1Char('0'));
+}
+
+QStringList SplitAnalysisArguments(const QString& arguments) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+  return QProcess::splitCommand(arguments);
+#else
+  return arguments.split(' ', Qt::SkipEmptyParts);
+#endif
+}
+
+bool IsEnvironmentDefinitionRow(const QString& codePath) {
+  const QString command = codePath.trimmed();
+  return command.compare("ENV", Qt::CaseInsensitive) == 0 ||
+         command.compare("EXPORT", Qt::CaseInsensitive) == 0;
+}
+
+QString ExpandEnvironmentReferences(const QString& text,
+                                    const QProcessEnvironment& environment) {
+  QString expanded;
+  int lastOffset = 0;
+  QRegularExpressionMatchIterator it =
+      kEnvironmentReferenceRegex.globalMatch(text);
+  while (it.hasNext()) {
+    const QRegularExpressionMatch match = it.next();
+    const int start = match.capturedStart();
+    const int end = match.capturedEnd();
+    expanded.append(text.mid(lastOffset, start - lastOffset));
+    const QString variableName =
+        !match.captured(1).isEmpty() ? match.captured(1) : match.captured(2);
+    if (environment.contains(variableName)) {
+      expanded.append(environment.value(variableName));
+    } else {
+      expanded.append(match.captured(0));
+    }
+    lastOffset = end;
+  }
+  expanded.append(text.mid(lastOffset));
+  return expanded;
+}
+
+bool ParseEnvironmentAssignments(
+    const QString& arguments,
+    const QProcessEnvironment& environment,
+    QList<QPair<QString, QString> >* assignments,
+    QString* errorMessage) {
+  if (assignments == nullptr) {
+    return false;
+  }
+  assignments->clear();
+  const QStringList tokens = SplitAnalysisArguments(arguments);
+  if (tokens.isEmpty()) {
+    if (errorMessage != nullptr) {
+      *errorMessage = "ENV rows require NAME=value assignments in arguments.";
+    }
+    return false;
+  }
+  for (const QString& token : tokens) {
+    const int separator = token.indexOf('=');
+    if (separator <= 0) {
+      if (errorMessage != nullptr) {
+        *errorMessage =
+            QString("Invalid environment assignment '%1'. Use NAME=value.")
+                .arg(token);
+      }
+      return false;
+    }
+    const QString name = token.left(separator).trimmed();
+    if (!kEnvironmentNameRegex.match(name).hasMatch()) {
+      if (errorMessage != nullptr) {
+        *errorMessage = QString("Invalid environment variable name '%1'.")
+                            .arg(name);
+      }
+      return false;
+    }
+    const QString rawValue = token.mid(separator + 1);
+    assignments->append(qMakePair(name,
+                                  ExpandEnvironmentReferences(rawValue,
+                                                              environment)));
+  }
+  return true;
 }
 
 class RecordHighlightDelegate : public QStyledItemDelegate {
@@ -98,6 +183,7 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
   dbConnexion();
 
   setLayout(gridlayout);
+  gridlayout->setRowStretch(1, 1);
 
   gridlayout->addWidget(analysistitle, 0, 0, 1, 10);
   analysistable = new QSqlTableModel(this, QSqlDatabase::database(path));
@@ -105,20 +191,32 @@ AnalysisWidget::AnalysisWidget(QString appDirPath)
   analysisview->setModel(analysistable);
   analysisview->verticalHeader()->hide();
   analysisview->setProperty("maxAutoColumnWidth", 640);
+  QVariantList growColumns;
+  growColumns << 1 << 2;
+  analysisview->setProperty("growColumns", growColumns);
   analysisview->setItemDelegateForColumn(
       kRecordColumn, new RecordHighlightDelegate(this, analysisview));
   Utils::ConfigureSqlTableView(analysisview);
+  analysisview->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
+  analysisview->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
+  analysisview->setMinimumHeight(0);
   outputView->setReadOnly(true);
-  outputView->setMinimumHeight(120);
+  outputView->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
+  outputView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
+  outputView->setMinimumHeight(0);
 
   QSplitter *splitter = new QSplitter(Qt::Vertical, this);
   splitter->addWidget(analysisview);
   splitter->addWidget(outputView);
+  splitter->setChildrenCollapsible(true);
   splitter->setStretchFactor(0, 3);
   splitter->setStretchFactor(1, 1);
-  splitter->setCollapsible(0, false);
-  splitter->setCollapsible(1, false);
+  splitter->setCollapsible(0, true);
+  splitter->setCollapsible(1, true);
   gridlayout->addWidget(splitter, 1, 0, 1, 10);
+  QTimer::singleShot(0, this, [splitter]() {
+    splitter->setSizes(QList<int>() << 3 << 1);
+  });
 
   reloadButton->setFixedSize(100, 30);
   connect(reloadButton, SIGNAL(clicked()), this, SLOT(reload()));
@@ -204,6 +302,7 @@ void AnalysisWidget::InitConfig() {
     const int recordWidth = qMax(
         70, QFontMetrics(header->font()).horizontalAdvance(tr("record")) + 24);
     header->setSectionResizeMode(QHeaderView::Interactive);
+    header->setSectionResizeMode(kRecordColumn, QHeaderView::Fixed);
     analysisview->setColumnWidth(0, recordWidth);
   }
   Utils::UpdateSqlTableViewColumnSizing(analysisview);
@@ -239,8 +338,11 @@ void AnalysisWidget::remove() {
   InitConfig();
 }
 
-QVector<AnalysisTask> AnalysisWidget::buildTaskList() const {
+QVector<AnalysisTask> AnalysisWidget::buildTaskList() {
   QVector<AnalysisTask> tasks;
+  QProcessEnvironment expandedEnvironment =
+      QProcessEnvironment::systemEnvironment();
+  QMap<QString, QString> customEnvironment;
   QSqlQuery query(QSqlDatabase::database(path));
   query.exec("select record, codepath, arguments from analysis_sequence "
              "order by record");
@@ -249,10 +351,36 @@ QVector<AnalysisTask> AnalysisWidget::buildTaskList() const {
     if (record < 0) {
       continue;
     }
+    const QString codePath = query.value(1).toString();
+    const QString arguments = query.value(2).toString();
+    if (codePath.trimmed().isEmpty() && arguments.trimmed().isEmpty()) {
+      continue;
+    }
+    if (IsEnvironmentDefinitionRow(codePath)) {
+      QList<QPair<QString, QString> > assignments;
+      QString errorMessage;
+      if (!ParseEnvironmentAssignments(arguments, expandedEnvironment,
+                                       &assignments, &errorMessage)) {
+        Utils::EmitWarning(
+            this, __FUNCTION__,
+            QString("Analysis ENV row %1 ignored: %2")
+                .arg(record)
+                .arg(errorMessage));
+        continue;
+      }
+      for (const QPair<QString, QString>& assignment : assignments) {
+        expandedEnvironment.insert(assignment.first, assignment.second);
+        customEnvironment.insert(assignment.first, assignment.second);
+      }
+      continue;
+    }
+
     AnalysisTask task;
     task.record = record;
-    task.codePath = query.value(1).toString();
-    task.arguments = query.value(2).toString();
+    task.codePath = ExpandEnvironmentReferences(codePath, expandedEnvironment);
+    task.arguments =
+        ExpandEnvironmentReferences(arguments, expandedEnvironment);
+    task.environment = customEnvironment;
     tasks.append(task);
   }
   return tasks;

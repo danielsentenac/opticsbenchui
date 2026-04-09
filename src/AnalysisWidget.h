@@ -94,7 +94,7 @@ private:
   void InitConfig();
   void dbConnexion();
   void setupAnalysisTable();
-  QVector<AnalysisTask> buildTaskList() const;
+  QVector<AnalysisTask> buildTaskList();
 
   QString appDirPath;
   QString path;
