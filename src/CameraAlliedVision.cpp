@@ -739,6 +739,25 @@ CameraAlliedVision::connectCamera() {
   height = (unsigned int) height_d;
   QLOG_INFO() << "CameraAlliedVision::connectCamera>> Image width = " << QString::number(width);
   QLOG_INFO() << "CameraAlliedVision::connectCamera>> Image height = " << QString::number(height);
+
+  VmbCPP::FeaturePtr pixelFormatFeature;
+  VmbErrorType pixelFormatErr = camera->GetFeatureByName("PixelFormat", pixelFormatFeature);
+  if (pixelFormatErr == VmbErrorSuccess && pixelFormatFeature) {
+    pixelFormatErr = pixelFormatFeature->SetValue("Mono8");
+    if (pixelFormatErr != VmbErrorSuccess) {
+      QLOG_WARN() << "CameraAlliedVision::connectCamera> Could not set PixelFormat to Mono8; error = "
+                  << QString::number(pixelFormatErr);
+    }
+    std::string pixelFormat;
+    if (pixelFormatFeature->GetValue(pixelFormat) == VmbErrorSuccess) {
+      QLOG_INFO() << "CameraAlliedVision::connectCamera> PixelFormat = "
+                  << QString::fromStdString(pixelFormat);
+    }
+  }
+  else {
+    QLOG_WARN() << "CameraAlliedVision::connectCamera> PixelFormat feature is unavailable; error = "
+                << QString::number(pixelFormatErr);
+  }
   
   buffer = (uchar*)malloc( sizeof(uchar) * width * height);
   snapshot = (uchar*)malloc( sizeof(uchar) * width * height);
@@ -850,45 +869,45 @@ CameraAlliedVision::acquireImage() {
   int acq_err = 1;
   QLOG_DEBUG () << " Cycle start ";
   double eTime = Utils::GetTimeMicroseconds();
-  acquireMutex->lock();
+  QMutexLocker acquireLock(acquireMutex);
   /*-----------------------------------------------------------------------
    * acquire frame
    *-----------------------------------------------------------------------*/
   // Lock the acquisition
-  snapshotMutex->lock();
+  QMutexLocker snapshotLock(snapshotMutex);
+  const size_t pixelCount = static_cast<size_t>(height) * static_cast<size_t>(width);
+  if (buffer == nullptr || image == nullptr || pixelCount == 0) {
+      QLOG_WARN() << "CameraAlliedVision::acquireImage> image buffer is not initialized";
+      return 0;
+  }
   usleep(10000);
-  uchar *frameBuffer = frameObs != nullptr ? frameObs->GetImage() : nullptr;
-  while ( frameBuffer == nullptr) {
+  while (frameObs == nullptr || !frameObs->CopyImage(buffer, width, height)) {
       if (suspend || !continuousAcquisitionStarted || frameObs == nullptr) {
-          snapshotMutex->unlock();
-          acquireMutex->unlock();
           return 0;
       }
-      QLOG_DEBUG() << "BUFFER IS nullptr...ACQUIRE ";
+      QLOG_DEBUG() << "BUFFER IS not ready...ACQUIRE ";
       usleep(10000);
-      frameBuffer = frameObs->GetImage();
   }
   QLOG_DEBUG() << "GETIMAGE DONE "; 
   
      // calculate min,max
      max = 0;
      min = 255;
-     avg = 0;
-     for (int i = 0; i < height*width; i++) {
-       if (frameBuffer[i] < min) {
-          min = frameBuffer[i];
+     long long sum = 0;
+     for (size_t i = 0; i < pixelCount; i++) {
+       if (buffer[i] < min) {
+          min = buffer[i];
        }
-       else if (frameBuffer[i] > max) {
-          max = frameBuffer[i];
+       else if (buffer[i] > max) {
+          max = buffer[i];
        }
-       avg+=frameBuffer[i];
+       sum += buffer[i];
      }
-     avg = (int) (avg / (width * height));
+     avg = (int) (sum / pixelCount);
      QLOG_DEBUG() << "min = " << min;
      QLOG_DEBUG() << "max = " << max;
      QLOG_DEBUG() << "avg = " << avg;
-     memcpy(buffer, frameBuffer, width * height * sizeof(uchar));
-     snapshotMutex->unlock();
+     snapshotLock.unlock();
   /*if (vflip) {
       buffer = reversebytes(buffer,height * width);
       buffer = fliphorizontal(buffer,height * width, width);
@@ -912,7 +931,6 @@ CameraAlliedVision::acquireImage() {
    eTime = Utils::GetTimeMicroseconds() - eTime;
    QLOG_DEBUG () << " Process eTime " << QString::number(eTime);
    QLOG_DEBUG () << " Cycle end ";
-   acquireMutex->unlock();
    return (acq_err);
 }
 

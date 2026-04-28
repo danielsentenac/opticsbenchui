@@ -24,6 +24,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define CAMERAALLIEDVISION_H
 #include <VmbCPP/VmbCPP.h>
 #include "Camera.h"
+#include <QMutexLocker>
+#include <cstring>
+#include <limits>
 #include <sstream>
 
 using namespace std;
@@ -113,28 +116,79 @@ class CameraAlliedVision : public Camera
         /// Called when a frame is received.
         /// \param frame Frame pointer.
         void FrameReceived(const VmbCPP::FramePtr frame) {
-           pBuf = nullptr;
            if (frame != nullptr) {
+              VmbFrameStatusType status = VmbFrameStatusInvalid;
               VmbUint32_t width = 0, height = 0;
-              frame->GetWidth(width);
-              frame->GetHeight(height);
-              QLOG_DEBUG() << "CameraAlliedVision::FrameObserver> width = " << QString::number((unsigned int)width);
-              QLOG_DEBUG() << "CameraAlliedVision::FrameObserver> width = " << QString::number((unsigned int)height);
-              frame->GetImage(pBuf);
+              VmbUint32_t bufferSize = 0;
+              const VmbUchar_t *pBuf = nullptr;
+              if (frame->GetReceiveStatus(status) == VmbErrorSuccess &&
+                  status == VmbFrameStatusComplete &&
+                  frame->GetWidth(width) == VmbErrorSuccess &&
+                  frame->GetHeight(height) == VmbErrorSuccess &&
+                  frame->GetBufferSize(bufferSize) == VmbErrorSuccess &&
+                  frame->GetImage(pBuf) == VmbErrorSuccess &&
+                  pBuf != nullptr) {
+                QLOG_DEBUG() << "CameraAlliedVision::FrameObserver> width = " << QString::number((unsigned int)width);
+                QLOG_DEBUG() << "CameraAlliedVision::FrameObserver> height = " << QString::number((unsigned int)height);
+
+                const size_t imageSize = static_cast<size_t>(width) * static_cast<size_t>(height);
+                if (imageSize > static_cast<size_t>(std::numeric_limits<int>::max()) ||
+                    imageSize > static_cast<size_t>(bufferSize)) {
+                  QMutexLocker locker(&imageMutex);
+                  hasImage = false;
+                  QLOG_WARN() << "CameraAlliedVision::FrameObserver> unexpected image size";
+                }
+                else {
+                  QMutexLocker locker(&imageMutex);
+                  imageBuffer.resize(static_cast<int>(imageSize));
+                  memcpy(imageBuffer.data(), pBuf, imageSize);
+                  imageWidth = width;
+                  imageHeight = height;
+                  hasImage = true;
+                }
+              }
+              else {
+                QMutexLocker locker(&imageMutex);
+                hasImage = false;
+                QLOG_WARN() << "CameraAlliedVision::FrameObserver> incomplete frame; status = "
+                            << QString::number(status);
+              }
            }
            else {
-              pBuf = nullptr;
+              QMutexLocker locker(&imageMutex);
+              hasImage = false;
               QLOG_WARN() << "CameraAlliedVision::FrameObserver> frame is NULL!!";
-              }
-           m_pCamera->QueueFrame(frame);          
+           }
+           if (frame != nullptr) {
+             m_pCamera->QueueFrame(frame);
+           }
         };
         
-        /// Return the last received image buffer.
-        uchar* GetImage() {
-           return ((uchar*) pBuf);
+        /// Copy the last received image into the caller-owned destination buffer.
+        bool CopyImage(uchar* destination, unsigned int expectedWidth, unsigned int expectedHeight) {
+           if (destination == nullptr) {
+             return false;
+           }
+           QMutexLocker locker(&imageMutex);
+           const size_t expectedSize = static_cast<size_t>(expectedWidth) * static_cast<size_t>(expectedHeight);
+           if (expectedSize > static_cast<size_t>(std::numeric_limits<int>::max())) {
+             return false;
+           }
+           if (!hasImage ||
+               imageWidth != expectedWidth ||
+               imageHeight != expectedHeight ||
+               imageBuffer.size() < static_cast<int>(expectedSize)) {
+             return false;
+           }
+           memcpy(destination, imageBuffer.constData(), expectedSize);
+           return true;
         };
      private:
-        VmbUchar_t *pBuf = nullptr;
+        QMutex imageMutex;
+        QByteArray imageBuffer;
+        VmbUint32_t imageWidth = 0;
+        VmbUint32_t imageHeight = 0;
+        bool hasImage = false;
  
   };
   VmbCPP::VmbSystem& sys = VmbCPP::VmbSystem::GetInstance();  // Get a reference to the VimbaSystem singleton

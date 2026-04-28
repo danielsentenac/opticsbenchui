@@ -8,6 +8,13 @@ VERSION = 1.8
 
 TARGET = OpticsBenchUI
 
+BUILD_DIR = $$PWD/build
+DESTDIR = $$BUILD_DIR
+OBJECTS_DIR = $$BUILD_DIR
+MOC_DIR = $$BUILD_DIR
+RCC_DIR = $$BUILD_DIR
+UI_DIR = $$BUILD_DIR
+
 CONFIG += qt thread warn_off release
 
 DEPENDPATH += .
