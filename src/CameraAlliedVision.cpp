@@ -371,20 +371,7 @@ void
 CameraAlliedVision::stop() {
   suspend = true;
   has_started = false;
-  try {
-    if (camera && continuousAcquisitionStarted) {
-      const VmbErrorType err = camera->StopContinuousImageAcquisition();
-      if (err != VmbErrorSuccess) {
-        QLOG_WARN() << "CameraAlliedVision::stop> Could not stop acquisition; error = "
-                    << QString::number(err);
-      }
-      continuousAcquisitionStarted = false;
-    }
-  }
-  catch (const std::exception& e) {
-    QLOG_WARN() << "CameraAlliedVision::stop> Exception while stopping acquisition: "
-                << e.what();
-  }
+  stopContinuousAcquisition();
   if (isRunning()) {
     wait();
   }
@@ -396,6 +383,9 @@ CameraAlliedVision::run() {
   int acq_err = 0;
   int acq_cnt = 0;
   if (camera_err == 0 && suspend == true ) {
+    if (!startContinuousAcquisition()) {
+      return;
+    }
     suspend = false;
     eTimeTotal = 0;
     while (suspend == false) {
@@ -424,6 +414,7 @@ CameraAlliedVision::run() {
       }
       has_started = true;
     }
+    stopContinuousAcquisition();
     QLOG_DEBUG() << "CameraAlliedVision thread exiting";
   }
   
@@ -768,16 +759,12 @@ CameraAlliedVision::connectCamera() {
   image = new QImage(buffer,width,height,width,QImage::Format_Indexed8);
   image->setColorTable(*table);
   
-  // Setup camera frames and start capture
+  // Prepare the observer; streaming starts lazily from run().
   frameObs = new FrameObserver(camera);
-  VmbErrorType err = camera->StartContinuousImageAcquisition(5,(VmbCPP::IFrameObserverPtr)(frameObs));
-  if (err != VmbErrorSuccess)
-     QLOG_ERROR() << "CameraAlliedVision::connectCamera> Could not start Acquisition; error = " << QString::number(err);
-  else
-     continuousAcquisitionStarted = true;
+  VmbCPP::SP_SET(frameObsOwner, frameObs);
      
   VmbUint32_t nPayloadSize;
-  err = camera->GetPayloadSize(nPayloadSize);
+  VmbErrorType err = camera->GetPayloadSize(nPayloadSize);
   QLOG_INFO() << "CameraAlliedVision::connectCamera> camera payload size = " << QString::number(nPayloadSize);
   if (err != VmbErrorSuccess)
      QLOG_ERROR() << "CameraAlliedVision::connectCamera> Could not get payload size; error = " << QString::number(err);
@@ -798,6 +785,46 @@ CameraAlliedVision::connectCamera() {
  
 
   return 0;
+}
+
+bool CameraAlliedVision::startContinuousAcquisition() {
+  if (continuousAcquisitionStarted) {
+    return true;
+  }
+  if (!camera || frameObs == nullptr || VmbCPP::SP_ISNULL(frameObsOwner)) {
+    return false;
+  }
+
+  VmbErrorType err = camera->StartContinuousImageAcquisition(5, frameObsOwner);
+  if (err != VmbErrorSuccess) {
+    QLOG_ERROR() << "CameraAlliedVision::startContinuousAcquisition> Could not start Acquisition; error = "
+                 << QString::number(err);
+    return false;
+  }
+
+  continuousAcquisitionStarted = true;
+  return true;
+}
+
+void CameraAlliedVision::stopContinuousAcquisition() {
+  try {
+    if (camera && continuousAcquisitionStarted) {
+      continuousAcquisitionStarted = false;
+      const VmbErrorType err = camera->StopContinuousImageAcquisition();
+      if (err == VmbErrorAlready) {
+        QLOG_DEBUG() << "CameraAlliedVision::stopContinuousAcquisition> Acquisition already stopped";
+      }
+      else if (err != VmbErrorSuccess) {
+        QLOG_WARN() << "CameraAlliedVision::stopContinuousAcquisition> Could not stop acquisition; error = "
+                    << QString::number(err);
+      }
+    }
+  }
+  catch (const std::exception& e) {
+    QLOG_WARN() << "CameraAlliedVision::stopContinuousAcquisition> Exception while stopping acquisition: "
+                << e.what();
+  }
+  continuousAcquisitionStarted = false;
 }
 
 void  
@@ -821,15 +848,7 @@ CameraAlliedVision::cleanup_and_exit()
 void CameraAlliedVision::stopStreamingAndCloseCamera() {
   try {
     if (camera) {
-      if (continuousAcquisitionStarted) {
-        const VmbErrorType stopErr = camera->StopContinuousImageAcquisition();
-        if (stopErr != VmbErrorSuccess) {
-          QLOG_WARN()
-              << "CameraAlliedVision::stopStreamingAndCloseCamera> Could not stop acquisition; error = "
-              << QString::number(stopErr);
-        }
-        continuousAcquisitionStarted = false;
-      }
+      stopContinuousAcquisition();
 
       const VmbErrorType closeErr = camera->Close();
       if (closeErr != VmbErrorSuccess) {
@@ -846,6 +865,7 @@ void CameraAlliedVision::stopStreamingAndCloseCamera() {
         << e.what();
   }
 
+  VmbCPP::SP_RESET(frameObsOwner);
   frameObs = nullptr;
   streams.clear();
   cameras.clear();
@@ -881,9 +901,12 @@ CameraAlliedVision::acquireImage() {
       return 0;
   }
   usleep(10000);
-  while (frameObs == nullptr || !frameObs->CopyImage(buffer, width, height)) {
+  while (true) {
       if (suspend || !continuousAcquisitionStarted || frameObs == nullptr) {
           return 0;
+      }
+      if (frameObs->CopyImage(buffer, width, height)) {
+          break;
       }
       QLOG_DEBUG() << "BUFFER IS not ready...ACQUIRE ";
       usleep(10000);

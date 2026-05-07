@@ -115,6 +115,9 @@ void CameraWindow::closeEvent(QCloseEvent* event)
   QLOG_DEBUG ( ) << "Closing CameraWindow";
   OpticsBenchUIMain *OpticsBenchui = (OpticsBenchUIMain*) parentWindow;
   OpticsBenchui->setOpenCameraWindow(false,cameraNumber);
+  if (!OpticsBenchui->isAcquisitionActive()) {
+    camera->stop();
+  }
   this->deleteLater();
 }
 void CameraWindow::set480x320() {

@@ -216,16 +216,25 @@ void AcquisitionThread::run() {
     emit getFilenumber(filenumber);
 #ifndef NO_HDF5
     // close all groups
-    for (int i = ids.size(); i >= 0; i--) {
-      H5Gclose(ids.at(i));
+    for (int i = ids.size() - 1; i >= 0; i--) {
+      const hid_t groupId = ids.at(i);
+      if (groupId >= 0 && H5Iis_valid(groupId) > 0 &&
+          H5Iget_type(groupId) == H5I_GROUP) {
+        H5Gclose(groupId);
+      }
     }
     ids.clear();
-    status = H5Fclose(file_id);
+    if (file_id >= 0 && H5Iis_valid(file_id) > 0) {
+      status = H5Fclose(file_id);
+      file_id = -1;
+    }
 #endif
     // Close eventually open camera
     for (int i = 0; i < cameraList.size(); i++) {
       Camera *camera = cameraList.at(i);
-      if (isopencamerawindow.at(i) == false) {
+      const bool cameraWindowOpen =
+          i < isopencamerawindow.size() && isopencamerawindow.at(i);
+      if (stoppedEarly || !cameraWindowOpen) {
         camera->stop();
       }
     }

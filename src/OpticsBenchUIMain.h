@@ -119,6 +119,8 @@ class OpticsBenchUIMain : public QMainWindow
   /// \param isopen True if the window is open.
   /// \param cameranumber Camera index.
   void setOpenCameraWindow(bool isopen, int cameranumber);
+  /// True while an acquisition is running.
+  bool isAcquisitionActive() const { return acquisitionRunning; }
 
  signals:
   /// Emit open/close state for camera windows.

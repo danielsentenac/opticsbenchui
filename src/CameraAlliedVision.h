@@ -104,6 +104,8 @@ class CameraAlliedVision : public Camera
   int  acquireImage() override;
   void cleanup_and_exit() override;
   void stopStreamingAndCloseCamera();
+  bool startContinuousAcquisition();
+  void stopContinuousAcquisition();
   /**
   * \brief IFrameObserver implementation for asynchronous image acquisition
   */
@@ -192,6 +194,7 @@ class CameraAlliedVision : public Camera
  
   };
   VmbCPP::VmbSystem& sys = VmbCPP::VmbSystem::GetInstance();  // Get a reference to the VimbaSystem singleton
+  VmbCPP::IFrameObserverPtr frameObsOwner;
   FrameObserver *frameObs = nullptr;
   void PrintCameraInfo(const VmbCPP::CameraPtr& camera);
   int imageWidth = 0;
