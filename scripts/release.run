@@ -62,11 +62,11 @@ sed -i -E "s|(OpticsBenchUI Documentation \\(version )[0-9]+(\\.[0-9]+)*\\)|\\1$
 echo "Rebuilding Qt help package..."
 "${SCRIPT_DIR}/make_doc.run"
 
-echo "Rebuilding tracked API docs..."
+echo "Rebuilding API docs..."
 "${SCRIPT_DIR}/make_api_doc.run"
 
 echo "Committing version update..."
-git add -A OpticsBenchUI.pro docs/Doxyfile docs/help docs/api/html
+git add -A OpticsBenchUI.pro docs/Doxyfile docs/help
 if git diff --cached --quiet; then
   echo "ERROR: no changes detected after version update."
   exit 1
