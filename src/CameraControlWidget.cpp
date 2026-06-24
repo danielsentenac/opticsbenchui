@@ -287,8 +287,11 @@ CameraControlWidget::snapShot() {
      QLOG_INFO() << " Take SNAPSHOT...";
      img8 = camera->getSnapshot();
   }
-  else  
+  else
      img32 = camera->getSnapshot32();
+  // Refresh the camera property values (as shown in the properties widget)
+  // so they can be stored as HDF5 attributes alongside the image.
+  camera->getProps();
   // Save File
   QString filename = QFileDialog::getSaveFileName(
       this, tr("Take snapshot in HDF5 format"),
@@ -304,23 +307,25 @@ CameraControlWidget::snapShot() {
     return;
   }
   // Save data to File
+  QString dsetName;
   if ( camera->pixel_encoding == B8 ) {
     QLOG_INFO () << "Saving image to file - " << filename ;
     QLOG_INFO () << "width - " << camera->width ;
     QLOG_INFO () << "height - " << camera->height ;
     QLOG_INFO () << "min - " << camera->snapShotMin ;
     QLOG_INFO () << "max - " << camera->snapShotMax ;
- 
+
     H5IMmake_image_8bit(file_id,"SNAPSHOT",
                          camera->width,
                          camera->height,
 		         img8);
-    
+
     H5LTset_attribute_int(file_id, "SNAPSHOT", "min", &camera->snapShotMin,1);
     H5LTset_attribute_int(file_id, "SNAPSHOT", "max", &camera->snapShotMax,1);
+    dsetName = "SNAPSHOT";
   }
   else  {
-     QLOG_INFO() << "CameraControlWidget::snapShot> Take snapshot pixel encoding " 
+     QLOG_INFO() << "CameraControlWidget::snapShot> Take snapshot pixel encoding "
 		 << camera->pixel_encoding
                  << " width " << camera->width
                  << " height " << camera->height;
@@ -330,6 +335,22 @@ CameraControlWidget::snapShot() {
      H5LTmake_dataset_int(file_id,"SNAPSHOT32", 2,dset_dims,img32);
      H5LTset_attribute_int(file_id, "SNAPSHOT32", "min", &camera->snapShotMin,1);
      H5LTset_attribute_int(file_id, "SNAPSHOT32", "max", &camera->snapShotMax,1);
+     dsetName = "SNAPSHOT32";
+  }
+  // Attach the camera property values (as shown in the properties widget) as
+  // string attributes on the snapshot dataset. Each entry is "Name : value".
+  for (int p = 0; p < camera->propList.size(); p++) {
+    const QString &entry = camera->propList.at(p);
+    const int sep = entry.indexOf(" : ");
+    const QString name  = (sep >= 0) ? entry.left(sep).trimmed()
+                                     : QString("prop_%1").arg(p);
+    const QString value = (sep >= 0) ? entry.mid(sep + 3).trimmed()
+                                     : entry.trimmed();
+    if (name.isEmpty()) {
+      continue;
+    }
+    H5LTset_attribute_string(file_id, dsetName.toStdString().c_str(),
+                             name.toStdString().c_str(), value.toStdString().c_str());
   }
   // Close file
   H5Fclose(file_id);
