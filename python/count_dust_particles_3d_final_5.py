@@ -951,10 +951,14 @@ def main():
     parser.add_argument("--pdf", action="store_true",
                         help="Also build the (slow) combined PDF report. Off by default; "
                              "the PNGs, summary_stats.txt and histograms are always produced.")
-    parser.add_argument("--timeout", type=float, default=300.0,
-                        help="Stall guard: if no image finishes within this many seconds, "
-                             "abort the worker pool and finalize with partial results "
-                             "(0 disables; default: 300)")
+    parser.add_argument("--timeout", type=float, default=1800.0,
+                        help="Stall guard (seconds): max time with NO image completing "
+                             "before the pool is declared stalled, workers are killed, and "
+                             "the run finalizes with partial results. MUST exceed the slowest "
+                             "single-image processing time (with margin: parallel workers "
+                             "complete in bursts, so the first completion can take as long as "
+                             "one whole image). Set higher for very dusty/slow frames; 0 "
+                             "disables the guard entirely. Default: 1800 (30 min).")
     args = parser.parse_args()
 
     if args.bg_percentile is not None or args.bg_min_intensity is not None:
