@@ -217,6 +217,9 @@ public:
   int   imageWidth;
   /// Image height.
   int   imageHeight;
+  /// Camera property values ("Name : value") captured at snapshot time,
+  /// as shown in the camera properties widget. Written as HDF5 attributes.
+  QVector<QString> cameraProps;
 
   // HDF5 attributes
   /// HDF5 group name.

@@ -744,9 +744,14 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       }
       sequence->setImageMin(camera->snapShotMin);
       sequence->setImageMax(camera->snapShotMax);
+      // Refresh the camera property values (as shown in the properties widget)
+      // and store them so saveData() can attach them as HDF5 attributes.
+      camera->getProps();
+      sequence->cameraProps = camera->propList;
       QLOG_INFO() << "AcquisitionThread::execute> Save Image buffer in sequence from " << camera->vendor
                   << " imageMin " << camera->width << " " << sequence->imageMin
-                  << " imageMax " << camera->height << " " << sequence->imageMax;
+                  << " imageMax " << camera->height << " " << sequence->imageMax
+                  << " with " << sequence->cameraProps.size() << " camera properties";
       imagesuccess = true;
     }
     else {
@@ -1170,9 +1175,24 @@ void AcquisitionThread::saveData(AcquisitionSequence *sequence, int cur_record) 
    status = H5LTset_attribute_int(sequence->grp, sequence->dataname.toStdString().c_str(), 
 				   "min", 
 				   &sequence->imageMin,1);
-   status = H5LTset_attribute_int(sequence->grp, sequence->dataname.toStdString().c_str(), 
-				   "max", 
+   status = H5LTset_attribute_int(sequence->grp, sequence->dataname.toStdString().c_str(),
+				   "max",
 				   &sequence->imageMax,1);
+   // Attach the camera property values (as shown in the properties widget) as
+   // string attributes on the snapshot dataset. Each entry is "Name : value".
+   for (int p = 0; p < sequence->cameraProps.size(); p++) {
+     const QString &entry = sequence->cameraProps.at(p);
+     const int sep = entry.indexOf(" : ");
+     const QString name  = (sep >= 0) ? entry.left(sep).trimmed()
+                                      : QString("prop_%1").arg(p);
+     const QString value = (sep >= 0) ? entry.mid(sep + 3).trimmed()
+                                      : entry.trimmed();
+     if (name.isEmpty()) {
+       continue;
+     }
+     H5LTset_attribute_string(sequence->grp, sequence->dataname.toStdString().c_str(),
+                              name.toStdString().c_str(), value.toStdString().c_str());
+   }
   }
   else if ( sequence->instrumentType == "FILE"  && filesuccess == true ) {
       FileParser *fparser = sequence->fileParser; 
