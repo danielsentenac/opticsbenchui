@@ -688,33 +688,40 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       }
     }
     if (cameraExists == true) {
-      if (camera->suspend == true) {
-        QLOG_INFO() << "AcquisitionThread::execute> open CAMERA " << camera->model;
-        camera->start();
-        while (camera->has_started == false) {
-          usleep(100);
+      if (camera->liveView) {
+        // A live-view window is streaming: synchronise to a fresh streamed
+        // frame using the running acquisition loop's start/end handshake.
+        QLOG_INFO() << "AcquisitionThread::execute>  wait for streamed frame from " << camera->model;
+        camera->mutex->lock();
+        while (!shouldStop()) {
+          if (camera->acqstart->wait(camera->mutex, 100)) {
+            break;
+          }
+        }
+        camera->mutex->unlock();
+        if (shouldStop()) {
+          return;
+        }
+        camera->mutex->lock();
+        while (!shouldStop()) {
+          if (camera->acqend->wait(camera->mutex, 100)) {
+            break;
+          }
+        }
+        camera->mutex->unlock();
+        if (shouldStop()) {
+          return;
         }
       }
-      QLOG_INFO() << "AcquisitionThread::execute>  wait for Image Acquisition ";
-      camera->mutex->lock();
-      while (!shouldStop()) {
-        if (camera->acqstart->wait(camera->mutex, 100)) {
-          break;
+      else {
+        // No live view: the camera is open but idle. Grab a single frame on
+        // demand instead of running continuous streaming for the whole sequence.
+        QLOG_INFO() << "AcquisitionThread::execute>  single-frame snapshot from " << camera->model;
+        if (!camera->grabSnapshot()) {
+          abortAcquisition(QString("Camera snapshot failed for %1")
+                               .arg(sequence->instrumentName));
+          return;
         }
-      }
-      camera->mutex->unlock();
-      if (shouldStop()) {
-        return;
-      }
-      camera->mutex->lock();
-      while (!shouldStop()) {
-        if (camera->acqend->wait(camera->mutex, 100)) {
-          break;
-        }
-      }
-      camera->mutex->unlock();
-      if (shouldStop()) {
-        return;
       }
       if (sequence->settings.contains("SNAPSHOT") &&
           !sequence->settings.contains("32") &&

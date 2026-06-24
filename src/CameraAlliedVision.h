@@ -62,7 +62,9 @@ class CameraAlliedVision : public Camera
   ushort *getSnapshot16() override;
   /// Acquire a single 32-bit image.
   int* getSnapshot32() override;
-  
+  /// Capture one frame on demand (no continuous streaming) into the buffer.
+  bool grabSnapshot() override;
+
  signals:
   /// Emit a new image frame.
   /// \param image The latest frame.

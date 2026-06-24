@@ -387,6 +387,7 @@ CameraAlliedVision::run() {
       return;
     }
     suspend = false;
+    liveView = true;   // continuous streaming is only used to feed the live display
     eTimeTotal = 0;
     while (suspend == false) {
       QLOG_DEBUG () << "CameraAlliedVision::run> " << id << " : start new Acquisition";
@@ -415,9 +416,85 @@ CameraAlliedVision::run() {
       has_started = true;
     }
     stopContinuousAcquisition();
+    liveView = false;
     QLOG_DEBUG() << "CameraAlliedVision thread exiting";
   }
-  
+
+}
+
+bool
+CameraAlliedVision::grabSnapshot() {
+  // Triggered single-frame acquisition used when no live-view window is open.
+  // The camera stays open but idle (no continuous streaming), so this is the
+  // only CPU spent per snapshot. Serialise against any other buffer access.
+  QMutexLocker acquireLock(acquireMutex);
+  QMutexLocker snapshotLock(snapshotMutex);
+  if (!camera || buffer == nullptr) {
+    QLOG_WARN() << "CameraAlliedVision::grabSnapshot> camera or buffer not ready";
+    return false;
+  }
+  const size_t pixelCount = static_cast<size_t>(width) * static_cast<size_t>(height);
+  if (pixelCount == 0) {
+    return false;
+  }
+  // If a live view is already streaming, the buffer already holds the latest
+  // frame (and AcquireSingleImage would clash with the running stream).
+  if (continuousAcquisitionStarted) {
+    return true;
+  }
+
+  VmbCPP::FramePtr frame;
+  const VmbErrorType err = camera->AcquireSingleImage(frame, 3000 /* ms */);
+  if (err != VmbErrorSuccess || frame == nullptr) {
+    QLOG_ERROR() << "CameraAlliedVision::grabSnapshot> AcquireSingleImage failed; error = "
+                 << QString::number(err);
+    return false;
+  }
+
+  VmbFrameStatusType status = VmbFrameStatusInvalid;
+  VmbUint32_t w = 0, h = 0, bufferSize = 0;
+  const VmbUchar_t* pBuf = nullptr;
+  if (frame->GetReceiveStatus(status) != VmbErrorSuccess ||
+      status != VmbFrameStatusComplete ||
+      frame->GetWidth(w) != VmbErrorSuccess ||
+      frame->GetHeight(h) != VmbErrorSuccess ||
+      frame->GetBufferSize(bufferSize) != VmbErrorSuccess ||
+      frame->GetImage(pBuf) != VmbErrorSuccess ||
+      pBuf == nullptr) {
+    QLOG_WARN() << "CameraAlliedVision::grabSnapshot> incomplete frame; status = "
+                << QString::number(status);
+    return false;
+  }
+
+  const size_t framePixels = static_cast<size_t>(w) * static_cast<size_t>(h);
+  if (framePixels == 0 || framePixels > pixelCount ||
+      framePixels > static_cast<size_t>(bufferSize)) {
+    QLOG_WARN() << "CameraAlliedVision::grabSnapshot> unexpected frame size "
+                << QString::number(w) << "x" << QString::number(h);
+    return false;
+  }
+
+  memcpy(buffer, pBuf, framePixels);
+  max = 0;
+  min = 255;
+  long long sum = 0;
+  for (size_t i = 0; i < framePixels; i++) {
+    if (buffer[i] < min) {
+      min = buffer[i];
+    }
+    else if (buffer[i] > max) {
+      max = buffer[i];
+    }
+    sum += buffer[i];
+  }
+  avg = (int)(sum / framePixels);
+  emit updateMin(min);
+  emit updateMax(max);
+  emit updateAvg(avg);
+  QLOG_INFO() << "CameraAlliedVision::grabSnapshot> single frame "
+              << QString::number(w) << "x" << QString::number(h)
+              << " min " << min << " max " << max << " avg " << avg;
+  return true;
 }
 
 void

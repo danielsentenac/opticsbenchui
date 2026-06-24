@@ -179,6 +179,11 @@ class Camera : public QThread
   virtual ushort *getSnapshot16() = 0;
   /// Acquire a single 32-bit snapshot.
   virtual int *getSnapshot32() = 0;
+  /// Capture a single frame on demand into the acquisition buffer, without
+  /// running continuous streaming. Backends that support triggered single-shot
+  /// acquisition override this; the default reports "unsupported".
+  /// \return True if a fresh frame was captured into \c buffer.
+  virtual bool grabSnapshot() { return false; }
   /// Relinquish backend cleanup ownership after discovery handoff.
   virtual void releaseDiscoveryOwnership() { ownsBackendResources = false; }
   /// True when this instance should release backend resources on destruction.
@@ -198,6 +203,9 @@ class Camera : public QThread
   bool has_started = false;
   /// True if acquisition is suspended.
   bool suspend = false;
+  /// True while a live-view window is streaming frames for display. When false,
+  /// the camera stays open but idle and snapshots are taken via grabSnapshot().
+  bool liveView = false;
   /// True if acquisition optimization is enabled.
   bool optimizeAcquisition = false;
   /// Current image width.
