@@ -27,6 +27,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcessEnvironment>
 #include <QtCore/QStandardPaths>
+#ifdef Q_OS_UNIX
+#include <unistd.h>
+#endif
 
 namespace {
 #ifdef Q_OS_UNIX
@@ -110,6 +113,29 @@ QString ResolvePythonInterpreter() {
 #endif
   return QString();
 }
+
+// QProcess that starts each child in its own session/process group (setsid in
+// the child, before exec). This way the entire analysis subtree — login shell,
+// the Python interpreter, and any multiprocessing worker processes it forks —
+// shares one process group whose leader PID is the child's PID, so Stop can
+// kill the whole tree at once with kill(-pid). Without this, killing only the
+// launcher's PID leaves the Python workers orphaned and still running.
+#ifdef Q_OS_UNIX
+class SessionProcess : public QProcess {
+ public:
+  explicit SessionProcess(QObject* parent = nullptr) : QProcess(parent) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    setChildProcessModifier([]() { ::setsid(); });
+#endif
+  }
+ protected:
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+  void setupChildProcess() override { ::setsid(); }
+#endif
+};
+#else
+using SessionProcess = QProcess;
+#endif
 }  // namespace
 
 AnalysisThread::AnalysisThread(QObject* parent)
@@ -234,7 +260,7 @@ void AnalysisThread::run() {
     }
 #endif
 
-    QProcess localProcess;
+    SessionProcess localProcess;
     localProcess.setProcessChannelMode(QProcess::MergedChannels);
     QProcessEnvironment processEnvironment =
         QProcessEnvironment::systemEnvironment();
@@ -260,12 +286,9 @@ void AnalysisThread::run() {
       continue;
     }
     currentPid = static_cast<qint64>(localProcess.processId());
-#ifdef Q_OS_UNIX
-    if (currentPid > 0) {
-      setpgid(static_cast<pid_t>(currentPid),
-              static_cast<pid_t>(currentPid));
-    }
-#endif
+    // The child put itself in its own session/process group (SessionProcess),
+    // so currentPid is the group leader and KillProcessTree's kill(-currentPid)
+    // reaches the shell, the Python interpreter, and all worker processes.
     emit pidChanged(currentPid);
 
     bool stopped = false;
