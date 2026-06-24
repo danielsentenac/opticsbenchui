@@ -2,6 +2,7 @@
 import matplotlib
 matplotlib.use('Agg')  # Safe for threads
 import os
+import sys
 import argparse
 import numpy as np
 import h5py
@@ -15,7 +16,9 @@ from matplotlib.backends.backend_pdf import PdfPages
 from pathlib import Path
 from astropy.stats import sigma_clipped_stats
 from mpl_toolkits.mplot3d import Axes3D
-from tqdm.contrib.concurrent import process_map
+from tqdm import tqdm
+from concurrent.futures import ProcessPoolExecutor, wait, FIRST_COMPLETED
+from concurrent.futures.process import BrokenProcessPool
 from scipy.ndimage import binary_dilation
 
 # === Globals ===
@@ -745,9 +748,12 @@ def plot_3d_histogram(stats_per_bin, outdir):
         dy_list.extend(dy)
         dz_list.extend(dz)
 
-    colors = [bin_color_map[i] for i in ypos_list] if len(ypos_list) else None
-    ax.bar3d(xpos_list, ypos_list, zpos_list, dx_list, dy_list, dz_list,
-             color=colors, shade=True)
+    # Guard against an empty scan (no particles in any bin): bar3d would raise
+    # on zero-size arrays. Emit an empty figure instead of crashing.
+    if xpos_list:
+        colors = [bin_color_map[i] for i in ypos_list]
+        ax.bar3d(xpos_list, ypos_list, zpos_list, dx_list, dy_list, dz_list,
+                 color=colors, shade=True)
 
     ax.set_xlabel('Number of particles per Image (2.06mm^2)')
     ax.set_ylabel('Size Bin')
@@ -853,6 +859,74 @@ def plot_per_bin_histograms_autoscale(stats_per_bin, outdir):
     fig.savefig(os.path.join(outdir, 'summary_per_bin_histograms.png'), dpi=150)
     plt.close(fig)
     
+def run_processing(entries, args):
+    """Run process() over all entries with a stall guard that always terminates.
+
+    Uses an idle timeout: if no image completes within ``args.timeout`` seconds,
+    the pool is considered stalled (a worker crashed or deadlocked), the
+    outstanding images are marked TIMEOUT, and the workers are force-killed so
+    the script proceeds to write the summary instead of hanging forever.
+
+    Worker shutdown never blocks (wait=False) — this avoids the ProcessPool
+    join deadlock that can occur after the final task.
+    """
+    def _skip(entry, status):
+        # Mirror the 8-tuple shape returned by process() for skipped frames.
+        return (entry[0], entry[1], entry[2], None,
+                float(args.min_pixel_threshold), status, None, None)
+
+    idle_timeout = args.timeout if (args.timeout and args.timeout > 0) else None
+    results = []
+    ex = ProcessPoolExecutor(max_workers=max(1, args.threads))
+    fut_to_entry = {ex.submit(process, e): e for e in entries}
+    pending = set(fut_to_entry)
+    stalled = False
+    bar = tqdm(total=len(fut_to_entry))
+    try:
+        while pending:
+            done, pending = wait(pending, timeout=idle_timeout,
+                                 return_when=FIRST_COMPLETED)
+            if not done:
+                # No image finished within the idle window -> treat as a stall.
+                stalled = True
+                break
+            for fut in done:
+                entry = fut_to_entry[fut]
+                try:
+                    results.append(fut.result())
+                except BrokenProcessPool:
+                    stalled = True
+                    results.append(_skip(entry, "ERROR"))
+                except Exception:
+                    results.append(_skip(entry, "ERROR"))
+                bar.update(1)
+            if stalled:
+                break
+    finally:
+        bar.close()
+        if pending:
+            if stalled:
+                print(f"[WARN] processing stalled (no progress for {idle_timeout}s) — "
+                      f"marking {len(pending)} unfinished image(s) as TIMEOUT and "
+                      f"aborting workers so the run can finalize.", flush=True)
+            for fut in pending:
+                results.append(_skip(fut_to_entry[fut], "TIMEOUT"))
+        # Capture worker handles BEFORE shutdown (shutdown may clear the dict),
+        # SIGKILL them so nothing lingers holding the camera/pipes/CPU, then
+        # shut down without ever blocking on a join.
+        procs = list((getattr(ex, "_processes", None) or {}).values())
+        for proc in procs:
+            try:
+                proc.kill()
+            except Exception:
+                pass
+        try:
+            ex.shutdown(wait=False, cancel_futures=True)
+        except TypeError:
+            ex.shutdown(wait=False)
+    return results
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -874,6 +948,13 @@ def main():
     parser.add_argument("--debug", action="store_true", help="Enable overlay debug and zoom")
     parser.add_argument("--proximity-threshold", type=float, default=4.1,
                         help="Distance in pixels to merge small particles (default: 4.1)")
+    parser.add_argument("--pdf", action="store_true",
+                        help="Also build the (slow) combined PDF report. Off by default; "
+                             "the PNGs, summary_stats.txt and histograms are always produced.")
+    parser.add_argument("--timeout", type=float, default=300.0,
+                        help="Stall guard: if no image finishes within this many seconds, "
+                             "abort the worker pool and finalize with partial results "
+                             "(0 disables; default: 300)")
     args = parser.parse_args()
 
     if args.bg_percentile is not None or args.bg_min_intensity is not None:
@@ -894,7 +975,7 @@ def main():
         # the first image's dataset attributes.
         camera_props = extract_camera_properties(f, entries)
     set_args_for_multiprocessing(args)
-    results = process_map(process, entries, max_workers=args.threads, chunksize=1)
+    results = run_processing(entries, args)
 
     # --- Aggregation (now with illuminated area & coverage) ---
     total_dust_pixels = 0                 # numerator (sum of illuminated pixels across frames)
@@ -971,9 +1052,9 @@ def main():
 
         # If no per-frame area was returned, compute it now from HDF5 by summing each frame’s sensor area
         if not _have_any_img_area and len(_paths_needing_area) > 0:
-            with h5py.File(args.h5file, "r") as f:
+            with h5py.File(args.h5file, "r") as hf:   # NB: not 'f' — that's the summary text file
                 for p in _paths_needing_area:
-                    img = f[p][()]
+                    img = hf[p][()]
                     h, w = img.shape[:2]
                     total_scanned_area_um2 += (h * w) * (args.pixel_size ** 2)
 
@@ -1022,16 +1103,29 @@ def main():
 
     plot_per_bin_histograms_autoscale(stats_per_bin, args.outdir)
     plot_3d_histogram(stats_per_bin, args.outdir)
-    generate_pdf_report(stats_per_bin, args.outdir)
 
-    # try to compress it
-    in_pdf  = os.path.join(args.outdir, "particle_report_full.pdf")
-    out_pdf = os.path.join(args.outdir, "particle_report_ebook.pdf")
-    ok, err = compress_pdf_with_ghostscript(in_pdf, out_pdf, preset="/ebook")
-    if ok:
-        print(f"[INFO] Compressed PDF written to {out_pdf}")
+    # --- Combined PDF report (opt-in: slow on large/--debug runs) ---
+    if args.pdf:
+        generate_pdf_report(stats_per_bin, args.outdir)
+        # try to compress it
+        in_pdf  = os.path.join(args.outdir, "particle_report_full.pdf")
+        out_pdf = os.path.join(args.outdir, "particle_report_ebook.pdf")
+        ok, err = compress_pdf_with_ghostscript(in_pdf, out_pdf, preset="/ebook")
+        if ok:
+            print(f"[INFO] Compressed PDF written to {out_pdf}")
+        else:
+            print(f"[WARN] PDF compression skipped: {err}")
     else:
-        print(f"[WARN] PDF compression skipped: {err}")
+        print("[INFO] PDF report skipped (pass --pdf to generate it). "
+              "PNGs, summary_stats.txt and histograms were written.", flush=True)
+
+    # Guarantee termination: all outputs are written and flushed above. Bypass
+    # the interpreter's normal shutdown, which can hang joining a stuck
+    # multiprocessing manager thread / worker after a stall.
+    print("[INFO] Done.", flush=True)
+    sys.stdout.flush()
+    sys.stderr.flush()
+    os._exit(0)
 
 if __name__ == "__main__":
     main()
