@@ -179,6 +179,10 @@ class Camera : public QThread
   virtual ushort *getSnapshot16() = 0;
   /// Acquire a single 32-bit snapshot.
   virtual int *getSnapshot32() = 0;
+  /// True if this backend can capture a single frame on demand via
+  /// grabSnapshot() without running continuous streaming. Backends that do not
+  /// support it keep the streaming-based acquisition path. Default: false.
+  virtual bool supportsTriggeredSnapshot() const { return false; }
   /// Capture a single frame on demand into the acquisition buffer, without
   /// running continuous streaming. Backends that support triggered single-shot
   /// acquisition override this; the default reports "unsupported".

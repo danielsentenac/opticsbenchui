@@ -62,6 +62,8 @@ class CameraAlliedVision : public Camera
   ushort *getSnapshot16() override;
   /// Acquire a single 32-bit image.
   int* getSnapshot32() override;
+  /// Allied Vision supports triggered single-frame capture (AcquireSingleImage).
+  bool supportsTriggeredSnapshot() const override { return true; }
   /// Capture one frame on demand (no continuous streaming) into the buffer.
   bool grabSnapshot() override;
 

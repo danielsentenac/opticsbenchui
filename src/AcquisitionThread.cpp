@@ -688,9 +688,33 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
       }
     }
     if (cameraExists == true) {
-      if (camera->liveView) {
-        // A live-view window is streaming: synchronise to a fresh streamed
-        // frame using the running acquisition loop's start/end handshake.
+      // Cameras that support a triggered single-frame grab (e.g. Allied Vision)
+      // stay open but idle when no live-view window is up, and we capture one
+      // frame on demand. Other backends keep the original behaviour: run the
+      // streaming acquisition thread and synchronise via the start/end handshake.
+      bool useStreamHandshake = camera->liveView;
+      if (!useStreamHandshake) {
+        if (camera->supportsTriggeredSnapshot()) {
+          QLOG_INFO() << "AcquisitionThread::execute>  single-frame snapshot from " << camera->model;
+          if (!camera->grabSnapshot()) {
+            abortAcquisition(QString("Camera snapshot failed for %1")
+                                 .arg(sequence->instrumentName));
+            return;
+          }
+        }
+        else {
+          if (camera->suspend == true) {
+            QLOG_INFO() << "AcquisitionThread::execute> open CAMERA " << camera->model;
+            camera->start();
+            while (camera->has_started == false) {
+              usleep(100);
+            }
+          }
+          useStreamHandshake = true;
+        }
+      }
+      if (useStreamHandshake) {
+        // Synchronise to a fresh streamed frame via the running loop's handshake.
         QLOG_INFO() << "AcquisitionThread::execute>  wait for streamed frame from " << camera->model;
         camera->mutex->lock();
         while (!shouldStop()) {
@@ -710,16 +734,6 @@ void AcquisitionThread::execute(AcquisitionSequence *sequence) {
         }
         camera->mutex->unlock();
         if (shouldStop()) {
-          return;
-        }
-      }
-      else {
-        // No live view: the camera is open but idle. Grab a single frame on
-        // demand instead of running continuous streaming for the whole sequence.
-        QLOG_INFO() << "AcquisitionThread::execute>  single-frame snapshot from " << camera->model;
-        if (!camera->grabSnapshot()) {
-          abortAcquisition(QString("Camera snapshot failed for %1")
-                               .arg(sequence->instrumentName));
           return;
         }
       }
