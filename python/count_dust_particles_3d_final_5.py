@@ -621,22 +621,12 @@ def generate_overlay_debug(path, image, color_mask, outdir, label_map=None, regi
         # isclose, not ==: color_mask is float32, the color table is float64
         mask = np.isclose(color_mask, bin_color_map[i], atol=1e-3).all(axis=-1)
         if np.count_nonzero(mask) > 0:
-            # Dilate for display only: 1–2 px particles vanish when the full
-            # frame is downsampled into the figure.
-            mask_disp = binary_dilation(mask, iterations=2)
-            # Same rendering as the all-particles overview image, but the
-            # overlay contains only this bin's particles, in white for
-            # maximum visibility.
-            bin_overlay = np.zeros_like(color_mask)
-            bin_overlay[mask_disp] = (1.0, 1.0, 1.0)
-            fig, ax = plt.subplots()
-            ax.imshow(image, cmap='gray', alpha=0.1)
-            # nearest, not the default antialiasing: downsampling would
-            # average the small white dots into gray (<255)
-            ax.imshow(bin_overlay, alpha=1.0, interpolation='nearest')
-            ax.set_title(f"{path} – {bin_labels[i]}")
-            fig.savefig(f"{base_path}_debug_bin{i}.png", dpi=200)
-            plt.close(fig)
+            # 1:1 pixel-exact PNG (one PNG pixel per camera pixel): exactly
+            # the pixels counted for this bin, white at 255 — no figure
+            # resampling, no dilation, no display-only growth.
+            out = np.zeros(mask.shape + (3,), dtype=np.uint8)
+            out[mask] = 255
+            plt.imsave(f"{base_path}_debug_bin{i}.png", out)
 
     if label_map is not None and region_bin_map is not None:
         fig, ax = plt.subplots()
