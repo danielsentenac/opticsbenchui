@@ -265,12 +265,14 @@ def process(entry):
     if mp_args.debug and label_map is not None and region_bin_map is not None:
         import csv
         csv_path = os.path.join(mp_args.outdir, path.replace('/', '_') + '_particles.csv')
-        unique_labels = [lbl for lbl in np.unique(label_map) if lbl != 0]
+        pix_per_label = np.bincount(label_map.ravel())
+        unique_labels = np.nonzero(pix_per_label)[0]
+        unique_labels = unique_labels[unique_labels != 0]
         with open(csv_path, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(['label_id','bin','pixel_count','diameter_um'])
             for lbl in unique_labels:
-                pix = int(np.sum(label_map == lbl))
+                pix = int(pix_per_label[lbl])
                 area_um2 = pix * (mp_args.pixel_size ** 2)
                 diam_um = (4 * area_um2 / np.pi) ** 0.5
                 writer.writerow([int(lbl), int(region_bin_map.get(int(lbl), -1)), pix, float(diam_um)])
@@ -292,6 +294,12 @@ def process(entry):
     plt.close(fig)
 
     h5file.close()
+    # Long-lived pool workers keep their peak RSS; release the full-frame
+    # arrays and matplotlib caches before picking up the next frame.
+    del image, binary, overlay, label_map, region_bin_map
+    plt.close('all')
+    import gc
+    gc.collect()
     return path, x.item(), y.item(), counts, threshold, "OK", dust_pixels, img_area_um2
 
 # === Processing Functions ===
@@ -329,9 +337,10 @@ def classify_particles_colored(binary_image, pixel_size=0.32, proximity_threshol
     label_map0 = label(binary_image, connectivity=2)
     props = regionprops(label_map0)
 
-    # Prepare outputs
-    color_mask = np.zeros((height, width, 3), dtype=float)
-    bin_index_map = -1 * np.ones((height, width), dtype=int)
+    # Prepare outputs — compact dtypes: with several workers on multi-MP
+    # frames, float64/int64 full-frame arrays are what OOMs the node.
+    color_mask = np.zeros((height, width, 3), dtype=np.float32)
+    bin_index_map = np.full((height, width), -1, dtype=np.int8)
     counts = Counter()
 
     # We’ll collect only “normal” (small/medium) regions for merging
@@ -395,7 +404,7 @@ def classify_particles_colored(binary_image, pixel_size=0.32, proximity_threshol
             label_ids = list(regions.keys())
 
             # Build a lightweight label map for neighbor search
-            lm = np.zeros((height, width), dtype=int)
+            lm = np.zeros((height, width), dtype=np.int32)
             for lid, R in regions.items():
                 pts = R["coords_arr"]
                 lm[pts[:, 0], pts[:, 1]] = lid
@@ -482,7 +491,7 @@ def classify_particles_colored(binary_image, pixel_size=0.32, proximity_threshol
 
     # --- Final painting: add the merged “normal” regions to the overlay ---
      # NOTE: also track per-pixel bin indices so debug can get true labels.
-    bin_index_map = -1 * np.ones((height, width), dtype=int)  # <— NEW map
+    bin_index_map = np.full((height, width), -1, dtype=np.int8)  # <— NEW map
     # Paint streaks already colored in color_mask: mark them as bin 5
     streak_mask = (color_mask.sum(axis=-1) > 0)
     bin_index_map[streak_mask] = 5
@@ -580,29 +589,60 @@ def extract_camera_properties(h5file, entries):
     return props
 
 
+def normalize_for_display(image, noise_sigmas=3.0):
+    """Contrast-stretch an image for debug rendering only (never for analysis).
+
+    Faint particles sit only a few counts above background while one bright
+    particle can dominate matplotlib's auto-scale, rendering everything else
+    near-black. Use an asinh stretch anchored on the sigma-clipped background
+    (linear near the noise floor, logarithmic for bright pixels) so dim and
+    bright particles are visible in the same frame.
+    """
+    img = np.asarray(image, dtype=np.float32)
+    _, median, std = sigma_clipped_stats(img, sigma=3.0)
+    scale = noise_sigmas * std
+    if scale <= 0:
+        scale = 1.0
+    x = np.maximum(img - np.float32(median), np.float32(0)) / np.float32(scale)
+    top = float(np.arcsinh(x.max()))
+    if top <= 0:
+        return np.zeros_like(img)
+    return np.arcsinh(x) / np.float32(top)
+
 def generate_overlay_debug(path, image, color_mask, outdir, label_map=None, region_bin_map=None):
     import matplotlib.pyplot as plt
     from matplotlib.patches import Rectangle
     import os
 
     base_path = os.path.join(outdir, path.replace("/", "_"))
+    disp = normalize_for_display(image)
 
     for i in range(len(size_bins)):
-        mask = (color_mask == bin_color_map[i]).all(axis=-1)
+        # isclose, not ==: color_mask is float32, the color table is float64
+        mask = np.isclose(color_mask, bin_color_map[i], atol=1e-3).all(axis=-1)
         if np.count_nonzero(mask) > 0:
+            # Dilate for display only: 1–2 px particles vanish when the full
+            # frame is downsampled into the figure.
+            mask_disp = binary_dilation(mask, iterations=2)
+            # Same rendering as the all-particles overview image, but the
+            # overlay contains only this bin's particles, in white for
+            # maximum visibility.
+            bin_overlay = np.zeros_like(color_mask)
+            bin_overlay[mask_disp] = (1.0, 1.0, 1.0)
             fig, ax = plt.subplots()
-            ax.imshow(image, cmap='gray', alpha=0.2)
-            ax.imshow(mask, cmap='hot', alpha=0.9)
+            ax.imshow(image, cmap='gray', alpha=0.1)
+            # nearest, not the default antialiasing: downsampling would
+            # average the small white dots into gray (<255)
+            ax.imshow(bin_overlay, alpha=1.0, interpolation='nearest')
             ax.set_title(f"{path} – {bin_labels[i]}")
-            fig.savefig(f"{base_path}_debug_bin{i}.png")
+            fig.savefig(f"{base_path}_debug_bin{i}.png", dpi=200)
             plt.close(fig)
 
     if label_map is not None and region_bin_map is not None:
         fig, ax = plt.subplots()
-        ax.imshow(image, cmap='gray', alpha=0.3)
+        ax.imshow(disp, cmap='gray', vmin=0.0, vmax=1.0, alpha=0.5)
         ax.imshow(color_mask, alpha=0.7)
 
-        from skimage.measure import regionprops
         props = regionprops(label_map)
 
         for region in props:
@@ -877,7 +917,19 @@ def run_processing(entries, args):
 
     idle_timeout = args.timeout if (args.timeout and args.timeout > 0) else None
     results = []
-    ex = ProcessPoolExecutor(max_workers=max(1, args.threads))
+    # Recycle workers every few frames so RSS can't ratchet up to the peak
+    # frame cost times the worker count (max_tasks_per_child needs py3.11+
+    # and forces the spawn start method, hence the explicit initializer —
+    # spawn workers do not inherit the fork-time mp_args global).
+    try:
+        ex = ProcessPoolExecutor(max_workers=max(1, args.threads),
+                                 max_tasks_per_child=4,
+                                 initializer=set_args_for_multiprocessing,
+                                 initargs=(args,))
+    except (TypeError, ValueError):
+        ex = ProcessPoolExecutor(max_workers=max(1, args.threads),
+                                 initializer=set_args_for_multiprocessing,
+                                 initargs=(args,))
     fut_to_entry = {ex.submit(process, e): e for e in entries}
     pending = set(fut_to_entry)
     stalled = False
