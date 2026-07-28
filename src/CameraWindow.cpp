@@ -74,8 +74,12 @@ CameraWindow::CameraWindow( QMainWindow* parent, Qt::WindowFlags fl , Camera *_c
     dockWidget->setWidget(controlArea);
     this->addDockWidget(Qt::BottomDockWidgetArea, dockWidget);
     
-    if ( camera->propList.size() > 0 ) {  
+    if ( camera->propList.size() > 0 ) {
       cameraPropWidget = new CameraPropWidget(camera);
+#ifndef NO_MULTIMEDIA
+      connect(player, SIGNAL(pixelValue(int,int,int)),
+	      cameraPropWidget, SLOT(showPixelValue(int,int,int)));
+#endif
       QDockWidget *dockWidget = new QDockWidget(tr("Properties"), this);
       dockWidget->setAllowedAreas(Qt::RightDockWidgetArea);
       QScrollArea *propArea = new QScrollArea(this);

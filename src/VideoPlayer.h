@@ -42,12 +42,20 @@ public:
   /// Receive a frame and display it.
   /// \param _image New frame image.
   void setImageFromCamera(const QImage & _image);
-  
+  /// Resolve the sensor pixel under the mouse and emit its value.
+  /// \param imagePos Position in displayed-image coordinates.
+  void onPixelHovered(const QPointF &imagePos);
+
  signals:
   /// Request a new image size.
   /// \param width Width in pixels.
   /// \param height Height in pixels.
   void setImageSize(const int &width, const int &height);
+  /// Report the sensor pixel under the mouse pointer.
+  /// \param x Sensor column.
+  /// \param y Sensor row.
+  /// \param value Pixel value from the acquisition buffer (0-255).
+  void pixelValue(int x, int y, int value);
 
  protected:
   /// Handle window close events.

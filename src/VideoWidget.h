@@ -24,6 +24,10 @@
 class VideoWidget : public QWidget
 {
     Q_OBJECT
+signals:
+    /// Emitted while the mouse moves over the video area.
+    /// \param imagePos Position in displayed-image coordinates (zoom-aware).
+    void pixelHovered(const QPointF &imagePos);
 public:
     /// Construct a video widget.
     /// \param parent Parent widget.
@@ -68,6 +72,8 @@ private:
     bool isSelecting = false;
     QPoint selectionStart;
     QPoint selectionEnd;
+    /// Return the widget-space rectangle the video is painted into.
+    QRect displayRect() const;
     /// Return the current rubber-band selection mapped back to widget space.
     QRect selectionRect() const;
     /// Return the current rubber-band selection constrained to a square in image space.

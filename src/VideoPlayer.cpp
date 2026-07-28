@@ -30,6 +30,8 @@ VideoPlayer::VideoPlayer(QWidget *parent, Camera *_camera)
     camera->start();
 
     videoWidget = new VideoWidget;
+    connect(videoWidget, SIGNAL(pixelHovered(const QPointF &)),
+            this, SLOT(onPixelHovered(const QPointF &)));
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
     surface = videoWidget->videoSurface();
 #endif
@@ -96,6 +98,33 @@ bool VideoPlayer::presentImage(const QImage &image)
   videoWidget->setImage(image);
   return true;
 #endif
+}
+
+void VideoPlayer::onPixelHovered(const QPointF &imagePos) {
+  // The displayed image is the sensor frame rescaled to the player
+  // resolution: map back to sensor coordinates and read the value from the
+  // full-resolution acquisition buffer. 16-bit backends fill buffer16 with
+  // the raw counts; prefer it over the 8-bit display rendition.
+  if (camera == nullptr || image.isNull()
+      || camera->width == 0 || camera->height == 0
+      || image.width() == 0 || image.height() == 0
+      || (camera->buffer == nullptr && camera->buffer16 == nullptr)) {
+    return;
+  }
+  const int sx = qBound(0,
+      static_cast<int>(imagePos.x() * camera->width / image.width()),
+      static_cast<int>(camera->width) - 1);
+  const int sy = qBound(0,
+      static_cast<int>(imagePos.y() * camera->height / image.height()),
+      static_cast<int>(camera->height) - 1);
+  if (camera->acquireMutex == nullptr || !camera->acquireMutex->tryLock()) {
+    return;  // skip this update rather than stall the UI
+  }
+  const size_t idx = static_cast<size_t>(sy) * camera->width + sx;
+  const int value = (camera->buffer16 != nullptr)
+      ? camera->buffer16[idx] : camera->buffer[idx];
+  camera->acquireMutex->unlock();
+  emit pixelValue(sx, sy, value);
 }
 
 void VideoPlayer::setVideoPlayerResolution(int width,int height) {

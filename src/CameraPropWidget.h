@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QSlider>
 #include <QGridLayout>
 #include <QLabel>
+#include <QLineEdit>
 #include <QSignalMapper>
 #include <QFileDialog>
 #include <QPushButton>
@@ -56,6 +57,13 @@ class CameraPropWidget : public QWidget
   /// \param message Warning message.
   void showWarning(QString message);
 
+ public slots:
+  /// Display the sensor pixel under the mouse pointer.
+  /// \param x Sensor column.
+  /// \param y Sensor row.
+  /// \param value Pixel value from the acquisition buffer (0-255).
+  void showPixelValue(int x, int y, int value);
+
  private slots:
   /// Refresh the property display.
   void updateProps();
@@ -66,6 +74,7 @@ class CameraPropWidget : public QWidget
   Camera *camera;
   QVector<QLabel*> propList;
   QPushButton *refreshButton;
+  QLineEdit *pixelValueField = nullptr;
   QGridLayout *layout = nullptr;
   QTimer *refreshTimer = nullptr;
 };

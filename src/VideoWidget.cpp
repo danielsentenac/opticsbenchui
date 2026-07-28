@@ -21,6 +21,7 @@ VideoWidget::VideoWidget(QWidget *parent)
     setPalette(palette);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     setCursor(Qt::CrossCursor);
+    setMouseTracking(true);
     surface = new VideoWidgetSurface(this);
 }
 //! [0]
@@ -120,6 +121,7 @@ VideoWidget::VideoWidget(QWidget *parent)
     setPalette(palette);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     setCursor(Qt::CrossCursor);
+    setMouseTracking(true);
 }
 
 VideoWidget::~VideoWidget()
@@ -223,6 +225,15 @@ void VideoWidget::applyZoom()
 
 #endif
 
+QRect VideoWidget::displayRect() const
+{
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
+    return surface->videoRect();
+#else
+    return targetRect;
+#endif
+}
+
 QRect VideoWidget::selectionRect() const
 {
     const QRectF imageRect = selectionImageRect();
@@ -264,6 +275,8 @@ void VideoWidget::mouseMoveEvent(QMouseEvent *event)
         selectionEnd = event->pos();
         update();
     }
+    if (displayRect().contains(event->pos()))
+        emit pixelHovered(widgetToImage(event->pos()));
     QWidget::mouseMoveEvent(event);
 }
 

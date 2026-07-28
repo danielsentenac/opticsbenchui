@@ -43,6 +43,12 @@ CameraPropWidget::CameraPropWidget(Camera *_camera)
   connect(refreshButton, SIGNAL(clicked()), camera, SLOT(getProps()));
   layout->addWidget(refreshButton,0,0,1,1,Qt::AlignJustify);
 
+  pixelValueField = new QLineEdit(this);
+  pixelValueField->setReadOnly(true);
+  pixelValueField->setText(QStringLiteral("Pixel: -"));
+  pixelValueField->setToolTip(tr("Sensor pixel under the mouse pointer: (x, y) = value"));
+  layout->addWidget(pixelValueField,0,1,1,1,Qt::AlignJustify);
+
   rebuildProps();
 
   refreshTimer = new QTimer(this);
@@ -55,6 +61,13 @@ CameraPropWidget::CameraPropWidget(Camera *_camera)
 }
 CameraPropWidget::~CameraPropWidget()
 {
+}
+
+void CameraPropWidget::showPixelValue(int x, int y, int value) {
+  if (pixelValueField == nullptr) {
+    return;
+  }
+  pixelValueField->setText(QString("Pixel (%1, %2) = %3").arg(x).arg(y).arg(value));
 }
 
 void CameraPropWidget::updateProps() {
