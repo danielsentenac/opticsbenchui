@@ -544,6 +544,9 @@ def find_image_paths(h5file, dataset_name, exclude_coords):
             if dataset_name in y_group:
                 path = y_group[dataset_name].name
                 entries.append((path, ts_x, ts_y, i, j))
+    # h5py iterates groups alphabetically (SCAN_X_10 before SCAN_X_2);
+    # order numerically by scan index instead.
+    entries.sort(key=lambda e: (e[3], e[4]))
     return entries
 
 def _format_attr_value(val):
@@ -1022,6 +1025,10 @@ def main():
         camera_props = extract_camera_properties(f, entries)
     set_args_for_multiprocessing(args)
     results = run_processing(entries, args)
+    # Workers finish in nondeterministic order; restore scan order (i, j)
+    # so summary_stats.txt lists images by increasing index.
+    _scan_order = {e[0]: (e[3], e[4]) for e in entries}
+    results.sort(key=lambda r: _scan_order.get(r[0], (float("inf"), float("inf"))))
 
     # --- Aggregation (now with illuminated area & coverage) ---
     total_dust_pixels = 0                 # numerator (sum of illuminated pixels across frames)
