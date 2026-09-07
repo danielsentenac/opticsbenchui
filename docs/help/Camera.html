@@ -31,11 +31,48 @@
     <img src="./CameraWindow.jpg" >
     </p>
 
+    <h2>Live view</h2>
+    <p>
+      The video area always receives the full-resolution sensor frame; nothing is
+      downscaled or compressed before display. How the frame is drawn is chosen from
+      the camera window menus:
+    </p>
+    <ul>
+      <li>
+        <b>Resolution</b> (480x320, 640x480, 1280x960) sets the size of the video
+        area. In the default fit mode the whole sensor is scaled into that area with
+        its aspect ratio preserved, so black bars may appear on two sides.
+      </li>
+      <li>
+        <b>View &gt; Native 1:1 pixels</b> draws one sensor pixel per screen pixel.
+        The frame is then usually larger than the video area and scroll bars let you
+        pan over the sensor. Untick the entry to return to fit mode.
+      </li>
+    </ul>
+    <p>
+      In both modes you can <b>zoom</b> by dragging a rectangle with the left mouse
+      button. The selection snaps to the aspect ratio of the video area so the zoomed
+      region fills the display; it is magnified without smoothing, so individual sensor
+      pixels stay visible as blocks. <b>Double-click</b> to return to the full frame.
+    </p>
+    <p>
+      When the camera exposes properties, the <b>Properties</b> dock shows the sensor
+      pixel under the mouse pointer as <code>x = .. y = .. value = ..</code>. The
+      coordinates are real sensor coordinates whatever the zoom or display mode, and the
+      value is read from the acquisition buffer (the raw 16-bit count for 16-bit
+      cameras, else the 8-bit value), not from the rendered image.
+    </p>
+    <p>
+      The <b>Gray</b> / <b>Hot</b> buttons in the Controls dock select the colour table
+      used to render the 8-bit display; <b>min</b>, <b>max</b> and <b>avg</b> report the
+      statistics of the current frame.
+    </p>
+
     <hr>
     <address><a href="mailto:postmaster@opticsbenchui.com">OpticsBenchUI</a></address>
     <!-- Created: Mon Feb  7 16:32:24 CET 2011 -->
  <!-- hhmts start -->
-Last modified: Fri Jul 20 15:00:44 CEST 2012
+Last modified: Mon Sep  7 17:45:00 CEST 2026
 <!-- hhmts end -->
   </body>
 </html>
