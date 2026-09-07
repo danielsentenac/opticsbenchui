@@ -43,6 +43,14 @@ public:
     QRect getSourceRect() const { return sourceRect; }
     /// Override the source region drawn (empty rect = use full sourceRect).
     void setZoomRect(const QRect &zoomRect);
+    /// Render 1 image pixel per screen pixel instead of fitting the widget.
+    void setNativeScale(bool on) { nativeScale = on; }
+    /// Whether 1:1 rendering is active.
+    bool isNativeScale() const { return nativeScale; }
+    /// Whether a zoom region is set (zoomed views always fit the widget).
+    bool isZoomed() const { return zoomRect.isValid(); }
+    /// Size of the region currently drawn (zoom region or full frame).
+    QSize sourceSize() const { return zoomRect.isValid() ? zoomRect.size() : sourceRect.size(); }
     /// Recompute the video rectangle.
     void updateVideoRect();
     /// Paint the current frame.
@@ -55,6 +63,7 @@ private:
     QSize imageSize;
     QRect sourceRect;
     QRect zoomRect;
+    bool nativeScale = false;
     QVideoFrame currentFrame;
 };
 //! [0]

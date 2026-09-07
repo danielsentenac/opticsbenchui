@@ -86,11 +86,17 @@ bool VideoWidgetSurface::present(const QVideoFrame &frame)
 //! [5]
 void VideoWidgetSurface::updateVideoRect()
 {
-    QSize size = zoomRect.isValid() ? zoomRect.size() : sourceRect.size();
+    QSize size = sourceSize();
     if (size.isEmpty())
         size = surfaceFormat().sizeHint();
-    const Qt::AspectRatioMode mode = Qt::KeepAspectRatioByExpanding;
-    size.scale(widget->size(), mode);
+    // Fit mode, and any zoomed region: letterbox into the widget so the aspect
+    // ratio is preserved (a zoom selection is magnified with nearest-neighbour
+    // sampling, so sensor pixels stay visible as blocks). Native mode on the
+    // full frame: 1 image pixel per screen pixel; the widget is at least as
+    // large as the frame (see VideoWidget::sizeHint) and the enclosing scroll
+    // area provides panning.
+    if (!nativeScale || zoomRect.isValid())
+        size.scale(widget->size(), Qt::KeepAspectRatio);
     targetRect = QRect(QPoint(0, 0), size);
     targetRect.moveCenter(widget->rect().center());
 }

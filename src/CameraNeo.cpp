@@ -1314,8 +1314,9 @@ CameraNeo::acquireImage() {
     snapshotMutex->unlock();
 
     // Format video image
-    QImage imagescaled = image->scaled(imageWidth,imageHeight);
-    QImage imagergb32 =  imagescaled.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+    // Emit the full-resolution sensor frame (deep copy); the video widget
+    // does the fit-to-window or 1:1 rendering.
+    QImage imagergb32 = image->convertToFormat(QImage::Format_ARGB32_Premultiplied);
     emit getImage(imagergb32);
     emit updateMin(min);
     emit updateMax(max);

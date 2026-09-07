@@ -35,8 +35,15 @@ VideoPlayer::VideoPlayer(QWidget *parent, Camera *_camera)
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
     surface = videoWidget->videoSurface();
 #endif
+    // The scroll area is transparent in fit mode (the widget fills the
+    // viewport) and provides panning in native 1:1 mode, where the widget
+    // grows to the frame size.
+    scrollArea = new QScrollArea(this);
+    scrollArea->setFrameShape(QFrame::NoFrame);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(videoWidget);
     QBoxLayout *layout = new QVBoxLayout;
-    layout->addWidget(videoWidget);
+    layout->addWidget(scrollArea);
     setLayout(layout);
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
     mediaPlayer.setVideoOutput(videoWidget->videoSurface());
@@ -55,12 +62,24 @@ void VideoPlayer::closeEvent(QCloseEvent* event)
 }
 
 void VideoPlayer::update() {
+  // Present only when a new frame arrived: full-resolution frames make a
+  // redundant repaint every 10 ms expensive.
+  if (!imageDirty) {
+    return;
+  }
+  imageDirty = false;
   presentImage(image);
 }
 
 void VideoPlayer::setImageFromCamera(const QImage &_image) {
   image = _image;
-  
+  imageDirty = true;
+}
+
+void VideoPlayer::setNativeScale(bool on) {
+  if (videoWidget != nullptr) {
+    videoWidget->setNativeScale(on);
+  }
 }
 bool VideoPlayer::presentImage(const QImage &image)
 {
@@ -105,25 +124,29 @@ void VideoPlayer::onPixelHovered(const QPointF &imagePos) {
   // resolution: map back to sensor coordinates and read the value from the
   // full-resolution acquisition buffer. 16-bit backends fill buffer16 with
   // the raw counts; prefer it over the 8-bit display rendition.
-  if (camera == nullptr || image.isNull()
-      || camera->width == 0 || camera->height == 0
-      || image.width() == 0 || image.height() == 0
-      || (camera->buffer == nullptr && camera->buffer16 == nullptr)) {
+  // No acquireMutex here: the acquisition thread holds it for essentially
+  // the whole cycle, so locking would starve the readout. A single-element
+  // read is atomic in practice and a concurrent frame write only makes the
+  // value momentarily stale.
+  if (camera == nullptr || image.isNull()) {
+    return;
+  }
+  const unsigned int w = camera->width;
+  const unsigned int h = camera->height;
+  const ushort *buf16 = camera->buffer16;
+  const uchar *buf8 = camera->buffer;
+  if (w == 0 || h == 0 || (buf8 == nullptr && buf16 == nullptr)
+      || image.width() == 0 || image.height() == 0) {
     return;
   }
   const int sx = qBound(0,
-      static_cast<int>(imagePos.x() * camera->width / image.width()),
-      static_cast<int>(camera->width) - 1);
+      static_cast<int>(imagePos.x() * w / image.width()),
+      static_cast<int>(w) - 1);
   const int sy = qBound(0,
-      static_cast<int>(imagePos.y() * camera->height / image.height()),
-      static_cast<int>(camera->height) - 1);
-  if (camera->acquireMutex == nullptr || !camera->acquireMutex->tryLock()) {
-    return;  // skip this update rather than stall the UI
-  }
-  const size_t idx = static_cast<size_t>(sy) * camera->width + sx;
-  const int value = (camera->buffer16 != nullptr)
-      ? camera->buffer16[idx] : camera->buffer[idx];
-  camera->acquireMutex->unlock();
+      static_cast<int>(imagePos.y() * h / image.height()),
+      static_cast<int>(h) - 1);
+  const size_t idx = static_cast<size_t>(sy) * w + sx;
+  const int value = (buf16 != nullptr) ? buf16[idx] : buf8[idx];
   emit pixelValue(sx, sy, value);
 }
 

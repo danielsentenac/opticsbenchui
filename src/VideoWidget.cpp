@@ -34,7 +34,12 @@ VideoWidget::~VideoWidget()
 //! [2]
 QSize VideoWidget::sizeHint() const
 {
-    return surface->surfaceFormat().sizeHint();
+    // Only the unzoomed native view asks for the full frame size (so the
+    // scroll area pans); zoomed views fit the viewport.
+    const QSize src = sourceSize();
+    if (nativeScale && !zoomRect.isValid() && !src.isEmpty())
+        return src;
+    return QSize(320, 240);
 }
 //! [2]
 //! [3]
@@ -105,6 +110,7 @@ void VideoWidget::applyZoom()
         surface->setZoomRect(zoomRect.toRect());
     else
         surface->setZoomRect(QRect());
+    updateGeometry();  // native mode: size hint follows the zoom region
     surface->updateVideoRect();
     update();
 }
@@ -130,17 +136,21 @@ VideoWidget::~VideoWidget()
 
 void VideoWidget::setImage(const QImage &image)
 {
+    const bool sizeChanged = (image.size() != currentImage.size());
     currentImage = image;
+    if (sizeChanged)
+        updateGeometry();
     updateVideoRect();
     update();
 }
 
 QSize VideoWidget::sizeHint() const
 {
-    if (!currentImage.isNull()) {
-        return currentImage.size();
-    }
-
+    // Only the unzoomed native view asks for the full frame size (so the
+    // scroll area pans); zoomed views fit the viewport.
+    const QSize src = sourceSize();
+    if (nativeScale && !zoomRect.isValid() && !src.isEmpty())
+        return src;
     return QSize(320, 240);
 }
 
@@ -177,15 +187,15 @@ void VideoWidget::updateVideoRect()
         return;
     }
 
-    QSize size;
-    if (zoomRect.isValid()) {
-        size = QSize(static_cast<int>(zoomRect.width()),
-                     static_cast<int>(zoomRect.height()));
-        size.scale(this->size(), Qt::KeepAspectRatioByExpanding);
-    } else {
-        size = currentImage.size();
-        size.scale(this->size(), Qt::KeepAspectRatioByExpanding);
-    }
+    // Fit mode, and any zoomed region: letterbox into the widget so the aspect
+    // ratio is preserved (a zoom selection is magnified with nearest-neighbour
+    // sampling, so sensor pixels stay visible as blocks). Native mode on the
+    // full frame: 1 image pixel per screen pixel; the widget is at least as
+    // large as the frame (see sizeHint) and the enclosing scroll area provides
+    // panning.
+    QSize size = sourceSize();
+    if (!nativeScale || zoomRect.isValid())
+        size.scale(this->size(), Qt::KeepAspectRatio);
     targetRect = QRect(QPoint(0, 0), size);
     targetRect.moveCenter(rect().center());
 }
@@ -219,11 +229,39 @@ QPointF VideoWidget::imageToWidget(const QPointF &pt) const
 
 void VideoWidget::applyZoom()
 {
+    updateGeometry();  // native mode: size hint follows the zoom region
     updateVideoRect();
     update();
 }
 
 #endif
+
+void VideoWidget::setNativeScale(bool on)
+{
+    if (nativeScale == on)
+        return;
+    nativeScale = on;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
+    surface->setNativeScale(on);
+    updateGeometry();
+    surface->updateVideoRect();
+#else
+    updateGeometry();
+    updateVideoRect();
+#endif
+    update();
+}
+
+QSize VideoWidget::sourceSize() const
+{
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(NO_MULTIMEDIA)
+    return surface->sourceSize();
+#else
+    if (zoomRect.isValid())
+        return zoomRect.size().toSize();
+    return currentImage.size();
+#endif
+}
 
 QRect VideoWidget::displayRect() const
 {
@@ -245,13 +283,22 @@ QRect VideoWidget::selectionRect() const
 
 QRectF VideoWidget::selectionImageRect() const
 {
+    // Constrain the selection to the aspect ratio of the visible display so
+    // the zoomed region fills the view with no bars. The display is the scroll
+    // area viewport when hosted in one (in native mode this widget itself can
+    // be larger than what is visible), else the widget.
+    const QWidget *display = parentWidget() ? parentWidget() : this;
+    const qreal aspect = (display->height() > 0)
+        ? static_cast<qreal>(display->width()) / display->height() : 1.0;
     const QPointF imageStart = widgetToImage(selectionStart);
     const QPointF imageEnd = widgetToImage(selectionEnd);
     const qreal deltaX = imageEnd.x() - imageStart.x();
     const qreal deltaY = imageEnd.y() - imageStart.y();
-    const qreal side = qMin(qAbs(deltaX), qAbs(deltaY));
-    const qreal endX = imageStart.x() + (deltaX < 0 ? -side : side);
-    const qreal endY = imageStart.y() + (deltaY < 0 ? -side : side);
+    // Largest aspect-correct rectangle inside the dragged box
+    const qreal w = qMin(qAbs(deltaX), qAbs(deltaY) * aspect);
+    const qreal h = w / aspect;
+    const qreal endX = imageStart.x() + (deltaX < 0 ? -w : w);
+    const qreal endY = imageStart.y() + (deltaY < 0 ? -h : h);
     return QRectF(imageStart, QPointF(endX, endY)).normalized();
 }
 

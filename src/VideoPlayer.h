@@ -14,6 +14,7 @@
 #include "Camera.h"
 #include "QsLog.h"
 
+class QScrollArea;
 class VideoWidget;
 
 /// \ingroup ui
@@ -35,6 +36,10 @@ public:
   /// \param width Width in pixels.
   /// \param height Height in pixels.
   void setVideoPlayerResolution(int width, int height);
+  /// Show one sensor pixel per screen pixel (scroll to pan) instead of
+  /// fitting the frame to the player.
+  /// \param on Enable native 1:1 rendering.
+  void setNativeScale(bool on);
 
   private slots:
   /// Periodic update to fetch frames.
@@ -72,7 +77,11 @@ private:
     bool presentImage(const QImage &image);
 #endif
     QImage image;
+    /// Set when a new frame arrived and has not been presented yet.
+    bool imageDirty = false;
     VideoWidget *videoWidget = nullptr;
+    /// Hosts the video widget; provides panning in native 1:1 mode.
+    QScrollArea *scrollArea = nullptr;
 
 };
 #endif // VIDEOPLAYER_H

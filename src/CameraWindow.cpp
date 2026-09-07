@@ -63,6 +63,15 @@ CameraWindow::CameraWindow( QMainWindow* parent, Qt::WindowFlags fl , Camera *_c
     menuResolution->addAction("480x320", this, SLOT(set480x320()) );
     menuResolution->addAction("640x480", this, SLOT(set640x480()) );
     menuResolution->addAction("1280x960", this, SLOT(set1280x960()) );
+
+    // "View" menu: rendering options for the video widget
+    QMenu* menuView = new QMenu("View");
+    menuBar->addMenu(menuView);
+    QAction* nativeAction = menuView->addAction("Native 1:1 pixels");
+    nativeAction->setCheckable(true);
+    nativeAction->setChecked(false);
+    nativeAction->setStatusTip(tr("Show one sensor pixel per screen pixel; scroll to pan, drag to zoom, double-click to reset"));
+    connect(nativeAction, SIGNAL(toggled(bool)), player, SLOT(setNativeScale(bool)));
 #endif
 
     cameraWidget = new CameraControlWidget(camera);

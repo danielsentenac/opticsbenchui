@@ -42,7 +42,13 @@ public:
     /// \param image Latest video frame.
     void setImage(const QImage &image);
 #endif
-    /// Recommended size for layout.
+    /// Render one image pixel per screen pixel (true) or fit the widget (false).
+    /// In native mode the size hint grows to the frame size so an enclosing
+    /// scroll area can pan over the sensor.
+    void setNativeScale(bool on);
+    /// Whether 1:1 rendering is active.
+    bool isNativeScale() const { return nativeScale; }
+    /// Recommended size for layout (frame size in native mode).
     QSize sizeHint() const override;
 protected:
     /// Paint the current frame.
@@ -69,6 +75,10 @@ private:
 #endif
     /// Currently visible region of the image (empty = full view).
     QRectF zoomRect;
+    /// 1:1 rendering flag (see setNativeScale).
+    bool nativeScale = false;
+    /// Size of the region currently drawn (zoom region or full frame).
+    QSize sourceSize() const;
     bool isSelecting = false;
     QPoint selectionStart;
     QPoint selectionEnd;
@@ -76,7 +86,8 @@ private:
     QRect displayRect() const;
     /// Return the current rubber-band selection mapped back to widget space.
     QRect selectionRect() const;
-    /// Return the current rubber-band selection constrained to a square in image space.
+    /// Return the current rubber-band selection in image space, constrained to
+    /// the aspect ratio of the visible display so the zoom fills the view.
     QRectF selectionImageRect() const;
     /// Map a widget-space point to image-space coordinates given current zoom.
     QPointF widgetToImage(const QPoint &pt) const;

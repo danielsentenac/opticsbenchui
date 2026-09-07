@@ -45,9 +45,14 @@ CameraPropWidget::CameraPropWidget(Camera *_camera)
 
   pixelValueField = new QLineEdit(this);
   pixelValueField->setReadOnly(true);
-  pixelValueField->setText(QStringLiteral("Pixel: -"));
-  pixelValueField->setToolTip(tr("Sensor pixel under the mouse pointer: (x, y) = value"));
-  layout->addWidget(pixelValueField,0,1,1,1,Qt::AlignJustify);
+  pixelValueField->setText(QStringLiteral("x = -  y = -  value = -"));
+  pixelValueField->setToolTip(tr("Sensor pixel under the mouse pointer (real sensor coordinates)"));
+  // Wide enough for the worst case (e.g. "x = 4095  y = 3071  value = 65535");
+  // no alignment flag so the field stretches across the row.
+  pixelValueField->setMinimumWidth(
+      pixelValueField->fontMetrics().horizontalAdvance(
+          QStringLiteral("x = 65535  y = 65535  value = 65535")) + 20);
+  layout->addWidget(pixelValueField,1,0,1,2);
 
   rebuildProps();
 
@@ -67,7 +72,7 @@ void CameraPropWidget::showPixelValue(int x, int y, int value) {
   if (pixelValueField == nullptr) {
     return;
   }
-  pixelValueField->setText(QString("Pixel (%1, %2) = %3").arg(x).arg(y).arg(value));
+  pixelValueField->setText(QString("x = %1  y = %2  value = %3").arg(x).arg(y).arg(value));
 }
 
 void CameraPropWidget::updateProps() {
@@ -105,6 +110,7 @@ void CameraPropWidget::rebuildProps()
     QLabel *propLabel = new QLabel();
     propLabel->setText(camera->propList.at(i));
     propList.push_back(propLabel);
-    layout->addWidget(propLabel,i+1,0,1,1,Qt::AlignLeft);
+    // Rows 0 and 1 hold the Refresh button and the pixel readout field.
+    layout->addWidget(propLabel,i+2,0,1,1,Qt::AlignLeft);
   }
 }
