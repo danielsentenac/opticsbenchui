@@ -1,0 +1,7 @@
+<map id="CameraRAPTORFALCON.h" name="CameraRAPTORFALCON.h">
+<area shape="rect" id="node1" title="Camera backend for RAPTORFALCON." alt="" coords="153,5,415,37"/>
+<area shape="rect" id="node2" href="$CameraRAPTORFALCON_8cpp.html" title="Camera backend for RAPTORFALCON." alt="" coords="5,85,288,117"/>
+<area shape="rect" id="node3" href="$OpticsBenchUIMain_8h.html" title="Main application window." alt="" coords="312,85,533,117"/>
+<area shape="rect" id="node4" href="$CameraWindow_8cpp.html" title="Camera backend for Window." alt="" coords="194,165,401,197"/>
+<area shape="rect" id="node5" href="$OpticsBenchUIMain_8cpp.html" title="Main application window." alt="" coords="425,165,668,197"/>
+</map>

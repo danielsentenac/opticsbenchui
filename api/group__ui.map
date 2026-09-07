@@ -1,0 +1,9 @@
+<map id="UI" name="UI">
+<area shape="rect" id="node1" href="$group__analysis.html" title=" " alt="" coords="108,5,207,36"/>
+<area shape="rect" id="node2" href="$group__ui__lasers.html" title=" " alt="" coords="108,60,207,91"/>
+<area shape="rect" id="node3" href="$group__acquisition.html" title=" " alt="" coords="96,115,219,145"/>
+<area shape="rect" id="node4" href="$group__ui__camera.html" title=" " alt="" coords="97,169,217,200"/>
+<area shape="rect" id="node5" href="$group__ui__dac.html" title=" " alt="" coords="116,224,199,255"/>
+<area shape="rect" id="node6" href="$group__ui__motor.html" title=" " alt="" coords="107,279,208,309"/>
+<area shape="rect" id="node7" title=" " alt="" coords="5,143,48,173"/>
+</map>

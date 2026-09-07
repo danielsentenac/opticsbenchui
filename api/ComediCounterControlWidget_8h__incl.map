@@ -1,0 +1,13 @@
+<map id="ComediCounterControlWidget.h" name="ComediCounterControlWidget.h">
+<area shape="rect" id="node1" title="Comedi Counter control widget." alt="" coords="77,5,391,37"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,245,79,277"/>
+<area shape="rect" id="node3" title=" " alt="" coords="103,245,221,277"/>
+<area shape="rect" id="node4" href="$QsLog_8h.html" title="Qs Log logging support." alt="" coords="246,245,345,277"/>
+<area shape="rect" id="node7" title=" " alt="" coords="561,85,752,117"/>
+<area shape="rect" id="node8" href="$Comedi_8h.html" title="Comedi device interface." alt="" coords="143,165,253,197"/>
+<area shape="rect" id="node9" href="$ComediCounterPlot_8h.html" title="Comedi Counter Plot source file." alt="" coords="318,85,537,117"/>
+<area shape="rect" id="node5" title=" " alt="" coords="186,325,285,357"/>
+<area shape="rect" id="node6" title=" " alt="" coords="309,325,402,357"/>
+<area shape="rect" id="node10" title=" " alt="" coords="358,165,441,197"/>
+<area shape="rect" id="node11" title=" " alt="" coords="465,165,584,197"/>
+</map>

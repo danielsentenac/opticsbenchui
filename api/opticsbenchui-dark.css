@@ -1,0 +1,615 @@
+html, body {
+  background-color: #2b2b2b;
+  color: #e6e6e6;
+}
+
+body, table, div, p, dl, dt, dd, li, ul, ol, td, th {
+  color: #e6e6e6;
+}
+
+a, a:visited {
+  color: #8ab4f8;
+}
+
+a:hover {
+  color: #a3c3ff;
+}
+
+div.contents, div.header, div.footer, div.headertitle, div.title, div.textblock {
+  background-color: #2b2b2b;
+}
+
+div.header, div.footer, div.headertitle, div.title {
+  border-color: #555;
+}
+
+table, table.memberdecls, table.memitem, table.doxtable {
+  background-color: #353535;
+  border-color: #555;
+}
+
+table, th, td {
+  border-color: #555;
+}
+
+th {
+  background-color: #3a3a3a;
+}
+
+tr:nth-child(even) {
+  background-color: #303030;
+}
+
+/* File list / directory pages */
+table.directory, table.directory td {
+  background-color: #2b2b2b;
+  color: #e6e6e6;
+  border-color: #555;
+}
+
+table.directory tr {
+  background-color: #2b2b2b;
+}
+
+table.directory tr.even {
+  background-color: #303030;
+}
+
+table.directory tr.odd {
+  background-color: #2b2b2b;
+}
+
+table.directory tr:hover td {
+  background-color: #3a3a3a;
+}
+
+div.memproto, div.memdoc {
+  background-color: #303030;
+  border-color: #555;
+}
+
+/* Member sections (class lists) */
+table.memberdecls,
+table.memberdecls td,
+table.memberdecls th,
+table.memitem,
+table.memitem td,
+table.memitem th,
+.memitem,
+.memitemleft,
+.memitemright,
+.memitem td,
+.memitem th,
+.memtitle,
+.memitem .memname,
+.memitem .memname a,
+.memitem .memproto,
+.memitem .memdoc,
+.memitem .memdoc td,
+.memitem .memdoc th {
+  background-color: #2f2f2f !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+.memitem tr:nth-child(even),
+.memitem tr:nth-child(odd),
+table.memberdecls tr:nth-child(even),
+table.memberdecls tr:nth-child(odd) {
+  background-color: #2f2f2f !important;
+}
+
+.memitem tr:hover td,
+table.memberdecls tr:hover td {
+  background-color: #3a3a3a !important;
+}
+
+/* Member title/permalink blocks */
+h2.memtitle,
+h2.memtitle span,
+h2.memtitle a,
+h2.memtitle .permalink,
+h2.memtitle .permalink a {
+  background-color: #2f2f2f !important;
+  background-image: none !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+h2.memtitle,
+.memtitle {
+  background-color: #2f2f2f !important;
+  background-image: none !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+  box-shadow: none !important;
+}
+
+h2.memtitle::after {
+  content: none !important;
+  display: none !important;
+}
+
+.permalink,
+h2.memtitle .permalink {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.permalink a {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+
+.permalink,
+.permalink a,
+.permalink a:visited,
+.permalink a:hover,
+.permalink a:active,
+.permalink a:focus {
+  background-color: #2f2f2f !important;
+  background-image: none !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+.overload {
+  background-color: #2f2f2f !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+/* Permalink icon blocks */
+.permalink {
+  background-image: none !important;
+}
+
+.permalink a:before {
+  background-image: none !important;
+}
+
+/* Member name tables */
+table.memname,
+table.memname td,
+table.memname th,
+td.memname {
+  background-color: #2f2f2f !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+/* Member labels table (explicit/override tags) */
+table.mlabels,
+table.mlabels td,
+table.mlabels th,
+td.mlabels-left,
+td.mlabels-right,
+span.mlabel {
+  background-color: #2f2f2f !important;
+  color: #e6e6e6 !important;
+  border-color: #555 !important;
+}
+
+#nav-tree, #nav-tree-contents, #nav-tree-contents .selected {
+  background-color: #2b2b2b;
+  color: #e6e6e6;
+}
+
+#nav-tree .selected {
+  background-color: #3a3a3a;
+}
+
+/* Improve sidebar readability (higher contrast + larger text) */
+#nav-tree .label,
+#nav-tree a,
+#nav-tree a:visited {
+  color: #d7e3f0 !important;
+  font-size: 18px !important;
+  line-height: 1.45 !important;
+  font-weight: 500 !important;
+  opacity: 1 !important;
+}
+
+#nav-tree a:hover,
+#nav-tree a:focus {
+  color: #f2f7ff !important;
+}
+
+#nav-tree .selected,
+#nav-tree-contents .selected {
+  background-color: #3b4047 !important;
+}
+
+#nav-tree .selected a,
+#nav-tree-contents .selected a {
+  color: #19a7ff !important;
+  font-weight: 700 !important;
+}
+
+div.navpath, div.navpath ul, div.navpath li {
+  background-color: #2b2b2b;
+  color: #e6e6e6;
+}
+
+div.navpath li.navelem a {
+  color: #8ab4f8;
+}
+
+/* Make key blue metadata links easier to read */
+div.header .summary,
+div.header .summary a,
+div.header .summary a:visited {
+  color: #5bbdff !important;
+  font-size: 20px !important;
+  line-height: 1.35 !important;
+  font-weight: 600 !important;
+}
+
+div.ingroups,
+div.ingroups a,
+div.ingroups a:visited {
+  color: #5bbdff !important;
+  font-size: 21px !important;
+  line-height: 1.3 !important;
+  font-weight: 600 !important;
+}
+
+div.navpath li.navelem a,
+div.navpath li.navelem a:visited {
+  color: #5bbdff !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+}
+
+div.fragment, pre.fragment {
+  background-color: #2f2f2f;
+  border-color: #555;
+  color: #e6e6e6;
+}
+
+code, pre, .line {
+  color: #e6e6e6;
+}
+
+/* Make inline code snippets (e.g. #include lines) readable in dark theme */
+code,
+span.tt {
+  background-color: #3a3f46 !important;
+  color: #f0f4fa !important;
+  border: 1px solid #5d6674 !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+
+code a,
+span.tt a {
+  color: #9ad1ff !important;
+}
+
+div.line {
+  background-color: #2f2f2f;
+}
+
+.tablist li a, .tablist li a:visited {
+  background-color: #bfc6d4;
+  color: #000000 !important;
+  border-color: #555;
+}
+
+.tablist li a:hover,
+.tablist li a:active {
+  color: #000000 !important;
+  background-color: #c7cedc;
+}
+
+.tablist li.current a {
+  background-color: #d1d7e4;
+  color: #000000 !important;
+}
+
+.tablist li a span,
+.tablist li.current a span {
+  color: #000000 !important;
+}
+
+/* Doxygen SmartMenus tab bar overrides */
+.sm-dox, .sm-dox ul {
+  background-image: none !important;
+}
+
+.sm-dox a,
+.sm-dox a:visited,
+.sm-dox a:focus,
+.sm-dox a:hover,
+.sm-dox a:active,
+.sm-dox a.highlighted,
+.sm-dox a.current {
+  color: #000000 !important;
+  background-color: #bfc6d4 !important;
+  background-image: none !important;
+  text-shadow: none !important;
+}
+
+.sm-dox a:hover,
+.sm-dox a:active,
+.sm-dox a.highlighted {
+  background-color: #c7cedc !important;
+}
+
+.sm-dox ul a,
+.sm-dox ul a:visited,
+.sm-dox ul a:focus,
+.sm-dox ul a:hover,
+.sm-dox ul a:active,
+.sm-dox ul a.highlighted {
+  color: #000000 !important;
+  background-color: #d1d7e4 !important;
+  background-image: none !important;
+  text-shadow: none !important;
+  font-size: 17px !important;
+  line-height: 1.35 !important;
+  font-weight: 500 !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+}
+
+.sm-dox a span.sub-arrow {
+  border-color: #000000 transparent transparent transparent !important;
+  background: transparent !important;
+}
+
+/* Invert class/graph images to avoid white backgrounds */
+img[src^="class"],
+img[src*="graph"],
+img[src*="inherit"],
+img[src^="struct"],
+img[src^="namespace"] {
+  background-color: transparent !important;
+  filter: invert(1) hue-rotate(180deg) contrast(1.05);
+}
+
+div#titlearea {
+  position: relative;
+  background-color: #2b2b2b !important;
+  border-bottom: 1px solid #555;
+  overflow: hidden;
+}
+
+div#titlearea::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #2b2b2b;
+  z-index: 0;
+}
+
+/* Title block spacing and full-row background */
+#titlearea table {
+  position: relative;
+  z-index: 1;
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse !important;
+}
+
+#titlearea,
+#titlearea table,
+#titlearea table tbody,
+#titlearea table tr,
+#titlearea table td,
+#projectalign,
+#projectname,
+#projectbrief {
+  background-color: #2b2b2b !important;
+  color: #e6e6e6 !important;
+  background-image: none !important;
+}
+
+#titlearea table td {
+  width: 100% !important;
+  border: 0 !important;
+}
+
+#projectalign {
+  width: 100% !important;
+  padding: 8px 16px;
+}
+
+#projectname,
+#projectbrief {
+  display: block;
+  width: 100%;
+}
+
+#projectname {
+  margin: 0;
+  padding: 10px 0 2px 0;
+  font-size: 44px !important;
+  line-height: 1.05 !important;
+  font-weight: 700 !important;
+}
+
+#projectbrief {
+  margin: 0;
+  padding: 2px 0 12px 0;
+  font-size: 22px !important;
+  line-height: 1.2 !important;
+}
+
+#titlearea table tbody tr {
+  height: auto !important;
+}
+
+/* Pull main menu directly under title area */
+#main-nav {
+  margin-top: 0;
+  border-top: 1px solid #3a3a3a;
+  border-bottom: 1px solid #3a3a3a;
+  background-color: #2b2b2b;
+  padding-left: 8px;
+}
+
+#main-nav ul,
+.sm-dox {
+  background-color: #2b2b2b !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Left nav background + horizontal separator under menu */
+#side-nav,
+#nav-tree,
+#nav-tree-contents {
+  background-color: #2b2b2b !important;
+  border-top: 1px solid #3a3a3a !important;
+}
+
+/* Override navtree offsets and header strip */
+#nav-tree {
+  background-image: none !important;
+}
+
+#nav-tree-contents {
+  margin-top: 0 !important;
+}
+
+/* Remove the left panel top margin if any */
+#side-nav {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.navpath,
+.navpath ul,
+.navpath li {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Keep split bar (vertical separator) */
+
+/* Remove default menu left inset */
+.sm-dox {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Add horizontal spacing between top-level menu tabs */
+.sm-dox > li {
+  margin-right: 5px !important;
+}
+
+.sm-dox > li:last-child {
+  margin-right: 0 !important;
+}
+
+/* Add spacing between dropdown submenu entries */
+.sm-dox ul > li {
+  margin-bottom: 3px !important;
+}
+
+.sm-dox ul > li:last-child {
+  margin-bottom: 0 !important;
+}
+
+.sm-dox ul > li > a,
+.sm-dox ul > li > a:visited,
+.sm-dox ul > li > a:focus,
+.sm-dox ul > li > a:hover,
+.sm-dox ul > li > a:active {
+  border-radius: 6px !important;
+}
+
+/* Slightly larger horizontal insets for top-level menu items */
+.sm-dox > li > a,
+.sm-dox > li > a:visited,
+.sm-dox > li > a:focus,
+.sm-dox > li > a:hover,
+.sm-dox > li > a:active {
+  padding-left: 32px !important;
+  padding-right: 32px !important;
+  font-size: 17px !important;
+  height: 35px !important;
+  line-height: 35px !important;
+  font-weight: 500 !important;
+  background-image: none !important;
+  border-bottom: 1px solid #3a3a3a !important;
+}
+
+/* Keep search box height aligned with top menu buttons */
+#MSearchBox {
+  height: 35px !important;
+}
+
+#MSearchField {
+  height: 33px !important;
+  line-height: 33px !important;
+}
+
+/* Increase quick search suggestion readability */
+#MSearchSelectWindow a.SelectItem,
+#MSearchSelectWindow a.SelectItem:visited {
+  font-size: 17px !important;
+  line-height: 1.35 !important;
+  padding: 6px 10px !important;
+}
+
+#MSearchSelectWindow .SelectItem {
+  font-size: 17px !important;
+  line-height: 1.35 !important;
+}
+
+input, select, textarea {
+  background-color: #303030;
+  color: #e6e6e6;
+  border: 1px solid #555;
+}
+
+/* Hide doxygen-awesome side shadow bars that show up as white blocks */
+td h2.groupheader,
+h2.groupheader {
+  box-shadow: none !important;
+  border-bottom: 1px solid #555 !important;
+  background: transparent !important;
+}
+
+/* Remove extended hr shadow strips that appear as white bottom rectangles */
+hr,
+.contents hr {
+  box-shadow: none !important;
+  background: #555 !important;
+  border: 0 !important;
+  height: 1px !important;
+}
+
+/* Keep footer nav-path as a single dark row (no bright breadcrumb blocks) */
+#nav-path,
+#nav-path ul,
+#nav-path li,
+#nav-path li.navelem,
+#nav-path li.footer {
+  background: #2b2b2b !important;
+  background-image: none !important;
+}
+
+#nav-path li.navelem::before,
+#nav-path li.navelem::after,
+#nav-path li.footer::before,
+#nav-path li.footer::after {
+  content: none !important;
+  display: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+#nav-path ul {
+  border-top: 1px solid #555 !important;
+  border-bottom: 0 !important;
+}

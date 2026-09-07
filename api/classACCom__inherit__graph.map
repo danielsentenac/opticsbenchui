@@ -1,0 +1,6 @@
+<map id="ACCom" name="ACCom">
+<area shape="rect" id="node1" title=" " alt="" coords="162,5,251,37"/>
+<area shape="rect" id="node2" href="$classACEthCom.html" title="Ethernet&#45;based communication channel." alt="" coords="5,85,125,117"/>
+<area shape="rect" id="node3" href="$classACRSCom.html" title="RS&#45;232 serial communication channel." alt="" coords="149,85,264,117"/>
+<area shape="rect" id="node4" href="$classACUsbCom.html" title="USB communication channel backed by libusb." alt="" coords="288,85,413,117"/>
+</map>

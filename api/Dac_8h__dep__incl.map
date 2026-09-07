@@ -1,0 +1,16 @@
+<map id="Dac.h" name="Dac.h">
+<area shape="rect" id="node1" title="Dac device interface." alt="" coords="525,5,600,37"/>
+<area shape="rect" id="node2" href="$AcquisitionThread_8h.html" title="Acquisition worker thread." alt="" coords="257,85,463,117"/>
+<area shape="rect" id="node6" href="$OpticsBenchUIMain_8h.html" title="Main application window." alt="" coords="441,245,663,277"/>
+<area shape="rect" id="node9" href="$DacAdvantech_8h.html" title="Dac Advantech source file." alt="" coords="539,85,712,117"/>
+<area shape="rect" id="node11" href="$DacControlWidget_8h.html" title="Dac control widget." alt="" coords="819,85,1026,117"/>
+<area shape="rect" id="node3" href="$AcquisitionThread_8cpp.html" title="Acquisition worker thread." alt="" coords="5,165,232,197"/>
+<area shape="rect" id="node4" href="$AcquisitionWidget_8h.html" title="Acquisition widget." alt="" coords="257,165,463,197"/>
+<area shape="rect" id="node5" href="$AcquisitionWidget_8cpp.html" title="Acquisition widget." alt="" coords="189,245,417,277"/>
+<area shape="rect" id="node7" href="$CameraWindow_8cpp.html" title="Camera backend for Window." alt="" coords="323,325,530,357"/>
+<area shape="rect" id="node8" href="$OpticsBenchUIMain_8cpp.html" title="Main application window." alt="" coords="555,325,797,357"/>
+<area shape="rect" id="node10" href="$DacAdvantech_8cpp.html" title="Dac Advantech source file." alt="" coords="589,165,784,197"/>
+<area shape="rect" id="node12" href="$DacControlWidget_8cpp.html" title="Dac control widget." alt="" coords="809,165,1037,197"/>
+<area shape="rect" id="node13" href="$DacWindow_8h.html" title="Dac window." alt="" coords="1061,165,1208,197"/>
+<area shape="rect" id="node14" href="$DacWindow_8cpp.html" title="Dac window." alt="" coords="1050,245,1219,277"/>
+</map>

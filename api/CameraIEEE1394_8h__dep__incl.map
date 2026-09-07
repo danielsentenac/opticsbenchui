@@ -1,0 +1,7 @@
+<map id="CameraIEEE1394.h" name="CameraIEEE1394.h">
+<area shape="rect" id="node1" title="Camera backend for IEEE 1394." alt="" coords="139,5,341,37"/>
+<area shape="rect" id="node2" href="$CameraIEEE1394_8cpp.html" title="Camera backend for IEEE 1394." alt="" coords="5,85,229,117"/>
+<area shape="rect" id="node3" href="$OpticsBenchUIMain_8h.html" title="Main application window." alt="" coords="253,85,475,117"/>
+<area shape="rect" id="node4" href="$CameraWindow_8cpp.html" title="Camera backend for Window." alt="" coords="135,165,342,197"/>
+<area shape="rect" id="node5" href="$OpticsBenchUIMain_8cpp.html" title="Main application window." alt="" coords="367,165,609,197"/>
+</map>

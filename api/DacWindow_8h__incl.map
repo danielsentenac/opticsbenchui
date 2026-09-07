@@ -1,0 +1,10 @@
+<map id="DacWindow.h" name="DacWindow.h">
+<area shape="rect" id="node1" title="Dac window." alt="" coords="91,5,238,37"/>
+<area shape="rect" id="node2" href="$DacControlWidget_8h.html" title="Dac control widget." alt="" coords="61,85,268,117"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,245,79,277"/>
+<area shape="rect" id="node5" title=" " alt="" coords="227,245,345,277"/>
+<area shape="rect" id="node3" href="$Dac_8h.html" title="Dac device interface." alt="" coords="153,165,227,197"/>
+<area shape="rect" id="node6" href="$QsLog_8h.html" title="Qs Log logging support." alt="" coords="103,245,202,277"/>
+<area shape="rect" id="node7" title=" " alt="" coords="43,325,142,357"/>
+<area shape="rect" id="node8" title=" " alt="" coords="166,325,259,357"/>
+</map>
