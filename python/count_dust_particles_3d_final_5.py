@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from skimage.measure import label, regionprops
 from scipy.spatial.distance import cdist
 from collections import Counter, defaultdict
+import multiprocessing
 from multiprocessing import Pool
 from matplotlib.patches import Patch
 from matplotlib.backends.backend_pdf import PdfPages
@@ -911,64 +912,73 @@ def run_processing(entries, args):
     idle_timeout = args.timeout if (args.timeout and args.timeout > 0) else None
     results = []
     # Recycle workers every few frames so RSS can't ratchet up to the peak
-    # frame cost times the worker count (max_tasks_per_child needs py3.11+
-    # and forces the spawn start method, hence the explicit initializer —
-    # spawn workers do not inherit the fork-time mp_args global).
-    try:
-        ex = ProcessPoolExecutor(max_workers=max(1, args.threads),
-                                 max_tasks_per_child=4,
-                                 initializer=set_args_for_multiprocessing,
-                                 initargs=(args,))
-    except (TypeError, ValueError):
-        ex = ProcessPoolExecutor(max_workers=max(1, args.threads),
-                                 initializer=set_args_for_multiprocessing,
-                                 initargs=(args,))
-    fut_to_entry = {ex.submit(process, e): e for e in entries}
-    pending = set(fut_to_entry)
+    # frame cost times the worker count: run the entries in batches, each in a
+    # fresh pool. Do NOT use max_tasks_per_child for this — in CPython <= 3.12
+    # the retiring worker leaves a stale idle-semaphore token, the executor
+    # never spawns its replacement, and the run hangs on the next frame
+    # (cpython gh-115634). Spawn workers do not inherit the fork-time mp_args
+    # global, hence the explicit initializer.
+    batch_size = 4 * max(1, args.threads)
+    batches = [entries[i:i + batch_size] for i in range(0, len(entries), batch_size)]
+    ctx = multiprocessing.get_context("spawn")
     stalled = False
-    bar = tqdm(total=len(fut_to_entry))
+    bar = tqdm(total=len(entries))
     try:
-        while pending:
-            done, pending = wait(pending, timeout=idle_timeout,
-                                 return_when=FIRST_COMPLETED)
-            if not done:
-                # No image finished within the idle window -> treat as a stall.
-                stalled = True
-                break
-            for fut in done:
-                entry = fut_to_entry[fut]
-                try:
-                    results.append(fut.result())
-                except BrokenProcessPool:
-                    stalled = True
-                    results.append(_skip(entry, "ERROR"))
-                except Exception:
-                    results.append(_skip(entry, "ERROR"))
-                bar.update(1)
+        for b, batch in enumerate(batches):
             if stalled:
-                break
+                for entry in batch:
+                    results.append(_skip(entry, "TIMEOUT"))
+                continue
+            ex = ProcessPoolExecutor(max_workers=max(1, args.threads),
+                                     mp_context=ctx,
+                                     initializer=set_args_for_multiprocessing,
+                                     initargs=(args,))
+            fut_to_entry = {ex.submit(process, e): e for e in batch}
+            pending = set(fut_to_entry)
+            try:
+                while pending:
+                    done, pending = wait(pending, timeout=idle_timeout,
+                                         return_when=FIRST_COMPLETED)
+                    if not done:
+                        # No image finished within the idle window -> treat as a stall.
+                        stalled = True
+                        break
+                    for fut in done:
+                        entry = fut_to_entry[fut]
+                        try:
+                            results.append(fut.result())
+                        except BrokenProcessPool:
+                            stalled = True
+                            results.append(_skip(entry, "ERROR"))
+                        except Exception:
+                            results.append(_skip(entry, "ERROR"))
+                        bar.update(1)
+                    if stalled:
+                        break
+            finally:
+                if pending:
+                    if stalled:
+                        remaining = len(pending) + sum(len(x) for x in batches[b + 1:])
+                        print(f"[WARN] processing stalled (no progress for {idle_timeout}s) — "
+                              f"marking {remaining} unfinished image(s) as TIMEOUT and "
+                              f"aborting workers so the run can finalize.", flush=True)
+                    for fut in pending:
+                        results.append(_skip(fut_to_entry[fut], "TIMEOUT"))
+                # Capture worker handles BEFORE shutdown (shutdown may clear the dict),
+                # SIGKILL them so nothing lingers holding the camera/pipes/CPU, then
+                # shut down without ever blocking on a join.
+                procs = list((getattr(ex, "_processes", None) or {}).values())
+                for proc in procs:
+                    try:
+                        proc.kill()
+                    except Exception:
+                        pass
+                try:
+                    ex.shutdown(wait=False, cancel_futures=True)
+                except TypeError:
+                    ex.shutdown(wait=False)
     finally:
         bar.close()
-        if pending:
-            if stalled:
-                print(f"[WARN] processing stalled (no progress for {idle_timeout}s) — "
-                      f"marking {len(pending)} unfinished image(s) as TIMEOUT and "
-                      f"aborting workers so the run can finalize.", flush=True)
-            for fut in pending:
-                results.append(_skip(fut_to_entry[fut], "TIMEOUT"))
-        # Capture worker handles BEFORE shutdown (shutdown may clear the dict),
-        # SIGKILL them so nothing lingers holding the camera/pipes/CPU, then
-        # shut down without ever blocking on a join.
-        procs = list((getattr(ex, "_processes", None) or {}).values())
-        for proc in procs:
-            try:
-                proc.kill()
-            except Exception:
-                pass
-        try:
-            ex.shutdown(wait=False, cancel_futures=True)
-        except TypeError:
-            ex.shutdown(wait=False)
     return results
 
 
